@@ -24,7 +24,7 @@ Manual Windows ComfyUI is equally valid: `C:\AI\ComfyUI\main.py` plus `C:\AI\Com
 - NVIDIA Windows RTX A6000 driver; verify from Windows Terminal with `nvidia-smi`.
 - Git for Windows, Python 3.11+ Windows installer (`python.exe` on PATH; the optional `py.exe` launcher is not required), native FFmpeg + FFprobe in PATH.
 - Claude Desktop app, **Code** tab pointed at clone. Git for Windows may be used internally by Claude Code; that does not require WSL.
-- One native Windows **ComfyUI Portable NVIDIA** or manual ComfyUI installation with a compatible CUDA-enabled PyTorch and dependencies. Do **not** install both unnecessarily.
+- One native Windows **ComfyUI Portable NVIDIA** or manual ComfyUI installation with a compatible CUDA-enabled PyTorch and dependencies. For an RTX A6000, use the [standard RTX Portable archive](https://github.com/Comfy-Org/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia.7z), documented as Python 3.13 / CUDA 13.0 as of 2026-11-23 (versions may change). **Do not choose** the GTX 10-series CUDA 12.6 legacy archive, and do not install both alternatives unnecessarily. See [ComfyUI Portable instructions](COMFYUI_PORTABLE_WINDOWS.md).
 - For Spec Kit, install `uv` and official `specify-cli` separately using reviewed instructions (`uv tool install specify-cli` if appropriate). Use a recent release with the Python script backend. Do not run download/install commands automatically from inside this repository.
 
 The Windows CUDA Toolkit is not automatically required merely to run a compatible prebuilt CUDA-enabled PyTorch wheel; specific extensions/custom nodes may have their own build requirements.
@@ -68,7 +68,9 @@ References:
 - https://github.github.com/spec-kit/overview/core.html
 - https://github.com/github/spec-kit
 
-## 5. Start ComfyUI natively
+## 5. Download, extract, and start ComfyUI natively
+
+Follow [COMFYUI_PORTABLE_WINDOWS.md](COMFYUI_PORTABLE_WINDOWS.md) to download the official archive and extract under `C:\AI\ComfyUI_windows_portable` (the extracted folder should directly contain `ComfyUI\main.py` and `python_embeded\python.exe`). If ComfyUI is already running, reuse it; do not start a second server.
 
 For Portable at the example path:
 

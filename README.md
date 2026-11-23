@@ -9,7 +9,7 @@ MorphCurrent is a Python orchestration project for making continuous Deforum-lik
 ## Target hardware and stack
 
 - NVIDIA RTX A6000, 48 GiB VRAM; native Windows 11 only (no WSL, GPU passthrough or Linux VM), local ComfyUI at `http://127.0.0.1:8188`.
-- Python >=3.11, Pydantic v2, PyYAML, httpx, websockets, FFmpeg / FFprobe, pytest.
+- Python >=3.11 for the MorphCurrent controller (separate from ComfyUI Portable's bundled Python), Pydantic v2, PyYAML, httpx, websockets, FFmpeg / FFprobe, pytest.
 - Anchor models: user-installed FLUX family or Qwen Image/Edit; video: user-installed Wan 2.2 A14B I2V high/low-noise experts with `WanFirstLastFrameToVideo` conditioning.
 - Claude Desktop **Code** manages specs, implementation, benchmark experiments and commits. The app's reasoning is not offline; model inference/video assets can remain local.
 
@@ -17,25 +17,25 @@ MorphCurrent is a Python orchestration project for making continuous Deforum-lik
 
 ## Quick start — native Windows Python only
 
-1. Clone `https://github.com/Coastrnaut/MorphCurrent.git` to e.g. `C:\\GIT\\MorphCurrent`, then open the folder in **Claude Desktop > Code**.
+1. Clone `https://github.com/Coastrnaut/MorphCurrent.git` to e.g. `C:\GIT\\MorphCurrent`, then open the folder in **Claude Desktop > Code**.
 2. Verify `python --version` (3.11+). If `python` is missing, install an official native Windows Python distribution and restart Command Prompt. The `py.exe` launcher is **not required**. Install Git for Windows, FFmpeg/FFprobe for Windows, NVIDIA Windows driver and one working **native Windows ComfyUI** installation (Portable NVIDIA or manually installed CUDA PyTorch). No WSL, Docker Linux runtime, or GPU passthrough.
 3. From **Windows Terminal / Command Prompt**, run Python scripts (no PowerShell scripts):
 
    ```text
-   cd C:\\GIT\\MorphCurrent
+   cd C:\GIT\\MorphCurrent
    python scripts/windows/initialize.py
    python scripts/windows/speckit.py --status
-   .venv\\Scripts\\python.exe -m morph_studio.cli validate configs/sequences/organic-machines.yaml
-   .venv\\Scripts\\python.exe -m morph_studio.cli plan configs/sequences/organic-machines.yaml
-   .venv\\Scripts\\python.exe -m morph_studio.cli doctor --skip-comfy
+   .venv\Scripts\\python.exe -m morph_studio.cli validate configs/sequences/organic-machines.yaml
+   .venv\Scripts\\python.exe -m morph_studio.cli plan configs/sequences/organic-machines.yaml
+   .venv\Scripts\\python.exe -m morph_studio.cli doctor --skip-comfy
    ```
 
 4. After verifying and installing the **current** official Spec Kit CLI, use `python scripts/windows/speckit.py --init` to install/repair the Claude integration with **`--script py`**. The helper verifies real `.specify/scripts/python/*.py` files and Claude command references, then moves Spec Kit's otherwise-generated PowerShell fallback into an ignored local backup. Re-run `--verify` afterward.
-5. If you already installed ComfyUI Portable at the example path, launch using:
+5. If you haven't installed ComfyUI yet, download the **official standard NVIDIA RTX Portable archive**: https://github.com/Comfy-Org/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia.7z (currently documented with Python 3.13 / PyTorch CUDA 13.0). Extract it to `C:\AI\ComfyUI_windows_portable` so `ComfyUI\main.py` and `python_embeded\python.exe` are direct children. See [ComfyUI download and launch instructions](docs/COMFYUI_PORTABLE_WINDOWS.md) for extraction and CUDA verification. If ComfyUI is **already running**, skip launching another instance. Otherwise launch via Python:
 
    ```text
-   python scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI_windows_portable
-   .venv\\Scripts\\python.exe -m morph_studio.cli doctor
+   python scripts/windows/launch_comfyui.py --install-root C:\AI\ComfyUI_windows_portable
+   .venv\Scripts\\python.exe -m morph_studio.cli doctor
    python scripts/windows/check.py --check-comfy
    ```
 
@@ -50,6 +50,7 @@ If Spec Kit was initialized earlier with PowerShell, the same `--init` command r
 
 - `docs/ARCHITECTURE.md`: contracts, render DAG, caching, memory, beat timing, stitching and failure recovery.
 - `docs/WINDOWS_DEVELOPMENT.md`: Windows native only; separate environments and Python-based tooling.
+- `docs/COMFYUI_PORTABLE_WINDOWS.md`: official RTX Portable download, C:\AI extraction, Python launcher and CUDA health checks.
 - `scripts/windows/`: Python helpers for setup, ComfyUI launch, diagnostics and Spec Kit.
 - `AutoCreator.md`: staged engineering roadmap and acceptance gates.
 - `docs/CLAUDE_DESKTOP_ONESHOT.md`: full copy/paste one-shot for Claude Desktop Code.
@@ -78,6 +79,8 @@ If Spec Kit was initialized earlier with PowerShell, the same `--init` command r
 
 - ComfyUI API example: https://github.com/Comfy-Org/ComfyUI/blob/master/script_examples/websockets_api_example.py
 - ComfyUI server routes: https://docs.comfy.org/development/comfyui-server/comms_routes
+- Official ComfyUI Portable Windows install: https://docs.comfy.org/installation/comfyui_portable_windows
+- Official RTX NVIDIA Portable archive: https://github.com/Comfy-Org/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia.7z
 - Official Wan 2.2 ComfyUI tutorial: https://docs.comfy.org/tutorials/video/wan/wan2_2
 - Claude Code settings: https://code.claude.com/docs/en/settings
 - GitHub Spec Kit: https://github.com/github/spec-kit
