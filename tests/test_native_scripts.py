@@ -71,7 +71,7 @@ def create_python_fixture(root: Path, *, reference: str | None = None):
     for name in REQUIRED_PYTHON:
         (directory / name).write_text("# official Python core test stub\n", encoding="utf-8")
     skill = root / ".claude" / "skills" / "speckit-plan" / "SKILL.md"
-    skill.parent.mkdir(parents=True)
+    skill.parent.mkdir(parents=True, exist_ok=True)
     skill.write_text(reference or "Run python .specify/scripts/python/setup_plan.py\n",
                      encoding="utf-8")
     return skill

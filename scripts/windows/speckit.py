@@ -105,7 +105,7 @@ def normalize_generated_python_calls(root: Path) -> list[str]:
         fixed = PYTHON3.sub("python", original)
         if fixed != original:
             path.write_text(fixed, encoding="utf-8", newline="\n")
-            changed.append(str(path.relative_to(root)))
+            changed.append(path.relative_to(root).as_posix())
     return changed
 
 
