@@ -1,0 +1,102 @@
+"""Storyboard schema: creative data, never ComfyUI node IDs."""
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Literal
+
+import yaml
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+
+class StrictModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class RenderConfig(StrictModel):
+    width: int = Field(default=832, ge=256, le=4096, multiple_of=8)
+    height: int = Field(default=480, ge=256, le=4096, multiple_of=8)
+    generation_fps: int = Field(default=16, ge=1, le=120)
+    delivery_fps: int = Field(default=24, ge=1, le=120)
+    anchor_profile: str = Field(min_length=1)
+    bridge_profile: str = Field(min_length=1)
+    master_seed: int = Field(default=0, ge=0)
+    max_bridge_frames: int = Field(default=81, ge=5)
+
+    @model_validator(mode="after")
+    def check_length(self) -> "RenderConfig":
+        if (self.max_bridge_frames - 1) % 4:
+            raise ValueError("max_bridge_frames must be 4n+1")
+        return self
+
+
+class Style(StrictModel):
+    description: str = Field(min_length=1)
+    composition: str = "centered_subject"
+    camera: str = "continuous_slow_push"
+    palette: list[str] = Field(default_factory=list)
+
+
+class Audio(StrictModel):
+    file: str | None = None
+    bpm: float | None = Field(default=None, gt=0, le=400)
+    beat_offset_seconds: float = 0.0
+    synchronization: Literal["none", "beat", "downbeat"] = "none"
+
+
+class Anchor(StrictModel):
+    id: str = Field(pattern=r"^[A-Za-z][A-Za-z0-9_-]*$")
+    prompt: str = Field(min_length=1)
+    seed: int | None = Field(default=None, ge=0)
+    generation: Literal["text_to_image", "reference_edit"] = "text_to_image"
+    reference: str | None = None
+
+
+class Transition(StrictModel):
+    from_anchor: str = Field(alias="from")
+    to_anchor: str = Field(alias="to")
+    duration_beats: float = Field(gt=0)
+    seed: int | None = Field(default=None, ge=0)
+    candidates: int = Field(default=1, ge=1, le=10)
+    motion: str = "slow_push"
+    prompt: str = Field(min_length=1)
+    mode: Literal["direct", "camera", "intermediate"] = "direct"
+
+
+class Storyboard(StrictModel):
+    schema_version: Literal[1]
+    name: str = Field(min_length=1)
+    render: RenderConfig
+    style: Style
+    audio: Audio = Field(default_factory=Audio)
+    anchors: list[Anchor] = Field(min_length=2)
+    transitions: list[Transition] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_chain(self) -> "Storyboard":
+        ids = [a.id for a in self.anchors]
+        if len(set(ids)) != len(ids):
+            raise ValueError("anchor IDs must be unique")
+        for index, anchor in enumerate(self.anchors):
+            if anchor.generation == "reference_edit":
+                if not anchor.reference or anchor.reference not in ids[:index]:
+                    raise ValueError(f"reference_edit anchor {anchor.id!r} needs an earlier anchor")
+            elif anchor.reference:
+                raise ValueError(f"text_to_image anchor {anchor.id!r} cannot declare reference")
+        if len(self.transitions) != len(self.anchors) - 1:
+            raise ValueError("V1 transitions must exactly connect consecutive anchors")
+        for i, transition in enumerate(self.transitions):
+            if (transition.from_anchor, transition.to_anchor) != (ids[i], ids[i + 1]):
+                raise ValueError(f"transition {i} must connect {ids[i]} -> {ids[i+1]}")
+        if self.audio.bpm is None:
+            raise ValueError("audio.bpm is required for duration_beats in V1")
+        return self
+
+
+def load_storyboard(path: str | Path) -> Storyboard:
+    """Read a local YAML storyboard and validate it strictly."""
+    filepath = Path(path)
+    with filepath.open("r", encoding="utf-8") as stream:
+        obj = yaml.safe_load(stream)
+    if not isinstance(obj, dict):
+        raise ValueError("storyboard must be a YAML mapping")
+    return Storyboard.model_validate(obj)

@@ -1,0 +1,65 @@
+# MorphCurrent architecture — design contracts and tradeoffs
+
+## Logical graph
+```
+Sequence YAML + assets + local audio
+  -> validation / beat analysis / creative continuity planning
+  -> immutable DAG of anchor generation/editing tasks
+  -> Wan 2.2 FLF2V bridge tasks (anchor N -> anchor N+1)
+  -> inspection + candidate scoring + optional rerender
+  -> seam-aware FFmpeg conform / audio sync / final export
+```
+
+## Components
+- `schema.py`: strict Pydantic creative schema, stable IDs and transitions.
+- `timeline.py`: beat/BPM-to-Wan frame planning; exact rational clock.
+- `comfy_client.py`: local REST + WS, timeouts, history/errors, image upload/download, node discovery.
+- `workflow_adapter.py` (to build): semantic bindings for real API-format JSON; validate node `class_type`/`inputs`.
+- `manifest.py`, `scheduler.py`, `cache.py` (to build): immutable content-addressed artifacts with crash recovery.
+- `audio_analysis.py` (to build): librosa-derived beat/onset/envelopes + manual override.
+- `quality.py` (to build): perceptual seam, blur/freeze/flow, endpoint fidelity and contact sheets.
+- `stitcher.py` (to build): FFprobe checks, frame normalize, zero/one-frame seam dedupe, timestamp integrity, mux.
+
+## ComfyUI contract
+GET `/system_stats`, GET `/object_info`, POST `/upload/image`, POST `/prompt` with `{"prompt": API_GRAPH, "client_id": ID}`, WS `/ws?clientId=ID`, GET `/history/{prompt_id}`, GET `/view?filename=...&subfolder=...&type=...`.
+Actual API format is a dictionary of node IDs to `{"class_type": "...", "inputs": {...}}`. UI-formatted workflow JSON is *not* directly queueable. Use authenticated/trusted localhost; default deny non-loopback endpoints. Verify runtime `object_info` before dispatch, and make `/history` + files authoritative after WS completion. Persist prompt ID and poll for recovery after lost WS.
+
+## Model memory tradeoffs
+Wan 2.2 A14B I2V high-noise + low-noise experts each have ~14B parameters. Two full FP16 sets exceed A6000 48 GiB with no activation budget. `--highvram` is not an OOM workaround. Benchmark:
+- sequential FP16 expert residency/offload;
+- FP8 scaled experts and text encoder with measured quality;
+- CPU offload as explicit fallback;
+- separate anchor stage and video stage.
+Keep single GPU job by default, record CUDA allocated/reserved memory, actual clip latency and output fidelity. Do not assert weights/precision or quantization efficacy without checkpoint inspection.
+
+## Morph quality contracts
+1. Preserve compatible silhouette, subject centroid, color palette, lighting and camera between anchors, preferably reference editing.
+2. Transition prompt specifies temporal actions, shape/material correspondences, camera movement, stable shot and explicit no-cut/no-fade constraint.
+3. Modes: direct morph, camera-passage morph, optional intermediate-anchor ladder. Selection heuristic must be overruled by preview review.
+4. Generate 2-3 seeds for difficult pairs; flag blur/freeze/endpoint mismatch. Metrics aren't a replacement for visual inspection.
+5. Don't automatically use dissolve/xfade: that destroys true material transformation.
+
+## Frame mathematics and seam policies
+Wan FLF latent lengths commonly use `L = 4n + 1`. For anchor-to-anchor **timestamp span** at generation FPS F, use `T = (L - 1) / F`. For 120 BPM, 8 beats = 4 seconds; F=16 gives L=65.
+For N bridges with identical frame sizes/fps and exact shared-anchor endpoints, concatenation **removes the duplicate first endpoint** from each later bridge. Total frames = 1 + sum(L_i - 1). A 2-bridge 65/65 example gives 129 unique frames at 16 FPS, with anchor timestamp span 8s. File playback PTS and audio mux length must be explicitly conformed for delivery; frame count / fps differs by the final frame interval.
+Before trimming: inspect boundary histogram/perceptual differences and optical flow. If mismatch, flag, rerender or use narrowly scoped repair; naive 2-4-frame overlap risks skipping endpoint conditions. Use frame-accurate FFmpeg filters with explicit PTS resets and offline golden tests.
+For incompatible beat durations, choose nearest L, insert an intermediate bridge, or retime *deliberately*; record timing residual and never silently drift against music.
+
+## YAML storyboard and profiles
+Human edits only the creative YAML (style, anchors, continuity cues, transitions, beat structure). Low-level Comfy node maps and model checkpoint filenames live in `configs/profiles/`. The compiled DAG and run metadata belong in `outputs/runs/<runid>/manifest.json` and must not be versioned.
+Hashes must cover (at minimum) source storyboard/profile content, reference image bytes, source music analysis version, checkpoint IDs+SHA256, ComfyUI revision and API workflow JSON, generation parameters, processing code version, output profile, and prior-node hashes. Changing postprocessing doesn't need to invalidate raw video bridges.
+
+## Resilience, security and testing
+- localhost only by default; never allow a storyboard to supply arbitrary HTTP endpoints or shell fragments.
+- HTTP request timeout/retry with backoff; WS can disconnect. Only confirmed history/output files imply success.
+- API error and node errors produce actionable diagnostics; persist state on every transition.
+- No shell=True. Use FFmpeg argument arrays and namespaced output locations.
+- Unit tests offline: parser, graph validation, frame math, deterministic manifests, seam dedupe, API mocks.
+- Gated integration tests against a local ComfyUI, hardware benchmark suite, human video-quality review.
+- Outputs/media, weights, API tokens and logs with sensitive environment details are excluded from Git.
+
+## Sources
+https://docs.comfy.org/development/comfyui-server/comms_routes
+https://github.com/Comfy-Org/ComfyUI/blob/master/script_examples/websockets_api_example.py
+https://docs.comfy.org/tutorials/video/wan/wan2_2
+https://code.claude.com/docs/en/settings

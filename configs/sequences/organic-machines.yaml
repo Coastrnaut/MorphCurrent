@@ -1,0 +1,75 @@
+schema_version: 1
+name: organic-machines
+
+render:
+  width: 832
+  height: 480
+  generation_fps: 16
+  delivery_fps: 24
+  anchor_profile: flux_reference_edit
+  bridge_profile: wan22_flf2v_quality
+  master_seed: 123456
+  max_bridge_frames: 81
+
+style:
+  description: >
+    Surreal cinematic macro photography; iridescent blue and silver
+    materials, dark backgrounds, volumetric side-lighting.
+  composition: centered_subject
+  camera: continuous_slow_push
+  palette: [blue, violet, silver]
+
+audio:
+  # This BPM is a manual planning grid; no copyrighted audio file is bundled.
+  bpm: 120
+  synchronization: downbeat
+  beat_offset_seconds: 0
+
+anchors:
+  - id: orchid
+    prompt: >
+      A luminous glass orchid with translucent blue petals, centered
+      and framed as a cinematic macro photograph.
+    seed: 101
+    generation: text_to_image
+
+  - id: butterfly
+    prompt: >
+      A metallic butterfly with translucent wing panels resembling
+      the previous orchid's petals, same center and lighting.
+    seed: 102
+    generation: reference_edit
+    reference: orchid
+
+  - id: phoenix
+    prompt: >
+      A silver mechanical phoenix with luminous blue wing structures,
+      preserving the same palette and lighting direction.
+    seed: 103
+    generation: reference_edit
+    reference: butterfly
+
+transitions:
+  - from: orchid
+    to: butterfly
+    duration_beats: 8
+    seed: 201
+    candidates: 3
+    motion: slow_push
+    mode: direct
+    prompt: >
+      Continuous physical metamorphosis in one uninterrupted shot:
+      glass petals lift into articulated wings; petal veins become
+      luminous circuitry; camera pushes forward. No cuts or dissolves.
+
+  - from: butterfly
+    to: phoenix
+    duration_beats: 8
+    seed: 202
+    candidates: 3
+    motion: rising_orbit
+    mode: camera
+    prompt: >
+      Continuous transformation as the butterfly grows into a
+      metallic phoenix; wings expand and feathers assemble from the
+      wing lattice, with a gently rising orbit, stable lighting.

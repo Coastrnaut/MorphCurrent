@@ -1,0 +1,19 @@
+# Model inventory: fill from actual local install after license and checksum audit.
+# Files are *not* included in this repository.
+models:
+  anchor:
+    preferred_families: [flux, qwen_image]
+    checkpoint_path: null
+    sha256: null
+    license_verified: false
+    precision: null
+  bridge:
+    family: wan_2_2_i2v_a14b_flf2v
+    high_noise_checkpoint: null
+    low_noise_checkpoint: null
+    high_noise_sha256: null
+    low_noise_sha256: null
+    license_verified: false
+    precision: unmeasured
+    loading_policy: unmeasured
+    note: "2x14B FP16 weights cannot both be fully resident on 48 GiB"

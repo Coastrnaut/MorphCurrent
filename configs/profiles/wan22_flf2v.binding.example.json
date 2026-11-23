@@ -1,0 +1,11 @@
+{
+  "workflow": "workflows/03_wan22_flf2v.json",
+  "_warning": "NON-EXECUTABLE EXAMPLE: replace all IDs/classes/field names after exporting a real working ComfyUI graph",
+  "bindings": {
+    "start_image": {"node_id": "REPLACE_AFTER_API_EXPORT", "input": "REPLACE", "class_type": "REPLACE"},
+    "end_image": {"node_id": "REPLACE_AFTER_API_EXPORT", "input": "REPLACE", "class_type": "REPLACE"},
+    "positive_prompt": {"node_id": "REPLACE_AFTER_API_EXPORT", "input": "REPLACE", "class_type": "REPLACE"},
+    "seed": {"node_id": "REPLACE_AFTER_API_EXPORT", "input": "REPLACE", "class_type": "REPLACE"},
+    "length": {"node_id": "REPLACE_AFTER_API_EXPORT", "input": "REPLACE", "class_type": "REPLACE"}
+  }
+}
