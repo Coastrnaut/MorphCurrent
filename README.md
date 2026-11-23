@@ -50,7 +50,7 @@ If Spec Kit was initialized earlier with PowerShell, the same `--init` command r
 
 - `docs/ARCHITECTURE.md`: contracts, render DAG, caching, memory, beat timing, stitching and failure recovery.
 - `docs/WINDOWS_DEVELOPMENT.md`: Windows native only; separate environments and Python-based tooling.
-- `docs/COMFYUI_PORTABLE_WINDOWS.md`: official RTX Portable download, C:\AI extraction, Python launcher and CUDA health checks.
+- `docs/COMFYUI_PORTABLE_WINDOWS.md`: official RTX Portable download, C:\AI extraction, Wan 2.1 VAE placement, Python launcher and CUDA health checks.
 - `scripts/windows/`: Python helpers for setup, ComfyUI launch, diagnostics and Spec Kit.
 - `AutoCreator.md`: staged engineering roadmap and acceptance gates.
 - `docs/CLAUDE_DESKTOP_ONESHOT.md`: full copy/paste one-shot for Claude Desktop Code.

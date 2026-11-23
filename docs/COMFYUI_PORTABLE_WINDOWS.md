@@ -121,6 +121,27 @@ You can also inspect these in your browser:
 Do not expose ComfyUI to your LAN or the internet. If port 8188 is already
 occupied by your running instance, reuse it rather than launching another one.
 
+## Wan 2.1 VAE for Wan 2.2 I2V/FLF2V
+
+For Wan 2.2 first/last-frame video, use the **Wan 2.1 VAE** named `wan_2.1_vae.safetensors`.
+The user has already downloaded the VAE and reports placing it here:
+
+```text
+C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors
+```
+
+Verify the file is present using native Windows Command Prompt:
+
+```cmd
+dir C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors
+```
+
+In the ComfyUI Wan 2.2 workflow, select `wan_2.1_vae.safetensors` in the
+**Load VAE** node. If not listed, refresh the node/model list or restart ComfyUI.
+Place VAE files under `models\vae`, **not** `models\diffusion_models`.
+
+This placement is user-reported and has not been checked directly on the Windows host.
+Do not add the `.safetensors` model to the Git repository.
 ## Next: first real MorphCurrent generation
 
 1. Open the **official Wan 2.2** tutorial:

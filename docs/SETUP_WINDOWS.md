@@ -9,7 +9,7 @@ There is **no** WSL, Linux installation, GPU passthrough, Docker Linux backend o
 3. In Windows Terminal or Command Prompt, run `python scripts/windows/initialize.py`.
 4. Run `python scripts/windows/speckit.py --status`, install/upgrade official Spec Kit CLI if absent or outdated, then `python scripts/windows/speckit.py --init` to create or repair the existing Claude integration using `--script py`. Verify with `python scripts/windows/speckit.py --verify`; the helper moves the unused PowerShell fallback to ignored backup.
 5. Use [COMFYUI_PORTABLE_WINDOWS.md](COMFYUI_PORTABLE_WINDOWS.md) for the [official RTX Portable archive](https://github.com/Comfy-Org/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia.7z), extracting under `C:\AI\ComfyUI_windows_portable` with `ComfyUI\main.py` and `python_embeded\python.exe` directly inside. Run `python scripts/windows/launch_comfyui.py --install-root C:\AI\ComfyUI_windows_portable` only if ComfyUI isn't already running; then `python scripts/windows/check.py --check-comfy`.
-6. Verify PyTorch CUDA availability from **ComfyUI's own Python**. Export real API-format workflows and validate node IDs.
+6. For Wan 2.2 I2V/FLF2V, the user reports placing `wan_2.1_vae.safetensors` at `C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors`. Select it in ComfyUI's **Load VAE** node. Verify PyTorch CUDA availability from **ComfyUI's own Python**. Export real API-format workflows and validate node IDs.
 7. Paste `docs/CLAUDE_DESKTOP_ONESHOT.md` into Claude Desktop Code.
 
 These scripts never install model weights/drivers automatically or force `--highvram`. Run only one initial GPU job at a time and record actual benchmarks.

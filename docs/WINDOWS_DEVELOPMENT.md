@@ -94,6 +94,10 @@ C:\AI\ComfyUI_windows_portable\python_embeded\python.exe -c "import torch; print
 
 For manual ComfyUI, substitute that installation's own `.venv\Scripts\python.exe`. Testing `import torch` inside `C:\GIT\MorphCurrent\.venv` is not meaningful: the controller intentionally does not require PyTorch.
 
+### Wan 2.1 VAE for Wan 2.2 FLF2V
+
+The user reports placing `wan_2.1_vae.safetensors` at `C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors`. Select it in ComfyUI's **Load VAE** node for Wan 2.2 I2V/FLF2V. Verify with `dir C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors`; refresh or restart ComfyUI if it is not in the dropdown. Keep `.safetensors` files out of Git. See [the ComfyUI setup guide](COMFYUI_PORTABLE_WINDOWS.md).
+
 ## 6. Safe offline and live checks
 
 ```text
