@@ -25,7 +25,7 @@ You are working in **Coastrnaut/MorphCurrent**, a local video-generation orchest
 
 ## Development flow
 Feature: requirements -> design -> code -> unit tests -> mocked API integration -> ComfyUI smoke tests -> A6000 benchmarks -> quality review -> documentation -> git commit.
-For native Windows Spec Kit use `py -3 scripts/windows/speckit.py --status` then, if new, `--init`. Enforce official `specify init --here --integration claude --script py`; preserve existing setup and flag incompatible third-party extensions. If GitHub Spec Kit is installed, use `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze`, `/speckit.implement` in that order as appropriate. Detect the actual integration commands and don't invent them.
+For native Windows Spec Kit use `python scripts/windows/speckit.py --status` and then `--init` even if an earlier PowerShell initialization exists. The helper backs up existing Spec Kit files, runs the official CLI with `--script py`, checks actual Python scripts and generated Claude references, and moves upstream's unused PowerShell fallback into ignored backups. Use `--verify` before running any Spec Kit skills. Do not call bare `specify init` (Windows defaults to PowerShell). If GitHub Spec Kit is installed, use `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze`, `/speckit.implement` in that order as appropriate. Detect the actual integration commands and don't invent them.
 Prefer self-contained branches/commits with concrete acceptance evidence; keep main functional and do not force-push.
 
 ## Definitions of done
@@ -39,9 +39,12 @@ Prefer self-contained branches/commits with concrete acceptance evidence; keep m
 If ComfyUI or weights aren't available, do not block all work. Complete offline client mocks, schema, timing planner, job persistence and FFmpeg tests and clearly identify what needs on-machine verification. Fail closed on missing node bindings rather than silently choosing a node.
 
 ## Native Windows engineering experience
-- Read `docs/WINDOWS_DEVELOPMENT.md`. Use `py -3 scripts/windows/initialize.py` and `py -3 scripts/windows/check.py` from native Windows Terminal / Command Prompt, not `.ps1` or WSL shell scripts.
+- Read `docs/WINDOWS_DEVELOPMENT.md`. Use `python scripts/windows/initialize.py` and `python scripts/windows/check.py` from native Windows Terminal / Command Prompt, not `.ps1` or WSL shell scripts.
 - Do not install ComfyUI / torch into controller `.venv\\Scripts\\python.exe`. ComfyUI Portable has its own `python_embeded\\python.exe` and manual ComfyUI has its own `.venv`; verify CUDA in the latter environment, not the controller.
-- Prefer `py -3 scripts/windows/launch_comfyui.py --install-root <path>` with loopback bind and default VRAM mode. The script supports `--dry-run` and opt-in `--memory-mode highvram`; do not change running ComfyUI settings unexpectedly.
+- Prefer `python scripts/windows/launch_comfyui.py --install-root <path>` with loopback bind and default VRAM mode. The script supports `--dry-run` and opt-in `--memory-mode highvram`; do not change running ComfyUI settings unexpectedly.
 - Use `python -m morph_studio.cli doctor --skip-comfy` for offline host checks and `doctor` only when ComfyUI is available. CI runs on Windows runners and has **no A6000 GPU**.
 - Only supported automation scripting language for new infrastructure helpers is Python 3.11+. Git for Windows may underlie Claude Code's command tool but do not write .sh/.ps1 project scripts.
 - Prevent automatic output overwrites and avoid destructive cleanup; default FFmpeg joining uses `-n` unless overwrite was explicitly requested.
+
+- The Windows Python launcher `py.exe` is OPTIONAL; prefer `python` and `.venv\\Scripts\\python.exe` in all documents, scripts, prompts, and tasks. Always verify `python --version` first.
+- Spec Kit `--script py` still ships a PowerShell fallback upstream. Execute `python scripts/windows/speckit.py --init` and `--verify`; `--repair` is an explicit, backed-up regeneration path for a broken prior install. Fail closed if generated skills call PowerShell or Python core scripts are missing.

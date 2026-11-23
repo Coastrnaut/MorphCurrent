@@ -1,7 +1,7 @@
 """Offline native Windows tests, storyboard planning, and optional ComfyUI probe.
 
-    py -3 scripts/windows/check.py
-    py -3 scripts/windows/check.py --check-comfy
+    python scripts/windows/check.py
+    python scripts/windows/check.py --check-comfy
 """
 from __future__ import annotations
 
@@ -17,17 +17,17 @@ def check(*, check_comfy: bool = False) -> int:
     if sys.platform != "win32":
         print("This project targets native Windows 11 (no WSL).", file=sys.stderr)
         return 2
-    py = ROOT / ".venv" / "Scripts" / "python.exe"
-    if not py.is_file():
-        print(f"Missing controller environment: {py}; run initialize.py.", file=sys.stderr)
+    python_exe = ROOT / ".venv" / "Scripts" / "python.exe"
+    if not python_exe.is_file():
+        print(f"Missing controller environment: {python_exe}; run initialize.py.", file=sys.stderr)
         return 2
     calls = [
-        [str(py), "-m", "pytest", "-m", "not integration and not gpu"],
-        [str(py), "-m", "morph_studio.cli", "validate",
+        [str(python_exe), "-m", "pytest", "-m", "not integration and not gpu"],
+        [str(python_exe), "-m", "morph_studio.cli", "validate",
          "configs/sequences/organic-machines.yaml"],
-        [str(py), "-m", "morph_studio.cli", "plan",
+        [str(python_exe), "-m", "morph_studio.cli", "plan",
          "configs/sequences/organic-machines.yaml"],
-        [str(py), "-m", "morph_studio.cli", "doctor",
+        [str(python_exe), "-m", "morph_studio.cli", "doctor",
          *( [] if check_comfy else ["--skip-comfy"] )],
     ]
     for cmd in calls:

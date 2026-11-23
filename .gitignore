@@ -43,3 +43,6 @@ models/
 # imported workflow exports may contain local node maps, but default templates are tracked
 # avoid committing machine-only settings
 configs/local/
+
+# Local backups of Spec Kit before regenerated Python-only scaffolding
+.local/

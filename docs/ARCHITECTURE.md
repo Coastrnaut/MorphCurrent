@@ -72,3 +72,6 @@ https://code.claude.com/docs/en/settings
 - ComfyUI always binds to `127.0.0.1` by default; no remote GPU server or exposed API.
 - Device diagnostics are non-destructive and do not require CUDA to be installed in the controller environment. Native Windows GitHub Actions covers offline tests only.
 - See `docs/WINDOWS_DEVELOPMENT.md` and `docs/TROUBLESHOOTING_WINDOWS.md`.
+
+### Spec Kit Python-only invariant
+Bare `specify init` defaults to PowerShell on Windows, so the repository's Python helper supplies `--script py --non-interactive --integration claude` explicitly. Upstream may also unpack `.specify/scripts/powershell/` as a fallback even when Python is selected. The helper verifies real Python core scripts, checks generated Claude `speckit-*` skills/commands for .ps1 references, normalizes `python3` invocations to Windows `python`, and moves the unused fallback into a gitignored backup. It detects/fixes existing PowerShell-initialized `.specify` under `--init` or `--repair` with a backup before force-merging. A known July 2026 CLI packaging issue omitted Python scripts in some versions; a missing `.py` fails verification and requires upgrade, not silently returning to PowerShell.

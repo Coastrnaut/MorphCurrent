@@ -4,33 +4,69 @@
     {
       "label": "MorphCurrent: initialize (Python, Windows)",
       "type": "process",
-      "command": "py",
-      "args": ["-3", "scripts/windows/initialize.py"],
-      "options": { "cwd": "${workspaceFolder}" },
+      "command": "python",
+      "args": [
+        "scripts/windows/initialize.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     },
     {
       "label": "MorphCurrent: offline tests",
       "type": "process",
       "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
-      "args": ["-m", "pytest", "-m", "not integration and not gpu"],
-      "options": { "cwd": "${workspaceFolder}" },
+      "args": [
+        "-m",
+        "pytest",
+        "-m",
+        "not integration and not gpu"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     },
     {
       "label": "MorphCurrent: storyboard plan",
       "type": "process",
       "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
-      "args": ["-m", "morph_studio.cli", "plan", "configs/sequences/organic-machines.yaml"],
-      "options": { "cwd": "${workspaceFolder}" },
+      "args": [
+        "-m",
+        "morph_studio.cli",
+        "plan",
+        "configs/sequences/organic-machines.yaml"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     },
     {
       "label": "MorphCurrent: Spec Kit status (Python)",
       "type": "process",
-      "command": "py",
-      "args": ["-3", "scripts/windows/speckit.py", "--status"],
-      "options": { "cwd": "${workspaceFolder}" },
+      "command": "python",
+      "args": [
+        "scripts/windows/speckit.py",
+        "--status"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "MorphCurrent: Spec Kit verify (Python)",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "scripts/windows/speckit.py",
+        "--verify"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": []
     }
   ]

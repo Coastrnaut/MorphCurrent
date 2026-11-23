@@ -32,6 +32,12 @@ M6 — Higher resolution + frame interpolation + resumable multi-song render job
 - Log `ComfyUI --version` or Git commit, API availability, node types, models and checkpoint hashes.
 - Export verified API-format anchor and Wan FLF2V workflows (do not substitute UI-format JSON).
 - Record exact model license, precision, loading policy, and `--highvram` configuration.
-- Run `py -3 scripts/windows/check.py`, storyboard validation and planning CLI; use `doctor --skip-comfy` before attempting GPU health.
+- Run `python scripts/windows/check.py`, storyboard validation and planning CLI; use `doctor --skip-comfy` before attempting GPU health.
 - Benchmark 832x480 65-frame 16fps clips before attempting 720p.
 - Log all blockers rather than fabricating success.
+
+## Windows Python launcher / Spec Kit repair hardening (2026-11-23)
+- [x] Replace all repository setup commands using the optional `py.exe` launcher with `python` and make VS Code task execution use `python`.
+- [x] Upgrade Python Spec Kit initialization to handle existing PowerShell-mode installs; preserve backed-up files, verify actual `.py` core scripts and Claude command references, and move generated PowerShell fallback out of the active tree.
+- [ ] On the owner's Windows host, run `python --version`, `python scripts/windows/speckit.py --init`, then `python scripts/windows/speckit.py --verify` and record actual CLI version and results.
+- [ ] Real local CUDA/ComfyUI inference remains untested; do not confuse Windows CI unit tests with A6000 evidence.

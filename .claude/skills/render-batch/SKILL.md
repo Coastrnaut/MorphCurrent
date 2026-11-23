@@ -13,3 +13,5 @@ description: Validate and plan a MorphCurrent storyboard, then dispatch only aft
 7. Update `PROGRESS.md` with artifacts and real measurements.
 
 Windows-only: invoke existing Python .py helpers in scripts/windows/; do not use WSL, .ps1 or .sh. Keep ComfyUI's Python separate from the controller venv. Spec Kit generated scripts must use --script py.
+
+Windows local execution must not depend on the optional `py.exe` launcher. Use `python`, and for Spec Kit execute `python scripts/windows/speckit.py --init` followed by `--verify`, repairing existing PowerShell-mode installations rather than silently accepting generated `.ps1` scripts.

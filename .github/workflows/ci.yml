@@ -28,3 +28,5 @@ jobs:
         run: python -m morph_studio.cli plan configs/sequences/organic-machines.yaml
       - name: Windows host diagnostics without contacting ComfyUI
         run: python -m morph_studio.cli doctor --skip-comfy
+      - name: Spec Kit helper status (does not install or download Spec Kit)
+        run: python scripts/windows/speckit.py --status

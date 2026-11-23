@@ -2,11 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(python -m pytest:*)",
-      "Bash(py -3 -m pytest:*)",
+      "Bash(python -m pytest:*)",
       "Bash(python -m morph_studio.cli:*)",
-      "Bash(py -3 -m morph_studio.cli:*)",
-      "Bash(py -3 scripts/windows/check.py:*)",
-      "Bash(py -3 scripts/windows/speckit.py --status:*)",
+      "Bash(python -m morph_studio.cli:*)",
+      "Bash(python scripts/windows/check.py:*)",
+      "Bash(python scripts/windows/speckit.py --status:*)",
       "Bash(nvidia-smi:*)",
       "Bash(where.exe git:*)",
       "Bash(where.exe ffmpeg:*)",
@@ -14,7 +14,10 @@
       "Bash(ffmpeg -version:*)",
       "Bash(ffprobe -version:*)",
       "Bash(git status:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(python scripts/windows/check.py:*)",
+      "Bash(python scripts/windows/speckit.py --status:*)",
+      "Bash(python scripts/windows/speckit.py --verify:*)"
     ],
     "deny": [
       "Bash(git push --force:*)",

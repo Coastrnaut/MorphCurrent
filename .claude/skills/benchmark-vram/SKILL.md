@@ -11,3 +11,5 @@ description: Benchmark RTX A6000 model residency, memory peaks and generation sp
 5. Never claim full dual-14B FP16 residency in 48 GiB. Store measurements in an experiment CSV and explain quality tradeoffs.
 
 Windows-only: invoke existing Python .py helpers in scripts/windows/; do not use WSL, .ps1 or .sh. Keep ComfyUI's Python separate from the controller venv. Spec Kit generated scripts must use --script py.
+
+Use `python scripts/windows/speckit.py --init` to initialize/repair Python-only Spec Kit, and `--verify` to validate installed scripts and Claude command references. The optional Windows `py.exe` launcher is not required. Do not execute generated `.ps1` scripts.

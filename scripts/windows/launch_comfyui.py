@@ -1,9 +1,9 @@
 """Safely launch an EXISTING local native-Windows ComfyUI installation.
 
 Examples:
-    py -3 scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI_windows_portable
-    py -3 scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI --distribution manual
-    py -3 scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI --dry-run
+    python scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI_windows_portable
+    python scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI --distribution manual
+    python scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI --dry-run
 
 Defaults: 127.0.0.1:8188, ComfyUI default memory management.
 No dependency or model downloads. No GPU inference by this helper.

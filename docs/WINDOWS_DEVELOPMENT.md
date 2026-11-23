@@ -22,7 +22,7 @@ Manual Windows ComfyUI is equally valid: `C:\AI\ComfyUI\main.py` plus `C:\AI\Com
 ## 2. Install Windows prerequisites (one time)
 
 - NVIDIA Windows RTX A6000 driver; verify from Windows Terminal with `nvidia-smi`.
-- Git for Windows, Python 3.11+ Windows installer (including `py.exe` launcher), native FFmpeg + FFprobe in PATH.
+- Git for Windows, Python 3.11+ Windows installer (`python.exe` on PATH; the optional `py.exe` launcher is not required), native FFmpeg + FFprobe in PATH.
 - Claude Desktop app, **Code** tab pointed at clone. Git for Windows may be used internally by Claude Code; that does not require WSL.
 - One native Windows **ComfyUI Portable NVIDIA** or manual ComfyUI installation with a compatible CUDA-enabled PyTorch and dependencies. Do **not** install both unnecessarily.
 - For Spec Kit, install `uv` and official `specify-cli` separately using reviewed instructions (`uv tool install specify-cli` if appropriate). Use a recent release with the Python script backend. Do not run download/install commands automatically from inside this repository.
@@ -31,12 +31,14 @@ The Windows CUDA Toolkit is not automatically required merely to run a compatibl
 
 ## 3. Bootstrap MorphCurrent from Windows Terminal (Command Prompt tab)
 
+First check `python --version` and `where.exe python`. If Python is not on PATH, install an official Python 3.11+ distribution and reopen the shell. No `py.exe` launcher is needed.
+
 ```text
 cd C:\GIT
 git clone https://github.com/Coastrnaut/MorphCurrent.git
 cd MorphCurrent
-py -3 scripts/windows/initialize.py
-py -3 scripts/windows/check.py
+python scripts/windows/initialize.py
+python scripts/windows/check.py
 .venv\Scripts\python.exe -m morph_studio.cli doctor --skip-comfy
 ```
 
@@ -45,8 +47,8 @@ py -3 scripts/windows/check.py
 ## 4. GitHub Spec Kit with Python-generated scripts
 
 ```text
-py -3 scripts/windows/speckit.py --status
-py -3 scripts/windows/speckit.py --init
+python scripts/windows/speckit.py --status
+python scripts/windows/speckit.py --init
 ```
 
 The second command, only if `.specify` does not exist and the installed CLI supports the options, invokes:
@@ -55,7 +57,9 @@ The second command, only if `.specify` does not exist and the installed CLI supp
 specify init --here --integration claude --script py
 ```
 
-`--script py` is **intentional**. Spec Kit supports Bash, PowerShell and Python core automation; MorphCurrent requires the Python variant. Check whether each installed Spec Kit extension also honors Python script selection. If an extension still references a Bash/PowerShell template, report the incompatibility and keep core script execution on Python; do not silently substitute .ps1/.sh. Preserve any existing `.specify` configuration, never force-reinitialize.
+**Important:** Running bare `specify init` on Windows selects PowerShell by default. Even with `--script py`, Spec Kit may also install PowerShell fallback files. The repository's `speckit.py --init` is a **verified repair** command, not a simple CLI pass-through: it snapshots existing `.specify` and generated Claude commands under ignored `.local/spec-kit-backups/`, safely regenerates in Python mode if needed using `--force --non-interactive`, checks `.specify/scripts/python/` for all expected core files, normalizes Claude's generated `python3` calls for Windows, and moves `.specify/scripts/powershell/` into the ignored backup **after** Python references pass verification. Run `python scripts/windows/speckit.py --verify` and confirm the final result. If verification fails, the fallback is preserved and no successful initialization is claimed.
+
+Older 2026 `specify-cli` releases had a packaging bug that omitted the Python scripts despite `--script py`; this was fixed upstream (issue #3665). Upgrade the installed CLI and rerun `python scripts/windows/speckit.py --repair` if the Python files are missing. Check whether any third-party extensions support Python variants; no silent switches to `.ps1` or `.sh`.
 
 After initialization, use whichever `/speckit.*` or `/speckit-*` commands the installed Claude integration actually provides. Run constitution → specify → clarify → plan → tasks → analyze → implement; inspect version-specific command names rather than guessing.
 
@@ -69,13 +73,13 @@ References:
 For Portable at the example path:
 
 ```text
-py -3 scripts/windows/launch_comfyui.py --install-root C:\AI\ComfyUI_windows_portable
+python scripts/windows/launch_comfyui.py --install-root C:\AI\ComfyUI_windows_portable
 ```
 
 For a manual Windows installation:
 
 ```text
-py -3 scripts/windows/launch_comfyui.py --install-root C:\AI\ComfyUI --distribution manual
+python scripts/windows/launch_comfyui.py --install-root C:\AI\ComfyUI --distribution manual
 ```
 
 Use `--dry-run` to inspect resolved executable and arguments. The launcher binds only `127.0.0.1`, port `8188` (adjustable via `--port`), and defaults to ComfyUI's normal memory manager. A deliberate experiment can add `--memory-mode highvram` or `--memory-mode lowvram`, never by default. **`--highvram` does not fit both FP16 14B experts into 48 GiB.**
@@ -91,9 +95,9 @@ For manual ComfyUI, substitute that installation's own `.venv\Scripts\python.exe
 ## 6. Safe offline and live checks
 
 ```text
-py -3 scripts/windows/check.py
+python scripts/windows/check.py
 .venv\Scripts\python.exe -m morph_studio.cli doctor --skip-comfy
-py -3 scripts/windows/check.py --check-comfy
+python scripts/windows/check.py --check-comfy
 .venv\Scripts\python.exe -m morph_studio.cli doctor --strict
 ```
 
@@ -110,3 +114,5 @@ py -3 scripts/windows/check.py --check-comfy
 - Use `.gitattributes` to keep repository text in LF even on Windows; `.venv`, GPU outputs and model weights stay out of version control.
 
 See [troubleshooting](TROUBLESHOOTING_WINDOWS.md), [architecture](ARCHITECTURE.md) and [canonical Claude one-shot](CLAUDE_DESKTOP_ONESHOT.md).
+
+For an existing repository initialized in PowerShell mode, run `python scripts/windows/speckit.py --status`, `python scripts/windows/speckit.py --init`, then `python scripts/windows/speckit.py --verify`. Backup files are intentionally excluded from Git; inspect them before any manual deletion.

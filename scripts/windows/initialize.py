@@ -1,14 +1,12 @@
 """Initialize the MorphCurrent *controller* environment on native Windows 11.
 
 Run with an existing Windows Python 3.11+:
-    py -3 scripts/windows/initialize.py
+    python scripts/windows/initialize.py
 This does NOT install ComfyUI, custom nodes, CUDA drivers, or checkpoint weights.
 """
 from __future__ import annotations
 
 import argparse
-import os
-import platform
 import subprocess
 import sys
 from pathlib import Path

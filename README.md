@@ -18,29 +18,31 @@ MorphCurrent is a Python orchestration project for making continuous Deforum-lik
 ## Quick start — native Windows Python only
 
 1. Clone `https://github.com/Coastrnaut/MorphCurrent.git` to e.g. `C:\\GIT\\MorphCurrent`, then open the folder in **Claude Desktop > Code**.
-2. Install Python 3.11+, Git for Windows, FFmpeg/FFprobe for Windows, NVIDIA Windows driver and one working **native Windows ComfyUI** installation (Portable NVIDIA or manually installed CUDA PyTorch). No WSL, Docker Linux runtime, or GPU passthrough.
+2. Verify `python --version` (3.11+). If `python` is missing, install an official native Windows Python distribution and restart Command Prompt. The `py.exe` launcher is **not required**. Install Git for Windows, FFmpeg/FFprobe for Windows, NVIDIA Windows driver and one working **native Windows ComfyUI** installation (Portable NVIDIA or manually installed CUDA PyTorch). No WSL, Docker Linux runtime, or GPU passthrough.
 3. From **Windows Terminal / Command Prompt**, run Python scripts (no PowerShell scripts):
 
    ```text
    cd C:\\GIT\\MorphCurrent
-   py -3 scripts/windows/initialize.py
-   py -3 scripts/windows/speckit.py --status
+   python scripts/windows/initialize.py
+   python scripts/windows/speckit.py --status
    .venv\\Scripts\\python.exe -m morph_studio.cli validate configs/sequences/organic-machines.yaml
    .venv\\Scripts\\python.exe -m morph_studio.cli plan configs/sequences/organic-machines.yaml
    .venv\\Scripts\\python.exe -m morph_studio.cli doctor --skip-comfy
    ```
 
-4. After verifying and installing the **current** official Spec Kit CLI, use `py -3 scripts/windows/speckit.py --init` to create Claude integration using **`--script py`** (Python, never `.ps1`).
+4. After verifying and installing the **current** official Spec Kit CLI, use `python scripts/windows/speckit.py --init` to install/repair the Claude integration with **`--script py`**. The helper verifies real `.specify/scripts/python/*.py` files and Claude command references, then moves Spec Kit's otherwise-generated PowerShell fallback into an ignored local backup. Re-run `--verify` afterward.
 5. If you already installed ComfyUI Portable at the example path, launch using:
 
    ```text
-   py -3 scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI_windows_portable
+   python scripts/windows/launch_comfyui.py --install-root C:\\AI\\ComfyUI_windows_portable
    .venv\\Scripts\\python.exe -m morph_studio.cli doctor
-   py -3 scripts/windows/check.py --check-comfy
+   python scripts/windows/check.py --check-comfy
    ```
 
 6. Export **real** local working ComfyUI workflows using *Save (API Format)* into `workflows/`. Map actual node IDs and verify with `/object_info`. The starter deliberately ships no invented executable FLF2V workflow.
 7. Paste `docs/CLAUDE_DESKTOP_ONESHOT.md` into Claude Desktop Code and develop against the roadmap. The existing Python foundation does **not** yet render real video.
+
+If Spec Kit was initialized earlier with PowerShell, the same `--init` command repairs it safely, with an explicit backup under `.local/spec-kit-backups/`. See `--status` and `--repair` for diagnostic/forced regeneration options.
 
 **Windows-only guide:** [docs/WINDOWS_DEVELOPMENT.md](docs/WINDOWS_DEVELOPMENT.md). **Python-based setup scripts:** [scripts/windows/](scripts/windows/). Controller Python and ComfyUI's Python must remain isolated. `--highvram` is optional, not a substitute for VRAM capacity.
 

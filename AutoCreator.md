@@ -80,7 +80,7 @@ A passing output should show an uninterrupted, intentional *physical metamorphos
 5. Do not force-push or bypass branches/protections; request human action only for true permissions, hardware or licensed downloads.
 
 ## Spec Kit workflow (when installed)
-Check `specify --help`. Prefer the repository Python helper `py -3 scripts/windows/speckit.py --status` and `--init` to set up `specify init --here --integration claude --script py`, after checking for existing `.specify` and avoiding destructive reinitialization. Follow with Claude's installed `/speckit.constitution` (or equivalent), `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze`, `/speckit.implement` for successive workstreams. CLI/skills naming can change; inspect installed version rather than asserting syntax blindly.
+Check `specify --help`. Prefer the repository Python helper `python scripts/windows/speckit.py --status` and `--init` to set up `specify init --here --integration claude --script py`, with backed-up in-place repair of an existing `.specify` when required (never bare `specify init` on Windows). Follow with Claude's installed `/speckit.constitution` (or equivalent), `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze`, `/speckit.implement` for successive workstreams. CLI/skills naming can change; inspect installed version rather than asserting syntax blindly.
 
 ## Handoff one-shot
 The full copy/paste autonomous instruction is maintained in `docs/CLAUDE_DESKTOP_ONESHOT.md`. It is the canonical one-shot. Start it from Claude Desktop Code in the cloned repo.
@@ -88,7 +88,7 @@ The full copy/paste autonomous instruction is maintained in `docs/CLAUDE_DESKTOP
 ## W0-W8 native Windows requirements
 1. Development scripts must be Python, not PowerShell or Bash; no GPU passthrough, WSL, Linux Docker or native Linux installations.
 2. Windows Python `.venv\\Scripts\\python.exe` is an orchestration environment only. Detect and respect ComfyUI Portable's embedded Python or a manual ComfyUI-specific venv.
-3. The standard entry points are `py -3 scripts/windows/initialize.py`, `check.py`, `launch_comfyui.py`, `speckit.py`. Keep them safe, idempotent where possible and testable without GPU.
-4. Spec Kit generated automation must be `--script py`. If the installed CLI/extension lacks Python script routing, report the limitation rather than silently switching to .ps1 or .sh.
+3. The standard entry points are `python scripts/windows/initialize.py`, `check.py`, `launch_comfyui.py`, `speckit.py`. Keep them safe, idempotent where possible and testable without GPU.
+4. Spec Kit generated automation must be `--script py` and verified: required `.specify/scripts/python/*.py` files must exist, generated Claude commands must call Python (not PowerShell), and official fallback files must be moved into ignored local backups. Prefer `python scripts/windows/speckit.py --init` to fix preexisting Windows PowerShell initialization, then `--verify`. No silent fallbacks or deletion of user work.
 5. Test on Windows GitHub Actions Python 3.11/3.12; use the Windows local A6000 only for separately approved smoke/benchmark jobs. Never conflate CI offline success with validated CUDA video rendering.
 6. `doctor --strict` provides a readiness gate: host/tooling only with `--skip-comfy`; GPU + ComfyUI when used without it. Record both failure and success evidence in `PROGRESS.md`.
