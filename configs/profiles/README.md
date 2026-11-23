@@ -10,3 +10,5 @@ Profiles supply low-level **actual** ComfyUI node bindings independently of the 
 - This repository includes **no guessed runnable bindings**, no `.safetensors` weights, and no guaranteed compatible custom nodes.
 
 Profiles are design inputs. A real GPU render requires validated local exports.
+
+Target platform: native Windows 11, RTX A6000, local ComfyUI (Portable embedded Python or manual dedicated venv). Prefer Windows path-neutral model names in workflows; controller .venv is never the model runtime. Spec Kit automation uses Python scripts.

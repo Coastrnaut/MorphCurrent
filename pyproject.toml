@@ -7,6 +7,11 @@ name = "morphcurrent"
 version = "0.1.0"
 description = "Local-first continuous AI video morphing orchestration foundation"
 readme = "README.md"
+classifiers = [
+  "Operating System :: Microsoft :: Windows :: Windows 11",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
 requires-python = ">=3.11"
 dependencies = [
   "pydantic>=2.8,<3",

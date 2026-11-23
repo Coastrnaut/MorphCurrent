@@ -6,7 +6,8 @@ from pathlib import Path
 
 
 def build_join_command(clips: list[Path], output: Path, *,
-                       fps: int, verified_matching_endpoints: bool) -> list[str]:
+                       fps: int, verified_matching_endpoints: bool,
+                       overwrite: bool = False) -> list[str]:
     if len(clips) < 2:
         raise ValueError("at least two clips required")
     if fps <= 0:
@@ -22,7 +23,7 @@ def build_join_command(clips: list[Path], output: Path, *,
         filters.append(f"[{i}:v]{chain}[{label}]")
         labels.append(f"[{label}]")
     filters.append("".join(labels) + f"concat=n={len(clips)}:v=1:a=0[v]")
-    args = ["ffmpeg", "-hide_banner", "-nostdin", "-y"]
+    args = ["ffmpeg", "-hide_banner", "-nostdin", "-y" if overwrite else "-n"]
     for clip in clips:
         args.extend(["-i", str(clip)])
     args.extend(["-filter_complex", ";".join(filters), "-map", "[v]",
@@ -32,9 +33,11 @@ def build_join_command(clips: list[Path], output: Path, *,
 
 
 def join_clips(clips: list[Path], output: Path, *,
-               fps: int, verified_matching_endpoints: bool) -> Path:
+               fps: int, verified_matching_endpoints: bool,
+               overwrite: bool = False) -> Path:
     args = build_join_command(clips, output, fps=fps,
-                              verified_matching_endpoints=verified_matching_endpoints)
+                              verified_matching_endpoints=verified_matching_endpoints,
+                              overwrite=overwrite)
     output.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(args, check=True, shell=False)
     return output

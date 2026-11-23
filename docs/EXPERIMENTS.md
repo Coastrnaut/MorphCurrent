@@ -22,3 +22,6 @@ Every trial must have unique ID, time, model hashes, dtype, workflow hash, Comfy
 
 ## Quality gates
 No silent OOM/offload; no generic xfade; no stitched jump or duplicate freeze; no missing endpoint; no unverifiable experiment entries.
+
+## Native Windows experiment capture
+Record native Windows 11 build, NVIDIA Windows driver, distinct ComfyUI Python version, actual CUDA PyTorch support, FFmpeg.exe version, and whether ComfyUI used default/--highvram/offload. Python helpers must be used rather than WSL/PowerShell wrappers. Windows CI is not an A6000 benchmark.

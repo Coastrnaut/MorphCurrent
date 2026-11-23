@@ -1,5 +1,7 @@
-# Model inventory: fill from actual local install after license and checksum audit.
-# Files are *not* included in this repository.
+# Model inventory: fill from actual LOCAL NATIVE WINDOWS ComfyUI after license/hash audit.
+# Do not install models into MorphCurrent controller .venv; use ComfyUI Portable's
+# python_embeded or manual ComfyUI's dedicated .venv.
+# Paths are discovered on Windows; no WSL, Docker Linux or GPU passthrough.
 models:
   anchor:
     preferred_families: [flux, qwen_image]
@@ -16,4 +18,4 @@ models:
     license_verified: false
     precision: unmeasured
     loading_policy: unmeasured
-    note: "2x14B FP16 weights cannot both be fully resident on 48 GiB"
+    note: "2x14B FP16 weights cannot both be fully resident on RTX A6000 48 GiB"

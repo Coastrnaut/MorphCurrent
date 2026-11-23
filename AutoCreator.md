@@ -1,7 +1,7 @@
 # AutoCreator — MorphCurrent staged autonomous engineering roadmap
 
 ## Mission
-Develop a reproducible, **local** Deforum-style continuous-morph video system operated from Claude Desktop Code on Windows/WSL with an NVIDIA RTX A6000 (48 GiB) and ComfyUI REST/WebSocket.
+Develop a reproducible, **local** Deforum-style continuous-morph video system operated from Claude Desktop Code on **native Windows 11 only**, without WSL or GPU passthrough, with an NVIDIA RTX A6000 (48 GiB) and ComfyUI REST/WebSocket.
 
 This is a feature-by-feature engineering contract. Read `CLAUDE.md` and `docs/ARCHITECTURE.md` before doing work. Preserve this ledger and keep actual progress in `PROGRESS.md`.
 
@@ -11,7 +11,7 @@ A passing output should show an uninterrupted, intentional *physical metamorphos
 ## Workstreams
 
 ### W0. Reproducible environment and dependency audit
-- Inspect Windows/WSL vs native installs; detect ComfyUI localhost, Python, FFmpeg, ffprobe, CUDA, GPU utilization and models.
+- Inspect Windows 11 host, Git for Windows, Python 3.11+, controller .venv, distinct ComfyUI Python, native FFmpeg, ffprobe, CUDA in ComfyUI, GPU utilization and models; no WSL.
 - Record manifest of GPU architecture, driver, ComfyUI revision, custom nodes and checkpoint SHA256/precision/licenses.
 - Enforce no model downloads or untrusted custom-node installation without owner approval.
 - Establish CI-offline unit tests and local hardware-only test markers.
@@ -67,7 +67,7 @@ A passing output should show an uninterrupted, intentional *physical metamorphos
 **Gate:** user-facing sequence recipe reproducible across two clean runs.
 
 ### W8. Reliability and production polish
-- Windows paths/WSL mount handling, importable package, CLI help, structured logs, isolation of raw assets from Git.
+- Native Windows paths, Unicode and long-path handling, Python-only setup/launch/diagnostics/Spec Kit helpers, importable package, CLI help, structured logs and ignored assets.
 - Resumable interrupted jobs, snapshot/version migration, content hash cache, optional metrics dashboards.
 - End-to-end acceptance documentation and re-render instructions.
 **Gate:** clean-machine setup instructions and demonstrable local pipeline.
@@ -80,7 +80,15 @@ A passing output should show an uninterrupted, intentional *physical metamorphos
 5. Do not force-push or bypass branches/protections; request human action only for true permissions, hardware or licensed downloads.
 
 ## Spec Kit workflow (when installed)
-Check `specify --help`. Set up Claude integration with the current supported `specify init --here --integration claude` form, after checking for existing `.specify` and avoiding destructive reinitialization. Follow with Claude's installed `/speckit.constitution` (or equivalent), `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze`, `/speckit.implement` for successive workstreams. CLI/skills naming can change; inspect installed version rather than asserting syntax blindly.
+Check `specify --help`. Prefer the repository Python helper `py -3 scripts/windows/speckit.py --status` and `--init` to set up `specify init --here --integration claude --script py`, after checking for existing `.specify` and avoiding destructive reinitialization. Follow with Claude's installed `/speckit.constitution` (or equivalent), `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze`, `/speckit.implement` for successive workstreams. CLI/skills naming can change; inspect installed version rather than asserting syntax blindly.
 
 ## Handoff one-shot
 The full copy/paste autonomous instruction is maintained in `docs/CLAUDE_DESKTOP_ONESHOT.md`. It is the canonical one-shot. Start it from Claude Desktop Code in the cloned repo.
+
+## W0-W8 native Windows requirements
+1. Development scripts must be Python, not PowerShell or Bash; no GPU passthrough, WSL, Linux Docker or native Linux installations.
+2. Windows Python `.venv\\Scripts\\python.exe` is an orchestration environment only. Detect and respect ComfyUI Portable's embedded Python or a manual ComfyUI-specific venv.
+3. The standard entry points are `py -3 scripts/windows/initialize.py`, `check.py`, `launch_comfyui.py`, `speckit.py`. Keep them safe, idempotent where possible and testable without GPU.
+4. Spec Kit generated automation must be `--script py`. If the installed CLI/extension lacks Python script routing, report the limitation rather than silently switching to .ps1 or .sh.
+5. Test on Windows GitHub Actions Python 3.11/3.12; use the Windows local A6000 only for separately approved smoke/benchmark jobs. Never conflate CI offline success with validated CUDA video rendering.
+6. `doctor --strict` provides a readiness gate: host/tooling only with `--skip-comfy`; GPU + ComfyUI when used without it. Record both failure and success evidence in `PROGRESS.md`.

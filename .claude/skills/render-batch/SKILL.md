@@ -11,3 +11,5 @@ description: Validate and plan a MorphCurrent storyboard, then dispatch only aft
 5. If render executor is not implemented or prerequisites are missing, stop with actionable BLOCKED status, not a fake render.
 6. On approved live renders, persist prompt IDs and manifests; after completion verify outputs via ComfyUI history.
 7. Update `PROGRESS.md` with artifacts and real measurements.
+
+Windows-only: invoke existing Python .py helpers in scripts/windows/; do not use WSL, .ps1 or .sh. Keep ComfyUI's Python separate from the controller venv. Spec Kit generated scripts must use --script py.

@@ -63,3 +63,12 @@ https://docs.comfy.org/development/comfyui-server/comms_routes
 https://github.com/Comfy-Org/ComfyUI/blob/master/script_examples/websockets_api_example.py
 https://docs.comfy.org/tutorials/video/wan/wan2_2
 https://code.claude.com/docs/en/settings
+
+## Sole supported runtime: Windows 11 native
+- Controller: Python >=3.11 virtual environment at `.venv\\Scripts\\python.exe`; no controller torch dependency.
+- Model runtime: native Windows ComfyUI Portable NVIDIA (isolated `python_embeded\\python.exe`) or manual Windows ComfyUI (dedicated `.venv\\Scripts\\python.exe`); torch/CUDA are installed here, not in controller.
+- All helper automation is Python under `scripts/windows/`. The Spec Kit preferred generated script type is **`py`**, selected with `--script py`. No PowerShell or Bash development scripts, WSL, passthrough or Linux containers.
+- Windows subprocesses use direct argument lists and `shell=False`. FFmpeg is from native Windows PATH; output overwrite is denied by default.
+- ComfyUI always binds to `127.0.0.1` by default; no remote GPU server or exposed API.
+- Device diagnostics are non-destructive and do not require CUDA to be installed in the controller environment. Native Windows GitHub Actions covers offline tests only.
+- See `docs/WINDOWS_DEVELOPMENT.md` and `docs/TROUBLESHOOTING_WINDOWS.md`.

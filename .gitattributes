@@ -1,0 +1,14 @@
+# Normalize source, markdown and config files on native Windows.
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf
+*.mp4 binary
+*.mov binary
+*.safetensors binary

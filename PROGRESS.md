@@ -5,6 +5,7 @@
 ## Current snapshot
 - [x] Repository created by owner; initial engineering scaffold committed via connected GitHub workflow (after initial setup).
 - [x] Architecture and Claude Desktop engineering handoff documented.
+- [x] Native Windows 11-only Python setup/launch/Spec Kit helpers and doctor CLI authored; Windows-only CI configured (check job status for results).
 - [x] Offline storyboard / timing and local ComfyUI client starter included.
 - [ ] Workflow exports from user's installed ComfyUI verified.
 - [ ] A6000 environment and model inventory verified.
@@ -13,7 +14,7 @@
 - [ ] Benchmark tables and quality regression suite completed.
 
 ## Milestone sequence
-M0 — Environment discovery, pinned dependencies, offline contract tests.
+M0 — Native Windows environment discovery, independent controller/ComfyUI Python, Python-only Spec Kit, pinned dependencies, Windows CI/offline contract tests.
 M1 — Model inventory, real ComfyUI API workflows and semantic node adapters.
 M2 — Reference-guided anchors with immutable artifact manifests.
 M3 — Wan 2.2 FLF2V video bridge scheduling, retries, error tracking, VRAM benchmarking.
@@ -27,10 +28,10 @@ M6 — Higher resolution + frame interpolation + resumable multi-song render job
 | pending | — | No GPU trials yet | — | — | NOT MEASURED | NOT REVIEWED | — |
 
 ## First run checklist
-- Log OS, NVIDIA driver, GPU VRAM, CUDA and PyTorch versions.
+- Require native Windows 11, no WSL. Log NVIDIA driver, GPU VRAM, CUDA and PyTorch versions from ComfyUI's **own Python environment**.
 - Log `ComfyUI --version` or Git commit, API availability, node types, models and checkpoint hashes.
 - Export verified API-format anchor and Wan FLF2V workflows (do not substitute UI-format JSON).
 - Record exact model license, precision, loading policy, and `--highvram` configuration.
-- Run `python -m pytest`, storyboard validation, and planning CLI.
+- Run `py -3 scripts/windows/check.py`, storyboard validation and planning CLI; use `doctor --skip-comfy` before attempting GPU health.
 - Benchmark 832x480 65-frame 16fps clips before attempting 720p.
 - Log all blockers rather than fabricating success.

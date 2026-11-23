@@ -9,3 +9,5 @@ description: Compare morph clip candidates under identical inputs and log visibl
 3. Record precision, checkpoint hash, steps, CFG, sampler, execution time, peak VRAM, resolution and frames.
 4. Flag blur, freeze, scene-cut, dissolve, style drift, mismatched endpoints, camera discontinuities.
 5. Annotate metrics vs human creative judgment separately in `PROGRESS.md`; choose winners only after video review.
+
+Windows-only: invoke existing Python .py helpers in scripts/windows/; do not use WSL, .ps1 or .sh. Keep ComfyUI's Python separate from the controller venv. Spec Kit generated scripts must use --script py.
