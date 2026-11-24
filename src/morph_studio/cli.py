@@ -18,6 +18,7 @@ from .bridge import (
     request_from_job,
     run_bridge,
 )
+from .onboarding import as_json as inspect_json, inspect_export, load_export
 from .preflight import build_baseline_report
 from .windows import windows_diagnostics
 from .workflow_adapter import (
@@ -79,6 +80,15 @@ def _workflow_patch(args: argparse.Namespace) -> int:
     else:
         sys.stdout.write(text)
     return 0
+
+
+def _workflow_inspect(args: argparse.Namespace) -> int:
+    """Read-only report on a fresh API export (at most GET /object_info; writes nothing)."""
+    graph = load_export(args.export)
+    object_info = None if args.offline else _load_object_info(args)
+    report = inspect_export(graph, object_info)
+    sys.stdout.write(inspect_json(report))
+    return 0 if report["ok"] else 4
 
 
 def _baseline(args: argparse.Namespace) -> int:
@@ -196,6 +206,12 @@ def main(argv: list[str] | None = None) -> int:
     bridge.add_argument("--allow-busy-queue", action="store_true",
                         help="Submit even when ComfyUI already has queued work")
     bridge.add_argument("--timeout", type=float, default=3600, help="Seconds to wait for the render")
+    inspect = subs.add_parser("workflow-inspect",
+                              help="Read-only report on a new API export: nodes, models, cloud nodes, role candidates")
+    inspect.add_argument("export", help="ComfyUI Save (API Format) JSON")
+    inspect.add_argument("--url", default="http://127.0.0.1:8188")
+    inspect.add_argument("--object-info", help="Saved /object_info JSON instead of contacting ComfyUI")
+    inspect.add_argument("--offline", action="store_true", help="Structural report only, no schema checks")
     baseline = subs.add_parser("baseline", help="Read-only environment/queue/model report (never queues work)")
     baseline.add_argument("--url", default="http://127.0.0.1:8188")
     baseline.add_argument("--skip-comfy", action="store_true", help="Do not contact ComfyUI")
@@ -232,6 +248,8 @@ def main(argv: list[str] | None = None) -> int:
             return _bridge(args)
         elif args.command == "baseline":
             return _baseline(args)
+        elif args.command == "workflow-inspect":
+            return _workflow_inspect(args)
         elif args.command == "bridge-status":
             print(json.dumps(_job_summary(load_job(args.job_dir)), indent=2))
         elif args.command == "bridge-cancel":

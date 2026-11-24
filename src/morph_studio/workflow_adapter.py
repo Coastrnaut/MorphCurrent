@@ -322,8 +322,33 @@ def validate_profile(profile: BindingProfile, graph: dict,
                 f"assertion {assertion.node_id}.{assertion.input} == {assertion.equals!r} failed "
                 f"(got {node['inputs'].get(assertion.input)!r}): {assertion.reason}")
 
+    report.extend(check_capability_contract(profile))
     if object_info is not None:
         report.extend(validate_graph(graph, object_info))
+    return report
+
+
+# capability -> (roles the stage patches, output kind it downloads). F02.
+CAPABILITY_CONTRACTS: dict[str, tuple[tuple[str, ...], str]] = {
+    "text_to_image": (("positive_prompt", "seed"), "image"),
+    "reference_edit": (("positive_prompt", "seed", "reference_image"), "image"),
+    "wan_flf2v": (("start_image", "end_image", "positive_prompt", "seed", "length"), "video"),
+}
+
+
+def check_capability_contract(profile: BindingProfile) -> ValidationReport:
+    """A profile that declares a capability must bind that capability's roles and output kind."""
+    report = ValidationReport()
+    if profile.capability is None:
+        return report
+    roles, kind = CAPABILITY_CONTRACTS[profile.capability]
+    for role in roles:
+        if role not in profile.bindings:
+            report.errors.append(f"capability {profile.capability} requires role {role!r}; "
+                                 f"profile binds {sorted(profile.bindings)}")
+    if not any(output.kind == kind for output in profile.outputs):
+        report.errors.append(f"capability {profile.capability} requires an output of kind {kind!r}; "
+                             f"profile outputs {[o.kind for o in profile.outputs]}")
     return report
 
 

@@ -4,6 +4,8 @@
 
 This guide is for **Spec Kit F02–F04** in [`SPECKIT_FEATURE_LEDGER.md`](SPECKIT_FEATURE_LEDGER.md). Follow native Windows Python-only development. Do not install a new image model or restart ComfyUI while an owner's GPU smoke render is active.
 
+**Current decision record and measured state:** [`ANCHOR_MODEL_DECISION.md`](ANCHOR_MODEL_DECISION.md) (F02; no image weights installed as of 2026-11-24). Use `morphcurrent baseline` for the live state and `morphcurrent workflow-inspect <export>` before writing a binding profile.
+
 ## 1. Inspect the local environment first (read-only)
 
 From **Windows Command Prompt**, with `C:\GIT\MorphCurrent` checked out:

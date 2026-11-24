@@ -4,6 +4,7 @@
 # Paths are discovered on Windows; no WSL, Docker Linux or GPU passthrough.
 models:
   anchor:
+    # Candidates and owner approval log: docs/ANCHOR_MODEL_DECISION.md (nothing installed yet).
     preferred_families: [flux, qwen_image]
     checkpoint_path: null
     sha256: null

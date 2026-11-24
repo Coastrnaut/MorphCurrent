@@ -146,7 +146,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | Logical feature | Actual Spec Kit folder | State | Implementation evidence |
 |---|---|---|---|
 | F01 | `specs/001-safe-baseline-provenance` | COMPLETE (offline + live read-only) | `gates.py`, `preflight.py`, `baseline` CLI, cloud-node rejection, `docs/ENVIRONMENT.md`; 100 offline tests |
-| F02 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F02 | `specs/002-image-workflow-onboarding` | OFFLINE-PASS; GPU/export BLOCKED | capability contracts, `workflow-inspect`, `docs/ANCHOR_MODEL_DECISION.md`; awaiting owner model approval |
 | F03 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F04 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F05 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
@@ -176,3 +176,17 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 - `python -m morph_studio.cli workflow-check` → `ok: true` (1 warning `video-preview`).
 
 **Key blocker for F02–F04 GPU gates:** no image-generation weights are installed. Downloading any requires explicit owner approval (model choice, license, size).
+
+## F02 — Image model/workflow onboarding, offline slice (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --number 2 --short-name image-workflow-onboarding` → `specs/002-image-workflow-onboarding`. spec, checklist, plan, research, data-model, contracts/workflow-inspect.md, quickstart, tasks (10/13 done; T011–T013 owner-gated).
+
+**Built.**
+- Capability role contracts in `validate_profile`: `text_to_image` needs `positive_prompt`, `seed` + image output; `reference_edit` adds `reference_image`; `wan_flf2v` needs `start_image`, `end_image`, `positive_prompt`, `seed`, `length` + video output (Wan profile passes).
+- `morphcurrent workflow-inspect EXPORT [--object-info|--offline]` (`src/morph_studio/onboarding.py`): read-only; lists nodes, cloud nodes, model literals with installed status, schema errors and *candidate* roles; rejects UI-format files with Save (API Format) guidance; writes nothing.
+- `docs/ANCHOR_MODEL_DECISION.md`: candidate sets copied from the `models` metadata of ComfyUI's **locally installed** official templates (Option A: Qwen-Image + Qwen-Image-Edit-2509 sharing Qwen2.5-VL encoder and VAE; Option B: Qwen-Image 2.1). Licenses marked *owner to verify*; sizes approximate; manual export procedure; empty approval log.
+- `tests/image_graphs.py`: synthetic API graphs built only from real captured classes, plus a *simulated-install* object_info, reused by later anchor tests. They are not owner exports.
+
+**Results.** Offline **113 passed, 1 deselected**; live `workflow-check` ok. No download, no GPU job.
+
+**BLOCKED (owner):** approve a model set → download into ComfyUI model folders → render once per template → Save (API Format) to `workflows/01_anchor_t2i.json` and `workflows/02_anchor_edit.json`. Then a session writes and live-validates the two binding profiles (T013).
