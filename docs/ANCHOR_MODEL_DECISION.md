@@ -1,6 +1,6 @@
 # Anchor image model decision record (F02)
 
-**Status:** awaiting owner decision. **No model has been downloaded** and none will be without an explicit, bounded owner approval recorded below. Anchor T2I and reference-edit GPU/export gates are **BLOCKED**.
+**Status:** Option A approved and installed 2026-11-24 (all four files SHA-256 verified; listed by live `/object_info`). No model has been downloaded beyond the approval log below. Anchor T2I and reference-edit GPU/export gates remain **BLOCKED** until the owner renders each template once and exports `01_anchor_t2i.json` / `02_anchor_edit.json`.
 
 **Measured local state (2026-11-24, `morphcurrent baseline`, read-only):** `checkpoints/` empty; `diffusion_models/` holds only the two Wan 2.2 I2V FP8 experts; `text_encoders/` only UMT5; `vae/` only the Wan 2.1 VAE. Those are video dependencies and cannot generate anchor stills.
 

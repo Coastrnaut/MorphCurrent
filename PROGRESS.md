@@ -299,3 +299,11 @@ At the owner's request, `Co-Authored-By` trailers were removed from all commits 
 3. Next session: `workflow-inspect` both exports, write `configs/profiles/anchor_t2i.binding.json` / `anchor_edit.binding.json` from the real node IDs (F02 T013), `workflow-check`, then with a bounded approval: one T2I anchor (F03), one edit (F04), one generated-A/B bridge at 832×480 (F06, size not yet GPU-tested), then the full `render --confirm-gpu --sample-vram` (F10) and a second reproducible run. Optional: `models-hash --confirm-io` while idle (F07); visual review of MC-FLF2V-003 to calibrate QA (F08).
 
 Nothing in this session queued GPU work; ComfyUI queue was empty at every check.
+
+## F02 — Anchor model set A installed (2026-11-24)
+
+- Owner approved Option A in chat ("Option A (Qwen)", then "Yes, download"); scope: download only, no GPU render.
+- 4 files (50.5 GB) streamed from `huggingface.co/Comfy-Org/Qwen-Image` and `Comfy-Org/Qwen-Image-Edit` into `C:\AI\ComfyUI_windows_portable\ComfyUI\models\{vae,text_encoders,diffusion_models}` via `.part` files, SHA-256 computed while downloading and matched against Hugging Face's published LFS hashes before rename (08:58–09:18 local, ~20 min). No `.part`/`.bad` leftovers.
+- Live read-only `/object_info` now lists `qwen_image_fp8_e4m3fn.safetensors`, `qwen_image_edit_2509_fp8_e4m3fn.safetensors` (UNETLoader), `qwen_2.5_vl_7b_fp8_scaled.safetensors` (CLIPLoader), `qwen_image_vae.safetensors` (VAELoader) — no ComfyUI restart needed. Queue empty.
+- Verified hashes seeded into the gitignored F07 cache `outputs/model_hashes.json`, so anchor jobs can record real model SHA-256.
+- **Still BLOCKED (owner, F02 T012):** render once from the Qwen-Image template and once from Qwen-Image-Edit 2509 in the ComfyUI UI, then Export (API) to `workflows/01_anchor_t2i.json` and `workflows/02_anchor_edit.json`. Then a session writes the two binding profiles (T013).

@@ -22,20 +22,20 @@
 | Folder | Files |
 |---|---|
 | checkpoints | *(none)* |
-| diffusion_models | `wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors`, `wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` |
-| text_encoders | `umt5_xxl_fp8_e4m3fn_scaled.safetensors` |
-| vae | `wan_2.1_vae.safetensors` (+ built-in `taef1`, `taesdxl`, `taesd`, `pixel_space`) |
+| diffusion_models | `wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors`, `wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors`; **added 2026-11-24 09:18 UTC (owner-approved, SHA-256 verified):** `qwen_image_fp8_e4m3fn.safetensors`, `qwen_image_edit_2509_fp8_e4m3fn.safetensors` |
+| text_encoders | `umt5_xxl_fp8_e4m3fn_scaled.safetensors`; added `qwen_2.5_vl_7b_fp8_scaled.safetensors` |
+| vae | `wan_2.1_vae.safetensors`, added `qwen_image_vae.safetensors` (+ built-in `taef1`, `taesdxl`, `taesd`, `pixel_space`) |
 | loras | *(none)* |
 
-Model checkpoint SHA-256: **NOT MEASURED** (hashing multi-GB weights is deferred to an owner-scheduled F07 step). License review of the installed Wan files: **not recorded** here.
+Model checkpoint SHA-256: Qwen files verified at download against Hugging Face's published hashes (see `docs/ANCHOR_MODEL_DECISION.md`); Wan files **NOT MEASURED** (hashing multi-GB weights is deferred to an owner-scheduled F07 step). License review of the installed Wan files: **not recorded** here.
 
 ## Capabilities
 
 | Capability | Status | Reason |
 |---|---|---|
 | Wan 2.2 FLF2V bridge | **available** | `configs/profiles/wan22_flf2v.binding.json` validates against live `/object_info` (1 warning: UI-only `video-preview`) |
-| Anchor text-to-image | **BLOCKED** | no image-generation weights installed and no verified `workflows/01_anchor_t2i.json` export |
-| Anchor reference edit | **BLOCKED** | same; core *node classes* exist (`TextEncodeQwenImageEdit`, `TextEncodeQwenImageEditPlus`, `ReferenceLatent`, `FluxKontextImageScale`) but node classes are not models |
+| Anchor text-to-image | **BLOCKED** | Qwen-Image weights now installed (visible in `/object_info`); still no verified `workflows/01_anchor_t2i.json` export |
+| Anchor reference edit | **BLOCKED** | Qwen-Image-Edit-2509 weights installed; no verified `workflows/02_anchor_edit.json` export yet; core *node classes* exist (`TextEncodeQwenImageEdit`, `TextEncodeQwenImageEditPlus`, `ReferenceLatent`, `FluxKontextImageScale`) but node classes are not models |
 
 ## Local-only policy
 
