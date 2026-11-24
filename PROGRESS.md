@@ -146,7 +146,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | Logical feature | Actual Spec Kit folder | State | Implementation evidence |
 |---|---|---|---|
 | F01 | `specs/001-safe-baseline-provenance` | COMPLETE (offline + live read-only) | `gates.py`, `preflight.py`, `baseline` CLI, cloud-node rejection, `docs/ENVIRONMENT.md`; 100 offline tests |
-| F02 | `specs/002-image-workflow-onboarding` | OFFLINE-PASS; GPU/export BLOCKED | capability contracts, `workflow-inspect`, `docs/ANCHOR_MODEL_DECISION.md`; awaiting owner model approval |
+| F02 | `specs/002-image-workflow-onboarding` | COMPLETE | capability contracts, `workflow-inspect`, `docs/ANCHOR_MODEL_DECISION.md`; awaiting owner model approval |
 | F03 | `specs/003-first-anchor-t2i` | OFFLINE-PASS; GPU BLOCKED | `anchor` CLI + `anchors.py` on the shared bridge executor; image integrity checks |
 | F04 | `specs/004-reference-edit-anchors` | OFFLINE-PASS; GPU BLOCKED | `run_anchor_chain`, explicit `independent_t2i`, contact sheet |
 | F05 | `specs/005-storyboard-task-dag` | COMPLETE (offline feature) | `dag.py` + `morphcurrent dag`; 16-multiple size check |
@@ -316,3 +316,12 @@ Nothing in this session queued GPU work; ComfyUI queue was empty at every check.
 - `configs/profiles/anchor_t2i.binding.json`: positive `76:6.text`, negative `76:7.text`, seed `76:3.seed`, size `76:58.width/height`, prefix `60.filename_prefix`, output SaveImage `60`; assertions turbo `76:86 = false`, steps `76:84 = 20`, CFG `76:85 = 4`. Live `workflow-check` ok; `anchor … --seed 101` → `validated`, nothing queued.
 - Owner's Qwen Image Edit 2509 test render (`output/Qwen_Image_2509_00001.png`) is **1328×800**, not 832×480: the template's `FluxKontextImageScale` rescales to its preferred ~1 MP size and changes the aspect ratio (1.66 vs 1.73). That would fail F04's parent/child size check and distort the Wan bridge. Edit export (T012 second half) pending, with the scale node bypassed.
 - Tests: 193 passed, 1 deselected. No GPU job submitted by MorphCurrent.
+
+## F02 — Real edit export bound; F02 COMPLETE (2026-11-24)
+
+- Owner re-rendered "Qwen Image Edit 2509" with `FluxKontextImageScale` bypassed and turbo off: `output/Qwen_Image_2509_00002.png` is 832×480 (same as the orchid). Exported `workflows/02_anchor_edit.json` (20 nodes, graph SHA-256 `2a127143…8744`, no private paths); `workflow-inspect` ok, all 4 model files installed, no cloud nodes.
+- `/history` (read-only) confirms `SaveImageAdvanced` node 469 reports `outputs[469].images[]`, the shape `extract_outputs` reads; local output node.
+- `configs/profiles/anchor_edit.binding.json`: reference `78.image`, positive `433:111.prompt`, negative `433:110.prompt`, seed `433:3.seed`, prefix `469.filename_prefix`; assertions turbo `433:443 = false`, steps 20, CFG 4, and `433:3.latent_image = ["433:88", 0]` (latent from the unscaled reference, so the edit keeps the parent size).
+- Live: `workflow-check` ok; `anchor --profile anchor_edit … --reference <orchid>` → `validated`, nothing queued; `render configs/sequences/organic-machines.yaml --dry-run` → **ready** (3 anchors, 2 bridges, nothing blocked). Queue empty.
+- Creative notes for review: the test edit enlarged the subject and kept the green stem; the storyboard prompts (not the test prompts) are what MorphCurrent will send.
+- **Next (needs bounded owner GPU approval):** first MorphCurrent image renders (F03/F04), then bridges (F06; 832×480 untested on Wan), full `render --confirm-gpu --sample-vram` (F10).

@@ -1,0 +1,33 @@
+{
+  "profile": "qwen_image_edit_2509_fp8",
+  "capability": "reference_edit",
+  "workflow": "workflows/02_anchor_edit.json",
+  "workflow_sha256": "2a127143a6722ff17cdaa1bc3df8691fd8dd27954073c14eb6b67d5e68c88744",
+  "verified_against": {
+    "date": "2026-11-24",
+    "comfyui_version": "0.46.0",
+    "deploy_environment": "local-portable",
+    "gpu": "NVIDIA RTX A6000",
+    "method": "owner rendered template 'Qwen Image Edit 2509' with FluxKontextImageScale bypassed and turbo off, input = orchid 832x480, output Qwen_Image_2509_00002.png 832x480; exported API format; node IDs read from that export; /history output shape and workflow-inspect checked live"
+  },
+  "bindings": {
+    "reference_image": {"node_id": "78",     "input": "image",           "class_type": "LoadImage",                   "note": "parent anchor; feeds 433:110/433:111 image1 and VAEEncode 433:88"},
+    "positive_prompt": {"node_id": "433:111", "input": "prompt",         "class_type": "TextEncodeQwenImageEditPlus", "note": "feeds KSampler 433:3.positive"},
+    "negative_prompt": {"node_id": "433:110", "input": "prompt",         "class_type": "TextEncodeQwenImageEditPlus", "note": "feeds KSampler 433:3.negative"},
+    "seed":            {"node_id": "433:3",   "input": "seed",           "class_type": "KSampler"},
+    "filename_prefix": {"node_id": "469",     "input": "filename_prefix", "class_type": "SaveImageAdvanced"}
+  },
+  "outputs": [
+    {"node_id": "469", "class_type": "SaveImageAdvanced", "kind": "image"}
+  ],
+  "assertions": [
+    {"node_id": "433:443", "class_type": "PrimitiveBoolean", "input": "value", "equals": false,
+     "reason": "Lightning/turbo off: switches 433:440/441/442 select the base edit model, 20 steps (433:438) and CFG 4 (433:439)"},
+    {"node_id": "433:438", "class_type": "PrimitiveInt", "input": "value", "equals": 20,
+     "reason": "full-step edit render"},
+    {"node_id": "433:439", "class_type": "PrimitiveFloat", "input": "value", "equals": 4,
+     "reason": "CFG for the non-Lightning path"},
+    {"node_id": "433:3", "class_type": "KSampler", "input": "latent_image", "equals": ["433:88", 0],
+     "reason": "latent comes from VAEEncode of the unscaled reference, so the edit keeps the parent's size (FluxKontextImageScale bypassed)"}
+  ]
+}
