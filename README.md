@@ -76,7 +76,19 @@ Refresh the ComfyUI model/image list, select `01_glass_orchid.jpg` in the first 
 
 ## Full automatic image-to-morph engineering program
 
-The repo's existing `bridge` CLI already handles a **manually supplied** image pair. The next major milestone is generating **both start and end anchors locally in ComfyUI** and automatically feeding them into the proven Wan 2.2 workflow. No fully automatic multi-anchor `render` CLI is shipped yet. The implementation is planned as exactly **ten** Spec Kit features F01–F10, including image-model onboarding, text-to-image, reference editing, storyboard DAG, multi-bridge runs, crash recovery, visual QA, seam-safe joining, and a final one-command CLI.
+The ten Spec Kit features F01–F10 are implemented and pass offline tests (with a fake ComfyUI); **real anchor image generation is BLOCKED** until the owner approves and installs a local image model set and exports two real API workflows (see [`docs/ANCHOR_MODEL_DECISION.md`](docs/ANCHOR_MODEL_DECISION.md)). The Wan bridge stage itself is GPU-verified (MC-FLF2V-003).
+
+~~~cmd
+cd /d C:\GIT\MorphCurrent
+.venv\Scripts\python.exe -m morph_studio.cli baseline
+.venv\Scripts\python.exe -m morph_studio.cli render configs\sequences\organic-machines.yaml --dry-run
+.venv\Scripts\python.exe -m morph_studio.cli render configs\sequences\organic-machines.yaml
+.venv\Scripts\python.exe -m morph_studio.cli render configs\sequences\organic-machines.yaml --confirm-gpu
+.venv\Scripts\python.exe -m morph_studio.cli render --status outputsunsun-<plan16>
+.venv\Scripts\python.exe -m morph_studio.cli review outputsunsun-<plan16> bridge:orchid->butterfly approved
+~~~
+
+`--dry-run` makes no network request and writes nothing (exit 6 = BLOCKED, listing missing profiles). Without `--confirm-gpu` the render only validates against live `/object_info`. With it, anchors and bridges run one GPU job at a time, then QA heuristics and an anchor contact sheet are produced and the run waits for your `review` approvals (exit 7) before the seam-verified join writes `final/movie.mp4`. Re-running the same command resumes without repeating inference. Other tools: `workflow-inspect`, `anchor`, `dag`, `qa`, `models-hash --confirm-io`.
 
 - [Spec Kit ten-feature ledger](docs/SPECKIT_FEATURE_LEDGER.md) — authoritative statuses, requirements and acceptance gates.
 - [End-to-end system architecture](docs/FULL_PIPELINE_DESIGN.md) — image→video dependencies, manifests, timing and GPU consent.

@@ -38,7 +38,7 @@ The **dry-run path** must work before any GPU access, show exactly which models/
 | F07 | `multi-stage-recovery-and-metrics` → `specs/007-recovery-provenance-metrics` | F06 | Existing single-bridge job log | **OFFLINE-PASS** — model hashes and sampled peak VRAM NOT MEASURED on hardware yet |
 | F08 | `visual-quality-selective-rerender` → `specs/008-quality-selective-rerender` | F06, F07 | Baseline clip observations | **OFFLINE-PASS** — heuristics uncalibrated; human review required |
 | F09 | `seam-safe-video-and-audio` → `specs/009-seam-safe-join` | F05–F08 | Timeline + FFmpeg foundations | **OFFLINE-PASS** — real Wan seam not yet measured (GPU chain blocked) |
-| F10 | `one-command-end-to-end-release` | F01–F09 | CLI + native Windows CI | **PLANNED** |
+| F10 | `one-command-end-to-end-release` → `specs/010-one-command-render` | F01–F09 | CLI + native Windows CI | **OFFLINE-PASS; GPU E2E BLOCKED** (needs F02 models/exports + owner approval) |
 
 **Statuses:** PLANNED → SPECCED → IMPLEMENTING → OFFLINE-PASS → GPU-VERIFIED → COMPLETE. If the feature requires an image-model download or a new GPU run, set **BLOCKED** and state the exact permission or missing artifact; do not mark it complete on mocked tests. The ten IDs above are *logical ledger identifiers*, not guaranteed free numbered branch names.
 
@@ -137,6 +137,7 @@ Spec Kit 1.2.4, `script=py`, skills `speckit-*` under `.claude/skills/`. Feature
 | F07 | `specs/007-recovery-provenance-metrics` | OFFLINE-PASS | see PROGRESS F07 entry | offline 173 passed | `RunManifest`, crash-after-every-transition resume (7 states, 1 `/prompt`), `models-hash` (opt-in, idle queue only, size+mtime cache), `VramSampler` | NOT RUN | owner timing for multi-GB hashing; an approved render to sample | F09 |
 | F08 | `specs/008-quality-selective-rerender` | OFFLINE-PASS | see PROGRESS F08 entry | offline 181 passed | `qa.py` cut/freeze/flare/endpoint heuristics; candidate seeds; rerender only failed/rejected bridges; `review.json`; on MC-FLF2V-003 heuristics report no flags although collapse/flare is visible → not a quality gate | NOT RUN | owner visual review to calibrate | F09 |
 | F09 | `specs/009-seam-safe-join` | OFFLINE-PASS | see PROGRESS F09 entry | offline 186 passed | `join_verified`: decoded seam check, concat/trim (no xfade), ffprobe frame count Σ L − (n−1), `.part`, optional local audio cut to video length | NOT RUN | real generated A→B, B→C clips | F10 |
+| F10 | `specs/010-one-command-render` | OFFLINE-PASS (GPU E2E BLOCKED) | see PROGRESS F10 entry | offline 192 passed | `render` dry-run / validate / `--confirm-gpu` / `--status`; offline E2E YAML → 3 anchors → 2 bridges → review gate → 129-frame movie; resume 0 `/prompt` | NOT RUN | F02 owner model approval + export | owner: approve model set (docs/ANCHOR_MODEL_DECISION.md) |
 
 ## Per-feature Spec Kit execution protocol (mandatory)
 

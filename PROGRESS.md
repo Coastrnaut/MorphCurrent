@@ -154,7 +154,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | F07 | `specs/007-recovery-provenance-metrics` | OFFLINE-PASS | run manifest, crash-resume tests, `models-hash`, VRAM sampler |
 | F08 | `specs/008-quality-selective-rerender` | OFFLINE-PASS (heuristics uncalibrated) | `qa.py`, `qa`/`review` CLI, selective rerender plan |
 | F09 | `specs/009-seam-safe-join` | OFFLINE-PASS | `stitcher.join_verified`, seam checks, optional audio |
-| F10 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F10 | `specs/010-one-command-render` | OFFLINE-PASS; GPU E2E BLOCKED | `render` command; offline E2E to a 129-frame movie |
 
 ## F01 — Safe baseline, GPU gate, provenance (2026-11-24)
 
@@ -265,3 +265,37 @@ At the owner's request, `Co-Authored-By` trailers were removed from all commits 
 **Built.** `stitcher.check_seams()` compares decoded boundary frames (64×36 gray mean abs diff ≤ 8; optionally against the shared anchor image). `join_verified()` refuses mismatched size/fps or seams, builds the existing concat/trim command (drops only later clips' first frame; never xfade), writes `<name>.part.mp4`, verifies frame count Σ L − (n−1) with ffprobe, then renames. Optional audio: existing local file only, `-ss offset`, cut to video duration, AAC; default has no audio stream. Existing `build_join_command` tests unchanged.
 
 **Results.** Offline **186 passed, 1 deselected**: two 17-frame lossless synthetic ramps sharing the boundary value → 33 frames with correct first/seam/last values; mismatched seam refused and nothing written; video-only vs audio variants; remote audio URL refused. Seam tolerance is provisional until two real Wan bridges sharing B are measured.
+
+## F10 — One-command render, offline slice (2026-11-24)
+
+**Spec Kit.** `specs/010-one-command-render` (`--number 10`); tasks 7/8 (T008 real E2E blocked).
+
+**Built.** `src/morph_studio/render.py` + `morphcurrent render`:
+- `render STORYBOARD --dry-run` — no network, no writes; DAG, GPU job count (3 anchors, 2 bridges), BLOCKED list; exit 6 when profiles are missing.
+- `render STORYBOARD` — preflight (missing profile → exit 6 before any ComfyUI request), then validates every stage against live `/object_info`, nothing queued.
+- `render STORYBOARD --confirm-gpu [--sample-vram] [--accept-heuristics]` — anchor chain → bridges (one GPU job at a time, shared gate) → anchor contact sheet + QA heuristics per bridge → stops `awaiting_review` (exit 7) until `morphcurrent review RUN_DIR bridge:… approved` (or `--accept-heuristics` with no flags) → seam-verified join to `outputs/runs/run-<plan16>/final/movie.mp4`; rejected bridge → `rerender_needed`. Re-running resumes; `render --status RUN_DIR` is read-only. Manifest records consent, stages, QA, VRAM samples (if enabled), final join report.
+- Fake ComfyUI test mode renders **real** FFmpeg clips that ramp between the exact generated anchor colours, so seams are genuinely checked.
+
+**Results.** Offline **192 passed, 1 deselected**: YAML → 3 anchors → 2 bridges (shared B SHA) → review gate → **129-frame** movie with matching seams and no crossfade; second and third runs 0 new `/prompt`; dry run writes nothing; missing profiles make 0 requests. Live `render configs/sequences/organic-machines.yaml --dry-run` → `blocked`: `anchor_t2i.binding.json`, `anchor_edit.binding.json` missing.
+
+## Session handoff — restart point (2026-11-24)
+
+| Fxx | Spec dir | Status |
+|---|---|---|
+| F01 | specs/001-safe-baseline-provenance | COMPLETE |
+| F02 | specs/002-image-workflow-onboarding | OFFLINE-PASS; GPU/export BLOCKED |
+| F03 | specs/003-first-anchor-t2i | OFFLINE-PASS; GPU BLOCKED |
+| F04 | specs/004-reference-edit-anchors | OFFLINE-PASS; GPU BLOCKED |
+| F05 | specs/005-storyboard-task-dag | COMPLETE |
+| F06 | specs/006-generated-anchor-bridges | OFFLINE-PASS; GPU BLOCKED |
+| F07 | specs/007-recovery-provenance-metrics | OFFLINE-PASS (hashes / peak VRAM NOT MEASURED) |
+| F08 | specs/008-quality-selective-rerender | OFFLINE-PASS (heuristics uncalibrated) |
+| F09 | specs/009-seam-safe-join | OFFLINE-PASS (real seam not measured) |
+| F10 | specs/010-one-command-render | OFFLINE-PASS; GPU E2E BLOCKED |
+
+**Single blocker:** no image-generation weights on this machine. **Owner steps, in order:**
+1. Pick a model set in `docs/ANCHOR_MODEL_DECISION.md` (Option A recommended), check the licenses, record the approval, download the files into the ComfyUI model folders.
+2. Render once from the Qwen-Image template and once from the Qwen-Image-Edit-2509 template in the ComfyUI UI; Export (API) to `workflows/01_anchor_t2i.json` and `workflows/02_anchor_edit.json`.
+3. Next session: `workflow-inspect` both exports, write `configs/profiles/anchor_t2i.binding.json` / `anchor_edit.binding.json` from the real node IDs (F02 T013), `workflow-check`, then with a bounded approval: one T2I anchor (F03), one edit (F04), one generated-A/B bridge at 832×480 (F06, size not yet GPU-tested), then the full `render --confirm-gpu --sample-vram` (F10) and a second reproducible run. Optional: `models-hash --confirm-io` while idle (F07); visual review of MC-FLF2V-003 to calibrate QA (F08).
+
+Nothing in this session queued GPU work; ComfyUI queue was empty at every check.

@@ -82,13 +82,13 @@ Wan first/last-frame latency uses `L = 4n+1`. For fps `F`, the **anchor timestam
 
 ## Operator UX and gates
 
-The following commands are **future targets** (not implemented on this baseline):
+Implemented in F10 (offline-tested with a fake ComfyUI; real anchor stages BLOCKED until image models are installed). Resume = re-run the same `render` command (stages are content-addressed); `render --status outputs\runs\run-<plan16>` is read-only. Exit codes: 0 complete/validated, 6 blocked, 7 awaiting review or rerender needed, 5 stage failed.
 
 ~~~cmd
 cd /d C:\GIT\MorphCurrent
 .venv\Scripts\python.exe -m morph_studio.cli render configs/sequences/organic-machines.yaml --dry-run
 .venv\Scripts\python.exe -m morph_studio.cli render configs/sequences/organic-machines.yaml --confirm-gpu
-.venv\Scripts\python.exe -m morph_studio.cli render --resume outputs\runs\<actual-run-id>
+.venv\Scripts\python.exe -m morph_studio.cli render --status outputs\runs\run-<plan16>
 ~~~
 
 Preserve the **existing** `bridge` CLI. A dry run cannot upload, post prompts, change ComfyUI configuration or start models. Every expensive run requires explicit consent and should print expected image-model/Wan stages, queue occupancy and bounded job count. When owner already running a GPU smoke test, do read-only discovery and offline code only.

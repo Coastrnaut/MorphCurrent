@@ -22,6 +22,7 @@ from .bridge import (
 from .dag import compile_plan
 from .gates import check_gpu_gate
 from .qa import analyze_clip, record_review
+from .render import dry_run, render_status, run_render
 from .provenance import DEFAULT_MODELS_ROOT, hash_models, models_in_graph
 from .anchors import AnchorRequest, plan_anchor, request_from_anchor_job, run_anchor
 from .onboarding import as_json as inspect_json, inspect_export, load_export
@@ -118,6 +119,31 @@ def _review(args: argparse.Namespace) -> int:
     reviews = record_review(Path(args.run_dir) / "review.json", args.task, args.decision, args.note or "")
     print(json.dumps(reviews, indent=2))
     return 0
+
+
+def _render(args: argparse.Namespace) -> int:
+    """One command: storyboard -> anchors -> bridges -> QA -> review gate -> verified join."""
+    if args.status:
+        print(json.dumps(render_status(args.status), indent=2))
+        return 0
+    if not args.storyboard:
+        raise ValueError("render needs STORYBOARD (or --status RUN_DIR)")
+    profiles = {k: v for k, v in (("text_to_image", args.t2i_profile), ("reference_edit", args.edit_profile),
+                                  ("wan_flf2v", args.bridge_profile)) if v}
+    if args.dry_run:
+        report = dry_run(args.storyboard, profiles)
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return 6 if report["status"] == "blocked" else 0
+    result = run_render(args.storyboard, lambda: ComfyClient(args.url), runs_root=args.runs_root,
+                        profiles=profiles, confirm_gpu=args.confirm_gpu,
+                        accept_heuristics=args.accept_heuristics,
+                        allow_busy_queue=args.allow_busy_queue, sample_vram=args.sample_vram)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    if result["status"] == "awaiting_review":
+        print("REVIEW: inspect the clips/contact sheet, then `morphcurrent review RUN_DIR TASK approved` "
+              "and re-run the same render command.", file=sys.stderr)
+    return {"complete": 0, "validated": 0, "blocked": 6, "awaiting_review": 7,
+            "rerender_needed": 7}.get(result["status"], 5)
 
 
 def _dag(args: argparse.Namespace) -> int:
@@ -299,6 +325,20 @@ def main(argv: list[str] | None = None) -> int:
     mh.add_argument("--cache", default="outputs/model_hashes.json")
     mh.add_argument("--url", default="http://127.0.0.1:8188")
     mh.add_argument("--confirm-io", action="store_true", help="Acknowledge multi-GB disk reads")
+    render = subs.add_parser("render", help="One command: dry-run / approved render / resume / status")
+    render.add_argument("storyboard", nargs="?")
+    render.add_argument("--dry-run", action="store_true", help="Plan only: no network, no writes")
+    render.add_argument("--status", metavar="RUN_DIR", help="Read-only run summary")
+    render.add_argument("--confirm-gpu", action="store_true", help="Allow this run's GPU jobs")
+    render.add_argument("--accept-heuristics", action="store_true",
+                        help="Join without human review when QA heuristics raise no flags")
+    render.add_argument("--allow-busy-queue", action="store_true")
+    render.add_argument("--sample-vram", action="store_true", help="Opt-in nvidia-smi memory sampling")
+    render.add_argument("--t2i-profile")
+    render.add_argument("--edit-profile")
+    render.add_argument("--bridge-profile")
+    render.add_argument("--runs-root", default="outputs/runs")
+    render.add_argument("--url", default="http://127.0.0.1:8188")
     qa = subs.add_parser("qa", help="Heuristic temporal QA of a clip (cut/freeze/flare/endpoints)")
     qa.add_argument("clip")
     qa.add_argument("--start", help="Start anchor image for endpoint comparison")
@@ -381,6 +421,8 @@ def main(argv: list[str] | None = None) -> int:
             return _workflow_inspect(args)
         elif args.command == "models-hash":
             return _models_hash(args)
+        elif args.command == "render":
+            return _render(args)
         elif args.command == "qa":
             return _qa(args)
         elif args.command == "review":

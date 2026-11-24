@@ -6,8 +6,10 @@ appears after a poll, outputs are served by ``/view``.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import struct
+import subprocess
 import zlib
 
 import httpx
@@ -43,6 +45,9 @@ class FakeComfy:
         self.image_override: bytes | None = None  # serve these bytes for every image
         self.default_size = (832, 480)
         self.seed_colour = True  # vary pixels by seed so different seeds give different bytes
+        self.real_video = False  # SaveVideo -> real FFmpeg RGB ramp between the two anchors' colours
+        self.colours: dict[str, tuple[int, int, int]] = {}  # sha16 of generated PNG -> colour
+        self.sizes: dict[str, tuple[int, int]] = {}  # sha16 of generated PNG -> (w, h)
 
     @property
     def prompt_posts(self) -> int:
@@ -98,6 +103,10 @@ class FakeComfy:
             inputs = node["inputs"]
             if isinstance(inputs.get("width"), int) and isinstance(inputs.get("height"), int):
                 return inputs["width"], inputs["height"]
+        for node in graph.values():  # edit graphs follow their reference image
+            name = node["inputs"].get("image") if node["class_type"] == "LoadImage" else None
+            if isinstance(name, str) and name[3:19] in self.sizes:
+                return self.sizes[name[3:19]]
         return self.default_size
 
     def _finish(self, pid: str) -> None:
@@ -120,14 +129,35 @@ class FakeComfy:
                 for i in range(self.images_per_save):
                     name = f"{stem}_{i + 1:05d}_.png"
                     colour = (seed % 251, 60, 200) if self.seed_colour else (40, 60, 200)
-                    self.files[f"{subfolder}/{name}"] = self.image_override or make_png(*self._size(graph), colour)
+                    size = self._size(graph)
+                    data = self.image_override or make_png(*size, colour)
+                    self.colours[hashlib.sha256(data).hexdigest()[:16]] = colour
+                    self.sizes[hashlib.sha256(data).hexdigest()[:16]] = size
+                    self.files[f"{subfolder}/{name}"] = data
                     items.append({"filename": name, "subfolder": subfolder, "type": "output"})
                 outputs[node_id] = {"images": items}
             elif node["class_type"] == "SaveVideo":
                 name = f"{stem}_00001_.mp4"
-                self.files[f"{subfolder}/{name}"] = VIDEO_BYTES
+                self.files[f"{subfolder}/{name}"] = self._video(graph) if self.real_video else VIDEO_BYTES
                 outputs[node_id] = {"images": [{"filename": name, "subfolder": subfolder,
                                                 "type": "output"}], "animated": [True]}
+        self._store_history(pid, outputs)
+
+    def _video(self, graph: dict) -> bytes:
+        loads = [graph[k]["inputs"]["image"] for k in ("80", "89") if k in graph]
+        start, end = (self.colours.get(name[3:19], (128, 128, 128)) for name in loads)
+        wan = next(n["inputs"] for n in graph.values() if n["class_type"] == "WanFirstLastFrameToVideo")
+        fps = next(n["inputs"]["fps"] for n in graph.values() if n["class_type"] == "CreateVideo")
+        w, h, frames = wan["width"], wan["height"], wan["length"]
+        raw = b"".join(bytes(round(s + (e - s) * i / (frames - 1)) for s, e in zip(start, end)) * (w * h)
+                       for i in range(frames))
+        done = subprocess.run(["ffmpeg", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
+                               "-s", f"{w}x{h}", "-r", str(fps), "-i", "-", "-c:v", "libx264", "-qp", "0",
+                               "-pix_fmt", "yuv444p", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov",
+                               "-"], input=raw, capture_output=True, check=True)
+        return done.stdout
+
+    def _store_history(self, pid: str, outputs: dict) -> None:
         self.history[pid] = {"status": {"status_str": "success", "completed": True, "messages": [
             ["execution_start", {"timestamp": 1_000}], ["execution_success", {"timestamp": 5_000}]]},
             "outputs": outputs}
