@@ -1,0 +1,21 @@
+# F29 example: does a longer bridge (81 vs 65 frames) improve the orchid -> butterfly fold, and is it
+# worth the GPU time? Anchor paths point at this machine's MC-RUN-003 outputs (local, not committed).
+name: orchid-length-seed
+subject:
+  start_image: outputs/runs/8c2cb744e2a7eeea/outputs/anchor_00001_.png
+  end_image: outputs/runs/c773ff52fdee51bd/outputs/anchor_00001.png
+  positive_prompt: >-
+    Continuous physical metamorphosis in one uninterrupted shot:
+    glass petals lift into articulated wings; petal veins become
+    luminous circuitry; camera pushes forward. No cuts or dissolves.
+controls:
+  width: 832
+  height: 480
+factors:
+  length: [65, 81]
+seeds: [201, 202]
+budget:
+  max_runs: 5
+  max_gpu_s: 3000
+early_stop:
+  consecutive_flagged: 2

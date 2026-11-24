@@ -315,6 +315,33 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _experiment(args: argparse.Namespace) -> int:
+    """F29 bounded local A/B experiments on one bridge (GPU only with --confirm-gpu)."""
+    from . import experiment as ex
+    root = Path(args.repo_root)
+    out_root = root / "outputs" / "experiments"
+    try:
+        defn = ex.load_definition(args.definition, repo_root=root)
+        history = ex.load_history_file(getattr(args, "history", None) or root / "configs" / "perf_history.json")
+        if args.command == "experiment-plan":
+            out = ex.plan_summary(defn, ex.design(defn, history, repo_root=root), out_root)
+        elif args.command == "experiment-run":
+            executor = ex.bridge_executor(url=args.url, runs_root=args.runs_root, repo_root=root)
+            out = ex.run(defn, executor, confirm_gpu=args.confirm_gpu, history=history, out_root=out_root,
+                         repo_root=root)
+        elif args.command == "experiment-rate":
+            out = ex.rate(defn, args.candidate, args.score, args.note, out_root=out_root, repo_root=root)
+        else:
+            rep = ex.report(defn, out_root=out_root, repo_root=root)
+            out = {k: rep[k] for k in ("experiment", "totals", "pareto", "pareto_dimensions", "mismatches")}
+            out["report"] = str(ex.out_dir_for(defn, out_root) / "report.md")
+    except ex.ExperimentError as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return 0
+
+
 def _project(args: argparse.Namespace) -> int:
     """F28 portable project packages: export, inspect, import (no inference, no downloads)."""
     from . import package as pk
@@ -849,6 +876,23 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    for name, help_text in (("experiment-plan", "Plan a bounded A/B experiment on one bridge (F29; offline)"),
+                            ("experiment-run", "Run experiment candidates one at a time (validate only without --confirm-gpu)"),
+                            ("experiment-rate", "Record an owner rating (1-5) for a candidate"),
+                            ("experiment-report", "Per-level summaries, Pareto choices and caveats")):
+        esub = subs.add_parser(name, help=help_text)
+        esub.add_argument("definition")
+        esub.add_argument("--repo-root", default=".")
+        if name in ("experiment-plan", "experiment-run"):
+            esub.add_argument("--history", default=None, help="Measured history (default configs/perf_history.json)")
+        if name == "experiment-run":
+            esub.add_argument("--confirm-gpu", action="store_true")
+            esub.add_argument("--url", default="http://127.0.0.1:8188")
+            esub.add_argument("--runs-root", default="outputs/runs")
+        if name == "experiment-rate":
+            esub.add_argument("candidate")
+            esub.add_argument("score", type=int)
+            esub.add_argument("--note", default="")
     pex = subs.add_parser("project-export", help="Write a portable project package (F28; media opt-in)")
     pex.add_argument("storyboard")
     pex.add_argument("--out", required=True)
@@ -1090,6 +1134,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("experiment-plan", "experiment-run", "experiment-rate", "experiment-report"):
+            return _experiment(args)
         elif args.command in ("project-export", "project-inspect", "project-import"):
             return _project(args)
         elif args.command in ("registry", "registry-diff", "registry-select", "registry-rollback"):
