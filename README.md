@@ -48,6 +48,9 @@ Start ComfyUI ([docs/COMFYUI_SETUP.md](docs/COMFYUI_SETUP.md)), then:
 
 :: approve each bridge, then run the same render command again to join the movie
 .venv\Scripts\python.exe -m morph_studio.cli review outputs\runs\run-<id> bridge:orchid->butterfly approved
+
+:: or review in a local page (loopback only; never renders): http://127.0.0.1:8765/
+.venv\Scripts\python.exe -m morph_studio.cli review-ui
 ```
 
 Results land in `outputs\runs\run-<id>\` (manifest, contact sheet and the movie, e.g. `final\organic-machines_20261124-153637Z_ba2d9dbe.mp4`). `render --status <run dir>` shows progress at any time.

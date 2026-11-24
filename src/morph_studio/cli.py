@@ -349,6 +349,27 @@ def _storage(args: argparse.Namespace) -> int:
     return 0
 
 
+def _review_ui(args: argparse.Namespace) -> int:
+    """Strictly-loopback local review page (F18). Never renders or contacts ComfyUI."""
+    from .review_ui import UiError, default_storyboards, make_server
+    boards = default_storyboards(args.repo_root) + [s for s in args.storyboard or []]
+    try:
+        server = make_server(args.runs_root, host=args.host, port=args.port, storyboards=boards,
+                             repo_root=args.repo_root)
+    except UiError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    host = f"[{args.host}]" if ":" in args.host else args.host
+    print(f"Review UI: http://{host}:{server.server_address[1]}/ (Ctrl+C to stop)", flush=True)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+    return 0
+
+
 def _schedule(args: argparse.Namespace) -> int:
     """Dependency-ordered stage list with estimates and what fits a budget (offline)."""
     plan = compile_plan(load_storyboard(args.storyboard))
@@ -631,6 +652,12 @@ def main(argv: list[str] | None = None) -> int:
     tl.add_argument("--repo-root", default=".")
     stg = subs.add_parser("storage", help="Bytes used in the runs root by job kind/state (read-only)")
     stg.add_argument("--runs-root", default="outputs/runs")
+    rui = subs.add_parser("review-ui", help="Local loopback review page: runs, clips, QA, approve/reject")
+    rui.add_argument("--runs-root", default="outputs/runs")
+    rui.add_argument("--host", default="127.0.0.1", help="Loopback only: 127.0.0.1, ::1 or localhost")
+    rui.add_argument("--port", type=int, default=8765)
+    rui.add_argument("--storyboard", action="append", help="Extra storyboard for the plan view")
+    rui.add_argument("--repo-root", default=".")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -740,6 +767,8 @@ def main(argv: list[str] | None = None) -> int:
             return _timeline(args)
         elif args.command == "storage":
             return _storage(args)
+        elif args.command == "review-ui":
+            return _review_ui(args)
         elif args.command == "schedule":
             return _schedule(args)
         elif args.command == "dag":
