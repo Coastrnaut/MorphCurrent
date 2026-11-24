@@ -1,0 +1,32 @@
+{
+  "profile": "qwen_image_t2i_fp8",
+  "capability": "text_to_image",
+  "workflow": "workflows/01_anchor_t2i.json",
+  "workflow_sha256": "912d39f3790b6156c4c6ac2493a09dda014289c41d9bfccf6f78d90fa2da8058",
+  "verified_against": {
+    "date": "2026-11-24",
+    "comfyui_version": "0.46.0",
+    "deploy_environment": "local-portable",
+    "gpu": "NVIDIA RTX A6000",
+    "method": "owner rendered template 'Qwen-Image: Text to Image' once (832x480 orchid, Qwen-Image_00001_.png) and exported API format; node IDs read from that export; workflow-inspect against live /object_info ok"
+  },
+  "bindings": {
+    "positive_prompt": {"node_id": "76:6",  "input": "text",            "class_type": "CLIPTextEncode",      "note": "feeds KSampler 76:3.positive"},
+    "negative_prompt": {"node_id": "76:7",  "input": "text",            "class_type": "CLIPTextEncode",      "note": "feeds KSampler 76:3.negative"},
+    "seed":            {"node_id": "76:3",  "input": "seed",            "class_type": "KSampler"},
+    "width":           {"node_id": "76:58", "input": "width",           "class_type": "EmptySD3LatentImage"},
+    "height":          {"node_id": "76:58", "input": "height",          "class_type": "EmptySD3LatentImage"},
+    "filename_prefix": {"node_id": "60",    "input": "filename_prefix", "class_type": "SaveImage"}
+  },
+  "outputs": [
+    {"node_id": "60", "class_type": "SaveImage", "kind": "image"}
+  ],
+  "assertions": [
+    {"node_id": "76:86", "class_type": "PrimitiveBoolean", "input": "value", "equals": false,
+     "reason": "Lightning/turbo off: switches 76:78/82/83 select the base model, 20 steps (76:84) and CFG 4 (76:85)"},
+    {"node_id": "76:84", "class_type": "PrimitiveInt", "input": "value", "equals": 20,
+     "reason": "full-step anchor render"},
+    {"node_id": "76:85", "class_type": "PrimitiveFloat", "input": "value", "equals": 4,
+     "reason": "CFG for the non-Lightning path"}
+  ]
+}

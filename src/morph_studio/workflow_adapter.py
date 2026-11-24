@@ -164,6 +164,12 @@ class ValidationReport:
         return {"ok": self.ok, "errors": self.errors, "warnings": self.warnings}
 
 
+def _is_wildcard(kind: Any) -> bool:
+    """``*`` or a V3 match-type template (e.g. ``COMFY_MATCHTYPE_V3`` on ComfySwitchNode, whose
+    object_info declares ``allowed_types: "*"``); the concrete type is resolved per link."""
+    return kind == "*" or (isinstance(kind, str) and kind.startswith("COMFY_MATCHTYPE"))
+
+
 def validate_graph(graph: dict, object_info: dict) -> ValidationReport:
     """Check every node of an API graph against a live ``/object_info`` snapshot.
 
@@ -202,7 +208,7 @@ def validate_graph(graph: dict, object_info: dict) -> ValidationReport:
                     if value[1] >= len(outputs):
                         report.errors.append(f"{where}.{name}: output {value[1]} of node {value[0]} does not exist")
                     elif not isinstance(spec[0], list) and outputs[value[1]] != spec[0] \
-                            and "*" not in (outputs[value[1]], spec[0]):
+                            and not _is_wildcard(outputs[value[1]]) and not _is_wildcard(spec[0]):
                         report.errors.append(
                             f"{where}.{name}: expects {spec[0]}, linked output is {outputs[value[1]]}")
                 continue

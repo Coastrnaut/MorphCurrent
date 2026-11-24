@@ -119,3 +119,18 @@ def test_decision_record_keeps_gate_blocked():
     text = (REPO / "docs/ANCHOR_MODEL_DECISION.md").read_text(encoding="utf-8")
     assert "BLOCKED" in text and "owner to verify" in text
     assert "No model has been downloaded" in text
+
+
+def test_matchtype_switch_links_are_type_compatible():
+    """Real ComfyUI 0.46 templates route MODEL/INT/FLOAT through ComfySwitchNode (COMFY_MATCHTYPE_V3)."""
+    graph = t2i_graph()
+    graph["20"] = {"class_type": "PrimitiveInt", "inputs": {"value": 20}}
+    graph["21"] = {"class_type": "PrimitiveInt", "inputs": {"value": 8}}
+    graph["22"] = {"class_type": "ComfySwitchNode", "inputs": {"switch": False, "on_false": ["20", 0], "on_true": ["21", 0]}}
+    graph["23"] = {"class_type": "ComfySwitchNode", "inputs": {"switch": False, "on_false": ["1", 0], "on_true": ["1", 0]}}
+    graph["8"]["inputs"]["steps"] = ["22", 0]
+    graph["4"]["inputs"]["model"] = ["23", 0]
+    report = inspect_export(graph, installed_object_info())
+    assert report["ok"], report["errors"]
+    graph["8"]["inputs"]["latent_image"] = ["1", 0]  # real mismatch MODEL -> LATENT still caught
+    assert not inspect_export(graph, installed_object_info())["ok"]

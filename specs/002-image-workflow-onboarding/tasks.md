@@ -28,7 +28,7 @@ description: "Task list for F02 image model and workflow onboarding"
 
 ## Blocked (owner-gated, not executable this session)
 - [ ] T011 Owner approves model set; owner downloads weights into ComfyUI model folders
-- [ ] T012 Owner renders one T2I and one edit image in ComfyUI UI, saves API exports to workflows/01_anchor_t2i.json and workflows/02_anchor_edit.json
+- [~] T012 Owner renders one T2I and one edit image in ComfyUI UI, saves API exports to workflows/01_anchor_t2i.json and workflows/02_anchor_edit.json
 - [ ] T013 Write configs/profiles/anchor_t2i.binding.json and anchor_edit.binding.json from the real exports; validate live
 
 ## Dependencies

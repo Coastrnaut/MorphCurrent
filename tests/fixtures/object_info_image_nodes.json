@@ -194,6 +194,83 @@
    "model"
   ]
  },
+ "ComfySwitchNode": {
+  "api_node": false,
+  "category": "utilities/logic",
+  "deprecated": false,
+  "description": "",
+  "dev_only": false,
+  "display_name": "If/Else Switch",
+  "essentials_category": null,
+  "experimental": true,
+  "has_intermediate_output": false,
+  "input": {
+   "optional": {
+    "on_false": [
+     "COMFY_MATCHTYPE_V3",
+     {
+      "lazy": true,
+      "template": {
+       "allowed_types": "*",
+       "template_id": "switch"
+      }
+     }
+    ],
+    "on_true": [
+     "COMFY_MATCHTYPE_V3",
+     {
+      "lazy": true,
+      "template": {
+       "allowed_types": "*",
+       "template_id": "switch"
+      }
+     }
+    ]
+   },
+   "required": {
+    "switch": [
+     "BOOLEAN",
+     {}
+    ]
+   }
+  },
+  "input_order": {
+   "optional": [
+    "on_false",
+    "on_true"
+   ],
+   "required": [
+    "switch"
+   ]
+  },
+  "is_input_list": false,
+  "name": "ComfySwitchNode",
+  "output": [
+   "COMFY_MATCHTYPE_V3"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_matchtypes": [
+   "switch"
+  ],
+  "output_name": [
+   "output"
+  ],
+  "output_node": false,
+  "output_tooltips": [
+   null
+  ],
+  "price_badge": null,
+  "python_module": "comfy_extras.nodes_logic",
+  "search_aliases": [
+   "if",
+   "then",
+   "switch",
+   "conditional",
+   "branch"
+  ]
+ },
  "ConditioningZeroOut": {
   "category": "model/conditioning/transform",
   "description": "",
@@ -1137,6 +1214,53 @@
   "output_node": false,
   "python_module": "comfy_extras.nodes_model_advanced",
   "search_aliases": []
+ },
+ "PrimitiveInt": {
+  "api_node": false,
+  "category": "utilities/primitive",
+  "deprecated": false,
+  "description": "",
+  "dev_only": false,
+  "display_name": "Int",
+  "essentials_category": null,
+  "experimental": false,
+  "has_intermediate_output": false,
+  "input": {
+   "required": {
+    "value": [
+     "INT",
+     {
+      "control_after_generate": "fixed",
+      "max": 9223372036854775807,
+      "min": -9223372036854775807
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "value"
+   ]
+  },
+  "is_input_list": false,
+  "name": "PrimitiveInt",
+  "output": [
+   "INT"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_matchtypes": null,
+  "output_name": [
+   "INT"
+  ],
+  "output_node": false,
+  "output_tooltips": [
+   null
+  ],
+  "price_badge": null,
+  "python_module": "comfy_extras.nodes_primitive",
+  "search_aliases": null
  },
  "QwenImageEditApi": {
   "api_node": true,
