@@ -38,7 +38,7 @@ F19 — Multi-minute/chapter timeline, resumable long projects, storage budgetin
 F20 — Phase-II product acceptance: retain MC-RUN-003's fresh-root reproducibility, extend Windows packaging/help, real local long-form/audio/quality regression, provenance/license audit and owner release readiness.
 
 F21 — Local style packs and private asset library: reusable palette, lens, lighting, composition, materials, reference images, prompt/negative presets and content hashes.
-F22 — Creative brief to editable storyboard: deterministic shot planner by default, optional explicitly enabled local LLM, preview/review, no fabricated model/node choices.
+F22 — Creative brief to editable storyboard: deterministic shot planner; sequences and prompts pre-drafted in Claude Desktop sessions (no local LLM) and checked by draft-check; preview/review, no fabricated model/node choices.
 F23 — Camera/spatial continuity: frame-safe camera and subject keyframes, view/framing targets, real installed graph controls only; prompt-only approximations explicitly labelled.
 F24 — Temporal material/shape stability: detect and repair petal/wing collapse, flares and sudden replacements with controlled human-reviewed experiments.
 F25 — Local motion interpolation of approved masters to 24/30/60 fps with intact PTS, audio and seams; originals remain immutable.

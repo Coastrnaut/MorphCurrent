@@ -81,7 +81,7 @@ The existing Qwen→Qwen-edit→Wan→QA→human review→FFmpeg pipeline is **G
 
 F11 reporting, F12 geometry and F13 choreography are implemented offline; remaining items are **design targets**. The latest verified baseline uses timestamped output `final/<storyboard>_<UTC timestamp>_<plan8>.mp4` and a manifest-held path; do not revert to a fixed filename or assume these future extensions are already implemented.
 
-- **F21–F22 — local assets and authoring:** private style/reference collections and approved editable creative-brief-to-storyboard planning, optional owner-enabled local LLM only.
+- **F21–F22 — local assets and authoring:** private style/reference collections and approved editable creative-brief-to-storyboard planning; all sequences and prompts are pre-drafted in Claude Desktop sessions (text only, no local LLM) and checked locally by `draft-check` ([DRAFTING.md](DRAFTING.md)).
 - **F23–F24 — spatial/temporal continuity:** actual-workflow-supported camera and framing constraints, material motion continuity and human-approved repair of collapse/flare defects.
 - **F25–F26 — local finishing:** frame interpolation to target FPS, optional upscale/color/denoise, preservation of 16 FPS originals, true FFmpeg PTS/seam/audio verification.
 - **F27–F28 — compatibility and portable projects:** versioned real ComfyUI model capability adapters, safe migration and archive restore, no weights or private media by default.

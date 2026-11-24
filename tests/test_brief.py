@@ -84,8 +84,80 @@ def test_cli_brief_plan(tmp_path, capsys):
     assert cli.main(["brief-plan", str(PILOT), "--out", str(out)]) == 2  # never overwrites
 
 
-def test_llm_extension_point_is_refused(tmp_path, capsys):
+def test_llm_option_removed(tmp_path, capsys):
+    """Owner 2026-11-24: no local LLM drafting; Claude Desktop sessions pre-draft instead."""
+    with pytest.raises(SystemExit):
+        cli.main(["brief-plan", str(PILOT), "--out", str(tmp_path / "sb.yaml"), "--llm"])
+    assert not (tmp_path / "sb.yaml").exists()
+
+
+def test_samples_pass_draft_check():
+    from morph_studio.brief import lint_draft
+    for path in (PILOT, REPO / "configs/sequences/organic-machines.yaml",
+                 REPO / "configs/sequences/engineering-pilot.yaml"):
+        report = lint_draft(yaml.safe_load(path.read_text(encoding="utf-8")), repo_root=REPO)
+        assert report["errors"] == [], (path, report["errors"])
+    brief = lint_draft(yaml.safe_load(PILOT.read_text(encoding="utf-8")), repo_root=REPO)
+    assert brief["kind"] == "brief" and brief["bridges"] == 7
+
+
+@pytest.mark.parametrize("field, text, needle", [
+    ("prompt", "A copper coil, use the Qwen checkpoint with a LoRA", "lora"),
+    ("prompt", "Load qwen_image_fp8.safetensors", "safetensors"),
+    ("prompt", "connect a KSampler node", "ksampler"),
+    ("negative_prompt", "see https://example.com/style", "url"),
+])
+def test_draft_check_rejects_model_node_and_url_text(field, text, needle):
+    from morph_studio.brief import lint_draft
+    data = yaml.safe_load((REPO / "configs/sequences/organic-machines.yaml").read_text(encoding="utf-8"))
+    data["anchors"][1][field] = text
+    report = lint_draft(data, repo_root=REPO)
+    assert any("anchors[1]." + field in e and needle in e.lower() for e in report["errors"]), report
+
+
+def test_draft_check_warnings_and_schema_errors():
+    from morph_studio.brief import lint_draft
+    data = yaml.safe_load((REPO / "configs/sequences/organic-machines.yaml").read_text(encoding="utf-8"))
+    data["anchors"][2].update(generation="independent_t2i", prompt="x " * 400)
+    report = lint_draft(data, repo_root=REPO)
+    assert report["errors"] == []
+    joined = " ".join(report["warnings"])
+    assert "independent_t2i" in joined and "600" in joined and "correspondences" in joined
+    broken = lint_draft({"schema_version": 1, "name": "x"}, repo_root=REPO)
+    assert broken["errors"] and broken["errors"][0].startswith("schema")
+    assert lint_draft({"title": "t", "scenes": [{"subject": "a"}], "duration_s": 4},
+                      repo_root=REPO)["errors"]  # brief with one scene
+
+
+def test_drafted_by_goes_to_header_not_plan(tmp_path, capsys):
+    data = yaml.safe_load(PILOT.read_text(encoding="utf-8"))
+    data["drafted_by"] = "Claude Desktop session 2026-11-24"
+    brief = tmp_path / "b.yaml"
+    brief.write_text(yaml.safe_dump(data), encoding="utf-8")
     out = tmp_path / "sb.yaml"
-    code = cli.main(["brief-plan", str(REPO / "configs/briefs/engineering-pilot.yaml"), "--out", str(out), "--llm"])
-    assert code == 2 and not out.exists()
-    assert "not enabled" in capsys.readouterr().err
+    assert cli.main(["brief-plan", str(brief), "--out", str(out)]) == 0
+    capsys.readouterr()
+    text = out.read_text(encoding="utf-8")
+    assert "# Drafted by: Claude Desktop session 2026-11-24" in text
+    plan_a = compile_plan(Storyboard.model_validate(yaml.safe_load(text)))
+    plan_b = compile_plan(Storyboard.model_validate(plan_storyboard(pilot())[0]))
+    assert plan_a["plan_sha256"] == plan_b["plan_sha256"]
+
+
+def test_cli_draft_check(tmp_path, capsys):
+    assert cli.main(["draft-check", str(PILOT)]) == 0
+    assert json.loads(capsys.readouterr().out)["errors"] == []
+    data = yaml.safe_load((REPO / "configs/sequences/organic-machines.yaml").read_text(encoding="utf-8"))
+    data["transitions"][0]["prompt"] = "morph using the ComfyUI workflow"
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(yaml.safe_dump(data), encoding="utf-8")
+    assert cli.main(["draft-check", str(bad)]) == 3
+
+
+def test_draft_check_scans_brief_text():
+    from morph_studio.brief import lint_draft
+    data = yaml.safe_load(PILOT.read_text(encoding="utf-8"))
+    data["scenes"][2]["morph"] = "apply the brass LoRA from www.example.com"
+    errors = lint_draft(data, repo_root=REPO)["errors"]
+    assert any(e.startswith("scenes[2].morph") and "lora" in e for e in errors)
+    assert any(e.startswith("scenes[2].morph") and "url" in e for e in errors)

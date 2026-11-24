@@ -595,3 +595,12 @@ These four features were built with hand-written spec/plan/tasks before the owne
 - **F22** pass 1 → T007–T009: `brief-plan --llm` disabled extension point refused with a clear message (exit 2, nothing written); plan API aligned; Constitution Check. Pass 2 converged. T006 (local LLM drafting) remains owner-gated.
 
 Offline **319 passed, 1 deselected**.
+
+## F22 amendment — Claude Desktop pre-drafting replaces local LLM (2026-11-24)
+
+Owner decision: no local LLM prompt drafting (the approved Qwen3-8B + llama.cpp download was cancelled before it started; nothing was downloaded). All sequences, briefs and prompts are pre-drafted as text in Claude Desktop sessions and validated locally.
+
+- Spec/plan/tasks amended (US3 rewritten; FR-005 `draft-check`, FR-006 `drafted_by`); T006 cancelled; T010–T014 implemented; converge pass 1 → T014 (brief-text scan test), pass 2 converged.
+- `brief.lint_draft` + CLI `draft-check FILE` (exit 0 / 3): schema + compiled plan + bridge count/duration; errors for model files, checkpoints/model names, LoRA, ComfyUI/workflow internals and URLs in creative text (field path named); warnings for `independent_t2i`, missing choreography correspondences, prompts > 600 chars. `Brief.drafted_by` → storyboard header only (plan hash unchanged). `brief-plan --llm` removed.
+- `docs/DRAFTING.md` drafting guide + session prompt; CLAUDE.md, ledger, ARCHITECTURE and one-shot updated.
+- Real drafts: pilot brief 0 errors/0 warnings (31.5625 s); `organic-machines` 0 errors/2 warnings (no correspondences); `engineering-pilot` storyboard 0/0.

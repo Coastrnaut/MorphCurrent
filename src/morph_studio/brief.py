@@ -56,6 +56,8 @@ class Brief(BaseModel):
     fps: int = 16
     max_bridge_frames: int = 81
     seed: int = Field(default=0, ge=0)
+    # Provenance note for Claude Desktop pre-drafting (F22 US3); header only, never in the plan hash
+    drafted_by: str | None = Field(default=None, max_length=120)
 
 
 def _slug(text: str, used: set[str]) -> str:
@@ -137,3 +139,86 @@ def plan_storyboard(brief: Brief) -> tuple[dict, dict]:
                "residual_s": round(span - brief.duration_s, 3),
                "unique_frames": 1 + n * (frames - 1)}
     return storyboard, preview
+
+
+# --- F22 US3: local checks for Claude-Desktop-drafted briefs and storyboards ------------------------
+
+FORBIDDEN = [  # creative text must never choose models, files, nodes or workflow internals
+    (re.compile(r"https?://|\bwww\.", re.I), "url"),
+    (re.compile(r"\.(safetensors|ckpt|gguf|pt|pth|bin)\b", re.I), "model file (safetensors/ckpt/...)"),
+    (re.compile(r"\blora\b|\blycoris\b", re.I), "lora"),
+    (re.compile(r"\bk?sampler\b|\bcomfy ?ui\b|\bworkflow\b|\bnode\s*(id|#)?\s*\d+|\bvae\b|\bunet\b|"
+                r"\bclip ?text ?encode\b|\bcfg\b|\bdenoise\b", re.I), "comfyui/workflow internals (ksampler, node, workflow ...)"),
+    (re.compile(r"\bqwen\b|\bwan ?2(\.\d)?\b|\bsdxl\b|\bstable diffusion\b|\bmidjourney\b|\bdall-?e\b|"
+                r"\bcheckpoint\b", re.I), "model name/checkpoint"),
+]
+LONG_PROMPT = 600
+
+
+def _texts(data: dict, kind: str):
+    """(field path, text) pairs of creative text in a brief or storyboard mapping."""
+    if kind == "brief":
+        yield "title", data.get("title")
+        yield "style_description", data.get("style_description")
+        for i, s in enumerate(data.get("scenes") or []):
+            for key in ("subject", "details", "morph"):
+                yield f"scenes[{i}].{key}", (s or {}).get(key)
+        return
+    yield "style.description", (data.get("style") or {}).get("description")
+    for i, a in enumerate(data.get("anchors") or []):
+        for key in ("prompt", "negative_prompt"):
+            yield f"anchors[{i}].{key}", (a or {}).get(key)
+    for i, tr in enumerate(data.get("transitions") or []):
+        yield f"transitions[{i}].prompt", (tr or {}).get("prompt")
+        ch = (tr or {}).get("choreography") or {}
+        for j, c in enumerate(ch.get("correspondences") or []):
+            yield f"transitions[{i}].choreography.correspondences[{j}]", f"{c.get('source', '')} {c.get('target', '')}"
+        for j, ph in enumerate(ch.get("phases") or []):
+            yield f"transitions[{i}].choreography.phases[{j}]", ph
+        for j, ng in enumerate(ch.get("negative") or []):
+            yield f"transitions[{i}].choreography.negative[{j}]", ng
+
+
+def lint_draft(data: object, repo_root: str = ".") -> dict:
+    """Validate a drafted brief or storyboard (as a YAML mapping). Errors block; warnings advise."""
+    from .dag import compile_plan
+    from .schema import Storyboard
+    errors: list[str] = []
+    warnings: list[str] = []
+    if not isinstance(data, dict):
+        return {"kind": "unknown", "errors": ["schema: draft must be a YAML mapping"], "warnings": []}
+    kind = "storyboard" if "schema_version" in data else "brief"
+    for path, text in _texts(data, kind):
+        if not isinstance(text, str):
+            continue
+        for pattern, label in FORBIDDEN:
+            if pattern.search(text):
+                errors.append(f"{path}: contains {label}: {pattern.search(text).group(0)!r}")
+        if path.endswith(".prompt") and len(text) > LONG_PROMPT:
+            warnings.append(f"{path}: prompt is {len(text)} characters (over {LONG_PROMPT}); consider trimming")
+    report: dict = {"kind": kind}
+    try:
+        if kind == "brief":
+            storyboard, preview = plan_storyboard(Brief.model_validate(data))
+            report.update(bridges=preview["transitions"], frames_per_bridge=preview["frames_per_bridge"],
+                          anchor_span_s=preview["anchor_span_s"])
+            sb = Storyboard.model_validate(storyboard)
+        else:
+            sb = Storyboard.model_validate(data)
+        plan = compile_plan(sb, repo_root=repo_root)
+        bridges = [t for t in plan["tasks"].values() if t["kind"] == "bridge"]
+        report.update(bridges=len(bridges), plan_sha256=plan["plan_sha256"],
+                      duration_s=plan["tasks"]["final:movie"]["nominal_duration_seconds"],
+                      blocked=plan["blocked"])
+        for anchor in sb.anchors:
+            if anchor.generation == "independent_t2i":
+                warnings.append(f"anchor {anchor.id}: independent_t2i breaks reference-edit lineage "
+                                "(explicit fallback; prefer reference_edit)")
+        for tr in sb.transitions:
+            if not (tr.choreography and tr.choreography.correspondences):
+                warnings.append(f"transition {tr.from_anchor}->{tr.to_anchor}: no choreography correspondences "
+                                "(physical part-to-part mapping helps Wan morph)")
+    except (ValueError, BriefError) as exc:  # pydantic ValidationError is a ValueError
+        errors.insert(0, f"schema: {str(exc).splitlines()[0]}" + (f" ({len(str(exc).splitlines())} lines)"
+                                                                 if len(str(exc).splitlines()) > 1 else ""))
+    return {**report, "errors": errors, "warnings": warnings}

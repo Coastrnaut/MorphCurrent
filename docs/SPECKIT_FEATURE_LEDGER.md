@@ -132,7 +132,7 @@ These original ten scope definitions and existing specification directories are 
 | **F19** | `specs/019-resumable-longform-timeline/` (created) | F14, F15, F17 | P1 | **OFFLINE-PASS** — `plan-diff` edit invalidation (Merkle stage identity; lineage rule; prediction = actual submissions in fake-ComfyUI E2E), optional contiguous chapters + `timeline` index/FFmpeg chapters/640×368 proxy, storage report and render disk preflight (exit 9), 2/10/50-anchor and random-restart tests; owner-approved multi-scene GPU resume pending |
 | **F20** | `specs/020-release-reproducible-pipeline/` (proposed) | F11–F19 | P0 final | **PLANNED — NOT IMPLEMENTED** |
 | **F21** | `specs/021-style-packs-asset-library/` (created) | F12, F18 | P1 | **OFFLINE-PASS** — versioned style packs with inheritance, per-scene overrides, pack SHA-256 in plan identity, private-library asset checks; `engineering-noir` packs for the film |
-| **F22** | `specs/022-story-brief-to-storyboard/` (created) | F14, F18, F21 | P1 | **OFFLINE-PASS** — `brief-plan`: deterministic brief → schema-valid storyboard with choreography, style pack, 4n+1 timing and preview; 8-scene engineering pilot generated; local-LLM drafting deferred |
+| **F22** | `specs/022-story-brief-to-storyboard/` (created) | F14, F18, F21 | P1 | **OFFLINE-PASS** — `brief-plan`: deterministic brief → schema-valid storyboard with choreography, style pack, 4n+1 timing and preview; 8-scene engineering pilot generated; Claude Desktop pre-drafting + `draft-check` (model/node/URL text rejected) — no local LLM |
 | **F23** | `specs/023-camera-framing-keyframes/` (proposed) | F12, F13, F14 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F24** | `specs/024-temporal-shape-stability/` (proposed) | F13, F16, F23 | P0 quality | **PLANNED — NOT IMPLEMENTED** |
 | **F25** | `specs/025-optical-frame-interpolation/` (proposed) | F09, F15, F24 | P1 | **PLANNED — NOT IMPLEMENTED** |
@@ -264,7 +264,7 @@ These original ten scope definitions and existing specification directories are 
 
 **Purpose:** Take the user from one creative idea to a real editable multi-scene YAML plan before any GPU rendering.
 
-**Build:** Parse a natural-language brief into explicit concepts, anchor progression, physical morph correspondences, beat/length budget, camera/storyboard constraints and candidate prompt text. Default deterministic rule/template compiler; optional local on-device/loopback LLM integration only if already installed, licensed and owner-enabled, with no user media uploaded or GPU starvation. Always validate schema, display the generated plan, expose edits and require approval before running.
+**Build:** Parse a natural-language brief into explicit concepts, anchor progression, physical morph correspondences, beat/length budget, camera/storyboard constraints and candidate prompt text. Default deterministic rule/template compiler. Creative drafting (briefs, storyboards, prompts) is done in Claude Desktop sessions as text only and checked locally (`draft-check`); no local LLM is used (owner decision 2026-11-24) and no user media is uploaded. Always validate schema, display the generated plan, expose edits and require approval before running.
 
 **Tests / evidence:** Golden creative briefs, ambiguity/error reporting, hallucinated model/node prevention, deterministic templating, unsafe filename injection, plan-version history and no GPU side effects.
 

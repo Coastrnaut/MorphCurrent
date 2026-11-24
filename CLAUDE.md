@@ -12,7 +12,7 @@
 
 ## Guardrails
 
-- **All image/video inference local.** Only ComfyUI loopback; no public media upload, hosted model inference, tracking or cloud API nodes. Claude reasoning may be cloud-hosted, separate from media execution.
+- **All image/video inference local.** Only ComfyUI loopback; no public media upload, hosted model inference, tracking or cloud API nodes. Claude reasoning may be cloud-hosted, separate from media execution. **Sequences and prompts are pre-drafted in Claude Desktop sessions (text only) and checked with `draft-check` — no local LLM drafting (owner 2026-11-24); see `docs/DRAFTING.md`.**
 - Native Windows 11, Python scripts only; no PowerShell `.ps1`, Bash scripts, WSL, Linux containers or reliance on `py.exe`. Controller `.venv` is isolated from ComfyUI `python_embeded`. Use `pathlib`, typed Python, subprocess arrays, `shell=False`.
 - Preserve `--confirm-gpu`, one-GPU-job/idle-queue discipline, targeted cancellation, model license/download consent and creative review. Previously documented owner consent for F01–F10 does **not** automatically authorize unrestricted F11–F30 GPU batches or new model installation. Confirm scope before consequential new action.
 - Never commit `.safetensors`, generated MP4s, private media, credentials, machine secrets, run manifests or bulky transient artifacts. Do not force-push, discard dirty files, globally interrupt ComfyUI or silently overwrite user data.
