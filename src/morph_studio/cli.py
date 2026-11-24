@@ -20,6 +20,8 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .ladder import (LadderError, propose_ladder, risk_report, sha256_text as ladder_sha256,
+                     write_proposal)
 from .qa_subject import calibrate as calibrate_qa
 from .audio import AudioError, analyze_audio, sync_report
 from .audio_bands import analyze_bands, band_hits, render_timeline_png
@@ -225,6 +227,41 @@ def _audio_visualize(args: argparse.Namespace) -> int:
 def _qa_calibrate(args: argparse.Namespace) -> int:
     """Precision/recall of subject-aware QA against labelled defect windows (local clips)."""
     print(json.dumps(calibrate_qa(args.labels, args.repo_root), indent=2))
+    return 0
+
+
+def _ladder_risk(args: argparse.Namespace) -> int:
+    """Interpretable per-transition morph risk (prompt distance; optional anchor geometry)."""
+    sequence = load_storyboard(args.storyboard)
+    geometry = {}
+    if args.run:
+        manifest = json.loads((Path(args.run) / "manifest.json").read_text(encoding="utf-8"))
+        images = {}
+        for task, stage in manifest["stages"].items():
+            if task.startswith("anchor:") and stage.get("job_dir"):
+                job = json.loads((Path(stage["job_dir"]) / "job.json").read_text(encoding="utf-8"))
+                if job.get("image"):
+                    images[task[7:]] = Path(stage["job_dir"]) / job["image"]["local_path"]
+        for t in sequence.transitions:
+            if t.from_anchor in images and t.to_anchor in images:
+                geometry[f"{t.from_anchor}->{t.to_anchor}"] = compare_images(
+                    images[t.from_anchor], images[t.to_anchor])["comparison"]
+    print(json.dumps(risk_report(sequence, geometry), indent=2))
+    return 0
+
+
+def _ladder_propose(args: argparse.Namespace) -> int:
+    """Write a proposal storyboard splitting one transition with intermediate anchors."""
+    import yaml as _yaml
+    src = Path(args.storyboard)
+    data = _yaml.safe_load(src.read_text(encoding="utf-8"))
+    from_id, _, to_id = args.split.partition("->")
+    history = load_history(args.history) if Path(args.history).is_file() else None
+    sb, report = propose_ladder(data, from_id, to_id, steps=args.steps, history=history,
+                                max_new=args.max_new, max_gpu_s=args.max_gpu_s,
+                                source_sha256=ladder_sha256(src))
+    write_proposal(sb, report, Path(args.out))
+    print(json.dumps({"out": args.out, **report}, indent=2))
     return 0
 
 
@@ -458,6 +495,17 @@ def main(argv: list[str] | None = None) -> int:
     qc = subs.add_parser("qa-calibrate", help="Score QA detectors against labelled defect windows")
     qc.add_argument("labels", nargs="?", default="configs/qa_labels.json")
     qc.add_argument("--repo-root", default=".")
+    lr = subs.add_parser("ladder-risk", help="Per-transition morph risk (prompt distance, optional geometry)")
+    lr.add_argument("storyboard")
+    lr.add_argument("--run", help="Run dir whose generated anchors add F12 geometry evidence")
+    lp = subs.add_parser("ladder-propose", help="Write a proposal storyboard with intermediate anchors")
+    lp.add_argument("storyboard")
+    lp.add_argument("--split", required=True, help="FROM->TO transition to split")
+    lp.add_argument("--steps", type=int, default=1, help="Intermediate anchors to insert")
+    lp.add_argument("--max-new", type=int, default=3)
+    lp.add_argument("--max-gpu-s", type=float, help="Refuse if the ladder adds more GPU seconds")
+    lp.add_argument("--history", default="configs/perf_history.json")
+    lp.add_argument("--out", required=True, help="New storyboard path (refused if it exists)")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -553,6 +601,10 @@ def main(argv: list[str] | None = None) -> int:
             return _audio_visualize(args)
         elif args.command == "qa-calibrate":
             return _qa_calibrate(args)
+        elif args.command == "ladder-risk":
+            return _ladder_risk(args)
+        elif args.command == "ladder-propose":
+            return _ladder_propose(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":
@@ -568,7 +620,7 @@ def main(argv: list[str] | None = None) -> int:
             with ComfyClient(args.url) as client:
                 print(json.dumps(client.health(), indent=2))
         return 0
-    except (ValidationError, ValueError, OSError, AudioError, ComfyError, WorkflowBindingError, BridgeError) as exc:
+    except (ValidationError, ValueError, OSError, AudioError, LadderError, ComfyError, WorkflowBindingError, BridgeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 

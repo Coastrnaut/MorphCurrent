@@ -124,7 +124,7 @@ These original ten scope definitions and existing specification directories are 
 | **F11** | `specs/011-measured-gpu-benchmarks/` (created) | F07, F10 | P0 | **GPU-VERIFIED** — `perf-report`, `estimate`, timestamped whole-GPU samples; Wan model hashes verified; benchmark matrix (cold/warm 832×480, 640×368) completed 2026-11-24 — see PROGRESS F11 T011 |
 | **F12** | `specs/012-reference-anchor-continuity/` (created) | F04, F08 | P0 | **OFFLINE-PASS** — geometry heuristics recorded per child anchor, `anchor-check`; matched three-anchor owner approval pending |
 | **F13** | `specs/013-physical-morph-choreography/` (created) | F12, F08 | P0 | **OFFLINE-PASS** — `choreography` → compiled bridge prompts/negatives, `prompt-preview --variants`; fixed-seed GPU A/B pending |
-| **F14** | `specs/014-adaptive-transition-ladders/` (proposed) | F12, F13, F05 | P1 | **PLANNED — NOT IMPLEMENTED** |
+| **F14** | `specs/014-adaptive-transition-ladders/` (created) | F12, F13, F05 | P1 | **OFFLINE-PASS** — `ladder-risk` (prompt distance + F12 geometry), `ladder-propose` (intermediate reference-edit anchors, 4n+1 splits, GPU budget); reviewed multi-hop render pending |
 | **F15** | `specs/015-local-audio-beat-mapping/` (created) | F05, F09 | P0 | **OFFLINE-PASS** — tempo/beats/downbeat, visualizer-style bass/mid/treb bands, licence guard, drift report, timeline PNG; real licensed track pending |
 | **F16** | `specs/016-calibrated-qa-candidates/` (created) | F12, F13, F08 | P0 | **OFFLINE-PASS (partial)** — subject collapse/drift/blur detectors + `qa-calibrate`; collapse recall 2/3 on real clips, drift/blur 0; owner labels pending |
 | **F17** | `specs/017-vram-aware-job-scheduler/` (proposed) | F11, F07, F14 | P1 | **PLANNED — NOT IMPLEMENTED** |
