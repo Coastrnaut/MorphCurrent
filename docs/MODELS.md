@@ -16,6 +16,7 @@ All models run inside the local ComfyUI Portable install (`C:\AI\ComfyUI_windows
 | | `vae` | `qwen_image_vae.safetensors` | `a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f` |
 | Template-referenced, unused (turbo off) | `loras` | `Qwen-Image-Lightning-8steps-V1.0.safetensors` | `07b5a999881437f63124979844ba1949ce2438f65b6220628a196a7d30a4fff9` |
 | | `loras` | `Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors` | `2a32ce938ec71db2b49a817b4844ae86995569518dea56ee0ddc209cbe8e1377` |
+| Learned 1080p upscaler (F26 T016; owner-approved 2026-11-24) | `upscale_models` | `RealESRGAN_x2plus.pth` | `49fafd45f8fd7aa8d31ab2a22d14d91b536c34494a5cfe31eb5d89c2fa266abb` |
 
 Qwen hashes were computed while downloading and match the values Hugging Face publishes. Sources: `huggingface.co/Comfy-Org/Qwen-Image`, `Comfy-Org/Qwen-Image-Edit`, `lightx2v/Qwen-Image-Lightning`; Apache-2.0 per their Hugging Face metadata (owner to verify on the model cards). Wan hashes were measured locally on 2026-11-24 with `models-hash --confirm-io` (owner-approved, idle queue).
 
@@ -45,3 +46,7 @@ Use those exact template titles (Workflow → Browse Templates → Image); other
 | 2026-11-24 | Qwen-Image + Qwen-Image-Edit-2509 fp8 (4 files, 50.5 GB) | owner, in chat | download only, SHA-256 verified |
 | 2026-11-24 | Qwen Lightning LoRAs (2 files, 2.55 GB) | owner, in chat | download only, SHA-256 verified |
 | 2026-11-24 | Local GPU renders to complete project tasks | owner, in chat | standing; idle queue, one job at a time |
+
+## Upscaler (F26)
+
+`RealESRGAN_x2plus.pth` — Real-ESRGAN 2× general model, **BSD-3-Clause** (xinntao/Real-ESRGAN), downloaded with owner consent on 2026-11-24 from the official release `https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth` into `ComfyUI/models/upscale_models/` (`.part` then rename). Size verified 67,061,725 bytes against the release metadata (the release publishes no digest); SHA-256 computed locally `49fafd45f8fd7aa8d31ab2a22d14d91b536c34494a5cfe31eb5d89c2fa266abb`. ComfyUI core `UpscaleModelLoader` lists it. Use requires the owner's API export `workflows/04_upscale_x2.json` and a hash-pinned binding profile (F26 T016). Learned upscaling can invent texture: every use runs the F26 identity check and needs owner review.

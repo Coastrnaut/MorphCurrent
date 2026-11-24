@@ -164,7 +164,7 @@ def _model_hashes(models_md: Path) -> list[dict]:
     if not models_md.is_file():
         return rows
     for line in models_md.read_text(encoding="utf-8").splitlines():
-        m = re.match(r"^\|[^|]*\|\s*`([^`]+)`\s*\|\s*`([^`]+\.safetensors)`\s*\|\s*`([0-9a-f]{64})`\s*\|", line)
+        m = re.match(r"^\|[^|]*\|\s*`([^`]+)`\s*\|\s*`([^`]+\.(?:safetensors|pth))`\s*\|\s*`([0-9a-f]{64})`\s*\|", line)
         if m:
             rows.append({"folder": m.group(1), "file": m.group(2), "sha256": m.group(3)})
     return rows
