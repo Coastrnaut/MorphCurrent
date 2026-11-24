@@ -41,3 +41,10 @@ M6 — Higher resolution + frame interpolation + resumable multi-song render job
 - [x] Upgrade Python Spec Kit initialization to handle existing PowerShell-mode installs; preserve backed-up files, verify actual `.py` core scripts and Claude command references, and move generated PowerShell fallback out of the active tree.
 - [ ] On the owner's Windows host, run `python --version`, `python scripts/windows/speckit.py --init`, then `python scripts/windows/speckit.py --verify` and record actual CLI version and results.
 - [ ] Real local CUDA/ComfyUI inference remains untested; do not confuse Windows CI unit tests with A6000 evidence.
+
+## Example FLF2V anchor pair generated (2026-11-23)
+
+- [x] Two matched 16:9 Glass Orchid → Metallic Butterfly endpoint images created from original AI-generated artwork, manually composed/cropped for consistent framing and stored as small JPEG fixtures in `assets/anchors/`.
+- [x] Documented the positive transformation prompt, manual ComfyUI first/last-frame loading and Python-only optional staging helper (`docs/ANCHOR_EXAMPLES.md`).
+- [ ] Owner still needs to copy or upload these images in the local running ComfyUI and complete a short Wan 2.2 I2V/FLF2V smoke render.
+- [ ] Save and validate the real ComfyUI API-format workflow. No GPU video inference was performed or claimed by this commit.

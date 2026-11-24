@@ -32,7 +32,10 @@ models/
 *.png
 *.jpg
 *.jpeg
-# exception: small tests can be explicitly force-added with review
+# Only the two reviewed 1280x720 example anchors are intentionally tracked.
+!assets/anchors/01_glass_orchid.jpg
+!assets/anchors/02_metallic_butterfly.jpg
+# Other generated media remain ignored. New media require explicit review.
 # secrets / local approvals
 .env
 .env.*

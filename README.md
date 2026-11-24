@@ -59,12 +59,27 @@ The Wan 2.1 VAE path was previously user-reported; these text-encoder and diffus
 
 Select the two **I2V** diffusion models in the corresponding high-/low-noise loader nodes, **not** similarly named T2V models. Select UMT5 in **Load CLIP** and Wan 2.1 VAE in **Load VAE**. See [ComfyUI Portable model file checks](docs/COMFYUI_PORTABLE_WINDOWS.md) for exact Windows paths and `dir` commands. Do not commit the model files.
 
+
+## Example first/last-frame images for Wan 2.2
+
+Two generated 16:9 test anchors are tracked at [assets/anchors/](assets/anchors/): **Glass Orchid** (first frame) and **Metallic Butterfly** (last frame). Unlike the ignored output media, only these two reviewed JPEG samples are committed. On native Windows, copy them safely into ComfyUI Portable's input folder:
+
+```cmd
+cd /d C:\GIT\MorphCurrent
+python scripts\windows\stage_example_anchors.py --install-root C:\AI\ComfyUI_windows_portable --dry-run
+python scripts\windows\stage_example_anchors.py --install-root C:\AI\ComfyUI_windows_portable
+```
+
+Refresh the ComfyUI model/image list, select `01_glass_orchid.jpg` in the first **Load Image** node and `02_metallic_butterfly.jpg` in the last **Load Image** node. Paste the motion prompt and follow the initial 49-frame smoke test in [docs/ANCHOR_EXAMPLES.md](docs/ANCHOR_EXAMPLES.md). These are generated *images*, not evidence that Wan rendered a working video.
+
 ## Repo navigation
 
 - `docs/ARCHITECTURE.md`: contracts, render DAG, caching, memory, beat timing, stitching and failure recovery.
 - `docs/WINDOWS_DEVELOPMENT.md`: Windows native only; separate environments and Python-based tooling.
 - `docs/COMFYUI_PORTABLE_WINDOWS.md`: official RTX Portable download, C:\AI extraction, Wan 2.1 VAE placement, Python launcher and CUDA health checks.
-- `scripts/windows/`: Python helpers for setup, ComfyUI launch, diagnostics and Spec Kit.
+- `scripts/windows/`: Python helpers for setup, ComfyUI launch, staging sample anchors, diagnostics and Spec Kit.
+- `assets/anchors/`: two generated, reviewed JPEG images for the first FLF2V smoke test.
+- `docs/ANCHOR_EXAMPLES.md`: positive motion prompt and first/last-frame ComfyUI test instructions.
 - `AutoCreator.md`: staged engineering roadmap and acceptance gates.
 - `docs/CLAUDE_DESKTOP_ONESHOT.md`: full copy/paste one-shot for Claude Desktop Code.
 - `CLAUDE.md`: permanent repository rules for the coding agent.
