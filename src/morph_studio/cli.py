@@ -158,8 +158,11 @@ def _render(args: argparse.Namespace) -> int:
     if result["status"] == "paused_budget":
         print("PAUSED: budget reached before the next GPU job; re-run the same command (optionally with a "
               "new --max-jobs/--max-gpu-s) to continue without repeating finished stages.", file=sys.stderr)
-    return {"complete": 0, "validated": 0, "blocked": 6, "awaiting_review": 7,
-            "rerender_needed": 7, "paused_budget": 8, "blocked_disk": 9}.get(result["status"], 5)
+    return RENDER_EXIT.get(result["status"], 5)
+
+
+RENDER_EXIT = {"complete": 0, "validated": 0, "blocked": 6, "awaiting_review": 7,
+               "rerender_needed": 7, "paused_budget": 8, "blocked_disk": 9}
 
 
 def _perf_report(args: argparse.Namespace) -> int:
@@ -310,6 +313,40 @@ def _brief_plan(args: argparse.Namespace) -> int:
                       "estimated_gpu_s": est.get("total_gpu_s"), "estimate_label": est.get("label"),
                       "blocked": plan["blocked"]}, indent=2))
     return 0
+
+
+def _release(args: argparse.Namespace) -> int:
+    """F20 production-acceptance commands (offline except `replay --confirm-gpu`)."""
+    from . import release as rel
+    try:
+        if args.command == "run-compare":
+            report = rel.compare_runs(args.run_a, args.run_b, frames=args.frames)
+            print(json.dumps(report, indent=2))
+            return 0 if report["verdict"] == "reproduced" else 10
+        if args.command == "replay":
+            out = rel.replay(args.storyboard, args.reference, args.runs_root, lambda: ComfyClient(args.url),
+                             confirm_gpu=args.confirm_gpu, frames=args.frames)
+            print(json.dumps(out, indent=2, ensure_ascii=False))
+            if "comparison" in out:
+                return 0 if out["comparison"]["verdict"] == "reproduced" else 10
+            return RENDER_EXIT.get(out["render"]["status"], 5)  # did not finish: same codes as `render`
+        if args.command == "audit":
+            report = rel.audit_repo(args.repo_root)
+            print(json.dumps(report, indent=2))
+            return 11 if report["errors"] else 0
+        if args.command == "run-backup":
+            print(json.dumps(rel.backup_run(args.run, args.out, args.allow_missing_jobs), indent=2))
+            return 0
+        if args.command == "run-restore":
+            print(json.dumps({"restored": str(rel.restore_run(args.archive, args.runs_root))}, indent=2))
+            return 0
+        if args.command == "acceptance":
+            print(json.dumps(rel.acceptance_matrix(args.ledger, all_features=args.all), indent=2))
+            return 0
+    except rel.ReleaseError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    raise ValueError(f"unknown release command {args.command}")
 
 
 def _draft_check(args: argparse.Namespace) -> int:
@@ -646,6 +683,29 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    rc = subs.add_parser("run-compare", help="Compare two runs stage by stage (bytes; --frames decodes)")
+    rc.add_argument("run_a")
+    rc.add_argument("run_b")
+    rc.add_argument("--frames", action="store_true")
+    rp = subs.add_parser("replay", help="Render into a fresh empty runs root, then compare with a reference run")
+    rp.add_argument("storyboard")
+    rp.add_argument("--reference", required=True)
+    rp.add_argument("--runs-root", required=True, help="Must be empty or absent")
+    rp.add_argument("--confirm-gpu", action="store_true")
+    rp.add_argument("--frames", action="store_true")
+    rp.add_argument("--url", default="http://127.0.0.1:8188")
+    au = subs.add_parser("audit", help="Release audit: workflow pins, media licences, forbidden tracked files")
+    au.add_argument("--repo-root", default=".")
+    rb = subs.add_parser("run-backup", help="Archive a run and its job folders with SHA-256 checksums")
+    rb.add_argument("run")
+    rb.add_argument("--out", required=True)
+    rb.add_argument("--allow-missing-jobs", action="store_true")
+    rr = subs.add_parser("run-restore", help="Verify and restore a run archive (never overwrites)")
+    rr.add_argument("archive")
+    rr.add_argument("--runs-root", required=True)
+    ac = subs.add_parser("acceptance", help="F01-F20 acceptance matrix from the ledger")
+    ac.add_argument("--all", action="store_true", help="All forty features")
+    ac.add_argument("--ledger", default="docs/SPECKIT_FEATURE_LEDGER.md")
     dc = subs.add_parser("draft-check", help="Check a Claude-drafted brief or storyboard locally (offline)")
     dc.add_argument("draft", help="Brief or storyboard YAML")
     dc.add_argument("--repo-root", default=".")
@@ -775,6 +835,8 @@ def main(argv: list[str] | None = None) -> int:
             return _style(args)
         elif args.command == "brief-plan":
             return _brief_plan(args)
+        elif args.command in ("run-compare", "replay", "audit", "run-backup", "run-restore", "acceptance"):
+            return _release(args)
         elif args.command == "draft-check":
             return _draft_check(args)
         elif args.command == "plan-diff":
