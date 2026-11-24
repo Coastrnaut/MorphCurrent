@@ -80,5 +80,8 @@ the initial smoke test.
 - `models\diffusion_models\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors`
 
 See [ComfyUI Portable setup](COMFYUI_PORTABLE_WINDOWS.md) for exact `C:\AI` paths
-and instructions. Image presence and graph compatibility on the owner's local
-A6000 must still be verified. This repository has not performed a video render.
+and instructions. User has since reported a successful **manual** FLF2V render and uploaded the video for inspection. See [baseline MC-FLF2V-001 and proposed continuity prompt](RENDER_BASELINE_001.md). The example's original prompt above remains preserved for comparison. Actual exported node graph, selected seed/sampler, checkpoint identities and programmatic MorphCurrent integration still require verification.
+
+## After the first smoke test
+
+The user's 49-frame video was reviewed: orchid and butterfly endpoints matched closely, while some petals rose partially out of frame and butterfly wings were temporarily distorted in the middle. **Do not overwrite this initial example prompt**. Use [MC-FLF2V-001 review and MC-FLF2V-002 revised prompt](RENDER_BASELINE_001.md) for the 65-frame candidate experiment.

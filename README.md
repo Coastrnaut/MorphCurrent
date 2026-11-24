@@ -4,7 +4,9 @@
 
 MorphCurrent is a Python orchestration project for making continuous Deforum-like journeys with modern image and video models. The core idea is to generate **structurally compatible anchor images**, bridge each pair using **Wan 2.2 14B first/last-frame video conditioning** inside local ComfyUI, quality-check the results, then join them with FFmpeg. Claude Desktop Code develops and operates the repository; the actual rendering is local.
 
-> **Status: engineering starter, not a finished video renderer.** The Python client, storyboard validator, timing compiler and tests form an initial foundation. Actual anchor/image-model workflow exports and a verified Wan FLF2V API-format graph must be supplied from your own installed ComfyUI before GPU rendering. No models or videos are bundled, and no A6000 test is claimed.
+> **Status: engineering starter, not a finished automated video renderer.** The owner completed a successful **manual** Wan 2.2 FLF2V Orchid → Butterfly render (49 frames, 640×368, 16 FPS), documented in [the reviewed baseline](docs/RENDER_BASELINE_001.md); an API workflow export and MorphCurrent automation are still pending.
+>
+> **Starter limitations:** The Python client, storyboard validator, timing compiler and tests form an initial foundation. Actual anchor/image-model workflow exports and a verified Wan FLF2V API-format graph must be supplied from your own installed ComfyUI before GPU rendering. No model weights or videos are bundled. The owner's manual A6000 render is documented separately; automated MorphCurrent GPU execution remains unverified.
 
 ## Target hardware and stack
 

@@ -57,3 +57,17 @@ def test_wan22_i2v_fp8_checkpoints_and_encoder_documented():
     guide = (ROOT / "docs/COMFYUI_PORTABLE_WINDOWS.md").read_text(encoding="utf-8")
     assert "Load CLIP" in guide and "Load Diffusion Model" in guide
     assert "not independently verified" not in guide or "Installation evidence" in guide
+
+
+def test_first_real_video_baseline_and_refinement_documented():
+    """Protect baseline evidence and avoid silently losing the revised prompt."""
+    baseline = (ROOT / "docs" / "RENDER_BASELINE_001.md").read_text(encoding="utf-8")
+    progress = (ROOT / "PROGRESS.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "docs" / "EXPERIMENTS.md").read_text(encoding="utf-8")
+    assert "MC-FLF2V-001" in baseline and "MC-FLF2V-002" in baseline
+    assert "640 × 368" in baseline and "65" in baseline
+    assert "Every crystal petal gradually bends, folds, and reshapes" in baseline
+    assert "a638f6e1d58d876670ddc72c0bb773f9f6c83d93076ac3a9403c41618823120c" in baseline
+    assert "NOT MEASURED" in baseline or "not retrieved" in baseline
+    assert "RENDER_BASELINE_001.md" in progress and "RENDER_BASELINE_001.md" in experiments
+    assert "not yet rendered" in progress
