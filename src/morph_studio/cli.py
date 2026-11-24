@@ -315,6 +315,21 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _concepts(args: argparse.Namespace) -> int:
+    """F31 engineering concept bank: validate and list for owner review (offline)."""
+    from . import concepts as cc
+    if args.command == "concepts-check":
+        rep = cc.check(args.bank, target=args.target, plan=args.plan)
+        print(json.dumps(rep, indent=2, ensure_ascii=True))
+        return 0 if rep["ok"] else 1
+    bank = cc.load_bank(args.bank)
+    if args.json:
+        print(json.dumps({"coverage": cc.coverage(bank), "entries": bank["entries"]}, indent=2, ensure_ascii=True))
+    else:
+        print(chr(10).join(cc.listing(bank)).encode("ascii", "replace").decode("ascii"))
+    return 0
+
+
 def _deliver(args: argparse.Namespace) -> int:
     """F30 multi-format delivery and release check (local FFmpeg; never tags)."""
     from . import delivery as dv
@@ -1030,6 +1045,14 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    cck = subs.add_parser("concepts-check", help="Validate the F31 engineering concept bank")
+    cck.add_argument("--bank", default="configs/concepts/engineering-film.yaml")
+    grp = cck.add_mutually_exclusive_group()
+    grp.add_argument("--plan", default=None, help="sync-plan JSON whose anchor count the bank must cover")
+    grp.add_argument("--target", type=int, default=None, help="Required entry count (default 96)")
+    cls = subs.add_parser("concepts-list", help="Numbered list of the concept bank for owner review")
+    cls.add_argument("--bank", default="configs/concepts/engineering-film.yaml")
+    cls.add_argument("--json", action="store_true")
     rc = subs.add_parser("release-check", help="Acceptance through F30 + repository audit (never tags)")
     rc.add_argument("--through", type=int, choices=[20, 30, 40], default=30)
     rc.add_argument("--ledger", default="docs/SPECKIT_FEATURE_LEDGER.md")
@@ -1174,6 +1197,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("concepts-check", "concepts-list"):
+            return _concepts(args)
         elif args.command in ("deliver", "release-check"):
             return _deliver(args)
         elif args.command in ("experiment-plan", "experiment-run", "experiment-rate", "experiment-report"):

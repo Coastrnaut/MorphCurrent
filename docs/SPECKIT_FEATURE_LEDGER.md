@@ -411,7 +411,7 @@ upper-bound comparison.
 
 | ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
 |---|---|---|---|---|
-| **F31** | `specs/031-engineering-concept-bank/` (proposed) | F12, F21 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F31** | `specs/031-engineering-concept-bank/` (created) | F12, F21 | P0 | **OFFLINE-PASS (draft)** — Claude-drafted `configs/concepts/engineering-film.yaml`: 96 subjects (one per anchor of the current Mozart sync plan) across ten eras (9–10 each), lightning → … → AI hardware → lightning, each with description, shapes, materials, scale, morph-affinity note, accuracy note, honest sources, `accuracy: unverified`; `concepts-check` (schema, unique ids, era order/coverage, single `follows` chain, link notes, brand/logo/person terms, count vs sync plan, approval rules) and `concepts-list`; owner approval pending (T013), accuracy review is F33 |
 | **F32** | `specs/032-full-song-act-structure/` (proposed) | F15, F19, F22, F31 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F33** | `specs/033-technical-accuracy-review/` (proposed) | F31, F16 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F34** | `specs/034-engineering-visual-language/` (proposed) | F21, F12, F23 | P1 | **PLANNED — NOT IMPLEMENTED** |

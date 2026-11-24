@@ -1,0 +1,1643 @@
+# F31 engineering concept bank: one subject per anchor of the full-song film, in film order.
+# Generic, physically plausible depictions only (no brands, logos, trademarked designs or real people).
+# Accuracy is UNVERIFIED until the F33 review; the owner approves by filling `approval`.
+version: 1
+status: draft
+approval: null
+drafted_by: Claude (text-only drafting in a Claude session, 2026-11-24; no local LLM)
+eras:
+- natural electricity
+- early storage
+- generation and grid
+- signals and communication
+- vacuum-tube computing
+- solid state
+- integrated circuits
+- microprocessors
+- parallel and GPU compute
+- data centers and AI hardware
+entries:
+- id: storm-cell-over-plain
+  era: natural electricity
+  subject: towering thunderstorm cell over a dark plain
+  description: an anvil-topped cumulonimbus cloud lit from within by flickering charge, rain curtains below
+  shapes:
+  - anvil
+  - column
+  materials:
+  - water vapour
+  - ice
+  scale: landscape
+  morph_to_next: the cloud's inner glow collapses into a single branching channel
+  accuracy_note: Charge separation in storm clouds is well established; internal flicker is stylized.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: forked-lightning-bolt
+  era: natural electricity
+  follows: storm-cell-over-plain
+  subject: forked lightning bolt
+  description: a bright branching discharge channel splitting into many forks against a night sky
+  shapes:
+  - branching line
+  - fork
+  materials:
+  - plasma
+  - air
+  scale: landscape
+  morph_to_next: the forks thicken into the twisting roots of a fused sand tube
+  accuracy_note: Branching stepped leaders are a standard description of cloud-to-ground lightning.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: fulgurite-glass-tube
+  era: natural electricity
+  follows: forked-lightning-bolt
+  subject: 'fulgurite: lightning-fused sand tube'
+  description: a hollow, rough, root-like tube of glassy fused sand with a crusted exterior
+  shapes:
+  - hollow tube
+  - roots
+  materials:
+  - fused silica
+  - sand
+  scale: hand-held
+  morph_to_next: the glassy tube smooths and straightens into a glowing static spark between two spheres
+  accuracy_note: Fulgurites form when lightning fuses sand; shape detail is illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: spark-between-spheres
+  era: natural electricity
+  follows: fulgurite-glass-tube
+  subject: spark jumping between two brass spheres
+  description: two polished metal spheres on insulating posts with a thin violet spark bridging the gap
+  shapes:
+  - sphere
+  - gap
+  materials:
+  - brass
+  - glass
+  scale: tabletop
+  morph_to_next: the spheres soften into amber beads that hold the faint glow
+  accuracy_note: Spark gaps between electrodes are a classic demonstration.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: rubbed-amber-and-fur
+  era: natural electricity
+  follows: spark-between-spheres
+  subject: polished amber attracting small fibres
+  description: a honey-coloured amber rod lifting tiny fibres and dust after being rubbed with fur
+  shapes:
+  - rod
+  - fibres
+  materials:
+  - amber
+  - fur
+  scale: hand-held
+  morph_to_next: the amber rod elongates into a glass tube glowing with corona discharge
+  accuracy_note: Triboelectric charging of amber is the historical root of the word electricity.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: mast-tip-corona
+  era: natural electricity
+  follows: rubbed-amber-and-fur
+  subject: corona glow on a ship's mast tip
+  description: a pale blue-violet corona glow crowning the top of a wooden mast in a storm
+  shapes:
+  - spike
+  - halo
+  materials:
+  - wood
+  - ionized air
+  scale: large object
+  morph_to_next: the mast tip's halo condenses into the glowing ring of an aurora seen from above
+  accuracy_note: Corona discharge at pointed conductors is well documented; scene is stylized.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: aurora-curtain
+  era: natural electricity
+  follows: mast-tip-corona
+  subject: aurora curtain over snow
+  description: rippling green and violet light curtains folding across a polar night sky
+  shapes:
+  - curtain
+  - ribbon
+  materials:
+  - ionized gas
+  scale: landscape
+  morph_to_next: the folding ribbons tighten into the fluttering fins of an electric fish
+  accuracy_note: Aurorae arise from charged particles in the upper atmosphere.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: electric-eel-silhouette
+  era: natural electricity
+  follows: aurora-curtain
+  subject: electric fish in dark water
+  description: a long dark eel-like fish with faint stacked electrocyte bands glowing along its body
+  shapes:
+  - elongated body
+  - stacked bands
+  materials:
+  - water
+  - living tissue
+  scale: animal
+  morph_to_next: the stacked bands along its body become stacked metal discs in a column
+  accuracy_note: Electric fish produce discharges with stacked electrocyte cells; glow is stylized.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: charged-dust-cloud
+  era: natural electricity
+  follows: electric-eel-silhouette
+  subject: charged particles drifting in a beam of light
+  description: glittering dust motes drifting and clustering along invisible field lines in a sunbeam
+  shapes:
+  - points
+  - field lines
+  materials:
+  - dust
+  - light
+  scale: room
+  morph_to_next: the drifting motes gather into the inner metal foil of a glass jar
+  accuracy_note: Electrostatic attraction of dust is common; field-line visibility is stylized.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: glass-leyden-jar
+  era: early storage
+  follows: charged-dust-cloud
+  subject: glass storage jar coated in metal foil
+  description: a thick glass jar wrapped inside and out with tin foil, a brass rod and chain rising from a wooden
+    stopper
+  shapes:
+  - cylinder
+  - rod
+  materials:
+  - glass
+  - tin foil
+  - brass
+  scale: tabletop
+  morph_to_next: several jars line up and their foil bands merge into a battery of jars
+  accuracy_note: Foil-lined glass jar capacitors are an 18th-century technology.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: battery-of-jars
+  era: early storage
+  follows: glass-leyden-jar
+  subject: wooden rack of linked foil jars
+  description: a row of foil-lined glass jars in a wooden tray, their rods joined by a brass bar
+  shapes:
+  - row of cylinders
+  - bar
+  materials:
+  - glass
+  - foil
+  - wood
+  scale: tabletop
+  morph_to_next: the jar row compresses into a column of stacked metal discs
+  accuracy_note: Linking jars to store more charge is historically documented.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: voltaic-pile-column
+  era: early storage
+  follows: battery-of-jars
+  subject: voltaic pile of stacked discs
+  description: a vertical column of alternating zinc and copper discs separated by brine-soaked cloth, held by glass
+    rods
+  shapes:
+  - stacked discs
+  - column
+  materials:
+  - zinc
+  - copper
+  - cloth
+  scale: tabletop
+  morph_to_next: the stacked discs spread sideways into cups of liquid linked in a crown
+  accuracy_note: Alternating dissimilar-metal stacks were the first continuous-current batteries.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: crown-of-cups
+  era: early storage
+  follows: voltaic-pile-column
+  subject: crown of cups battery
+  description: a ring of glass cups filled with brine, each bridged to the next by bent zinc-copper strips
+  shapes:
+  - ring
+  - arches
+  materials:
+  - glass
+  - zinc
+  - copper
+  - brine
+  scale: tabletop
+  morph_to_next: the cups merge into a single glazed jar with a porous inner pot
+  accuracy_note: Cup-based wet cells are a documented early design.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: porous-pot-wet-cell
+  era: early storage
+  follows: crown-of-cups
+  subject: two-fluid wet cell
+  description: a glazed ceramic jar with a porous inner pot, a copper cylinder and a zinc rod, blue solution visible
+  shapes:
+  - nested cylinders
+  materials:
+  - ceramic
+  - copper
+  - zinc
+  - copper sulfate
+  scale: tabletop
+  morph_to_next: the nested cylinders become the carbon rod inside a sealed dry cell
+  accuracy_note: Two-fluid cells with porous pots supplied early telegraphs.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: carbon-zinc-dry-cell
+  era: early storage
+  follows: porous-pot-wet-cell
+  subject: cutaway dry cell
+  description: a cylindrical zinc can cut open to show a central carbon rod surrounded by dark paste
+  shapes:
+  - cylinder
+  - central rod
+  materials:
+  - zinc
+  - carbon
+  - paste
+  scale: hand-held
+  morph_to_next: the cylinder thickens into the ribbed plates of a lead-acid accumulator
+  accuracy_note: Carbon-zinc dry cells use a zinc can and carbon rod; cutaway is illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: lead-acid-accumulator
+  era: early storage
+  follows: carbon-zinc-dry-cell
+  subject: glass-cased lead-acid accumulator
+  description: a clear glass case holding grey lead plates in sulfuric acid, terminals on top
+  shapes:
+  - parallel plates
+  - box
+  materials:
+  - lead
+  - glass
+  - acid
+  scale: tabletop
+  morph_to_next: the parallel plates roll up into a spiral of foil and paper
+  accuracy_note: Lead-acid rechargeable cells date from the mid-19th century.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: rolled-paper-capacitor
+  era: early storage
+  follows: lead-acid-accumulator
+  subject: rolled foil and paper capacitor
+  description: two long strips of metal foil and waxed paper rolled tightly into a cylinder with wire leads
+  shapes:
+  - spiral
+  - cylinder
+  materials:
+  - aluminium foil
+  - waxed paper
+  scale: hand-held
+  morph_to_next: the spiral unwinds into the copper coil of a hand-cranked generator
+  accuracy_note: Rolled foil-paper capacitors are a standard construction.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: glass-plate-condenser-stack
+  era: early storage
+  follows: rolled-paper-capacitor
+  subject: stack of glass plates with foil
+  description: a block of square glass plates interleaved with foil sheets clamped in a wooden frame
+  shapes:
+  - stacked plates
+  - block
+  materials:
+  - glass
+  - foil
+  - wood
+  scale: tabletop
+  morph_to_next: the stacked plates rotate into the laminated iron core of a generator
+  accuracy_note: Plate condensers of glass and foil were used in early labs; layout is illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: friction-machine-globe
+  era: generation and grid
+  follows: glass-plate-condenser-stack
+  subject: hand-cranked friction generator
+  description: a glass globe on an axle spun by a crank, rubbing against a leather pad, a metal comb collecting
+    charge
+  shapes:
+  - sphere
+  - axle
+  - crank
+  materials:
+  - glass
+  - leather
+  - brass
+  scale: tabletop
+  morph_to_next: the spinning globe flattens into a copper disc between magnet poles
+  accuracy_note: Friction machines generated static electricity before batteries.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: copper-disc-dynamo
+  era: generation and grid
+  follows: friction-machine-globe
+  subject: copper disc spinning between magnet poles
+  description: a copper disc on a horizontal axle turning between the poles of a horseshoe magnet, brushes at rim
+    and axle
+  shapes:
+  - disc
+  - horseshoe
+  materials:
+  - copper
+  - iron
+  scale: tabletop
+  morph_to_next: the disc stretches into a wound armature turning inside the magnet
+  accuracy_note: Rotating disc generators demonstrated electromagnetic induction.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: hand-cranked-coil-generator
+  era: generation and grid
+  follows: copper-disc-dynamo
+  subject: hand-cranked coil generator
+  description: a wooden base with a crank driving a coil-wound armature inside a stack of horseshoe magnets
+  shapes:
+  - coil
+  - horseshoes
+  - crank
+  materials:
+  - copper wire
+  - iron
+  - wood
+  scale: tabletop
+  morph_to_next: the armature grows into the ribbed drum of a belt-driven dynamo
+  accuracy_note: Magneto generators with permanent magnets are historically accurate.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: belt-driven-dynamo
+  era: generation and grid
+  follows: hand-cranked-coil-generator
+  subject: belt-driven dynamo
+  description: a heavy cast-iron dynamo with a ring armature and commutator, a leather belt to a pulley
+  shapes:
+  - ring
+  - pulley
+  - belt
+  materials:
+  - cast iron
+  - copper
+  - leather
+  scale: room
+  morph_to_next: the pulley and belt rise into the spinning governor of a steam engine
+  accuracy_note: Belt-driven DC dynamos powered early electric lighting.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: steam-engine-flywheel
+  era: generation and grid
+  follows: belt-driven-dynamo
+  subject: steam engine with flywheel driving a generator
+  description: a large spoked flywheel and brass flyball governor beside a riveted boiler, steam venting
+  shapes:
+  - wheel
+  - spokes
+  - spheres
+  materials:
+  - cast iron
+  - brass
+  - steam
+  scale: room
+  morph_to_next: the spoked wheel becomes the curved blades of a water turbine
+  accuracy_note: Steam-driven generating stations predate large hydro plants.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: water-turbine-runner
+  era: generation and grid
+  follows: steam-engine-flywheel
+  subject: water turbine runner
+  description: a bronze turbine runner with curved buckets, water spraying across it in a concrete pit
+  shapes:
+  - radial blades
+  - ring
+  materials:
+  - bronze
+  - water
+  - concrete
+  scale: large object
+  morph_to_next: the curved buckets fold into the copper windings of a large generator stator
+  accuracy_note: Hydro turbines drive generators; runner style is generic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: generator-stator-hall
+  era: generation and grid
+  follows: water-turbine-runner
+  subject: giant generator stator
+  description: a circular stator ring lined with copper bars in a vast turbine hall, a crane overhead
+  shapes:
+  - ring
+  - radial bars
+  materials:
+  - copper
+  - steel
+  scale: building
+  morph_to_next: the ring's copper windings become the stacked laminations of a transformer core
+  accuracy_note: Large synchronous generators have wound stators; scale is illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: laminated-transformer-core
+  era: generation and grid
+  follows: generator-stator-hall
+  subject: laminated iron transformer core
+  description: stacked thin grain-oriented steel sheets forming a rectangular core with two copper windings
+  shapes:
+  - rectangle
+  - stacked sheets
+  - coils
+  materials:
+  - silicon steel
+  - copper
+  scale: large object
+  morph_to_next: the core is enclosed in a finned oil tank with porcelain bushings
+  accuracy_note: Laminations reduce eddy currents; this is standard transformer design.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: finned-substation-transformer
+  era: generation and grid
+  follows: laminated-transformer-core
+  subject: finned substation transformer
+  description: a grey oil-filled tank with radiator fins and tall ribbed porcelain bushings on top
+  shapes:
+  - box
+  - fins
+  - ribbed cones
+  materials:
+  - steel
+  - porcelain
+  - oil
+  scale: building
+  morph_to_next: the ribbed bushings stretch into insulator strings hanging from a lattice tower
+  accuracy_note: Oil-cooled transformers with bushings are typical of substations.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: lattice-transmission-tower
+  era: generation and grid
+  follows: finned-substation-transformer
+  subject: lattice transmission tower with high-voltage lines
+  description: a steel lattice pylon with arms carrying long sagging conductors and insulator strings across hills
+  shapes:
+  - lattice
+  - catenary lines
+  materials:
+  - galvanized steel
+  - aluminium
+  - glass
+  scale: landscape
+  morph_to_next: the sagging lines narrow into the single wire of a telegraph pole line
+  accuracy_note: Lattice towers carry overhead transmission lines; design is generic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: telegraph-pole-line
+  era: signals and communication
+  follows: lattice-transmission-tower
+  subject: telegraph pole line along a railway
+  description: wooden poles with glass insulators carrying bare wires beside a railway track into the distance
+  shapes:
+  - poles
+  - parallel wires
+  materials:
+  - wood
+  - glass
+  - iron wire
+  scale: landscape
+  morph_to_next: the wire leads down into the brass lever of a telegraph key
+  accuracy_note: Telegraph lines often ran beside railways.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: brass-telegraph-key
+  era: signals and communication
+  follows: telegraph-pole-line
+  subject: brass telegraph key
+  description: a brass lever key with a black knob on a wooden base, contact points and a spring
+  shapes:
+  - lever
+  - knob
+  materials:
+  - brass
+  - wood
+  scale: hand-held
+  morph_to_next: the tapping lever becomes the armature of a sounder clicking against its coils
+  accuracy_note: Telegraph keys closed a circuit to send pulses.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: telegraph-sounder
+  era: signals and communication
+  follows: brass-telegraph-key
+  subject: telegraph sounder
+  description: a pair of upright electromagnet coils pulling a brass armature that clicks against a stop
+  shapes:
+  - paired coils
+  - bar
+  materials:
+  - copper wire
+  - brass
+  - iron
+  scale: hand-held
+  morph_to_next: the paired coils elongate into the spools of a paper-tape register
+  accuracy_note: Sounders converted pulses into audible clicks.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: paper-tape-register
+  era: signals and communication
+  follows: telegraph-sounder
+  subject: paper-tape telegraph register
+  description: a clockwork mechanism pulling a narrow paper strip under an embossing stylus driven by a coil
+  shapes:
+  - strip
+  - gears
+  materials:
+  - paper
+  - brass
+  scale: tabletop
+  morph_to_next: the paper strip coils into a cable drum of armoured undersea cable
+  accuracy_note: Embossing registers recorded telegraph pulses on tape.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: armoured-undersea-cable
+  era: signals and communication
+  follows: paper-tape-register
+  subject: cross-section of armoured undersea cable
+  description: 'a thick cable cut open: a copper core, gutta-percha insulation, tarred hemp and helical iron armour
+    wires'
+  shapes:
+  - concentric rings
+  - helix
+  materials:
+  - copper
+  - gutta-percha
+  - iron
+  scale: hand-held
+  morph_to_next: the concentric rings become the diaphragm of a telephone receiver
+  accuracy_note: Early submarine cables used gutta-percha insulation and iron armour.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: candlestick-telephone
+  era: signals and communication
+  follows: armoured-undersea-cable
+  subject: upright desk telephone
+  description: a tall black upright telephone with a mouthpiece on top and a separate earpiece on a hook
+  shapes:
+  - column
+  - cone
+  materials:
+  - bakelite
+  - nickel
+  scale: hand-held
+  morph_to_next: the earpiece cord multiplies into the jacks of a switchboard
+  accuracy_note: Upright desk telephones are generic early 20th-century design.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: manual-switchboard
+  era: signals and communication
+  follows: candlestick-telephone
+  subject: manual telephone switchboard
+  description: a wooden switchboard panel of brass jacks and patch cords with indicator drops
+  shapes:
+  - grid of jacks
+  - cords
+  materials:
+  - wood
+  - brass
+  - cloth cords
+  scale: room
+  morph_to_next: the jack grid turns into the rotating wipers of an automatic stepping switch
+  accuracy_note: Manual switchboards connected calls with patch cords.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: stepping-switch-bank
+  era: signals and communication
+  follows: manual-switchboard
+  subject: automatic stepping switch bank
+  description: racks of electromechanical stepping switches with wiper arms sweeping across semicircular contact
+    banks
+  shapes:
+  - semicircles
+  - arms
+  - racks
+  materials:
+  - steel
+  - brass
+  scale: room
+  morph_to_next: the sweeping arms become the tuning plates of a radio's variable capacitor
+  accuracy_note: Stepping switches automated telephone exchanges.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: variable-tuning-capacitor
+  era: signals and communication
+  follows: stepping-switch-bank
+  subject: air variable tuning capacitor
+  description: interleaved semicircular aluminium plates on a shaft, one set rotating between the other
+  shapes:
+  - semicircular plates
+  - shaft
+  materials:
+  - aluminium
+  - brass
+  scale: hand-held
+  morph_to_next: the plates curl into the glowing filament of a radio valve
+  accuracy_note: Air-variable capacitors tuned early radio receivers.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: crystal-radio-set
+  era: signals and communication
+  follows: variable-tuning-capacitor
+  subject: crystal radio with cat's whisker detector
+  description: a wooden board with a coil wound on a cardboard tube, a galena crystal and a fine wire probe, headphones
+  shapes:
+  - coil
+  - crystal
+  - wire
+  materials:
+  - copper wire
+  - galena
+  - wood
+  scale: tabletop
+  morph_to_next: the coil and wire glow and enclose themselves in a glass bulb
+  accuracy_note: Crystal detectors were among the first semiconductor devices.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: glowing-vacuum-tube
+  era: vacuum-tube computing
+  follows: crystal-radio-set
+  subject: glowing vacuum tube
+  description: a glass envelope with an orange-glowing filament, a mesh grid and a metal plate, pins in a base
+  shapes:
+  - bulb
+  - cylinder
+  - mesh
+  materials:
+  - glass
+  - tungsten
+  - nickel
+  scale: hand-held
+  morph_to_next: the single tube multiplies into a row of tubes on a chassis
+  accuracy_note: Thermionic triodes amplify with a heated cathode, grid and plate.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: tube-amplifier-chassis
+  era: vacuum-tube computing
+  follows: glowing-vacuum-tube
+  subject: tube chassis with transformers
+  description: a steel chassis with a row of glowing tubes, a transformer block and wiring underneath
+  shapes:
+  - row of bulbs
+  - box
+  materials:
+  - steel
+  - glass
+  - copper
+  scale: tabletop
+  morph_to_next: the chassis rows stretch into a tall rack panel of tubes
+  accuracy_note: Tube chassis are generic electronics construction.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: tube-flip-flop-panel
+  era: vacuum-tube computing
+  follows: tube-amplifier-chassis
+  subject: plug-in tube logic module
+  description: a small panel with two glowing tubes, resistors and capacitors, forming one bistable switching unit
+  shapes:
+  - pair of bulbs
+  - panel
+  materials:
+  - glass
+  - phenolic board
+  - copper
+  scale: hand-held
+  morph_to_next: the module slots into a wall of identical modules
+  accuracy_note: Paired tubes formed bistable circuits in early computers.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: tube-computer-wall
+  era: vacuum-tube computing
+  follows: tube-flip-flop-panel
+  subject: room-sized tube computer wall
+  description: a long wall of cabinets packed with thousands of glowing tubes, cables looping between panels
+  shapes:
+  - wall
+  - grid of bulbs
+  - cables
+  materials:
+  - steel
+  - glass
+  - copper
+  scale: room
+  morph_to_next: the cable loops become the delay lines of a mercury memory tank
+  accuracy_note: Room-sized tube computers existed in the 1940s-50s; layout is generic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: mercury-delay-line
+  era: vacuum-tube computing
+  follows: tube-computer-wall
+  subject: mercury delay-line memory
+  description: long steel tubes filled with mercury, quartz transducers at each end, in a temperature-controlled
+    box
+  shapes:
+  - long tubes
+  - box
+  materials:
+  - steel
+  - mercury
+  - quartz
+  scale: room
+  morph_to_next: the tubes' round ends become the glowing face of a storage cathode-ray tube
+  accuracy_note: Acoustic delay lines stored bits as pulses; illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: cathode-ray-storage-tube
+  era: vacuum-tube computing
+  follows: mercury-delay-line
+  subject: cathode-ray storage tube
+  description: a round glass tube face showing a grid of glowing dots, wired to a deflection yoke
+  shapes:
+  - circle
+  - dot grid
+  materials:
+  - glass
+  - phosphor
+  scale: hand-held
+  morph_to_next: the dot grid shrinks into a woven mesh of tiny magnetic rings
+  accuracy_note: Electrostatic storage tubes held bits as charged spots.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: magnetic-core-plane
+  era: vacuum-tube computing
+  follows: cathode-ray-storage-tube
+  subject: magnetic core memory plane
+  description: a square frame strung with fine wires, tiny ferrite rings threaded at every crossing
+  shapes:
+  - grid
+  - rings
+  - frame
+  materials:
+  - ferrite
+  - copper wire
+  scale: hand-held
+  morph_to_next: the planes stack into a cube of core memory
+  accuracy_note: Core memory stored bits in ferrite rings at wire intersections.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: core-memory-stack
+  era: vacuum-tube computing
+  follows: magnetic-core-plane
+  subject: stacked core memory module
+  description: many core planes stacked in a metal frame with ribbon wiring along the sides
+  shapes:
+  - cube
+  - stacked planes
+  materials:
+  - ferrite
+  - steel
+  - copper
+  scale: tabletop
+  morph_to_next: the stack's wiring unwinds onto a spinning magnetic drum
+  accuracy_note: Stacked core modules were common in 1960s machines.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: magnetic-drum-memory
+  era: vacuum-tube computing
+  follows: core-memory-stack
+  subject: magnetic drum memory
+  description: a large polished cylinder coated in magnetic oxide spinning beneath a row of read/write heads
+  shapes:
+  - cylinder
+  - row of heads
+  materials:
+  - steel
+  - iron oxide
+  scale: large object
+  morph_to_next: the drum flattens into a reel of magnetic tape
+  accuracy_note: Drum memories rotated under fixed heads.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: reel-to-reel-tape-drive
+  era: vacuum-tube computing
+  follows: magnetic-drum-memory
+  subject: reel-to-reel tape drive cabinet
+  description: a tall cabinet with two large tape reels, vacuum columns holding tape loops, and a control panel
+  shapes:
+  - two circles
+  - loops
+  - cabinet
+  materials:
+  - steel
+  - plastic
+  - magnetic tape
+  scale: room
+  morph_to_next: the brown tape narrows into the germanium crystal of a point-contact device
+  accuracy_note: Tape drives were standard storage in mainframe rooms.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: point-contact-crystal
+  era: solid state
+  follows: reel-to-reel-tape-drive
+  subject: point-contact semiconductor experiment
+  description: a small germanium slab on a metal base with two fine gold-foil contacts pressed close together by
+    a plastic wedge
+  shapes:
+  - wedge
+  - slab
+  - points
+  materials:
+  - germanium
+  - gold foil
+  - plastic
+  scale: tabletop
+  morph_to_next: the slab and contacts are sealed into a tiny metal can with three leads
+  accuracy_note: Point-contact transistors used closely spaced contacts on germanium; illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: metal-can-transistor
+  era: solid state
+  follows: point-contact-crystal
+  subject: three-lead metal can transistor
+  description: a small cylindrical metal can on three wire legs, a tab marking one lead
+  shapes:
+  - small cylinder
+  - three legs
+  materials:
+  - nickel
+  - glass seal
+  scale: fingertip
+  morph_to_next: the can lies down among others on a perforated board
+  accuracy_note: Metal-can packages were common for early transistors.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: transistor-radio-board
+  era: solid state
+  follows: metal-can-transistor
+  subject: pocket transistor radio circuit board
+  description: a small hand-wired board with a few transistors, a ferrite rod antenna and a tuning dial
+  shapes:
+  - board
+  - rod
+  - dial
+  materials:
+  - phenolic board
+  - ferrite
+  - copper
+  scale: hand-held
+  morph_to_next: the ferrite rod lifts into a grown cylindrical silicon crystal
+  accuracy_note: Portable transistor radios popularized transistors in the 1950s.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: silicon-ingot
+  era: solid state
+  follows: transistor-radio-board
+  subject: single-crystal silicon ingot
+  description: a long grey metallic cylindrical crystal with a tapered end, pulled from a melt
+  shapes:
+  - long cylinder
+  - taper
+  materials:
+  - silicon
+  scale: large object
+  morph_to_next: the ingot is sliced into thin mirror-polished discs
+  accuracy_note: Single-crystal ingots are grown and sliced into wafers.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: polished-wafer-stack
+  era: solid state
+  follows: silicon-ingot
+  subject: stack of polished wafers
+  description: thin round mirror-polished silicon discs fanned out in a slotted carrier
+  shapes:
+  - discs
+  - fan
+  materials:
+  - silicon
+  - plastic carrier
+  scale: tabletop
+  morph_to_next: one wafer glows in a furnace tube among others
+  accuracy_note: Wafers are carried in slotted cassettes.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: diffusion-furnace-boat
+  era: solid state
+  follows: polished-wafer-stack
+  subject: quartz boat in a diffusion furnace
+  description: a row of wafers standing in a quartz boat sliding into a glowing orange furnace tube
+  shapes:
+  - row of discs
+  - tube
+  materials:
+  - quartz
+  - silicon
+  scale: room
+  morph_to_next: the glowing tube cools and the wafers shrink into a single planar transistor die
+  accuracy_note: Diffusion furnaces dope wafers at high temperature.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: planar-transistor-die
+  era: solid state
+  follows: diffusion-furnace-boat
+  subject: magnified planar transistor die
+  description: a tiny square silicon die seen under a microscope with concentric oxide windows and two bond wires
+  shapes:
+  - square
+  - concentric rings
+  - wires
+  materials:
+  - silicon
+  - silicon dioxide
+  - gold wire
+  scale: microscopic
+  morph_to_next: the rings multiply into a printed-circuit board of discrete components
+  accuracy_note: Planar processing used oxide masking; magnified view is illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: discrete-component-board
+  era: solid state
+  follows: planar-transistor-die
+  subject: board of discrete transistors and resistors
+  description: a green circuit board with rows of small transistors, striped resistors and capacitors soldered to
+    copper traces
+  shapes:
+  - rows
+  - traces
+  materials:
+  - fibreglass
+  - copper
+  - solder
+  scale: hand-held
+  morph_to_next: the board's rows compress into a module of components sealed together
+  accuracy_note: Discrete-component boards were the basis of second-generation computers.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: logic-module-card
+  era: solid state
+  follows: discrete-component-board
+  subject: plug-in logic card
+  description: a small card with a few transistors and a gold-plated edge connector, slotted into a backplane
+  shapes:
+  - card
+  - edge fingers
+  materials:
+  - fibreglass
+  - gold
+  - copper
+  scale: hand-held
+  morph_to_next: the card's components shrink into a tiny flat package with leads on two sides
+  accuracy_note: Plug-in logic cards were common in transistorized machines.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: early-flat-pack-ic
+  era: integrated circuits
+  follows: logic-module-card
+  subject: early flat-pack integrated circuit
+  description: a tiny flat rectangular package with ribbon leads on two sides, gold lid
+  shapes:
+  - flat rectangle
+  - ribbon leads
+  materials:
+  - ceramic
+  - gold
+  - kovar
+  scale: fingertip
+  morph_to_next: the flat pack thickens into a black package with two rows of pins
+  accuracy_note: Flat packs preceded dual in-line packages.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: dip-chip-in-socket
+  era: integrated circuits
+  follows: early-flat-pack-ic
+  subject: dual in-line chip in a socket
+  description: a black rectangular package with two rows of silver pins seated in a socket on a board
+  shapes:
+  - rectangle
+  - two pin rows
+  materials:
+  - epoxy
+  - tin-plated copper
+  scale: fingertip
+  morph_to_next: the lid lifts away to reveal the die and its fan of bond wires
+  accuracy_note: DIP packages became the standard IC form in the 1970s.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: bond-wire-fan
+  era: integrated circuits
+  follows: dip-chip-in-socket
+  subject: gold bond wires fanning from a die
+  description: a magnified silicon die with fine gold wires arching out to a ring of lead fingers
+  shapes:
+  - fan of arcs
+  - square
+  materials:
+  - gold wire
+  - silicon
+  - copper
+  scale: microscopic
+  morph_to_next: the die's surface pattern rises into the masked layers of a photolithography reticle
+  accuracy_note: Wire bonding connects dies to package leads.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: photomask-reticle
+  era: integrated circuits
+  follows: bond-wire-fan
+  subject: chrome photomask on glass
+  description: a square quartz plate with a dense chrome circuit pattern, held under yellow cleanroom light
+  shapes:
+  - square plate
+  - fine pattern
+  materials:
+  - quartz
+  - chrome
+  scale: hand-held
+  morph_to_next: the pattern is projected onto a spinning resist-coated wafer
+  accuracy_note: Photomasks define circuit layers in lithography.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: resist-coated-wafer
+  era: integrated circuits
+  follows: photomask-reticle
+  subject: wafer being coated with photoresist
+  description: a wafer spinning on a chuck as a thin amber film spreads to its edges
+  shapes:
+  - disc
+  - spiral film
+  materials:
+  - silicon
+  - photoresist
+  scale: tabletop
+  morph_to_next: the film sets and the wafer surface fills with a grid of identical dies
+  accuracy_note: Spin coating applies uniform photoresist.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: patterned-wafer-grid
+  era: integrated circuits
+  follows: resist-coated-wafer
+  subject: patterned wafer with a grid of dies
+  description: a round wafer covered edge to edge in a rainbow-sheened grid of rectangular dies
+  shapes:
+  - disc
+  - grid
+  materials:
+  - silicon
+  - metal films
+  scale: tabletop
+  morph_to_next: a thin spinning blade traces the grid lines, separating the dies
+  accuracy_note: Many dies are fabricated on each wafer.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: wafer-dicing-saw
+  era: integrated circuits
+  follows: patterned-wafer-grid
+  subject: wafer being diced into chips
+  description: a thin diamond blade spinning through a wafer on sticky film, coolant spraying, cut lines forming
+    a grid
+  shapes:
+  - disc
+  - grid lines
+  - blade
+  materials:
+  - silicon
+  - diamond
+  - water
+  scale: tabletop
+  morph_to_next: a single freed die is lifted and enlarged to show its circuit blocks
+  accuracy_note: Dicing separates dies along scribe lines.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: ic-die-macro
+  era: integrated circuits
+  follows: wafer-dicing-saw
+  subject: integrated circuit die under magnification
+  description: a rectangular die with distinct blocks of logic, memory arrays and bond pads around the edge
+  shapes:
+  - rectangle
+  - blocks
+  - pad ring
+  materials:
+  - silicon
+  - aluminium
+  - copper
+  scale: microscopic
+  morph_to_next: the memory arrays repeat and fill the whole die
+  accuracy_note: General IC floorplans group logic and memory; illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: memory-chip-array
+  era: integrated circuits
+  follows: ic-die-macro
+  subject: memory chip cell array
+  description: a die dominated by a vast regular checkerboard of memory cells with row and column decoders along
+    the edges
+  shapes:
+  - checkerboard
+  - edges
+  materials:
+  - silicon
+  - polysilicon
+  scale: microscopic
+  morph_to_next: the checkerboard blocks split into four regions around a central logic block
+  accuracy_note: Memory dies are dominated by regular cell arrays.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: cross-section-transistor-layers
+  era: integrated circuits
+  follows: memory-chip-array
+  subject: cross-section of chip wiring layers
+  description: a cutaway showing transistor gates at the bottom and many stacked copper wiring levels above, like
+    a city
+  shapes:
+  - stacked layers
+  - vias
+  materials:
+  - silicon
+  - copper
+  - dielectric
+  scale: microscopic
+  morph_to_next: the wiring city flattens into the floorplan of a single-chip processor
+  accuracy_note: Modern chips have multiple metal interconnect layers; scale illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: first-generation-cpu-die
+  era: microprocessors
+  follows: cross-section-transistor-layers
+  subject: early single-chip processor die
+  description: 'a small die with hand-drawn-looking logic blocks: registers, an arithmetic unit and a control area'
+  shapes:
+  - rectangle
+  - blocks
+  materials:
+  - silicon
+  - aluminium
+  scale: microscopic
+  morph_to_next: the die is mounted in a long ceramic package with gold pins
+  accuracy_note: Early microprocessors integrated a CPU on one die; layout generic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: ceramic-cpu-package
+  era: microprocessors
+  follows: first-generation-cpu-die
+  subject: long ceramic processor package
+  description: a long white ceramic package with a gold lid and two rows of gold pins
+  shapes:
+  - long rectangle
+  - pin rows
+  materials:
+  - ceramic
+  - gold
+  scale: fingertip
+  morph_to_next: the package sits at the centre of a home-computer motherboard
+  accuracy_note: Ceramic DIP packages housed early processors.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: home-computer-motherboard
+  era: microprocessors
+  follows: ceramic-cpu-package
+  subject: early home computer motherboard
+  description: a green board with a processor, rows of memory chips, a keyboard connector and sockets
+  shapes:
+  - board
+  - rows of chips
+  materials:
+  - fibreglass
+  - epoxy
+  - copper
+  scale: tabletop
+  morph_to_next: the rows of memory chips shrink and gather onto a slim memory stick
+  accuracy_note: Generic 1980s home-computer board layout.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: memory-module-stick
+  era: microprocessors
+  follows: home-computer-motherboard
+  subject: memory module stick
+  description: a slim green board with a row of black memory chips and a gold edge connector
+  shapes:
+  - slim bar
+  - chips
+  - edge fingers
+  materials:
+  - fibreglass
+  - epoxy
+  - gold
+  scale: hand-held
+  morph_to_next: the stick clicks into a board around a square processor socket
+  accuracy_note: Memory modules are generic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: pin-grid-processor
+  era: microprocessors
+  follows: memory-module-stick
+  subject: square pin-grid processor
+  description: a square processor package with a grid of hundreds of gold pins on its underside, a metal heat spreader
+    on top
+  shapes:
+  - square
+  - pin grid
+  materials:
+  - ceramic
+  - gold
+  - nickel-plated copper
+  scale: hand-held
+  morph_to_next: the square chip disappears beneath a finned aluminium heatsink
+  accuracy_note: Pin-grid packages are a generic processor format.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: finned-heatsink-fan
+  era: microprocessors
+  follows: pin-grid-processor
+  subject: finned heatsink with fan
+  description: a block of thin aluminium fins with a copper base and a spinning fan on top
+  shapes:
+  - fins
+  - circle
+  materials:
+  - aluminium
+  - copper
+  scale: hand-held
+  morph_to_next: the fins straighten into the vertical slots of a desktop computer case
+  accuracy_note: Heatsinks with fans cool processors.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: desktop-tower-open
+  era: microprocessors
+  follows: finned-heatsink-fan
+  subject: open desktop tower
+  description: a side-opened computer case showing a motherboard, cards, cables and drive bays
+  shapes:
+  - box
+  - cards
+  - cables
+  materials:
+  - steel
+  - fibreglass
+  - plastic
+  scale: large object
+  morph_to_next: the drive bay's spinning platter enlarges into a hard disk
+  accuracy_note: Generic desktop PC interior.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: hard-disk-platter
+  era: microprocessors
+  follows: desktop-tower-open
+  subject: open hard disk drive
+  description: a mirror-like spinning platter with a slender actuator arm and read head hovering above it
+  shapes:
+  - disc
+  - arm
+  materials:
+  - aluminium
+  - glass
+  - steel
+  scale: hand-held
+  morph_to_next: the platter shrinks into the shimmering surface of a multi-core processor die
+  accuracy_note: Hard drives store data on spinning platters.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: multi-core-die
+  era: microprocessors
+  follows: hard-disk-platter
+  subject: multi-core processor die
+  description: a die divided into several identical core tiles around a shared cache block
+  shapes:
+  - tiles
+  - central block
+  materials:
+  - silicon
+  - copper
+  scale: microscopic
+  morph_to_next: the core tiles multiply into hundreds of tiny identical tiles
+  accuracy_note: Multi-core processors place several cores on one die; layout generic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: laptop-mainboard
+  era: microprocessors
+  follows: multi-core-die
+  subject: compact laptop mainboard
+  description: a dense irregular board with a processor under a copper heat pipe, tiny surface-mount parts everywhere
+  shapes:
+  - irregular board
+  - heat pipe
+  materials:
+  - fibreglass
+  - copper
+  - solder
+  scale: hand-held
+  morph_to_next: the heat pipe straightens into the backplate of a graphics card
+  accuracy_note: Generic laptop board design.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: graphics-card-board
+  era: parallel and GPU compute
+  follows: laptop-mainboard
+  subject: graphics card with exposed board
+  description: a long circuit board with a large central processor surrounded by memory chips and power components
+  shapes:
+  - long board
+  - central square
+  materials:
+  - fibreglass
+  - silicon
+  - copper
+  scale: hand-held
+  morph_to_next: the central chip opens to reveal thousands of tiny repeating compute tiles
+  accuracy_note: Generic graphics card layout; no product design.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: many-core-die-tiles
+  era: parallel and GPU compute
+  follows: graphics-card-board
+  subject: many-core accelerator die
+  description: a large die covered in hundreds of identical tiny compute tiles in a strict grid, wide memory interfaces
+    at the edges
+  shapes:
+  - dense grid
+  - edge bands
+  materials:
+  - silicon
+  - copper
+  scale: microscopic
+  morph_to_next: the tiles light up in waves like a field of pixels
+  accuracy_note: Parallel processors replicate many small cores; illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: pixel-shader-lattice
+  era: parallel and GPU compute
+  follows: many-core-die-tiles
+  subject: lattice of glowing compute lanes
+  description: an abstract lattice of thousands of parallel lanes lighting up in synchronized waves
+  shapes:
+  - lattice
+  - waves
+  materials:
+  - light
+  - silicon
+  scale: abstract
+  morph_to_next: the lanes resolve into memory stacks standing beside a chip
+  accuracy_note: Abstract visualization of parallel execution; not a literal image.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: stacked-memory-towers
+  era: parallel and GPU compute
+  follows: pixel-shader-lattice
+  subject: stacked memory beside a processor
+  description: short towers of thinned memory dies stacked on top of each other beside a large processor on a silicon
+    base
+  shapes:
+  - towers
+  - square
+  materials:
+  - silicon
+  - copper
+  - solder bumps
+  scale: microscopic
+  morph_to_next: the silicon base widens into a flat interposer with fine wiring
+  accuracy_note: Stacked high-bandwidth memory sits beside processors on an interposer.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: silicon-interposer
+  era: parallel and GPU compute
+  follows: stacked-memory-towers
+  subject: silicon interposer with micro-bumps
+  description: a thin silicon slab with a dense field of tiny solder bumps and fine wiring lines between chip sites
+  shapes:
+  - slab
+  - dot field
+  - lines
+  materials:
+  - silicon
+  - solder
+  - copper
+  scale: microscopic
+  morph_to_next: the slab is capped with a metal lid and becomes an accelerator package
+  accuracy_note: Interposers connect chiplets and memory; illustrative.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: accelerator-package-lid
+  era: parallel and GPU compute
+  follows: silicon-interposer
+  subject: accelerator package with metal lid
+  description: a large square package with a polished metal lid on a green substrate covered in capacitors
+  shapes:
+  - square
+  - lid
+  materials:
+  - nickel-plated copper
+  - organic substrate
+  scale: hand-held
+  morph_to_next: the package mounts onto a module board with a heavy cold plate
+  accuracy_note: Generic large accelerator package.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: accelerator-module-coldplate
+  era: parallel and GPU compute
+  follows: accelerator-package-lid
+  subject: accelerator module with liquid cold plate
+  description: a module board carrying a large chip under a copper cold plate with coolant tubes
+  shapes:
+  - board
+  - plate
+  - tubes
+  materials:
+  - copper
+  - fibreglass
+  - coolant
+  scale: hand-held
+  morph_to_next: the module slides into a tray alongside identical modules
+  accuracy_note: Liquid-cooled accelerator modules are common in data centers.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: compute-tray
+  era: parallel and GPU compute
+  follows: accelerator-module-coldplate
+  subject: server compute tray
+  description: a shallow metal tray holding several accelerator modules, fans and cable connectors
+  shapes:
+  - shallow box
+  - rows
+  materials:
+  - steel
+  - copper
+  - plastic
+  scale: large object
+  morph_to_next: the tray is pushed into a tall rack among many others
+  accuracy_note: Generic server tray.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: interconnect-switch-board
+  era: parallel and GPU compute
+  follows: compute-tray
+  subject: high-speed interconnect switch
+  description: a board dense with cable ports and a switch chip, bundles of fibre cables plugged in
+  shapes:
+  - port rows
+  - cable bundles
+  materials:
+  - copper
+  - fibre optic
+  - steel
+  scale: large object
+  morph_to_next: the cable bundles spread into the overhead trays of a server hall
+  accuracy_note: Generic network switch hardware.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: server-rack-front
+  era: data centers and AI hardware
+  follows: interconnect-switch-board
+  subject: tall server rack
+  description: a black rack filled top to bottom with server trays, blinking status lights and neat cabling
+  shapes:
+  - tall box
+  - horizontal slots
+  materials:
+  - steel
+  - plastic
+  scale: room
+  morph_to_next: the rack's lower bays open to reveal rows of backup battery cells
+  accuracy_note: Generic data-center rack.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: rack-backup-batteries
+  era: data centers and AI hardware
+  follows: server-rack-front
+  subject: rows of backup battery cells in a rack
+  description: shelves of identical rectangular battery cells with cable links and status lights, echoing the early
+    jar batteries
+  shapes:
+  - rows of blocks
+  - links
+  materials:
+  - lithium cells
+  - steel
+  - copper
+  scale: room
+  morph_to_next: the battery rows extend down a long aisle of racks
+  accuracy_note: Data centers keep battery backup for short outages.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: hot-aisle-row
+  era: data centers and AI hardware
+  follows: rack-backup-batteries
+  subject: aisle of server racks
+  description: a long corridor between two rows of racks under cable trays, cool blue lighting
+  shapes:
+  - corridor
+  - repeating boxes
+  materials:
+  - steel
+  - glass
+  scale: building
+  morph_to_next: the overhead cable trays braid into fibre bundles glowing with light
+  accuracy_note: Hot/cold aisle containment is standard data-center layout.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: fibre-optic-bundle
+  era: data centers and AI hardware
+  follows: hot-aisle-row
+  subject: glowing fibre-optic bundle
+  description: a thick bundle of glass fibres with light emerging from the cut ends like tiny stars
+  shapes:
+  - bundle
+  - points of light
+  materials:
+  - glass
+  - light
+  scale: hand-held
+  morph_to_next: the light points flow into cooling pipes carrying liquid between racks
+  accuracy_note: Optical fibres carry data center traffic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: liquid-cooling-manifold
+  era: data centers and AI hardware
+  follows: fibre-optic-bundle
+  subject: liquid cooling manifold
+  description: colour-coded pipes and quick-connect fittings running along the back of racks, coolant visible in
+    clear sections
+  shapes:
+  - pipes
+  - manifold
+  materials:
+  - copper
+  - stainless steel
+  - coolant
+  scale: room
+  morph_to_next: the pipes lead outside to cooling towers venting vapour
+  accuracy_note: Liquid cooling distributes coolant to racks.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: cooling-towers-exterior
+  era: data centers and AI hardware
+  follows: liquid-cooling-manifold
+  subject: cooling units on a data-center roof
+  description: rows of large fans and cooling units on a flat roof, vapour drifting into the sky
+  shapes:
+  - circles
+  - rows
+  materials:
+  - steel
+  - water vapour
+  scale: building
+  morph_to_next: the vapour drifts up and the building's power lines lead to a substation yard
+  accuracy_note: Heat rejection equipment sits on data-center roofs.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: data-center-substation
+  era: data centers and AI hardware
+  follows: cooling-towers-exterior
+  subject: data-center substation yard
+  description: transformers, switchgear and busbars in a fenced yard beside a windowless hall
+  shapes:
+  - boxes
+  - busbars
+  materials:
+  - steel
+  - copper
+  - porcelain
+  scale: building
+  morph_to_next: the busbars converge on a single shimmering accelerator wafer
+  accuracy_note: Large data centers have dedicated substations.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: wafer-scale-processor
+  era: data centers and AI hardware
+  follows: data-center-substation
+  subject: wafer-sized processor
+  description: an entire round wafer patterned as one enormous processor, a grid of linked compute regions
+  shapes:
+  - disc
+  - grid
+  materials:
+  - silicon
+  - copper
+  scale: tabletop
+  morph_to_next: the grid becomes an abstract web of connected nodes like a neural network
+  accuracy_note: Wafer-scale processors exist; depiction is generic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: neural-network-lattice
+  era: data centers and AI hardware
+  follows: wafer-scale-processor
+  subject: abstract neural network lattice
+  description: glowing nodes in layers connected by thin luminous threads, signals pulsing through them
+  shapes:
+  - nodes
+  - layers
+  - threads
+  materials:
+  - light
+  scale: abstract
+  morph_to_next: the pulsing threads branch outward like lightning across the sky
+  accuracy_note: Abstract visualization; not a literal hardware image.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
+- id: lightning-over-data-center
+  era: data centers and AI hardware
+  follows: neural-network-lattice
+  subject: lightning over a data-center campus at night
+  description: a branching lightning bolt over a glowing campus of windowless halls, closing the circle of the film
+  shapes:
+  - branching line
+  - low halls
+  materials:
+  - plasma
+  - concrete
+  - light
+  scale: landscape
+  accuracy_note: Returns to the opening motif; the scene is symbolic.
+  sources: general reference knowledge (Claude draft); to be verified in F33
+  accuracy: unverified
