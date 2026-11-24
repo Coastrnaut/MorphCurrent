@@ -39,10 +39,15 @@ def test_sample_compiles_to_three_anchors_two_bridges_one_final():
 
 
 def test_requirements_report_missing_anchor_profiles():
-    plan = compile_plan(load_storyboard(SAMPLE), repo_root=REPO)
+    plan = compile_plan(load_storyboard(SAMPLE), repo_root=REPO, profiles={"text_to_image": "configs/profiles/absent_t2i.binding.json", "reference_edit": "configs/profiles/absent_edit.binding.json"})
     assert plan["requirements"]["wan_flf2v"]["exists"] is True
-    assert plan["requirements"]["text_to_image"]["exists"] is False  # until F02 real export
+    assert plan["requirements"]["text_to_image"]["exists"] is False
     assert any(b.startswith("reference_edit: missing") for b in plan["blocked"])
+
+
+def test_real_anchor_profiles_exist_since_f02():
+    plan = compile_plan(load_storyboard(SAMPLE), repo_root=REPO)
+    assert plan["blocked"] == [] and plan["requirements"]["reference_edit"]["exists"] is True
 
 
 def test_plan_hash_is_deterministic_and_sensitive():

@@ -35,11 +35,14 @@ def kw(image_repo: Path) -> dict:
 
 def test_dry_run_is_offline_and_reports_blocked(monkeypatch, tmp_path):
     monkeypatch.setattr(cli, "ComfyClient", lambda *a, **k: pytest.fail("network used"))
-    report = dry_run(REPO / "configs/sequences/organic-machines.yaml", repo_root=REPO)
+    missing = {"text_to_image": "configs/profiles/absent_t2i.binding.json", "reference_edit": "configs/profiles/absent_edit.binding.json"}
+    report = dry_run(REPO / "configs/sequences/organic-machines.yaml", missing, repo_root=REPO)
     assert report["status"] == "blocked" and report["gpu_jobs"] == {"anchors": 3, "bridges": 2}
     monkeypatch.chdir(REPO)
     assert cli.main(["render", "configs/sequences/organic-machines.yaml", "--dry-run",
-                     "--runs-root", str(tmp_path)]) == 6
+                     "--t2i-profile", missing["text_to_image"], "--runs-root", str(tmp_path)]) == 6
+    assert cli.main(["render", "configs/sequences/organic-machines.yaml", "--dry-run",
+                     "--runs-root", str(tmp_path)]) == 0  # real profiles present since F02
     assert list(tmp_path.iterdir()) == []
 
 

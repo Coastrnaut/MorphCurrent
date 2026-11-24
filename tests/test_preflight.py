@@ -53,9 +53,22 @@ class ReadOnlyComfy:
                                                     base_url="http://127.0.0.1:8188"))
 
 
-def test_idle_report_is_get_only_and_flags_missing_image_capability():
+def wan_only_repo(tmp_path):
+    for rel in ("workflows/03_wan22_flf2v.json", "configs/profiles/wan22_flf2v.binding.json"):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / rel).write_bytes((REPO / rel).read_bytes())
+    return tmp_path
+
+
+def test_real_image_profiles_blocked_when_models_absent_from_object_info():
+    report = build_baseline_report(repo_root=REPO, client=ReadOnlyComfy().client(), run=fake_run)
+    t2i = report["capabilities"]["text_to_image"]
+    assert t2i["status"] == "blocked" and "qwen_image_fp8_e4m3fn.safetensors" in t2i["reason"]
+
+
+def test_idle_report_is_get_only_and_flags_missing_image_capability(tmp_path):
     fake = ReadOnlyComfy()
-    report = build_baseline_report(repo_root=REPO, client=fake.client(), run=fake_run)
+    report = build_baseline_report(repo_root=wan_only_repo(tmp_path), client=fake.client(), run=fake_run)
     assert all(m.startswith("GET ") for m in fake.methods)
     assert report["queue"] == {"status": "ok", "running": [], "pending": [], "gpu_busy": False}
     assert report["comfyui"]["vram_label"] == "snapshot (not peak)"
