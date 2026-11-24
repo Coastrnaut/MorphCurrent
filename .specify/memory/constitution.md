@@ -1,50 +1,37 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# MorphCurrent — Spec Kit engineering constitution
 
-## Core Principles
+**Version:** 1.0.0  
+**Effective:** 2026-11-24  
+**Scope:** every future `specs/` feature; read with `CLAUDE.md` and `docs/SPECKIT_FEATURE_LEDGER.md`.
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+This replaces the unfilled stock constitution template. Historical feature work, working code and run evidence remain preserved and are not implicitly invalidated.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+## I. Factual evidence before completion claims
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+Source files, real API exports, local `/object_info`, recorded `/history`, hashes, verified outputs and committed tests establish what actually works. Always distinguish DOCUMENTED, MOCKED, LOCALLY VALIDATED, GPU-VERIFIED, VISUALLY ACCEPTED and BLOCKED. Offline CI does not verify local NVIDIA inference; a successful clip does not prove peak VRAM or artistic acceptability. Preserve MC-FLF2V-001, 002 and 003 observations.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+## II. Native Windows, privacy, GPU consent
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+Sole supported runtime is **native Windows 11**, Python 3.11+ automation, an isolated ComfyUI Portable Python/Torch environment and a loopback-only local ComfyUI server. No PowerShell `.ps1` scripts, WSL, Linux containers or assumed `py.exe`. No remote inference/media upload, custom-node/model installation, expensive GPU jobs or disruption of the owner's ongoing run without explicit permission. Read-only discovery and offline work may continue while the GPU is busy. Prior GPU approval is not blanket consent.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## III. Real ComfyUI graph contracts, test-first
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Executable image and Wan workflows **must** be real `Save (API Format)` exports. Never invent node IDs or model filenames, or pretend a missing image model exists. Semantic binding profiles are hash-pinned and validated against the installed ComfyUI `/object_info`. For each feature document acceptance criteria and write offline tests/mocks before separately gated local/GPU checks. Fail closed on version drift, missing model, malformed media and unverified output.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## IV. Immutable artifacts, crash safety and observability
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Every generated image and bridge video must have immutable source bytes, content hash, model/workflow identity, positive/negative prompts, seed, dimensions, parent dependencies, stage result, job ID and provenance. Resume must not double-submit GPU work. Never cache solely by prompt/seed/filename. Guard partial downloads and overwrites; record unavailable metrics as **NOT MEASURED**. No `.safetensors`, generated videos, user music/media or credentials in Git.
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+## V. Genuine physical metamorphosis, shared anchors and timing
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+A full system generates **both endpoint images** inside ComfyUI; any independent T2I fallback is explicit and is not misrepresented as reference editing. Adjacent bridges must share byte-identical anchor B. Prefer physically continuous transformations over cuts/dissolves, honor Wan 4n+1 frames and `(L-1)/FPS` anchor time, verify seam duplicate removal, use optional (never mandatory) owner-licensed soundtrack and human qualitative review.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+## VI. Ten actual Spec Kit feature lifecycles
+
+Execute exactly ten *logical* features F01–F10 from `docs/SPECKIT_FEATURE_LEDGER.md`, sequentially respecting dependencies. Check installed Python Spec Kit/Claude skill names; use **real** specify → clarify if needed → plan/research → tasks → analyze → implement. Map logical IDs to actual nonconflicting `specs/NNN-slug/` names; never overwrite prior specs or promise unique 001–010 prefixes. Update `PROGRESS.md` with evidence and a commit for each coherent step. A blocked GPU gate is not COMPLETE.
+
+## VII. Source compatibility and governance
+
+Preserve existing Wan bridge, repo history, local dirty state, tests and working CLI; add regression tests before incompatible changes. Use typed Python, `pathlib`, subprocess argument lists (`shell=False`), private localhost networking and minimal permissions. Amend this constitution through a separate reviewed/committed change that states migration and reconciles `CLAUDE.md` plus the feature ledger. Do not bypass test/consent gates to satisfy a schedule.
+
+**Authority order:** `CLAUDE.md` and this constitution (non-negotiable safety), `docs/SPECKIT_FEATURE_LEDGER.md` (ten feature scope/gates), `PROGRESS.md` (measured status), real workflow exports/profiles (executable node truth), code/tests (actual implemented behavior).

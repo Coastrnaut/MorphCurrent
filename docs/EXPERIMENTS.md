@@ -33,3 +33,17 @@ No silent OOM/offload; no generic xfade; no stitched jump or duplicate freeze; n
 
 ## Native Windows experiment capture
 Record native Windows 11 build, NVIDIA Windows driver, distinct ComfyUI Python version, actual CUDA PyTorch support, FFmpeg.exe version, and whether ComfyUI used default/--highvram/offload. Python helpers must be used rather than WSL/PowerShell wrappers. Windows CI is not an A6000 benchmark.
+
+## Future automated anchor-to-video trial matrix
+
+The feature program uses the following **future** controlled tests (not results). Requirements and execution gates live in [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md).
+
+| Trial | Intervention | Fixed variables | Expected evidence |
+|---|---|---|---|
+| E9 | reference-edit B-from-A vs independent T2I B with shared style cues | A image, target description, dimensions, geometry/lighting goals | output image SHA, seeds, scene compatibility, human approval |
+| E10 | storyboard direct A→B vs automatically generated A/B→Wan bridge | same Wan binding/seed/frames/CFG, input pair recorded | actual graph/profile validation, video ffprobe, endpoint fidelity |
+| E11 | rerender only flawed bridge B→C | A/B/C byte hashes, approved A→B video | no extra A/bridge A→B GPU submissions, changed B→C candidate |
+| E12 | 2×65-frame seam and optional audio | saved bridge decoded frames, 16 FPS | 129 unique frames only when B duplicate proven; PTS and soundtrack offsets recorded |
+| E13 | cold vs warm run/restart | same storyboard, graph/model identity and seed | immutable manifest, same content hashes, zero duplicate GPU submission on complete rerun |
+
+Keep manual MC-FLF2V-001 and programmatic MC-FLF2V-003 baseline observations separate from any new anchor-model tests. Peak VRAM measurement must use actual sampled GPU evidence; no inferring from `vram_free` snapshots.

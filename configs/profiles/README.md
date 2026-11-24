@@ -14,3 +14,7 @@ Profiles supply low-level **actual** ComfyUI node bindings independently of the 
 Profiles are design inputs. A real GPU render requires validated local exports.
 
 Target platform: native Windows 11, RTX A6000, local ComfyUI (Portable embedded Python or manual dedicated venv). Prefer Windows path-neutral model names in workflows; controller .venv is never the model runtime. Spec Kit automation uses Python scripts.
+
+## Planned image-generation bindings
+
+The current Wan profile is **real and verified**. Text-to-image and reference-edit profiles are **not yet present**. Their respective real local API exports must first be validated against ComfyUI's `/object_info` and then hash pinned with semantic bindings for prompt/negative/seed/dimensions/reference image and *image* outputs. Do not reuse Wan node IDs, invent installed image weights, or commit placeholder runnable graphs. See [docs/ANCHOR_MODEL_ONBOARDING.md](../../docs/ANCHOR_MODEL_ONBOARDING.md) and [the ten-feature ledger](../../docs/SPECKIT_FEATURE_LEDGER.md).

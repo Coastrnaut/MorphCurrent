@@ -9,7 +9,7 @@
 - [x] Offline storyboard / timing and local ComfyUI client starter included.
 - [x] Wan 2.2 FLF2V API export (`workflows/03_wan22_flf2v.json`) validated against live `/object_info` and bound by `configs/profiles/wan22_flf2v.binding.json` (2026-11-23). Anchor T2I/edit exports (`01_`, `02_`) still missing.
 - [ ] A6000 environment and model inventory verified.
-- [x] First two-anchor FLF2V video bridge **manually** rendered by owner, uploaded, and qualitatively inspected — see `docs/RENDER_BASELINE_001.md`. Automated MorphCurrent rendering and quantitative GPU benchmarking remain unverified.
+- [x] First two-anchor FLF2V bridge manually rendered and inspected as MC-FLF2V-001. The **first MorphCurrent-dispatched** 65-frame bridge MC-FLF2V-003 was also GPU-verified and matched MC-FLF2V-002 decoded frames; artistic quality and peak VRAM remain unverified. See experiment ledger below.
 - [ ] Continuous three-anchor seam and beat sync validated.
 - [ ] Benchmark tables and quality regression suite completed.
 
@@ -42,19 +42,19 @@ M6 — Higher resolution + frame interpolation + resumable multi-song render job
 - [x] Replace all repository setup commands using the optional `py.exe` launcher with `python` and make VS Code task execution use `python`.
 - [x] Upgrade Python Spec Kit initialization to handle existing PowerShell-mode installs; preserve backed-up files, verify actual `.py` core scripts and Claude command references, and move generated PowerShell fallback out of the active tree.
 - [ ] On the owner's Windows host, run `python --version`, `python scripts/windows/speckit.py --init`, then `python scripts/windows/speckit.py --verify` and record actual CLI version and results.
-- [ ] Real local CUDA/ComfyUI inference remains untested; do not confuse Windows CI unit tests with A6000 evidence.
+- [x] Real ComfyUI video inference is demonstrated by owner manual runs and MorphCurrent dispatch MC-FLF2V-003. Peak GPU VRAM and automatic T2I/edit image generation are **NOT VERIFIED**; Windows CI remains offline only.
 
 ## Example FLF2V anchor pair generated (2026-11-23)
 
 - [x] Two matched 16:9 Glass Orchid → Metallic Butterfly endpoint images created from original AI-generated artwork, manually composed/cropped for consistent framing and stored as small JPEG fixtures in `assets/anchors/`.
 - [x] Documented the positive transformation prompt, manual ComfyUI first/last-frame loading and Python-only optional staging helper (`docs/ANCHOR_EXAMPLES.md`).
 - [x] Owner reports successful local Wan 2.2 FLF2V smoke render; uploaded `ComfyUI_00002_.mp4` was inspected. See `docs/RENDER_BASELINE_001.md` for measured video metadata and limitations.
-- [ ] Save and validate the real ComfyUI API-format workflow. The owner performed a **manual** GPU video render; no programmatic MorphCurrent render or measured VRAM/time is claimed.
+- [x] Real Wan 2.2 ComfyUI API export saved and validated; MorphCurrent subsequently dispatched a programmatic 65-frame bridge MC-FLF2V-003. Exact overall GPU peak VRAM remains **NOT MEASURED**.
 
 ## First video baseline and next trial (2026-11-23)
 
 - [x] Reviewed owner-uploaded 49-frame H.264 baseline at 640×368 / 16 FPS, with hash, endpoint fidelity and mid-transition issues documented in `docs/RENDER_BASELINE_001.md`.
-- [ ] MC-FLF2V-002: evaluate the new continuity-oriented positive prompt and a 65-frame trial; **not yet rendered**.
+- [x] MC-FLF2V-002: owner rendered 65 frames with revised prompt, with actual node/seed captured in ComfyUI history. **Visual creative review remains NOT DONE**, notwithstanding MC-FLF2V-003's decoded-frame equality.
 - [x] Export user-run ComfyUI FLF2V graph as `workflows/03_wan22_flf2v.json`, capture sampler/seed and actual model names, and validate `/object_info` before API integration (see M1 section below).
 
 ## M1 — Wan 2.2 FLF2V semantic binding (2026-11-23)
@@ -94,7 +94,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 - Offline fixture: `tests/fixtures/object_info_wan22_flf2v.json` (the 11 classes, captured from ComfyUI 0.46.0).
 
 **Not done / next.**
-- [x] Programmatic dispatch (upload anchors → refresh `/object_info` → patch → `/prompt` → `/history` → download) with a persistent job record — see M3 below. No MorphCurrent-submitted render exists yet; a GPU smoke run needs explicit owner approval.
+- [x] Programmatic dispatch (upload anchors → refresh `/object_info` → patch → `/prompt` → `/history` → download) with a persistent job record — see M3 below. Owner-approved MorphCurrent GPU bridge MC-FLF2V-003 completed afterward; **new** GPU runs still require explicit bounded approval.
 - [ ] Record SHA-256 for the four model files and the ComfyUI git revision in a run manifest.
 - [ ] Decide whether to expose steps/CFG/split as a coupled `sampling` role group for experiments.
 - [ ] Review `ComfyUI_00003_.mp4` (MC-FLF2V-002) visually before drawing quality conclusions.
@@ -133,3 +133,25 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 **Next.**
 - [ ] Add an opt-in `nvidia-smi` memory sampler around the render for real peak-VRAM numbers (W0/W4 benchmark gate).
 - [ ] Owner review of MC-FLF2V-003 mid-transition (collapse/flare ~frames 24–48); then seed/prompt sweep via `bridge` (each run is a separate content-addressed job).
+
+## Ten-feature automatic anchor-to-morph program — design baseline (2026-11-24)
+
+- **Source baseline:** main commit `2deb3863a89f37cc99be77867edda10df88b9878` observed before this documentation rewrite; later execution must re-read HEAD and not overwrite newer runs.
+- **Plan only:** the new [ten-feature ledger](docs/SPECKIT_FEATURE_LEDGER.md), [full pipeline design](docs/FULL_PIPELINE_DESIGN.md) and [paste-only Claude instruction](docs/CLAUDE_DESKTOP_ONESHOT.md) define F01–F10. This documentation commit **does not** implement T2I/edit image generation or a final movie.
+- **Current capability boundary:** verified single-bridge Wan dispatcher and the sample external anchor pair exist. Real `workflows/01_anchor_t2i.json` and `workflows/02_anchor_edit.json` **do not** exist; no local image-generation checkpoint/terms have been confirmed in this repository.
+- **Next executable milestone F01:** verify Python Spec Kit, inspect active GPU queue read-only (do not disturb owner's smoke test), record available models and tests; then F02 acquisition/validation of **real** local image workflows with owner-approved downloads as necessary.
+- **F01–F10 mapping/status:** all **PLANNED**, not yet executed under this new program; use actual conflict-free Spec Kit `specs/NNN-slug` names recorded as features start. Offline-only work may proceed while the owner's GPU is busy.
+- **Next visual approval:** MC-FLF2V-002/003 contact-sheet/clip quality review; peak VRAM **NOT MEASURED**; avoid conflating frame-identical reproduction with a smooth visual morph.
+
+| Logical feature | Actual Spec Kit folder | State | Implementation evidence |
+|---|---|---|---|
+| F01 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F02 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F03 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F04 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F05 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F06 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F07 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F08 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F09 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F10 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |

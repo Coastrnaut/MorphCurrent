@@ -1,94 +1,81 @@
-# AutoCreator — MorphCurrent staged autonomous engineering roadmap
+# AutoCreator — MorphCurrent autonomous image→morph engineering program
 
-## Mission
-Develop a reproducible, **local** Deforum-style continuous-morph video system operated from Claude Desktop Code on **native Windows 11 only**, without WSL or GPU passthrough, with an NVIDIA RTX A6000 (48 GiB) and ComfyUI REST/WebSocket.
+**Canonical spec-driven backlog:** [`docs/SPECKIT_FEATURE_LEDGER.md`](docs/SPECKIT_FEATURE_LEDGER.md).  
+**End-to-end architecture and acceptance:** [`docs/FULL_PIPELINE_DESIGN.md`](docs/FULL_PIPELINE_DESIGN.md).  
+**Claude Desktop Code instruction (paste-only):** [`docs/CLAUDE_DESKTOP_ONESHOT.md`](docs/CLAUDE_DESKTOP_ONESHOT.md).  
+**Measured project status:** [`PROGRESS.md`](PROGRESS.md).
 
-This is a feature-by-feature engineering contract. Read `CLAUDE.md` and `docs/ARCHITECTURE.md` before doing work. Preserve this ledger and keep actual progress in `PROGRESS.md`.
+## Product mission
 
-## Creative acceptance standard
-A passing output should show an uninterrupted, intentional *physical metamorphosis*: discernible subject structures mutate over time while camera, palette and composition evolve coherently; endpoints are faithful to anchor images; segment joins don't flash, freeze or jump. Crossfades between unrelated images are **not** a pass.
+Build a **fully local Deforum-style visual metamorphosis engine** that does not require manually supplied first or last images. The end-user supplies a YAML storyboard describing ordered concepts. MorphCurrent generates first image A from a ComfyUI text-to-image model, generates B from A using a real ComfyUI reference-edit model (and C from B, etc.), generates Wan 2.2 first/last-frame video clips for A→B and B→C, detects quality/seam issues and exports a joined movie with optional beat-synchronized licensed audio. Local Windows 11, RTX A6000 48 GiB, standalone ComfyUI and a Python-only controller; no server deployment or remote media APIs.
 
-## Workstreams
+**A winning result looks like a physically continuous morph**, not a slideshow or xfade. Each generated anchor should retain a compatible perspective, size, light direction, palette and camera, and the shared anchor must be byte-identical across adjacent clips. Video-only output works with no music.
 
-### W0. Reproducible environment and dependency audit
-- Inspect Windows 11 host, Git for Windows, Python 3.11+, controller .venv, distinct ComfyUI Python, native FFmpeg, ffprobe, CUDA in ComfyUI, GPU utilization and models; no WSL.
-- Record manifest of GPU architecture, driver, ComfyUI revision, custom nodes and checkpoint SHA256/precision/licenses.
-- Enforce no model downloads or untrusted custom-node installation without owner approval.
-- Establish CI-offline unit tests and local hardware-only test markers.
-- Profile FP8, staged FP16 or offload without assuming FP16 fits in 48 GiB; record OOM events as data.
-**Gate:** clean offline test run, inventory or explicit missing-prerequisites report.
+## Snapshot: source-derived current capability (2026-11-24)
 
-### W1. Deterministic storyboard compiler
-- Pydantic v2 schema: anchors, transition graph, defaults, visual continuity contract, seeds, beat timeline, reference IDs, model profiles.
-- Validate IDs, monotonic timing, no missing refs, output dimensions, valid 4n+1 frame lengths and constraints.
-- Compile into content-addressed DAG with immutable run manifest and stable seed derivation (master seed + content ID).
-- Add previews and CLI plan/validate/dry-run.
-**Gate:** a 3-anchor storyboard compiles into two contiguous, beat-timed transitions with reproducible manifests.
+At GitHub main `2deb3863a89f37cc99be77867edda10df88b9878`:
 
-### W2. Model and workflow binding
-- Obtain actual API-format export for reference-guided anchor generation and Wan 2.2 FLF2V.
-- Map semantic fields to node ID and input (e.g. seed, width, height, text, start_image, end_image, length, output).
-- Validate node `class_type` and input schemas against ComfyUI `/object_info`.
-- Fail with actionable diagnostics for missing custom nodes/weights; no hardcoded guessed IDs.
-**Gate:** deterministic graph patch tests and real API validation.
+- A real, locally validated API-format Wan 2.2 I2V/FLF2V graph and pinned semantic binding profile are committed.
+- The `bridge` CLI can submit **one manually supplied image pair**, safely resume, download and verify. The first MorphCurrent-dispatched 65-frame video MC-FLF2V-003 is recorded as verified, with decoded-frame equality against manual video MC-FLF2V-002. Peak VRAM **not measured**; visual human approval not recorded.
+- Windows-native Python helper scripts and Spec Kit Python scripts/Claude skills are installed, with code and tests. `PROGRESS.md` is the real measured ledger.
+- **Missing work:** real anchor T2I and edit API workflow exports/models, generated-anchor scheduling, full YAML image+bridge DAG, multi-stage recovery, QA/selection, seam joining, optional audio and single command. Preserve the existing bridge and prior evidence.
 
-### W3. Anchor synthesis and continuity
-- Generate first anchor via T2I; next anchor via reference editing when model permits.
-- Keep palette, lighting, subject center, silhouette, perspective, focal length and aspect ratio compatible.
-- Add optional semantic geometry/material correspondence planner and low-res contact-sheet approval.
-- Record source prompts/negative prompts/ref weights/seed/model IDs.
-**Gate:** anchor pairs available as reproducible image files with a continuity review.
+This file is a future work specification, not evidence that new functionality has already been deployed. Read latest HEAD each session; do not rely solely on this snapshot.
 
-### W4. Video bridge generation
-- Upload start/end anchors; patch a verified Wan 2.2 FLF2V workflow; submit `/prompt`, follow `/ws`, poll `/history/{prompt_id}` after completion.
-- Implement bounded retry, timeout, persistent job registry, clean cancellation and artifact verification.
-- One GPU render at a time initially; grouped model scheduling avoids thrashing.
-- Experiment direct metamorphosis, camera passage and intermediate anchors; compare steps, CFG, sampler and precision with fixed inputs.
-**Gate:** real local clip with observed endpoint fidelity, motion quality and logged VRAM.
+## Execution strategy: ten sequenced Spec Kit features
 
-### W5. Seam-safe video and beat-driven audio
-- Analyze audio onset, beat grid and sections; allow manual BPM/downbeat correction.
-- Generate 4n+1 frames per bridge from a beat duration; define explicit duration approximation/retime policy.
-- Probe codecs/frame rates/dimensions, normalize clips, compare boundaries, drop only true duplicate frames, test join for jumps.
-- FFmpeg compose without shell injection; optionally interpolate later, preserve audio offset, mux final master.
-**Gate:** three anchors yield continuous, correctly timed MP4 with recorded seam scores and no forced dissolve.
+The **exact ten** logical features, dependencies, detailed implementation contract, failure cases, gating evidence and status table are in [`docs/SPECKIT_FEATURE_LEDGER.md`](docs/SPECKIT_FEATURE_LEDGER.md). Claude must implement them using the actual **installed** Spec Kit skills and Python script backend, one real spec and tested feature at a time:
 
-### W6. Automated quality and selective rerender
-- Generate contact sheets and temporal diagnostics for blur, freeze, flicker, color delta, perceptual seam gap, motion direction and endpoint fidelity.
-- Rank candidates with metrics plus manual review; avoid overclaiming objective scores.
-- Rerender only failed clip DAG nodes, reusing stable anchors and successful bridges.
-**Gate:** one failed bridge requeued without invalidating unrelated work.
+| Stage | Feature | User-facing capability |
+|---|---|---|
+| **Foundation** | F01: safe baseline and provenance | Protect owner GPU work, discover installed ComfyUI and existing code truth |
+| **Image inference** | F02: image model and workflow onboarding | Verify real local T2I and image edit API exports/profile bindings |
+| | F03: generate first anchor | Automatic T2I endpoint A without supplying a manual image |
+| | F04: generate related next anchors | Reference-edit A→B→C with consistent geometry/style, explicit fallback |
+| **Composition** | F05: full storyboard DAG | YAML → generated A,B,C dependencies → planned bridges; deterministic IDs |
+| | F06: generated anchors into Wan | Feed real generated A/B images to existing working FP8 Wan FLF2V bridge |
+| **Trust and quality** | F07: durable state and measurements | Atomic root manifest, crash-safe resume, model hashes and optional nvidia-smi trace |
+| | F08: visual quality / candidate selection | Detect artifacts, compare seeds/prompts and selectively rerender segments |
+| **Movie** | F09: seam, FFmpeg, optional music | Accurate shared B seam, 129 frames for two 65-frame bridges, optional beat sync |
+| **Delivery** | F10: one-command integrated acceptance | Native Windows YAML-to-images-to-video CLI with dry-run, approve/resume and report |
 
-### W7. Creative expansion
-- LLM-compiled physical transformation prompts and optional *local LLM* backend.
-- Adaptive intermediate anchor insertion for high semantic/visual distance.
-- Loop mode, soundtrack controls for camera speed/color/glow, multiple delivery resolutions, preview/proxy rendering.
-- Pluggable video models and benchmark profiles after Wan baseline; license/compatibility gating.
-**Gate:** user-facing sequence recipe reproducible across two clean runs.
+### Feature acceptance gates
 
-### W8. Reliability and production polish
-- Native Windows paths, Unicode and long-path handling, Python-only setup/launch/diagnostics/Spec Kit helpers, importable package, CLI help, structured logs and ignored assets.
-- Resumable interrupted jobs, snapshot/version migration, content hash cache, optional metrics dashboards.
-- End-to-end acceptance documentation and re-render instructions.
-**Gate:** clean-machine setup instructions and demonstrable local pipeline.
+1. **SPEC:** real `specs/NNN-slug/spec.md` tied to Fxx + requirements, negative tests, and dependencies.
+2. **DESIGN:** plan/research/data model/contracts/quickstart as needed; validate against constitution and actual ComfyUI API node choices; no made-up workflows.
+3. **IMPLEMENT:** code, tests, safe defaults, README/CLI documentation, backward-compatible `bridge` behavior.
+4. **OFFLINE-PASS:** real Windows/CI pytest outcomes and mocked REST failures, checked graph hashes and immutable output rules.
+5. **GPU-VERIFIED:** only after explicit owner-approved bounded local inference, actual image/MP4 verified by checksum/ffprobe and machine/precision recorded. If model or queue prevents the run, mark BLOCKED, not COMPLETE.
+6. **CREATIVE QA:** observe contact sheet and endpoint continuity; automated similarity metrics are not artistic proof.
+7. **DONE/COMMIT:** update `PROGRESS.md` plus feature ledger mapping Fxx ↔ actual Spec Kit path ↔ commit SHA ↔ evidence and next action; no undocumented regressions.
 
-## Sequencing / engineering discipline
-1. Write acceptance tests for each stage before runtime integration.
-2. Use stable, small changes and update `PROGRESS.md` after each batch.
-3. Provide reviewable experiment tables rather than choosing the fastest preset without visual evidence.
-4. For any limitation, mark BLOCKED and do not invent test results.
-5. Do not force-push or bypass branches/protections; request human action only for true permissions, hardware or licensed downloads.
+Actual spec numbers can differ from F01–F10 if `specs/` prefixes are occupied; use the installed `create_new_feature.py --help` and preserve its returned folder. Do not pre-create ten empty templates or reinitialize an already valid Python Spec Kit environment.
 
-## Spec Kit workflow (when installed)
-Check `specify --help`. Prefer the repository Python helper `python scripts/windows/speckit.py --status` and `--init` to set up `specify init --here --integration claude --script py`, with backed-up in-place repair of an existing `.specify` when required (never bare `specify init` on Windows). Follow with Claude's installed `/speckit.constitution` (or equivalent), `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze`, `/speckit.implement` for successive workstreams. CLI/skills naming can change; inspect installed version rather than asserting syntax blindly.
+## Model/workflow strategy
 
-## Handoff one-shot
-The full copy/paste autonomous instruction is maintained in `docs/CLAUDE_DESKTOP_ONESHOT.md`. It is the canonical one-shot. Start it from Claude Desktop Code in the cloned repo.
+**Video:** preserve the existing `workflows/03_wan22_flf2v.json` and `configs/profiles/wan22_flf2v.binding.json`; known FP8 I2V high/low model pair, Wan 2.1 VAE, UMT5 text encoder. Runtime model existence and hashes should be read from local ComfyUI, not guessed from filenames. Check ComfyUI node names against live `/object_info` before dispatch.
 
-## W0-W8 native Windows requirements
-1. Development scripts must be Python, not PowerShell or Bash; no GPU passthrough, WSL, Linux Docker or native Linux installations.
-2. Windows Python `.venv\\Scripts\\python.exe` is an orchestration environment only. Detect and respect ComfyUI Portable's embedded Python or a manual ComfyUI-specific venv.
-3. The standard entry points are `python scripts/windows/initialize.py`, `check.py`, `launch_comfyui.py`, `speckit.py`. Keep them safe, idempotent where possible and testable without GPU.
-4. Spec Kit generated automation must be `--script py` and verified: required `.specify/scripts/python/*.py` files must exist, generated Claude commands must call Python (not PowerShell), and official fallback files must be moved into ignored local backups. Prefer `python scripts/windows/speckit.py --init` to fix preexisting Windows PowerShell initialization, then `--verify`. No silent fallbacks or deletion of user work.
-5. Test on Windows GitHub Actions Python 3.11/3.12; use the Windows local A6000 only for separately approved smoke/benchmark jobs. Never conflate CI offline success with validated CUDA video rendering.
-6. `doctor --strict` provides a readiness gate: host/tooling only with `--skip-comfy`; GPU + ComfyUI when used without it. Record both failure and success evidence in `PROGRESS.md`.
+**Still images:** T2I model and image-edit model are **not yet verified as installed**. FLUX or Qwen Image is a candidate model family, not a required magical default. Evaluate license, source, local RTX A6000 memory and ComfyUI nodes, gain owner consent for any large download, then export validated `workflows/01_anchor_t2i.json` and `02_anchor_edit.json`. If an edit workflow cannot be installed, a clearly labeled, consciously selected independent T2I approach can generate B with shared style; strict reference-edit acceptance remains BLOCKED until the real graph works.
+
+**Memory:** 48 GiB means independent anchor and Wan stages should typically run sequentially; two full-FP16 14B experts exceed capacity together. GPU queue should be read-only while owner tests are running; no reset, auto-download, unapproved GPU job or silent `--highvram`. Measure actual per-process utilization and peak sampling; `/system_stats` snapshot alone is insufficient.
+
+## Main end-to-end demonstration
+
+Baseline recipe: `configs/sequences/organic-machines.yaml`, with orchid A (T2I), butterfly B (edit A), mechanical phoenix C (edit B). Generate, persist and hash all three images. Render A→B and B→C at 65 frames/16 FPS each (or explicitly recorded experimental overrides); hand the same exact B bytes to both bridges. Inspect real shared endpoints, dedupe only proven repeats, join to 129 unique frames and check rational timestamps/video nominal duration. Optional licensed local music may be added but is never needed to produce video. At each stage create a reviewable job manifest, contact sheet and safe retry route.
+
+Keep the MC-FLF2V-001 through 003 clip evidence and refined continuity prompt in `docs/RENDER_BASELINE_001.md`; it is an experimental **candidate** not evidence of success for new auto-image generation. Verified initial video bridge is **not** a full pipeline acceptance.
+
+## Windows/Python + Spec Kit invariants
+
+- Native Windows 11 only; `python --version` (3.11+) and `.venv\Scripts\python.exe` in controller; separate ComfyUI Portable `python_embeded\python.exe` for CUDA.
+- Only Python scripts, not PowerShell `.ps1`, WSL, Linux VMs/containers, Bash or mandatory `py.exe`.
+- Verify installed Spec Kit: `python scripts/windows/speckit.py --status` and `--verify`; reinit only if broken after reviewing backed-up repair. Current `.specify/integration.json` uses `script=py`, CLI-integration version 1.2.4. Do not replace/erase generated skills or existing Spec Kit project with a new template.
+- Each feature: execute *actual installed* Spec Kit specify, clarify when needed, plan, tasks, analyze, implement. Use one active spec at a time; keep specs, plans, tasks in Git, then update PROGRESS + ledger and make a reviewed commit.
+- Offline verification: `python -m pytest -m "not integration and not gpu"`. Live read-only `/object_info` integration only if safe. Expensive GPU tests require explicit owner approval, short bounded run and idle queue. Never assert local A6000 usage from Windows CI.
+- Reuse `comfy_client.py`, `workflow_adapter.py`, `bridge.py`, `schema.py`, `timeline.py`, `media.py` and `stitcher.py` rather than clone them. Preserve programmatic image upload security, resume and targeted cancellation.
+
+## Agent instructions, owners and stop conditions
+
+For a Claude Desktop Code session, **copy the entire contents** of [`docs/CLAUDE_DESKTOP_ONESHOT.md`](docs/CLAUDE_DESKTOP_ONESHOT.md) into the message box. That document is deliberately only the pasteable one-shot, without headers/footers or text to trim.
+
+The agent may autonomously plan, spec, implement, test and commit safe offline increments. **Stop and request owner action** for a missing local image model/graph, install/license permission, new GPU-intensive test, potentially destructive changes, audio copyright, or unclear user creative acceptance. If an active GPU smoke test is underway, inspect queue read-only and continue offline without altering runtime. On any context/time/tool limit, make a truthful progress entry with actual HEAD, failing test, incomplete Fxx, blockers and exact restart commands; do not promise background work.

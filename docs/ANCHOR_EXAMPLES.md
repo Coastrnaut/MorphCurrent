@@ -85,3 +85,7 @@ and instructions. User has since reported a successful **manual** FLF2V render a
 ## After the first smoke test
 
 The user's 49-frame video was reviewed: orchid and butterfly endpoints matched closely, while some petals rose partially out of frame and butterfly wings were temporarily distorted in the middle. **Do not overwrite this initial example prompt**. Use [MC-FLF2V-001 review and MC-FLF2V-002 revised prompt](RENDER_BASELINE_001.md) for the 65-frame candidate experiment.
+
+## Role of these manual fixtures in the new automatic pipeline
+
+These committed Orchid/Butterfly JPEGs are **regression fixtures** for the existing Wan bridge and do **not** satisfy the new user's requirement to generate the first and last image automatically. MC-FLF2V-003 already verified MorphCurrent dispatch against the real Wan API graph. For a full YAML-driven run, **new** anchors A, B and C must be generated through verified local ComfyUI T2I and reference-edit graphs (or deliberately opted-in independent T2I fallback), hashed, and passed to the same validated Wan bridge. See [ANCHOR_MODEL_ONBOARDING.md](ANCHOR_MODEL_ONBOARDING.md), [FULL_PIPELINE_DESIGN.md](FULL_PIPELINE_DESIGN.md), and [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md).

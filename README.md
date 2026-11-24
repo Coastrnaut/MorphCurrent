@@ -4,9 +4,9 @@
 
 MorphCurrent is a Python orchestration project for making continuous Deforum-like journeys with modern image and video models. The core idea is to generate **structurally compatible anchor images**, bridge each pair using **Wan 2.2 14B first/last-frame video conditioning** inside local ComfyUI, quality-check the results, then join them with FFmpeg. Claude Desktop Code develops and operates the repository; the actual rendering is local.
 
-> **Status: engineering starter, not a finished automated video renderer.** The owner completed a successful **manual** Wan 2.2 FLF2V Orchid → Butterfly render (49 frames, 640×368, 16 FPS), documented in [the reviewed baseline](docs/RENDER_BASELINE_001.md); an API workflow export and MorphCurrent automation are still pending.
+> **Status: one Wan 2.2 image-pair bridge is already automated and GPU-verified, but full automatic image-to-video creation is NOT implemented.** The owner completed a successful **manual** Wan 2.2 FLF2V Orchid → Butterfly render (49 frames, 640×368, 16 FPS), documented in [the reviewed baseline](docs/RENDER_BASELINE_001.md); the actual Wan API workflow was subsequently exported and a MorphCurrent-dispatched 65-frame bridge was verified as MC-FLF2V-003. **Automatic ComfyUI text-to-image/reference-edit anchors and full movie assembly are still pending**; see [PROGRESS.md](PROGRESS.md).
 >
-> **Starter limitations:** The Python client, storyboard validator, timing compiler and tests form an initial foundation. Actual anchor/image-model workflow exports and a verified Wan FLF2V API-format graph must be supplied from your own installed ComfyUI before GPU rendering. No model weights or videos are bundled. The owner's manual A6000 render is documented separately; automated MorphCurrent GPU execution remains unverified.
+> **Starter limitations:** The Python client, storyboard validator, timing compiler and tests form an initial foundation. The Wan FLF2V API graph and binding are present and a single programmatic bridge has rendered on the owner's GPU. **Real T2I and reference-edit anchor workflow exports are still missing**; do not assume the Wan model can generate new still-image endpoints. No model weights or videos are bundled. The owner's manual A6000 render is documented separately; automated MorphCurrent GPU execution remains unverified.
 
 ## Target hardware and stack
 
@@ -73,6 +73,18 @@ python scripts\windows\stage_example_anchors.py --install-root C:\AI\ComfyUI_win
 ```
 
 Refresh the ComfyUI model/image list, select `01_glass_orchid.jpg` in the first **Load Image** node and `02_metallic_butterfly.jpg` in the last **Load Image** node. Paste the motion prompt and follow the initial 49-frame smoke test in [docs/ANCHOR_EXAMPLES.md](docs/ANCHOR_EXAMPLES.md). These are generated *images*, not evidence that Wan rendered a working video.
+
+## Full automatic image-to-morph engineering program
+
+The repo's existing `bridge` CLI already handles a **manually supplied** image pair. The next major milestone is generating **both start and end anchors locally in ComfyUI** and automatically feeding them into the proven Wan 2.2 workflow. No fully automatic multi-anchor `render` CLI is shipped yet. The implementation is planned as exactly **ten** Spec Kit features F01–F10, including image-model onboarding, text-to-image, reference editing, storyboard DAG, multi-bridge runs, crash recovery, visual QA, seam-safe joining, and a final one-command CLI.
+
+- [Spec Kit ten-feature ledger](docs/SPECKIT_FEATURE_LEDGER.md) — authoritative statuses, requirements and acceptance gates.
+- [End-to-end system architecture](docs/FULL_PIPELINE_DESIGN.md) — image→video dependencies, manifests, timing and GPU consent.
+- [Anchor model/workflow onboarding](docs/ANCHOR_MODEL_ONBOARDING.md) — real T2I/edit models and verified API exports; no invented nodes.
+- [Claude Desktop Code paste-only one-shot](docs/CLAUDE_DESKTOP_ONESHOT.md) — open and paste the **entire file contents**, with no start/end trimming.
+- `AutoCreator.md` and `CLAUDE.md` — feature orchestration strategy and persistent agent constraints.
+
+**Safety:** If ComfyUI is already running a GPU smoke test, do not restart it or submit more GPU jobs. Run offline planning/specification/tests only until the GPU is idle and additional bounded inference is explicitly approved.
 
 ## Repo navigation
 

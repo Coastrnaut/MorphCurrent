@@ -130,3 +130,7 @@ python scripts/windows/check.py --check-comfy
 See [troubleshooting](TROUBLESHOOTING_WINDOWS.md), [architecture](ARCHITECTURE.md) and [canonical Claude one-shot](CLAUDE_DESKTOP_ONESHOT.md).
 
 For an existing repository initialized in PowerShell mode, run `python scripts/windows/speckit.py --status`, `python scripts/windows/speckit.py --init`, then `python scripts/windows/speckit.py --verify`. Backup files are intentionally excluded from Git; inspect them before any manual deletion.
+
+## Automatic first/last anchor images — engineering dependency
+
+The owner already demonstrated a programmatic **Wan FLF2V video bridge** (MC-FLF2V-003), but the full feature program requires real local ComfyUI T2I and reference-edit image workflows. Those exports are absent on the inspected main snapshot. See [ANCHOR_MODEL_ONBOARDING.md](ANCHOR_MODEL_ONBOARDING.md) and [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md); do not invent APIs or assert FLUX/Qwen checkpoints are installed. Use local models only after permission/license review. Image-model GPU work is separate from the currently running Wan smoke test: inspect `/queue` read-only, don't restart/interrupt, and keep Python controller/ComfyUI Torch environments independent. The one-shot in `CLAUDE_DESKTOP_ONESHOT.md` is now **paste-only text**.

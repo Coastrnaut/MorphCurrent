@@ -14,3 +14,9 @@ There is **no** WSL, Linux installation, GPU passthrough, Docker Linux backend o
 8. Paste `docs/CLAUDE_DESKTOP_ONESHOT.md` into Claude Desktop Code.
 
 These scripts never install model weights/drivers automatically or force `--highvram`. Run only one initial GPU job at a time and record actual benchmarks.
+
+## Adding ComfyUI anchor image generation (planned; no model installed by this guide)
+
+Wan FP8 I2V 14B video weights, Wan VAE and UMT5 do **not** imply a compatible text-to-image or image-edit model is installed. The remaining automatic first/last-frame workflow requires two additional **real** ComfyUI API exports: `workflows/01_anchor_t2i.json` and `workflows/02_anchor_edit.json`. Review [ANCHOR_MODEL_ONBOARDING.md](ANCHOR_MODEL_ONBOARDING.md) for selection, model licensing, manual installation approval, safe export, node/profile validation and explicit fallback behavior.
+
+The complete engineering backlog is the [ten-feature Spec Kit ledger](SPECKIT_FEATURE_LEDGER.md). During an ongoing GPU smoke run, only read-only model/queue checks and offline Python/spec work are safe; do **not** launch new inference, restart ComfyUI or install image models.

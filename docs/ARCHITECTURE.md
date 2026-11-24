@@ -76,3 +76,13 @@ https://code.claude.com/docs/en/settings
 
 ### Spec Kit Python-only invariant
 Bare `specify init` defaults to PowerShell on Windows, so the repository's Python helper supplies `--script py --non-interactive --integration claude` explicitly. Upstream may also unpack `.specify/scripts/powershell/` as a fallback even when Python is selected. The helper verifies real Python core scripts, checks generated Claude `speckit-*` skills/commands for .ps1 references, normalizes `python3` invocations to Windows `python`, and moves the unused fallback into a gitignored backup. It detects/fixes existing PowerShell-initialized `.specify` under `--init` or `--repair` with a backup before force-merging. A known July 2026 CLI packaging issue omitted Python scripts in some versions; a missing `.py` fails verification and requires upgrade, not silently returning to PowerShell.
+
+## Image-generation-to-morph extension (ten-feature program, 2026-11-24)
+
+The preceding system describes the existing bridge, planner and intended DAG. **As of MC-FLF2V-003, the single-pair Wan bridge is actually running and verified on the owner's GPU; automatic local anchor image generation is not yet implemented.** The canonical new design is [FULL_PIPELINE_DESIGN.md](FULL_PIPELINE_DESIGN.md), and its exact ten-feature implementation gates are [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md).
+
+Pipeline stages: `Storyboard → real locally-exported ComfyUI T2I graph (first anchor A) → real locally-exported reference-edit graph (B from A, C from B) → existing validated Wan FLF2V bridge(A,B), bridge(B,C) → local QA → verified shared-anchor seam → FFmpeg final MP4`. A fallback independent T2I endpoint is **explicitly chosen**, not silently called reference editing. Do not add fake `01_anchor_t2i.json` or `02_anchor_edit.json` until installed-model runs and `/object_info` validate them.
+
+GPU stages execute serially by default with explicit per-run consent, persistent stage/parent hashes, and no interference with ongoing owner ComfyUI work. Peak VRAM requires a real opt-in sampler, not a stationary `/system_stats vram_free` snapshot. Output B is the *same byte sequence* in adjacent bridges. For 2×65-frame / 16-FPS successful bridges the expected **unique** frame count is 129 only when the B boundary is verified duplicated. Keep audio optional.
+
+`CLAUDE.md` and `.specify/memory/constitution.md` now point to the ten-feature program. The only canonical pasteable agent instruction is the **entire file** `docs/CLAUDE_DESKTOP_ONESHOT.md`; it includes no wrapper.
