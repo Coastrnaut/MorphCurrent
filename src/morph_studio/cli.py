@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from pathlib import Path
 from pydantic import ValidationError
 
 from .schema import load_storyboard
@@ -19,6 +20,8 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .gates import check_gpu_gate
+from .provenance import DEFAULT_MODELS_ROOT, hash_models, models_in_graph
 from .anchors import AnchorRequest, plan_anchor, request_from_anchor_job, run_anchor
 from .onboarding import as_json as inspect_json, inspect_export, load_export
 from .preflight import build_baseline_report
@@ -82,6 +85,23 @@ def _workflow_patch(args: argparse.Namespace) -> int:
     else:
         sys.stdout.write(text)
     return 0
+
+
+def _models_hash(args: argparse.Namespace) -> int:
+    """Opt-in SHA-256 of model files referenced by profiles; refuses a busy ComfyUI queue."""
+    if not args.confirm_io:
+        raise ValueError("hashing reads multi-GB model files; pass --confirm-io to proceed")
+    with ComfyClient(args.url) as client:
+        gate = check_gpu_gate(consent=True, queue=client.queue())
+    if not gate.allowed:
+        raise ValueError(f"ComfyUI queue has {gate.queue_busy} job(s); not hashing during a render")
+    pairs = set()
+    for profile_path in args.profile or sorted(Path("configs/profiles").glob("*.binding.json")):
+        profile = load_binding_profile(profile_path)
+        pairs.update(models_in_graph(load_api_workflow(resolve_workflow_path(profile, profile_path))))
+    results = hash_models(sorted(pairs), Path(args.models_root), Path(args.cache))
+    print(json.dumps(results, indent=2))
+    return 0 if all(r["status"] != "missing" for r in results.values()) else 4
 
 
 def _dag(args: argparse.Namespace) -> int:
@@ -257,6 +277,12 @@ def main(argv: list[str] | None = None) -> int:
     bridge.add_argument("--allow-busy-queue", action="store_true",
                         help="Submit even when ComfyUI already has queued work")
     bridge.add_argument("--timeout", type=float, default=3600, help="Seconds to wait for the render")
+    mh = subs.add_parser("models-hash", help="Opt-in SHA-256 of profile-referenced model files (idle queue only)")
+    mh.add_argument("--profile", action="append", help="Binding profile(s); default all in configs/profiles")
+    mh.add_argument("--models-root", default=str(DEFAULT_MODELS_ROOT))
+    mh.add_argument("--cache", default="outputs/model_hashes.json")
+    mh.add_argument("--url", default="http://127.0.0.1:8188")
+    mh.add_argument("--confirm-io", action="store_true", help="Acknowledge multi-GB disk reads")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -328,6 +354,8 @@ def main(argv: list[str] | None = None) -> int:
             return _baseline(args)
         elif args.command == "workflow-inspect":
             return _workflow_inspect(args)
+        elif args.command == "models-hash":
+            return _models_hash(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":

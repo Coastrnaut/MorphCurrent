@@ -151,7 +151,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | F04 | `specs/004-reference-edit-anchors` | OFFLINE-PASS; GPU BLOCKED | `run_anchor_chain`, explicit `independent_t2i`, contact sheet |
 | F05 | `specs/005-storyboard-task-dag` | COMPLETE (offline feature) | `dag.py` + `morphcurrent dag`; 16-multiple size check |
 | F06 | `specs/006-generated-anchor-bridges` | OFFLINE-PASS; GPU BLOCKED | `pipeline.run_bridge_stage` on the unchanged Wan bridge path |
-| F07 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F07 | `specs/007-recovery-provenance-metrics` | OFFLINE-PASS | run manifest, crash-resume tests, `models-hash`, VRAM sampler |
 | F08 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F09 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F10 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
@@ -231,3 +231,19 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 **Built.** `src/morph_studio/pipeline.py` `run_bridge_stage(dag_plan, anchor_jobs, …)`: for each DAG bridge task, endpoints are `anchor_image_path()` of verified anchor jobs (SHA re-checked), the request uses the task's prompt/seed/length/fps/size and the Wan profile from the plan requirements, and execution is the unchanged `plan_bridge` + `run_bridge` (MC-FLF2V-003 path). Raises if one anchor id appears with two byte versions; records anchor job IDs and `candidates_requested` (multi-candidate ranking is F08). Unverified anchors block their bridges.
 
 **Results.** Offline **160 passed, 1 deselected**: storyboard → 3 fake-generated anchors → 2 bridges whose inputs are exactly the generated SHAs (B shared), rerun 0 new `/prompt`, no-consent stops at `validated`, missing Wan model fails validation with no substitute, busy queue refused. Note: the storyboard renders at 832×480 while MC-FLF2V-003 used 640×368; 832×480 is schema-valid but **not GPU-tested**.
+
+## Git history note (2026-11-24)
+
+At the owner's request, `Co-Authored-By` trailers were removed from all commits (`git filter-branch --msg-filter`, from `87e1717` onward; file trees unchanged) and `main` was force-pushed (`eb5a8e4` → `6be6c51`, `--force-with-lease`). Commit SHAs quoted earlier in this file before that point are pre-rewrite. The rule is now in `CLAUDE.md`. A local branch `backup/pre-coauthor-rewrite` keeps the old history and was not pushed.
+
+## F07 — Recovery, provenance, VRAM observations, offline slice (2026-11-24)
+
+**Spec Kit.** `specs/007-recovery-provenance-metrics` (`--number 7`); tasks 5/7 (T006 hashing and T007 sampled render are owner-scheduled).
+
+**Built.**
+- `run_manifest.RunManifest`: `outputs/runs/run-<plan16>/manifest.json` + `plan.json`; atomic temp+replace writes; stage entries mirror stage `job.json` (job id/dir, state, prompt id, image/video SHA); consent and VRAM lists.
+- Crash safety proven: a simulated hard stop right after each of 7 persisted transitions (uploaded … verified) resumes to `verified` with exactly one `/prompt`.
+- `provenance.py` + `morphcurrent models-hash --confirm-io`: hashes only model files referenced by binding-profile graphs, refuses when ComfyUI's queue is non-empty, caches by (path, size, mtime_ns), `recorded_hashes()` gives `NOT RECORDED` for stale/missing entries.
+- `vram.VramSampler`: opt-in thread polling `nvidia-smi` (argument list); summary = baseline / peak / min, interval, sample count, labelled overall-GPU (all processes) with a between-samples caveat; no samples → `NOT MEASURED`.
+
+**Results.** Offline **173 passed, 1 deselected**. Model SHA-256 and peak VRAM on the A6000 remain **NOT MEASURED**.
