@@ -335,3 +335,13 @@ Nothing in this session queued GPU work; ComfyUI queue was empty at every check.
 ## Repository cleanup (2026-11-24)
 
 At the owner's request: removed AI steering documents and stale duplicates (`AutoCreator.md`, `docs/CLAUDE_DESKTOP_ONESHOT.md`, `docs/SETUP_WINDOWS.md`, `docs/ANCHOR_MODEL_ONBOARDING.md`, `docs/ANCHOR_EXAMPLES.md`, `docs/FULL_PIPELINE_DESIGN.md`, old `docs/EXPERIMENTS.md`, `workflows/README.md`, `configs/profiles/README.md`) and two unused config placeholders (`configs/models.yaml`, `.env.example`). All docs now live in `docs/`: `ARCHITECTURE.md` (absorbs the pipeline design and profile/workflow notes), `MODELS.md` (was `ANCHOR_MODEL_DECISION.md`; now the installed-model/workflow reference), `EXPERIMENTS.md` (was `RENDER_BASELINE_001.md` + fixtures), `DEVELOPMENT.md`, `COMFYUI_SETUP.md`, `TROUBLESHOOTING.md`, `ENVIRONMENT.md`, `SPECKIT_FEATURE_LEDGER.md` and this file (moved from the root). README rewritten as a standard project README. `CLAUDE.md` stays at the root (Claude Code reads it there); references updated. Older entries above mention removed file names as history. Tests: 194 passed.
+
+## MC-RUN-001 — first full storyboard render on the GPU (2026-11-24)
+
+- Command (owner standing GPU consent): `render configs/sequences/organic-machines.yaml --confirm-gpu --sample-vram` → exit 7 `awaiting_review`, run `outputs/runs/run-cefb16ae1db47f4d`, 15:03–15:22 UTC (18.6 min).
+- **F03 GPU-VERIFIED:** orchid anchor via real Qwen-Image T2I (`8c2cb744…`, image `500bee50…ecdc`, 832×480, 18.7 s).
+- **F04 GPU-VERIFIED:** butterfly = reference edit of the orchid's verified bytes (image `4c70fc98…2760`), phoenix = edit of the butterfly (`ae2364ee…93c4`); sizes match parents.
+- **F06 GPU-VERIFIED:** bridges `9785f0ae…` (clip `b3b57d0c…3b4d`) and `61df5945…` (clip `ec326bc7…df99`), each 832×480, 65 frames, 16 fps, 4.0625 s (ffprobe); both use the identical butterfly SHA. 832×480 bridges take ~8.3 min (vs ~3.9 min at 640×368).
+- **F07:** first sampled VRAM: overall GPU used baseline 46,992 MiB, peak 48,080 MiB (of 49,140), 0.5 s interval, 2,041 samples, includes other processes. Model hashes for Qwen files recorded; Wan still NOT MEASURED.
+- **F08:** QA heuristics reported no flags on either bridge despite visible drift/blur (A→B) and a near-cut collapse (B→C) — confirms they are only a gross-defect screen.
+- **Not done:** human review/approval, final join (F09/F10 on real clips), reproducible second run. Creative notes in `docs/EXPERIMENTS.md` (MC-RUN-001).

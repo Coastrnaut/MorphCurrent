@@ -31,10 +31,10 @@ The **dry-run path** must work before any GPU access, show exactly which models/
 |---|---|---|---|---|
 | F01 | `safe-baseline-and-provenance` → `specs/001-safe-baseline-provenance` | — | Current Wan bridge, history, tests | **COMPLETE** — offline tests + live read-only checks; F01 has no GPU gate |
 | F02 | `image-model-and-workflow-onboarding` → `specs/002-image-workflow-onboarding` | F01 | ComfyUI API client, semantic bindings | **COMPLETE** — Qwen-Image + Edit-2509 installed (SHA-256 verified), real exports `01_`/`02_` bound and live-validated |
-| F03 | `first-anchor-text-to-image` → `specs/003-first-anchor-t2i` | F02 | Client upload/history, hash functions | **OFFLINE-PASS; GPU BLOCKED** (needs F02 real T2I profile + owner render approval) |
-| F04 | `reference-guided-next-anchor` → `specs/004-reference-edit-anchors` | F03 | Storyboard anchor reference semantics | **OFFLINE-PASS; GPU BLOCKED** (needs F02 real edit profile) |
+| F03 | `first-anchor-text-to-image` → `specs/003-first-anchor-t2i` | F02 | Client upload/history, hash functions | **GPU-VERIFIED** (MC-RUN-001, 2026-11-24) |
+| F04 | `reference-guided-next-anchor` → `specs/004-reference-edit-anchors` | F03 | Storyboard anchor reference semantics | **GPU-VERIFIED** (MC-RUN-001: butterfly from orchid, phoenix from butterfly) |
 | F05 | `full-storyboard-task-graph` → `specs/005-storyboard-task-dag` | F03, F04 | `schema.py`, `timeline.py` | **COMPLETE** — offline by nature (no GPU gate); dry-run DAG verified |
-| F06 | `generated-anchors-to-wan-bridges` → `specs/006-generated-anchor-bridges` | F05 | Proven `bridge.py` / FLF2V profile | **OFFLINE-PASS; GPU BLOCKED** (needs generated A/B from F03/F04 GPU gates) |
+| F06 | `generated-anchors-to-wan-bridges` → `specs/006-generated-anchor-bridges` | F05 | Proven `bridge.py` / FLF2V profile | **GPU-VERIFIED** (MC-RUN-001: two 832×480 bridges, shared B SHA) |
 | F07 | `multi-stage-recovery-and-metrics` → `specs/007-recovery-provenance-metrics` | F06 | Existing single-bridge job log | **OFFLINE-PASS** — model hashes and sampled peak VRAM NOT MEASURED on hardware yet |
 | F08 | `visual-quality-selective-rerender` → `specs/008-quality-selective-rerender` | F06, F07 | Baseline clip observations | **OFFLINE-PASS** — heuristics uncalibrated; human review required |
 | F09 | `seam-safe-video-and-audio` → `specs/009-seam-safe-join` | F05–F08 | Timeline + FFmpeg foundations | **OFFLINE-PASS** — real Wan seam not yet measured (GPU chain blocked) |
