@@ -498,3 +498,17 @@ Owner request: ten more features (40 total) to plan a five-minute video about el
 Caught: MC-FLF2V-003 petal collapse (frames 28–44) and MC-RUN-001 side-on bridge shrink (16–20) — both missed entirely by F08. Missed: MC-RUN-002 wing fold, the MC-RUN-001 right drift and both blur windows. The 3 drift "false positives" are in the side-on MC-RUN-001 bridge, where the subject arguably does drift (labels incomplete). Honest status: partial improvement; needs owner-labelled windows and a train/test split before tuning.
 
 **Results.** Offline **247 passed, 1 deselected**.
+
+## F11 T011 — GPU benchmark matrix (2026-11-24) → F11 GPU-VERIFIED
+
+Owner approved ("Approve both"). Script ran sequentially with an idle-queue check before each run: `POST /free {"unload_models": true, "free_memory": true}` (16:26 UTC), then `render … --confirm-gpu --accept-heuristics --sample-vram --runs-root outputs/bench/{cold832,warm832,w640}` (the 640 run used a copy of the storyboard with only width/height changed).
+
+| Run | Wall | GPU exec (anchors / bridges) | Whole-GPU baseline → peak |
+|---|---|---|---|
+| cold 832×480 | 16:26–16:44 (18.6 min) | 19.5 / 51.6 / 49.6 s · 496.5 / 493.7 s = **1,110.8 s** | 1,614 → 48,198 MiB |
+| warm 832×480 | 16:44–17:03 (18.7 min) | 20.4 / 53.3 / 50.2 s · 496.8 / 491.7 s = **1,112.4 s** | 35,394 → 48,210 MiB |
+| 640×368 | 17:03–17:13 (10.0 min) | 17.2 / 46.4 / 43.9 s · 241.0 / 239.0 s = **587.5 s** | 35,320 → 48,261 MiB |
+
+Findings: (1) no measurable cold-start penalty — model loads are cheap with the weights in the OS file cache; (2) 640×368 bridges are 2.06× faster than 832×480 while having 0.59× the pixels, anchors ~11% faster; (3) the ~35 GB "baseline" seen in every earlier run is **ComfyUI's own cached models** (it drops to 1.6 GB after `/free`), so earlier notes attributing it to other apps were wrong; peak ≈ 48.2 GB in every run because ComfyUI fills free VRAM — not a minimum requirement; (4) cold and warm 832 outputs are byte-identical to MC-RUN-002 (third and fourth identical reproduction); (5) the 640 run stopped for review because the new F16 detector flagged drift in frames 56–58 and F12 flagged the butterfly's palette — expected behaviour, not joined.
+
+History: `configs/perf_history.json` now holds 28 measured stages. `estimate` → 1,115.0 s (832×480) and 585.6 s (640×368) for the sample storyboard. Five-minute film (F31–F40, ≈ 75 bridges + 76 anchors): ≈ **11.4 GPU-hours at 832×480, ≈ 5.9 at 640×368** — confirmed by these runs.
