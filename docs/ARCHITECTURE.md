@@ -86,3 +86,7 @@ These are **design targets only**. The latest verified baseline uses timestamped
 - **F29–F30 — experimental optimization and delivery:** bounded A/B sweeps, Pareto quality/cost analysis, safe export presets and final audited 30-feature acceptance.
 
 MC-RUN-003 reproduced all Qwen-generated anchors, Wan bridges and 129-frame final video byte-identically to MC-RUN-002 in a fresh output root; this is **baseline evidence**, not evidence that F11–F30 exist.
+
+## F31–F40 production track (planned)
+
+A five-minute electrical & compute engineering film (~75 bridges, ~76 anchors, ≈ 6–11 GPU-hours ESTIMATED) built on F11–F30: concept bank, act structure, technical-accuracy review, visual language, long-chain drift control, GPU budgeting, soundtrack/narration timing, act titles, batch review and final delivery. See `docs/SPECKIT_FEATURE_LEDGER.md`.

@@ -90,7 +90,7 @@ See [`configs/sequences/organic-machines.yaml`](configs/sequences/organic-machin
 - [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) — dev setup, tests, Spec Kit
 - [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
 - [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md) and [docs/PROGRESS.md](docs/PROGRESS.md) — render results and project log
-- [docs/SPECKIT_FEATURE_LEDGER.md](docs/SPECKIT_FEATURE_LEDGER.md) — existing F01–F10 evidence and planned F11–F30 new functionality
+- [docs/SPECKIT_FEATURE_LEDGER.md](docs/SPECKIT_FEATURE_LEDGER.md) — existing F01–F10 evidence, planned F11–F30 functionality and the F31–F40 five-minute engineering film track
 - [docs/CLAUDE_DESKTOP_ONESHOT.md](docs/CLAUDE_DESKTOP_ONESHOT.md) — **paste the entire file contents** into Claude Desktop Code for the next implementation wave
 
 ## Status

@@ -8,7 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_thirty_features_have_unique_ordered_ids_and_explicit_model_gates():
     ledger = (ROOT / "docs" / "SPECKIT_FEATURE_LEDGER.md").read_text(encoding="utf-8")
     feature_ids = re.findall(r"^### (F\d{2}) — ", ledger, re.MULTILINE)
-    assert feature_ids == [f"F{i:02d}" for i in range(1, 31)]
+    assert feature_ids == [f"F{i:02d}" for i in range(1, 41)]
+    assert "F31–F40" in ledger and "five-minute" in ledger
     assert "01_anchor_t2i.json" in ledger
     assert "02_anchor_edit.json" in ledger
     assert "03_wan22_flf2v.json" in ledger
@@ -47,7 +48,7 @@ def test_claude_handoff_is_paste_ready_and_references_existing_runtime():
     assert "specs/001" in prompt and "specs/010" in prompt
 
 def test_thirty_feature_scope_is_synced_across_supporting_docs():
-    assert "F01–F30" in (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+    assert "F01–F40" in (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
     assert "F11–F30" in (ROOT / ".specify" / "memory" / "constitution.md").read_text(encoding="utf-8")
     assert "F11–F30" in (ROOT / "docs" / "DEVELOPMENT.md").read_text(encoding="utf-8")
     assert "F11–F30" in (ROOT / "README.md").read_text(encoding="utf-8")

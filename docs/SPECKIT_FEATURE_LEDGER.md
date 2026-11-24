@@ -1,6 +1,6 @@
-# MorphCurrent — 30-feature GitHub Spec Kit engineering ledger
+# MorphCurrent — 40-feature GitHub Spec Kit engineering ledger
 
-**Scope:** F01–F10 are the existing pipeline implementation and evidence; **F11–F30 are 20 new proposed features**, evolving MorphCurrent from a working short YAML-to-video pipeline into a long-form, musically synchronized, quality-controlled local creative system.
+**Scope:** F01–F10 are the existing pipeline implementation and evidence; **F11–F30 are 20 new proposed features**, evolving MorphCurrent from a working short YAML-to-video pipeline into a long-form, musically synchronized, quality-controlled local creative system; **F31–F40 are a production track for a five-minute electrical & compute engineering film** built on those capabilities.
 
 **Grounded audit:** GitHub `main` at `9b79301b31ef6c31db3a465967928ca6aa457b3c`, 2026-11-24. Future Claude sessions must fetch current HEAD and respect concurrent owner edits; never assume this SHA is latest after today.
 
@@ -350,11 +350,130 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 
 **Acceptance gate:** Final owner-approved demonstration of a multi-scene local project with optional synced audio and at least two delivery presets; each required F01–F30 gate has real evidence or an explicit unresolved blocker. Never declare release complete solely from tests.
 
+## F31–F40 — Production track: five-minute electrical & compute engineering film
+
+**Goal:** plan and produce a ~5-minute local morph film that travels through the history and inner workings of electrical and compute engineering — for example lightning → Leyden jar → voltaic pile → dynamo → power grid and transformer → telegraph key and waveforms → vacuum tube → transistor → integrated-circuit die → microprocessor → GPU → data-center rack → AI accelerator — as one continuous chain of physical metamorphoses. F31–F40 *use* F11–F30 capabilities (long-form timeline, music sync, style packs, QA, scheduling, finishing) and add what this specific production needs. All start **PLANNED — NOT IMPLEMENTED**.
+
+**Planning numbers (ESTIMATED from measured history in `configs/perf_history.json`):** 300 s at 16 fps with 65-frame bridges (4 s anchor span) ≈ **75 bridges + 76 anchors**. At measured 832×480 rates (bridge ≈ 496 s, edited anchor ≈ 50 s) ≈ **11.4 GPU-hours**; at 640×368 (bridge ≈ 234 s) ≈ **6 GPU-hours**. 81-frame (5 s) bridges would cut the count to ≈ 60, but their cost is NO DATA until measured. Every batch needs explicit bounded owner approval.
+
+| ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
+|---|---|---|---|---|
+| **F31** | `specs/031-engineering-concept-bank/` (proposed) | F12, F21 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F32** | `specs/032-five-minute-act-structure/` (proposed) | F19, F22, F31 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F33** | `specs/033-technical-accuracy-review/` (proposed) | F31, F16 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F34** | `specs/034-engineering-visual-language/` (proposed) | F21, F12, F23 | P1 | **PLANNED — NOT IMPLEMENTED** |
+| **F35** | `specs/035-long-chain-lineage-drift/` (proposed) | F12, F14, F19 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F36** | `specs/036-production-gpu-budget/` (proposed) | F11, F17, F19 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F37** | `specs/037-soundtrack-narration-timing/` (proposed) | F15, F32 | P1 | **PLANNED — NOT IMPLEMENTED** |
+| **F38** | `specs/038-act-transitions-titles/` (proposed) | F14, F32, F37 | P1 | **PLANNED — NOT IMPLEMENTED** |
+| **F39** | `specs/039-batch-review-iteration/` (proposed) | F16, F18, F36 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F40** | `specs/040-five-minute-film-delivery/` (proposed) | F25, F26, F30, F31–F39 | P0 final | **PLANNED — NOT IMPLEMENTED** |
+
+### F31 — Engineering concept bank and anchor subject research
+
+**Purpose:** A vetted, ordered library of ~76 visual subjects spanning electricity and computing, each a good morph partner for its neighbours.
+
+**Build:** Concept entries (id, era, subject, physical description, dominant shapes and materials, scale, suggested neighbours, morph-affinity notes such as coil windings ↔ transformer laminations, accuracy notes, sources consulted). Eras: natural electricity, early storage, generation and grid, signals and communication, vacuum-tube computing, solid state, integrated circuits, microprocessors, parallel/GPU compute, data centers and AI hardware. No brand names, logos, trademarked product designs or real people's likenesses in prompts; generic, physically plausible depictions only.
+
+**Tests / evidence:** Schema validation, unique ids, every concept reachable in the chain, banned-term check (brands/logos), neighbour shape/material notes present; owner review of the list.
+
+**Acceptance gate:** Owner-approved concept bank of ≥ 76 entries in era order with neighbour notes; no unverified technical claims presented as fact.
+
+### F32 — Five-minute act structure and chaptered storyboard
+
+**Purpose:** Turn the concept bank into a timed, multi-act storyboard the existing pipeline can render.
+
+**Build:** Five acts of ~60 s, for example *Spark* (natural and early electricity), *Power* (generation and grid), *Signal* (communication and waveforms), *Logic* (tubes, transistors, ICs), *Scale* (CPUs, GPUs, data centers, AI). Per act: anchors, second/beat budgets, Wan `4n+1` lengths, transition choreography (F13), act-boundary handling (F38). Compile to chapter storyboards (F19) with deterministic plan hashes and a duration report (unique frames = 1 + Σ(L−1)).
+
+**Tests / evidence:** 300 s ± one bridge interval; per-act and total frame math; deterministic hashes; editing one act invalidates only that act; full-film dry run without GPU.
+
+**Acceptance gate:** Owner-approved storyboard whose dry run reports duration, bridge/anchor counts and estimated GPU hours.
+
+### F33 — Technical accuracy and visual-plausibility review
+
+**Purpose:** Engineering audiences notice wrong circuits; generative models invent fake text and impossible parts.
+
+**Build:** Per-concept review checklist (correct component class, plausible geometry, no gibberish labels or text, no fake schematic symbols, era-appropriate materials), text-free prompting with negatives (`text, letters, labels, logo, watermark`), reviewer verdicts stored with anchor hashes, rejection → targeted regeneration (seed/prompt) without touching approved neighbours.
+
+**Tests / evidence:** Checklist schema, verdict persistence, a rejection invalidates only that anchor and its two bridges, negatives always applied; real anchors reviewed by the owner.
+
+**Acceptance gate:** Every anchor in the final film has an owner "accurate enough" verdict or an explicit waiver.
+
+### F34 — Engineering visual language
+
+**Purpose:** Five minutes of morphs must read as one film, not 75 unrelated clips.
+
+**Build:** A film style pack (F21): palette (copper, steel, phosphor green, silicon blue), lighting (dark studio, rim light), macro lens look, background treatment, per-act palette shifts with continuity rules across act boundaries; F12 geometry targets (centred subject, consistent scale band) and F23 camera rules per act.
+
+**Tests / evidence:** Style applied deterministically to every anchor prompt; per-act palette drift measured with F12 colour metrics; boundary continuity checks; owner A/B of two candidate looks on a short test sequence (bounded GPU).
+
+**Acceptance gate:** Owner-selected visual language documented and enforced in compiled prompts.
+
+### F35 — Long-chain lineage and drift control
+
+**Purpose:** Seventy-plus sequential reference edits compound drift (detail loss, colour shift, scale creep); one bad anchor would poison every later image.
+
+**Build:** Lineage depth tracking; periodic re-anchoring with fresh T2I keyframes at act starts (explicit `independent_t2i` with continuity review, never silent); per-generation drift metrics (F12 geometry, sharpness, palette vs the act reference); proposal to re-anchor when thresholds are exceeded; shared anchors stay byte-identical across bridges.
+
+**Tests / evidence:** Synthetic drift sequences, threshold proposals, lineage graph integrity, re-anchoring invalidates only downstream items; a real measured drift curve over one act.
+
+**Acceptance gate:** A full act rendered with measured drift inside owner-approved bounds.
+
+### F36 — Production GPU budget and batch scheduling
+
+**Purpose:** ~6–11 GPU-hours must run safely in bounded, resumable batches without disturbing other desktop work.
+
+**Build:** Budget planner from F11 estimates (per act, per batch, cold/warm), F17 scheduler for off-hours batches with caps (time, job count, VRAM headroom), per-act approval gates, checkpoint/resume after crashes or reboots, progress/ETA reporting, storage budget for ~150 stage artifacts plus previews.
+
+**Tests / evidence:** Budget arithmetic vs history, cap enforcement, resume after a simulated mid-batch crash with no duplicate prompts, busy-queue deferral; measured real batch time vs estimate.
+
+**Acceptance gate:** Owner-approved batches finish within ±20% of estimate with zero duplicate submissions.
+
+### F37 — Soundtrack, narration and timing
+
+**Purpose:** Pace the five acts to music and optional voice-over.
+
+**Build:** Owner-supplied licensed or original music only; F15 beat/downbeat analysis drives act and bridge durations; optional narration script with per-line timing targets and owner-recorded audio; picture/audio drift report; captions as a separate local track (SRT), never model-rendered text.
+
+**Tests / evidence:** Click-track and silence fixtures, narration timing table, caption file validity, a no-audio build still works; measured sync on the real soundtrack.
+
+**Acceptance gate:** Owner-approved soundtrack timing with measured drift below one frame per minute.
+
+### F38 — Act transitions, title cards and overlays
+
+**Purpose:** Signal chapter changes without breaking the continuous-morph concept.
+
+**Build:** Act-boundary morphs via longer bridges or intermediate ladders (F14); optional local FFmpeg titles and lower thirds (owner text, local fonts, safe areas) composited after the join, never inside Wan prompts; opening and end cards; overlay timing tied to F32/F37.
+
+**Tests / evidence:** Overlay placement in 16:9 and 9:16 safe areas, deterministic FFmpeg arguments, overlays never alter the seam frames used for verification, boundary morph frame math.
+
+**Acceptance gate:** Owner-approved act boundaries and titles in a preview render.
+
+### F39 — Batch review and iteration for ~75 bridges
+
+**Purpose:** Reviewing and fixing dozens of clips needs better tools than one-by-one approval.
+
+**Build:** Act-level contact sheets and frame strips, side-by-side candidate comparisons, F16 QA ranking, keyboard-driven approve/reject/rerender in the F18 UI, a rerender queue limited to rejected items with a budget preview, version history per bridge.
+
+**Tests / evidence:** Review state for 75 items, bulk approval within an act, rejection queues only affected stages, versions preserved, budget preview matches F36.
+
+**Acceptance gate:** Owner completes review of a full act in the tool with every decision recorded in manifests.
+
+### F40 — Five-minute film delivery and acceptance
+
+**Purpose:** Ship the finished electrical and compute engineering film.
+
+**Build:** Join all acts (seam-verified), interpolate to 24/30 fps (F25), finish/upscale to 1080p (F26, owner-installed models only), 16:9 and 9:16 presets (F30), music/narration mux, provenance report (models and hashes, workflows, seeds, licences, owner approvals), reproducible manifest, and measured GPU-hours/wall-clock vs the F36 estimate.
+
+**Tests / evidence:** ffprobe golden checks per preset, frame/PTS/audio integrity across ~75 seams, provenance completeness, fresh-root replay of at least one act byte-identical (as in MC-RUN-003).
+
+**Acceptance gate:** Owner-approved five-minute film in at least two delivery formats with a complete provenance report; every F31–F40 gate has evidence or an explicit owner-accepted blocker.
+
 ## Execution, status and artifact protocol
 
 1. Before work fetch **current** GitHub and local git status. Inspect `CLAUDE.md`, `.specify/memory/constitution.md`, `docs/PROGRESS.md`, real workflow/profile files and source/tests. **Do not restart or interrupt ongoing GPU inference**; use read-only `/queue`, `/history`, `/object_info`, `/system_stats` while active.
 2. Check `python scripts/windows/speckit.py --status` and `--verify`; project has Python backend. **Do not re-initialize** a valid installation. Inspect `.claude/skills/speckit-*/SKILL.md` to learn real skill invocations (do not fabricate slash commands).
-3. Work through **one F11–F20 feature at a time**. Confirm unused number from `specs/`; run `python .specify/scripts/python/create_new_feature.py --json --number N --short-name SLUG "description"` only after checking the installed script. Document actual returned directory. Execute genuine Spec Kit specify → clarify (if needed) → plan/research → tasks → analyze → implement via installed skills. Do not create empty ceremonial specs.
+3. Work through **one F11–F40 feature at a time**. Confirm unused number from `specs/`; run `python .specify/scripts/python/create_new_feature.py --json --number N --short-name SLUG "description"` only after checking the installed script. Document actual returned directory. Execute genuine Spec Kit specify → clarify (if needed) → plan/research → tasks → analyze → implement via installed skills. Do not create empty ceremonial specs.
 4. Write acceptance-oriented tests before implementations when practical; run `.venv/Scripts/python.exe -m pytest -m "not integration and not gpu"`. Read-only live integration tests are separate; GPU tests always respect owner consent and `--confirm-gpu` and never overrun budgets. No unapproved model installs/hashing while GPU active.
 5. Record evidence to `docs/PROGRESS.md`: feature ID, actual spec folder, exact commit, tests & failures, GPU artifact hashes and measurements (or NOT RUN / NOT MEASURED), owner creative review, blockers and next task. Update ledger status in **the first table and relevant section**, preserve historical snapshots, and keep ⁠F01–F10 results grounded.
 6. Commit narrowly scoped, reversible, test-passing slices on the owner's currently allowed branch. Do not force-push, clean owner work, overwrite exports, reset GPU queue, or add AI/coauthor trailers. Keep model weights/output media and credentials gitignored.
