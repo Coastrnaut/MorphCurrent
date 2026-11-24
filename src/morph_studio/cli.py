@@ -18,6 +18,7 @@ from .bridge import (
     request_from_job,
     run_bridge,
 )
+from .preflight import build_baseline_report
 from .windows import windows_diagnostics
 from .workflow_adapter import (
     WorkflowBindingError,
@@ -77,6 +78,29 @@ def _workflow_patch(args: argparse.Namespace) -> int:
         print(f"WROTE {args.out} (not submitted to ComfyUI)")
     else:
         sys.stdout.write(text)
+    return 0
+
+
+def _baseline(args: argparse.Namespace) -> int:
+    """Read-only environment report (GET requests only; nothing queued or loaded)."""
+    object_info = None
+    if args.object_info:
+        object_info = _load_object_info(args)
+    if args.skip_comfy:
+        report = build_baseline_report(repo_root=args.repo_root, client=None, object_info=object_info)
+    else:
+        with ComfyClient(args.url) as client:
+            report = build_baseline_report(repo_root=args.repo_root, client=client,
+                                           object_info=object_info)
+    text = json.dumps(report, indent=2, ensure_ascii=False) + "\n"
+    if args.out:
+        with open(args.out, "x", encoding="utf-8", newline="\n") as stream:  # never overwrite
+            stream.write(text)
+    sys.stdout.write(text)
+    if args.strict:
+        wan_ok = report["capabilities"]["wan_flf2v"]["status"] == "available"
+        if report["comfyui"]["status"] != "ok" or not wan_ok:
+            return 3
     return 0
 
 
@@ -172,6 +196,14 @@ def main(argv: list[str] | None = None) -> int:
     bridge.add_argument("--allow-busy-queue", action="store_true",
                         help="Submit even when ComfyUI already has queued work")
     bridge.add_argument("--timeout", type=float, default=3600, help="Seconds to wait for the render")
+    baseline = subs.add_parser("baseline", help="Read-only environment/queue/model report (never queues work)")
+    baseline.add_argument("--url", default="http://127.0.0.1:8188")
+    baseline.add_argument("--skip-comfy", action="store_true", help="Do not contact ComfyUI")
+    baseline.add_argument("--object-info", help="Saved /object_info JSON instead of GET /object_info")
+    baseline.add_argument("--repo-root", default=".", help=argparse.SUPPRESS)
+    baseline.add_argument("--out", help="Also write the report here; refused if it exists")
+    baseline.add_argument("--strict", action="store_true",
+                          help="Exit 3 unless ComfyUI is reachable and the Wan profile validates")
     status = subs.add_parser("bridge-status", help="Show a bridge job record")
     status.add_argument("job_dir")
     cancel = subs.add_parser("bridge-cancel", help="Dequeue or interrupt only this job's prompt")
@@ -198,6 +230,8 @@ def main(argv: list[str] | None = None) -> int:
             return _workflow_patch(args)
         elif args.command == "bridge":
             return _bridge(args)
+        elif args.command == "baseline":
+            return _baseline(args)
         elif args.command == "bridge-status":
             print(json.dumps(_job_summary(load_job(args.job_dir)), indent=2))
         elif args.command == "bridge-cancel":

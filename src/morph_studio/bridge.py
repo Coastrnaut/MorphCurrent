@@ -33,6 +33,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from . import __version__
 from .cache import cache_key, sha256_file
 from .comfy_client import ComfyClient, ComfyError, ComfyRejected
+from .gates import check_gpu_gate
 from .media import ProbeUnavailable, probe_video
 from .workflow_adapter import (
     BindingProfile,
@@ -298,10 +299,10 @@ def _validate(job: BridgeJob, plan: BridgePlan, client: ComfyClient) -> None:
 
 def _submit(job: BridgeJob, plan: BridgePlan, client: ComfyClient, *,
             allow_busy_queue: bool) -> None:
-    queue = client.queue()
-    busy = len(queue.get("queue_running", [])) + len(queue.get("queue_pending", []))
-    if busy and not allow_busy_queue:
-        raise BridgeError(f"ComfyUI queue has {busy} job(s); refusing to stack GPU work "
+    # Only reached with submit=True (the CLI's --confirm-gpu), so consent is explicit here.
+    gate = check_gpu_gate(consent=True, queue=client.queue(), allow_busy_queue=allow_busy_queue)
+    if not gate.allowed:
+        raise BridgeError(f"ComfyUI queue has {gate.queue_busy} job(s); refusing to stack GPU work "
                           "(wait, or pass allow_busy_queue/--allow-busy-queue)")
     prompt_id = job.record.get("prompt_id") or str(uuid.uuid4())
     job.record["prompt_id"] = prompt_id

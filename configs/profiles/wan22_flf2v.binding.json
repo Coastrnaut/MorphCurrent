@@ -1,5 +1,6 @@
 {
   "profile": "wan22_flf2v_fp8_640x368",
+  "capability": "wan_flf2v",
   "workflow": "workflows/03_wan22_flf2v.json",
   "workflow_sha256": "22a68e21504fa93a24020ff4c9fa5dc9327bec891faab8e1e84c758fcfad0dc2",
   "verified_against": {

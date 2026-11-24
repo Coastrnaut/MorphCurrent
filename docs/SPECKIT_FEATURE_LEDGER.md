@@ -29,7 +29,7 @@ The **dry-run path** must work before any GPU access, show exactly which models/
 
 | ID | Proposed Spec Kit slug | Depends on | Existing reuse | Status on authoring |
 |---|---|---|---|---|
-| F01 | `safe-baseline-and-provenance` | — | Current Wan bridge, history, tests | **PLANNED** |
+| F01 | `safe-baseline-and-provenance` → `specs/001-safe-baseline-provenance` | — | Current Wan bridge, history, tests | **COMPLETE** — offline tests + live read-only checks; F01 has no GPU gate |
 | F02 | `image-model-and-workflow-onboarding` | F01 | ComfyUI API client, semantic bindings | **PLANNED — image workflows unavailable** |
 | F03 | `first-anchor-text-to-image` | F02 | Client upload/history, hash functions | **PLANNED** |
 | F04 | `reference-guided-next-anchor` | F03 | Storyboard anchor reference semantics | **PLANNED** |
@@ -121,6 +121,14 @@ The **dry-run path** must work before any GPU access, show exactly which models/
 **Build:** Add `morphcurrent render <storyboard> --dry-run`, explicit GPU-authorized execution flag, `--resume`, read-only `--status`, bounded jobs and appropriate offline developer UX. Preserve existing `bridge` CLI. Keep all artifacts in gitignored `outputs/runs/<id>/`, provide user guidance on installing/approving T2I/edit models and downloading/output inspection. Document setup for native Windows, no WSL/PowerShell/Docker cloud inference.
 
 **Acceptance:** With real T2I/edit workflows installed and a separately approved bounded GPU run, YAML alone produces A/B/C images, two verified Wan bridges and final MP4, without manually preparing endpoints or ComfyUI node edits. Repeated run reuses verified stages; missing image model yields precise BLOCKED preflight, not a fake completed video. Offline CI and end-to-end local GPU evidence remain distinct.
+
+## Execution record (actual Spec Kit folders, evidence, blockers)
+
+Spec Kit 1.2.4, `script=py`, skills `speckit-*` under `.claude/skills/`. Features are created with `python .specify/scripts/python/create_new_feature.py --json --number N --short-name SLUG "..."`; no git branch is created (owner works on `main`). `.specify/feature.json` points at the active spec.
+
+| Fxx | Real spec directory | Status | Commit | Tests | Model + workflow evidence | GPU result | Blocker | Next action |
+|---|---|---|---|---|---|---|---|---|
+| F01 | `specs/001-safe-baseline-provenance` | COMPLETE | see PROGRESS F01 entry | offline 83 → 100 passed (1 deselected); integration 1 passed | live `baseline` 2026-11-24: Wan profile validates; checkpoints folder empty; 363 cloud API classes now rejected | NOT APPLICABLE (read-only only) | — | F02 |
 
 ## Per-feature Spec Kit execution protocol (mandatory)
 

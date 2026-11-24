@@ -12,9 +12,11 @@ import hashlib
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
+
+from .gates import is_cloud_class
 
 DYNAMIC_COMBO = "COMFY_DYNAMICCOMBO_V3"
 
@@ -177,6 +179,9 @@ def validate_graph(graph: dict, object_info: dict) -> ValidationReport:
         if not isinstance(definition, dict):
             report.errors.append(f"{where}: class not installed in this ComfyUI")
             continue
+        if is_cloud_class(definition):
+            report.errors.append(f"{where}: cloud API node (sends data to a remote service); "
+                                 "MorphCurrent workflows must run locally")
         specs = _input_specs(definition)
         inputs = node["inputs"]
         for name in sorted(_required_inputs(definition) - set(inputs)):
@@ -237,6 +242,8 @@ class InputAssertion(BaseModel):
 class BindingProfile(BaseModel):
     model_config = ConfigDict(extra="forbid")
     profile: str
+    # What the graph produces; used by preflight capability reporting and anchor/bridge stages.
+    capability: Literal["text_to_image", "reference_edit", "wan_flf2v"] | None = None
     workflow: str
     workflow_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     verified_against: dict[str, Any] = Field(default_factory=dict)

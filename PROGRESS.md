@@ -145,7 +145,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 
 | Logical feature | Actual Spec Kit folder | State | Implementation evidence |
 |---|---|---|---|
-| F01 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F01 | `specs/001-safe-baseline-provenance` | COMPLETE (offline + live read-only) | `gates.py`, `preflight.py`, `baseline` CLI, cloud-node rejection, `docs/ENVIRONMENT.md`; 100 offline tests |
 | F02 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F03 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F04 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
@@ -155,3 +155,24 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | F08 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F09 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F10 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+
+## F01 — Safe baseline, GPU gate, provenance (2026-11-24)
+
+**Session baseline (before edits).** HEAD `7c54caf` on `main`, clean, equal to `origin/main`. `python scripts/windows/speckit.py --status` and `--verify` → `ready_for_python_spec_kit: true`, no problems (not re-initialised). Offline tests: **83 passed, 1 deselected**. Live ComfyUI (GET only): queue running 0 / pending 0; last four `/history` items all `success`. No owner render was active, none was started.
+
+**Spec Kit.** `create_new_feature.py --json --number 1 --short-name safe-baseline-provenance` → `specs/001-safe-baseline-provenance` (no branch). Artifacts: spec, checklist, plan, research, data-model, contracts/baseline-cli.md, quickstart, tasks (15/15 done). Analyze: 100 % FR coverage, 0 critical.
+
+**Built.**
+- `src/morph_studio/gates.py`: `check_gpu_gate` (explicit consent + idle queue unless overridden + no cloud nodes) and `cloud_nodes`. `bridge._submit` now uses it; its message and flags are unchanged.
+- `validate_graph` rejects ComfyUI **cloud API nodes** (`api_node: true` or module `comfy_api_nodes`). Measured: 363 of 1066 installed classes are cloud (e.g. `QwenImageEditApi`), so this matters for the image-workflow work.
+- `src/morph_studio/preflight.py` + `morphcurrent baseline [--skip-comfy] [--object-info] [--out] [--strict]`: read-only report (git, ComfyUI, queue, model inventory, profile validation, capability classification, nvidia-smi snapshot). `BindingProfile.capability` added (`wan_flf2v` set on the Wan profile; graph hash unchanged).
+- `docs/ENVIRONMENT.md`: measured facts only; peak VRAM and checkpoint SHA-256 **NOT MEASURED**.
+- Fixture `tests/fixtures/object_info_image_nodes.json`: 25 real classes captured from local ComfyUI 0.46.0 (image loaders/samplers/edit encoders + 2 cloud nodes) for the F02–F04 offline tests.
+
+**Commands and results.**
+- `.venv\Scripts\python.exe -m pytest -m "not integration and not gpu"` → **100 passed, 1 deselected**.
+- `set MORPHCURRENT_COMFY_URL=http://127.0.0.1:8188` then `python -m pytest -m integration` → 1 passed.
+- `python -m morph_studio.cli baseline` (live) → 0.75 s, GET only, queue unchanged; `wan_flf2v: available`, `text_to_image` / `reference_edit`: **BLOCKED** (CheckpointLoaderSimple choices empty; diffusion_models only the two Wan I2V experts; text encoder only UMT5).
+- `python -m morph_studio.cli workflow-check` → `ok: true` (1 warning `video-preview`).
+
+**Key blocker for F02–F04 GPU gates:** no image-generation weights are installed. Downloading any requires explicit owner approval (model choice, license, size).
