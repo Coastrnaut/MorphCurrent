@@ -1,0 +1,9 @@
+# F35 lineage and drift control for the full-song film.
+# depth_limit: maximum consecutive reference edits before an explicit independent keyframe is proposed.
+# Measured chains so far are 2 edits deep; 12 is a conservative start, recalibrated after the first rendered act.
+depth_limit: 12
+drift:                       # versus the act's reference anchor (first anchor of the act)
+  colour_max: 60             # subject mean-colour distance, RGB 0-255 Euclidean
+  sharpness_min_ratio: 0.6   # anchor subject sharpness / reference subject sharpness
+  centroid_max: 0.08         # subject centroid offset from frame centre
+  scale_ratio: [0.75, 1.33]  # subject extent ratio vs the reference

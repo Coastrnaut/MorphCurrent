@@ -317,6 +317,41 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _lineage(args: argparse.Namespace) -> int:
+    """F35 lineage depth, drift curve, explicit re-anchor proposals and shared-anchor check (offline)."""
+    from . import lineage as ln
+    from .dag import compile_plan
+    from .schema import load_storyboard
+    try:
+        if args.command == "lineage-shared":
+            out = ln.shared_check(args.run)
+            print(json.dumps(out, indent=2, ensure_ascii=True))
+            return 0 if out["ok"] else 1
+        config = ln.load_config(args.config)
+        sb = load_storyboard(args.storyboard)
+        plan = compile_plan(sb, repo_root=Path(args.repo_root), storyboard_bytes=Path(args.storyboard).read_bytes())
+        if args.command == "lineage":
+            out = ln.lineage(plan, limit=config["depth_limit"])
+            out["entries"] = [{k: e[k] for k in ("anchor", "chapter", "root", "depth")} for e in out["entries"]]
+            code = 0 if not out["over_limit"] else 1
+        elif args.command == "lineage-drift":
+            out = ln.drift_curve(args.storyboard, args.run, config)
+            code = 0 if out["ok"] else 1
+        else:
+            curve = ln.drift_curve(args.storyboard, args.run, config) if args.run else None
+            out = ln.propose(plan, config["depth_limit"], curve)
+            target = Path(args.out) if args.out else Path("outputs/proposals") / f"{sb.name}.reanchored.yaml"
+            if out["proposals"]:
+                ln.apply_proposals(args.storyboard, [p["anchor"] for p in out["proposals"]], target)
+                out["out"] = str(target)
+            code = 0
+    except FileExistsError as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return code
+
+
 def _look(args: argparse.Namespace) -> int:
     """F34 engineering visual language: enforcement check, drift report, A/B test storyboards."""
     from . import look as lk
@@ -1131,6 +1166,20 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    for name, help_text in (("lineage", "Reference-edit lineage depth per anchor (F35)"),
+                            ("lineage-drift", "Drift curve of rendered anchors versus their act reference"),
+                            ("lineage-propose", "Propose explicit independent re-anchors (written to a new file)"),
+                            ("lineage-shared", "Check bridges used the exact recorded anchor bytes")):
+        nsub = subs.add_parser(name, help=help_text)
+        if name != "lineage-shared":
+            nsub.add_argument("storyboard")
+            nsub.add_argument("--config", default="configs/film/lineage.yaml")
+            nsub.add_argument("--repo-root", default=".")
+        if name in ("lineage-drift", "lineage-shared"):
+            nsub.add_argument("--run", required=True)
+        if name == "lineage-propose":
+            nsub.add_argument("--run", default=None)
+            nsub.add_argument("--out", default=None)
     for name, help_text in (("look-check", "Check the film look is enforced in compiled prompts (F34)"),
                             ("look-drift", "Subject colour and geometry drift of rendered anchors"),
                             ("look-test", "Write two short A/B storyboards, one per candidate look")):
@@ -1341,6 +1390,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command.startswith("lineage"):
+            return _lineage(args)
         elif args.command.startswith("look-"):
             return _look(args)
         elif args.command.startswith("accuracy-"):
