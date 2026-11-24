@@ -315,6 +315,27 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _finish(args: argparse.Namespace) -> int:
+    """F26 geometric HD finishing (CPU) and read-only listing of learned upscalers."""
+    from . import finishing as fn
+    if args.list_models:
+        print(json.dumps({"models": fn.upscale_models(args.comfy_root),
+                          "note": "learned upscalers need an owner-approved, hash-pinned workflow (F26 T016)"}, indent=2))
+        return 0
+    if not args.input or not args.out:
+        raise ValueError("finish needs INPUT and --out (or --list-models)")
+    try:
+        rec = fn.finish(args.input, args.out, target=args.target, mode=args.mode, denoise=args.denoise,
+                        deblock=args.deblock, sharpen=args.sharpen, match_anchor=args.match_anchor, crf=args.crf)
+    except FileExistsError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps({"out": args.out, "size": f"{rec['output']['width']}x{rec['output']['height']}",
+                      "frames_preserved": rec["frames_preserved"], "identity": rec["identity"],
+                      "colour_gains": rec["colour_gains"], "seconds": rec["seconds"]}, indent=2))
+    return 0 if rec["identity"]["passed"] and rec["frames_preserved"] else 5
+
+
 def _interp(args: argparse.Namespace) -> int:
     """F25 delivery frame rates and energy-warped retiming (local FFmpeg)."""
     from . import interpolate as ip
@@ -776,6 +797,18 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    fin = subs.add_parser("finish", help="Geometric 1080p/1440p finishing with identity check (CPU)")
+    fin.add_argument("input", nargs="?")
+    fin.add_argument("--target", default="1080p", choices=["1080p", "1440p"])
+    fin.add_argument("--mode", default="fit", choices=["fit", "fill"])
+    fin.add_argument("--denoise", action="store_true")
+    fin.add_argument("--deblock", action="store_true")
+    fin.add_argument("--sharpen", action="store_true")
+    fin.add_argument("--match-anchor", help="Approved anchor image for per-channel colour match")
+    fin.add_argument("--crf", type=int, default=16)
+    fin.add_argument("--out")
+    fin.add_argument("--list-models", action="store_true", help="List installed learned upscalers (read-only)")
+    fin.add_argument("--comfy-root", default=r"C:\AI\ComfyUI_windows_portable\ComfyUI")
     ipl = subs.add_parser("interpolate", help="Convert a 16 fps clip/movie to 24/30/48/60 fps (new file + record)")
     ipl.add_argument("input")
     ipl.add_argument("--fps", type=int, required=True, choices=[24, 30, 48, 60])
@@ -968,6 +1001,8 @@ def main(argv: list[str] | None = None) -> int:
             return _style(args)
         elif args.command == "brief-plan":
             return _brief_plan(args)
+        elif args.command == "finish":
+            return _finish(args)
         elif args.command in ("interpolate", "warp-apply"):
             return _interp(args)
         elif args.command in ("audio-features", "sync-plan"):
