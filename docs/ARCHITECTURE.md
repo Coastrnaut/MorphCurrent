@@ -15,6 +15,7 @@ Sequence YAML + assets + local audio
 - `timeline.py`: beat/BPM-to-Wan frame planning; exact rational clock.
 - `comfy_client.py`: local REST + WS, timeouts, history/errors, image upload/download, node discovery.
 - `workflow_adapter.py`: semantic bindings from `configs/profiles/*.binding.json` for real API-format JSON; validates node classes, inputs, links, installed model choices and value ranges against `/object_info`; hash-pins the graph and fails closed on drift.
+- `bridge.py`: one FLF2V bridge job: content-addressed job dir, persisted state machine (planned → uploaded → validated → submitting → submitted → completed → downloaded → verified), client-chosen prompt IDs for crash-safe resume, targeted cancel, ffprobe verification via `media.py`. GPU submission only with explicit consent (`--confirm-gpu`).
 - `manifest.py`, `scheduler.py`, `cache.py` (to build): immutable content-addressed artifacts with crash recovery.
 - `audio_analysis.py` (to build): librosa-derived beat/onset/envelopes + manual override.
 - `quality.py` (to build): perceptual seam, blur/freeze/flow, endpoint fidelity and contact sheets.

@@ -93,7 +93,31 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 - Offline fixture: `tests/fixtures/object_info_wan22_flf2v.json` (the 11 classes, captured from ComfyUI 0.46.0).
 
 **Not done / next.**
-- [ ] Programmatic dispatch (upload anchors → refresh `/object_info` → patch → `/prompt` → `/history` → download) with a persistent job record. No MorphCurrent-submitted render exists yet; a GPU smoke run needs explicit owner approval.
+- [x] Programmatic dispatch (upload anchors → refresh `/object_info` → patch → `/prompt` → `/history` → download) with a persistent job record — see M3 below. No MorphCurrent-submitted render exists yet; a GPU smoke run needs explicit owner approval.
 - [ ] Record SHA-256 for the four model files and the ComfyUI git revision in a run manifest.
 - [ ] Decide whether to expose steps/CFG/split as a coupled `sampling` role group for experiments.
 - [ ] Review `ComfyUI_00003_.mp4` (MC-FLF2V-002) visually before drawing quality conclusions.
+
+## M3 — Programmatic FLF2V bridge dispatch (2026-11-24)
+
+**Plan.** Turn the validated binding into a resumable, single-job dispatcher: upload anchors, re-validate against refreshed `/object_info`, submit only on explicit GPU consent, follow `/history`, download, and verify the clip, persisting every step.
+
+**What exists now** (`src/morph_studio/bridge.py`, `media.py`, client additions):
+- `morphcurrent bridge --start A --end B --seed N [--prompt|--prompt-file] [--negative] [--width --height --length --fps]`. Without `--confirm-gpu` it plans, uploads and validates, then stops at `validated` with nothing queued.
+- Job directory `outputs/runs/<job_id[:16]>/`, holding `job.json` (state, request, anchor SHA-256s, resolved values, model filenames, ComfyUI version/argv/VRAM snapshots, prompt ID, timings, outputs with SHA-256, verification, event log) and the exact `workflow.api.json` submitted. The job ID is a content hash of the patched graph, anchor bytes, workflow hash and code version, so an identical request reuses a verified clip with zero HTTP calls.
+- Anchors upload as `mc_<sha16>.<ext>` (deduplicated by ComfyUI, never overwrites). A rename by ComfyUI fails the job.
+- The `prompt_id` is a client-generated UUID saved *before* `POST /prompt` (supported by ComfyUI 0.46 `server.py`). On resume it is reconciled against `/history` and `/queue`: a lost response does not double-queue; an unreceived POST is resent with the same ID. HTTP rejections fail the job; transport errors stay resumable.
+- Guards: refuses to submit while ComfyUI's queue is busy (`--allow-busy-queue` overrides). `bridge-cancel` dequeues or sends a **targeted** `/interrupt` with the prompt ID, never a global interrupt. A prompt missing from both history and queue (ComfyUI restart) fails closed; `--retry` resubmits.
+- Downloads go to `.part` and are renamed without replacing. `ffprobe` checks width/height/decoded frame count/fps against the request; if ffprobe is missing the job stays `downloaded` with verification `skipped`, never `verified`.
+- Peak VRAM is recorded as **NOT MEASURED** (the API exposes only `vram_free` snapshots, which are recorded).
+
+**Commands and results.**
+- `python -m pytest -m "not integration and not gpu"` → 79 passed (16 new in `tests/test_bridge.py`, against a stateful fake ComfyUI covering crash/resume, retry, lost prompt, busy queue, cancel, tamper and verification paths; `probe_video` tested on a synthetic ffmpeg clip).
+- `set MORPHCURRENT_COMFY_URL=http://127.0.0.1:8188` then `python -m pytest -m integration` → 1 passed.
+- Live, no GPU: `python -m morph_studio.cli bridge --start assets/anchors/01_glass_orchid.jpg --end assets/anchors/02_metallic_butterfly.jpg --seed 844823683741909 --length 65 --width 640 --height 368 --fps 16` → `validated`, job `4b5d5805e77bcbe0`, anchors uploaded as `mc_8cdb3f53b119ff78.jpg` / `mc_c7f2be088ac64194.jpg`, queue empty afterwards. Rerun reused the same job without new uploads. At validation the A6000 reported 14,177,250,198 of 51,526,500,352 bytes free (other processes holding VRAM; not investigated).
+
+**Not done / next.**
+- [ ] First MorphCurrent-submitted GPU render (`bridge ... --confirm-gpu`), pending owner approval. Expect ~3+ minutes per 65-frame 640×368 clip based on the manual runs (not measured here).
+- [ ] WebSocket progress display (history polling is authoritative and sufficient for now).
+- [ ] Model checkpoint SHA-256 inventory, so the job hash covers weights rather than filenames.
+- [ ] Storyboard → multi-bridge scheduling using `timeline.py` frame plans.

@@ -14,6 +14,10 @@ class ComfyError(RuntimeError):
     """ComfyUI transport, validation or execution error."""
 
 
+class ComfyRejected(ComfyError):
+    """ComfyUI answered with an HTTP error: the request was received and refused."""
+
+
 def validate_local_url(url: str) -> str:
     parsed = urlparse(url)
     if parsed.scheme not in {"http", "https"} or parsed.hostname not in {
@@ -45,7 +49,10 @@ class ComfyClient:
     def _json(self, method: str, endpoint: str, **kwargs: object) -> dict:
         try:
             response = self.http.request(method, endpoint, **kwargs)
-            response.raise_for_status()
+            if response.is_error:
+                # ComfyUI explains rejections (e.g. node_errors) in the body; keep it.
+                raise ComfyRejected(f"{method} {endpoint}: HTTP {response.status_code}: "
+                                 f"{response.text[:2000]}")
             payload = response.json()
             if not isinstance(payload, dict):
                 raise ComfyError(f"unexpected {endpoint} response")
@@ -59,20 +66,56 @@ class ComfyClient:
     def object_info(self) -> dict:
         return self._json("GET", "/object_info")
 
-    def submit(self, api_workflow: dict) -> str:
+    def submit(self, api_workflow: dict, *, prompt_id: str | None = None) -> str:
+        """Queue a graph. A caller-chosen UUID ``prompt_id`` (ComfyUI >= 0.4x) lets the
+        caller persist the ID before the request, so a crash can never orphan a run."""
         if not isinstance(api_workflow, dict) or not api_workflow:
             raise ValueError("nonempty API-format workflow required")
         for node_id, node in api_workflow.items():
             if not isinstance(node, dict) or "class_type" not in node or "inputs" not in node:
                 raise ValueError(f"node {node_id} is not in ComfyUI API format")
-        result = self._json("POST", "/prompt", json={
-            "prompt": api_workflow, "client_id": self.client_id
-        })
+        body: dict = {"prompt": api_workflow, "client_id": self.client_id}
+        if prompt_id is not None:
+            body["prompt_id"] = str(uuid.UUID(prompt_id))
+        result = self._json("POST", "/prompt", json=body)
         if "error" in result:
-            raise ComfyError(f"ComfyUI rejected prompt: {result}")
+            raise ComfyRejected(f"ComfyUI rejected prompt: {result}")
         if not result.get("prompt_id"):
             raise ComfyError(f"missing prompt_id: {result}")
+        if result.get("node_errors"):
+            raise ComfyRejected(f"ComfyUI reported node errors: {result['node_errors']}")
         return str(result["prompt_id"])
+
+    def queue(self) -> dict:
+        return self._json("GET", "/queue")
+
+    def queue_position(self, prompt_id: str) -> str | None:
+        """'running', 'pending' or None (not queued) for a prompt ID."""
+        payload = self.queue()
+        for state, key in (("running", "queue_running"), ("pending", "queue_pending")):
+            for item in payload.get(key, []):
+                if isinstance(item, list) and len(item) > 1 and item[1] == prompt_id:
+                    return state
+        return None
+
+    def _post_no_body(self, endpoint: str, payload: dict) -> None:
+        try:
+            response = self.http.post(endpoint, json=payload)
+            response.raise_for_status()
+        except httpx.HTTPError as exc:
+            raise ComfyError(f"POST {endpoint}: {exc}") from exc
+
+    def cancel(self, prompt_id: str) -> str | None:
+        """Cancel only this prompt: dequeue if pending, targeted interrupt if running.
+
+        Never issues a global interrupt. Returns the state it was cancelled from.
+        """
+        state = self.queue_position(prompt_id)
+        if state == "pending":
+            self._post_no_body("/queue", {"delete": [prompt_id]})
+        elif state == "running":
+            self._post_no_body("/interrupt", {"prompt_id": prompt_id})
+        return state
 
     def history(self, prompt_id: str) -> dict | None:
         payload = self._json("GET", f"/history/{prompt_id}")
@@ -104,13 +147,19 @@ class ComfyClient:
                 if isinstance(raw, str):
                     yield json.loads(raw)
 
-    def upload_image(self, image_path: str | Path, *, overwrite: bool = False) -> dict:
+    def upload_image(self, image_path: str | Path, *, overwrite: bool = False,
+                     name: str | None = None) -> dict:
+        """Upload to ComfyUI's input folder. Without overwrite, ComfyUI keeps an
+        identical existing file and renames on a content clash; check ``name``."""
         path = Path(image_path)
         if not path.is_file():
             raise FileNotFoundError(path)
+        upload_name = name or path.name
+        if not upload_name or "/" in upload_name or "\\" in upload_name or upload_name in {".", ".."}:
+            raise ValueError("upload name must be a basename")
         with path.open("rb") as stream:
             return self._json("POST", "/upload/image", files={
-                "image": (path.name, stream, "application/octet-stream")
+                "image": (upload_name, stream, "application/octet-stream")
             }, data={"type": "input", "overwrite": str(overwrite).lower()})
 
     def download_output(self, filename: str, destination: str | Path,

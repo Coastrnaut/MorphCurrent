@@ -9,6 +9,15 @@ from pydantic import ValidationError
 from .schema import load_storyboard
 from .timeline import timeline_as_dict
 from .comfy_client import ComfyClient, ComfyError
+from .bridge import (
+    BridgeError,
+    BridgeRequest,
+    cancel_bridge,
+    load_job,
+    plan_bridge,
+    request_from_job,
+    run_bridge,
+)
 from .windows import windows_diagnostics
 from .workflow_adapter import (
     WorkflowBindingError,
@@ -71,6 +80,55 @@ def _workflow_patch(args: argparse.Namespace) -> int:
     return 0
 
 
+def _job_summary(job) -> dict:
+    record = job.record
+    return {
+        "job_dir": str(job.dir),
+        "job_id": record["job_id"],
+        "state": record["state"],
+        "prompt_id": record.get("prompt_id"),
+        "values": {k: v for k, v in record["values"].items() if not k.endswith("_prompt")},
+        "outputs": [o.get("local_path") or o["filename"] for o in record.get("outputs", [])],
+        "timings": record.get("timings"),
+        "verification": record.get("verification"),
+        "error": record.get("error"),
+    }
+
+
+def _bridge(args: argparse.Namespace) -> int:
+    if args.resume:
+        request = request_from_job(args.resume)
+    else:
+        missing = [flag for flag, value in (("--start", args.start), ("--end", args.end),
+                                            ("--seed", args.seed)) if value is None]
+        if missing:
+            raise ValueError(f"missing {', '.join(missing)} (or use --resume JOB_DIR)")
+        prompt = args.prompt
+        if args.prompt_file:
+            with open(args.prompt_file, "r", encoding="utf-8") as stream:
+                prompt = stream.read()
+        request = BridgeRequest(profile=args.profile, start_image=args.start, end_image=args.end,
+                                seed=args.seed, positive_prompt=prompt,
+                                negative_prompt=args.negative, width=args.width,
+                                height=args.height, length=args.length, fps=args.fps)
+    with ComfyClient(args.url) as client:
+        plan = plan_bridge(request, client.object_info())
+        try:
+            job = run_bridge(plan, client, args.runs_root, submit=args.confirm_gpu,
+                             retry=args.retry, allow_busy_queue=args.allow_busy_queue,
+                             timeout=args.timeout)
+        except KeyboardInterrupt:
+            print("INTERRUPTED: ComfyUI keeps rendering. Resume with "
+                  f"`bridge --resume <job_dir> --confirm-gpu` or stop it with `bridge-cancel <job_dir>`.",
+                  file=sys.stderr)
+            return 130
+    print(json.dumps(_job_summary(job), indent=2))
+    if job.state == "validated" and not args.confirm_gpu:
+        print("READY: validated against live /object_info; nothing queued. "
+              "Re-run with --confirm-gpu to render on the GPU.", file=sys.stderr)
+    return 0 if job.state in {"verified", "validated", "downloaded"} else 5
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="MorphCurrent local video orchestrator")
     subs = parser.add_subparsers(dest="command", required=True)
@@ -92,6 +150,33 @@ def main(argv: list[str] | None = None) -> int:
             sub.add_argument("--set", action="append", metavar="ROLE=VALUE",
                              help="Semantic role from the profile, e.g. seed=42 length=65")
             sub.add_argument("--out", help="Output file; refused if it already exists")
+    bridge = subs.add_parser("bridge", help="Plan, upload, validate and (with --confirm-gpu) render one FLF2V bridge")
+    bridge.add_argument("--profile", default="configs/profiles/wan22_flf2v.binding.json")
+    bridge.add_argument("--url", default="http://127.0.0.1:8188")
+    bridge.add_argument("--start", help="First-frame anchor image")
+    bridge.add_argument("--end", help="Last-frame anchor image")
+    bridge.add_argument("--seed", type=int)
+    group = bridge.add_mutually_exclusive_group()
+    group.add_argument("--prompt", help="Positive prompt (default: the exported graph's)")
+    group.add_argument("--prompt-file", help="UTF-8 file holding the positive prompt")
+    bridge.add_argument("--negative", help="Negative prompt (default: the exported graph's)")
+    bridge.add_argument("--width", type=int)
+    bridge.add_argument("--height", type=int)
+    bridge.add_argument("--length", type=int, help="Frame count, 4n+1")
+    bridge.add_argument("--fps", type=float)
+    bridge.add_argument("--runs-root", default="outputs/runs")
+    bridge.add_argument("--resume", metavar="JOB_DIR", help="Continue a job from its job.json request")
+    bridge.add_argument("--confirm-gpu", action="store_true",
+                        help="Actually queue the render on the local GPU (otherwise stop after validation)")
+    bridge.add_argument("--retry", action="store_true", help="Retry a failed or cancelled job")
+    bridge.add_argument("--allow-busy-queue", action="store_true",
+                        help="Submit even when ComfyUI already has queued work")
+    bridge.add_argument("--timeout", type=float, default=3600, help="Seconds to wait for the render")
+    status = subs.add_parser("bridge-status", help="Show a bridge job record")
+    status.add_argument("job_dir")
+    cancel = subs.add_parser("bridge-cancel", help="Dequeue or interrupt only this job's prompt")
+    cancel.add_argument("job_dir")
+    cancel.add_argument("--url", default="http://127.0.0.1:8188")
     args = parser.parse_args(argv)
     try:
         if args.command in {"validate", "plan"}:
@@ -111,11 +196,18 @@ def main(argv: list[str] | None = None) -> int:
             return _workflow_check(args)
         elif args.command == "workflow-patch":
             return _workflow_patch(args)
+        elif args.command == "bridge":
+            return _bridge(args)
+        elif args.command == "bridge-status":
+            print(json.dumps(_job_summary(load_job(args.job_dir)), indent=2))
+        elif args.command == "bridge-cancel":
+            with ComfyClient(args.url) as client:
+                print(json.dumps(_job_summary(cancel_bridge(args.job_dir, client)), indent=2))
         elif args.command == "health":
             with ComfyClient(args.url) as client:
                 print(json.dumps(client.health(), indent=2))
         return 0
-    except (ValidationError, ValueError, OSError, ComfyError, WorkflowBindingError) as exc:
+    except (ValidationError, ValueError, OSError, ComfyError, WorkflowBindingError, BridgeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 
