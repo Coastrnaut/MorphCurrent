@@ -1,10 +1,10 @@
 # Music synchronization strategy
 
-Owner direction (2026-11-24): the visualizer's visuals work with **any** song regardless of beat detection;
-study how it turns audio into visual data and build a deeper synchronization strategy on those ideas.
-a reference music visualizer (a local reference checkout, LGPL-2.1) was studied for **ideas only** — no code is copied.
+Owner direction (2026-11-24): classic real-time music visualizers work with **any** song regardless of
+beat detection; study how such a visualizer turns audio into visual data and build a deeper
+synchronization strategy on those ideas (ideas only — no code is copied).
 
-## 1. How a reference music visualizer turns audio into visual data
+## 1. How a real-time music visualizer turns audio into visual data
 
 | Stage | What happens (per rendered frame) | Why it matters |
 |---|---|---|
@@ -24,7 +24,7 @@ multi-speed **energy envelope** per band, (b) **onsets** as event candidates, an
 ## 2. What MorphCurrent can and cannot control
 
 Wan FLF2V generates each bridge from two fixed endpoint images; per-frame motion inside a bridge
-cannot be steered live like a a reference music visualizer preset. MorphCurrent can control: **where anchors fall** (time),
+cannot be steered live like a visualizer preset. MorphCurrent can control: **where anchors fall** (time),
 **how long each bridge is** (4n+1 frames, 33–81), **what each bridge's prompt asks for** (character and
 intensity), the **playback timing of generated frames** (retiming with interpolation, F25) and
 **finishing effects** after generation (F26/F40). The strategy uses every one of these levers.
@@ -33,23 +33,23 @@ intensity), the **playback timing of generated frames** (retiming with interpola
 
 All layers are driven by one **audio feature track**, computed locally once per song and hashed into
 the plan: per video frame (16 fps, re-sampled for delivery fps) — `bass`, `mid`, `treb`, their `_att`
-envelopes and `vol` in the visualizer's relative sense; spectral **flux** (positive spectral change),
+envelopes and `vol` in the relative-to-own-average sense; spectral **flux** (positive spectral change),
 **onset strength**, spectral **centroid/brightness**; plus song-level **sections** (F15 novelty) and,
 optionally, an owner-verified beat/downbeat map.
 
 1. **Structure (minutes).** Sections from novelty → acts and chapters (F32/F38). Works for any music.
 2. **Anchor timing (seconds) — event-locked, beat-optional.** Candidate anchor times are scored
-   events: onset peaks (the visualizer's hard-cut idea, made offline and more precise), section starts,
+   events: onset peaks (the visualizer's transient-cut idea, made offline and more precise), section starts,
    energy peaks of `vol_att`, and downbeats **only when** the beat map is owner-verified or beat
    confidence is high. A dynamic program picks the anchor sequence that maximizes total event strength
    at anchors subject to bridge lengths 33–81 frames (4n+1) and a preferred length; anchor frames
    are snapped to the 4-frame grid (≤ 2-frame error, no cumulative drift). With no reliable beats it
-   still works — like a reference music visualizer.
+   still works — like a real-time visualizer.
 3. **Bridge character (per bridge).** Mean and peak band envelopes over each bridge map
    deterministically to prompt descriptors: bass-heavy → massive, slow, weighty transformation;
    treble-heavy → fine, glittering, crystalline detail; rising `vol_att` → building, accelerating;
    falling → settling, calming. Recorded in the plan; a prompt-only approximation (no audio enters Wan).
-4. **Energy-warped timing (frames) — the a reference music visualizer coupling.** Inside each bridge, playback progress
+4. **Energy-warped timing (frames) — the visualizer coupling.** Inside each bridge, playback progress
    follows the music's energy: the cumulative `vol_att` over the bridge's time span defines a monotone
    time map so the morph moves faster when the music surges and slower when it calms, with both
    anchor frames pinned to their exact times. Speed is clamped to 0.5×–2× and realized with

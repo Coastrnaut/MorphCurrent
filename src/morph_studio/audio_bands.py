@@ -1,13 +1,11 @@
-"""music-visualizer-style band loudness and a timeline visualisation (F15).
+"""Music-visualizer-style band loudness and a timeline visualisation (F15).
 
-Independent Python reimplementation of the algorithm used by a reference music visualizer
-(``src/(reference implementation)``, LGPL-2.1; no code copied). For every video
+Independent Python implementation of classic music-visualizer band loudness. For every video
 frame: Hann-windowed 1024-point FFT, sum the bass / mid / treble bands (0–3.7,
 3.7–7.4 and 7.4–11 kHz — the first, second and third sixth of a 44.1 kHz spectrum),
 then express each band relative to its long-term average. ``bass`` is the instant
 value and ``bass_att`` the short-term smoothed one; both hover around 1.0 and > 1.3 is
-a loud hit. Decay rates are frame-rate independent (``rate ** (30 * dt)``), as in
-a reference music visualizer.
+a loud hit. Decay rates are frame-rate independent (``rate ** (30 * dt)``).
 """
 from __future__ import annotations
 
@@ -49,7 +47,7 @@ def fft_magnitudes(frame: list[float]) -> list[float]:
 
 
 def band_levels(samples: list[float], fps: float = 30.0, rate: int = BAND_SR) -> list[dict]:
-    """Per-frame relative loudness for bass / mid / treble (a reference music visualizer semantics)."""
+    """Per-frame relative loudness for bass / mid / treble (relative-to-long-average semantics)."""
     window = [0.5 - 0.5 * math.cos(2 * math.pi * i / (FFT_N - 1)) for i in range(FFT_N)]
     bin_hz = rate / FFT_N
     ranges = {b: (int(lo / bin_hz), max(int(lo / bin_hz) + 1, int(hi / bin_hz)))

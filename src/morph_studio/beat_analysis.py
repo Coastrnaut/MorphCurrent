@@ -2,9 +2,8 @@
 
 There is no style switch: the same pipeline must handle click tracks and electronic
 music (sharp, regular onsets) as well as classical recordings (soft string onsets,
-pp-to-ff dynamics, rubato, little or no percussion). It follows the approach of
-the visualizer's historical ``BeatDetect`` (Frédéric Patin's statistical energy method;
-a reference music visualizer is LGPL-2.1 — this is an independent reimplementation, no code copied):
+pp-to-ff dynamics, rubato, little or no percussion). It follows Frédéric Patin's
+statistical sub-band energy method (independent implementation):
 
 1. **Sub-band onset strength** — the spectrum is split into log-spaced sub-bands of
    increasing width; each band's energy is compared with its own ~1.3 s running
@@ -34,7 +33,7 @@ HISTORY_S = 1.3
 
 
 def band_edges(n_bands: int = N_BANDS, fmin: float = 60.0, fmax: float = SR / 2) -> list[tuple[int, int]]:
-    """Log-spaced sub-band bin ranges of increasing width (cf. the visualizer's 16 bands)."""
+    """Log-spaced sub-band bin ranges of increasing width (16 bands)."""
     bin_hz = SR / FFT_N
     edges = [fmin * (fmax / fmin) ** (k / n_bands) for k in range(n_bands + 1)]
     out, prev = [], 1

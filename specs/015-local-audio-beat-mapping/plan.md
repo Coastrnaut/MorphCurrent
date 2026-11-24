@@ -11,8 +11,8 @@ Python stdlib (`wave`, `array`, `math`); FFmpeg for non-WAV. Tests synthesise WA
 ## Constitution Check
 II (local only, licence acknowledgement, no fetch) PASS · I (confidence + alternatives, manual override) PASS · IV/V (plan hash unchanged without audio) PASS · VII PASS.
 
-## a reference music visualizer reference (owner request, 2026-11-24)
-The owner pointed to the local a reference music visualizer checkout (a local reference checkout, LGPL-2.1) as a worked example. `audio_bands.py` reimplements its music-visualizer-style band loudness independently in Python (same bands, relative-to-long-average semantics and frame-rate-adjusted decays; no code copied, MIT licence preserved) and adds `audio-visualize` (bass/mid/treble timeline PNG with beats and bridge boundaries).
+## Reference visualizer (owner request, 2026-11-24)
+The owner pointed to a local reference music visualizer as a worked example. `audio_bands.py` implements music-visualizer-style band loudness independently in Python (same bands, relative-to-long-average semantics and frame-rate-adjusted decays; no code copied, MIT licence preserved) and adds `audio-visualize` (bass/mid/treble timeline PNG with beats and bridge boundaries).
 
 ## Complexity Tracking
 None.

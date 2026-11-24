@@ -94,7 +94,7 @@ artistic metaphors.
   `workflow_adapter`, `qa`, `stitcher`, `timeline`, `provenance`, `vram`, `perf`, `scheduler`,
   `longform`) rather than parallel reimplementations.
 - New third-party dependencies require justification in the feature plan; stdlib is preferred.
-- LGPL or otherwise incompatible reference code (e.g. a reference music visualizer) is studied for ideas only, never
+- LGPL or otherwise incompatible reference code is studied for ideas only, never
   copied.
 
 ## Development Workflow & Quality Gates
@@ -118,4 +118,4 @@ Versioning: MAJOR for removed or redefined principles, MINOR for added or materi
 guidance, PATCH for clarifications. Every feature plan's Constitution Check MUST evaluate each
 principle above; consent and test gates are never bypassed to meet a schedule.
 
-**Version**: 2.0.1 | **Ratified**: 2026-11-24 | **Last Amended**: 2026-11-24
+**Version**: 2.0.2 | **Ratified**: 2026-11-24 | **Last Amended**: 2026-11-24
