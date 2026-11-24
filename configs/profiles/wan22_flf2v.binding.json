@@ -1,0 +1,37 @@
+{
+  "profile": "wan22_flf2v_fp8_640x368",
+  "workflow": "workflows/03_wan22_flf2v.json",
+  "workflow_sha256": "22a68e21504fa93a24020ff4c9fa5dc9327bec891faab8e1e84c758fcfad0dc2",
+  "verified_against": {
+    "date": "2026-11-23",
+    "comfyui_version": "0.46.0",
+    "deploy_environment": "local-portable",
+    "gpu": "NVIDIA RTX A6000",
+    "method": "GET /object_info on 127.0.0.1:8188; node IDs read from the owner's Save (API Format) export"
+  },
+  "bindings": {
+    "start_image":     {"node_id": "80", "input": "image",           "class_type": "LoadImage",                "note": "feeds WanFirstLastFrameToVideo 81.start_image"},
+    "end_image":       {"node_id": "89", "input": "image",           "class_type": "LoadImage",                "note": "feeds WanFirstLastFrameToVideo 81.end_image"},
+    "positive_prompt": {"node_id": "90", "input": "text",            "class_type": "CLIPTextEncode",           "note": "feeds 81.positive"},
+    "negative_prompt": {"node_id": "78", "input": "text",            "class_type": "CLIPTextEncode",           "note": "feeds 81.negative"},
+    "width":           {"node_id": "81", "input": "width",           "class_type": "WanFirstLastFrameToVideo", "note": "object_info step 16"},
+    "height":          {"node_id": "81", "input": "height",          "class_type": "WanFirstLastFrameToVideo", "note": "object_info step 16"},
+    "length":          {"node_id": "81", "input": "length",          "class_type": "WanFirstLastFrameToVideo", "note": "frame count; object_info min 1 step 4 => 4n+1"},
+    "fps":             {"node_id": "86", "input": "fps",             "class_type": "CreateVideo",              "note": "container frame rate only; does not change generated motion"},
+    "seed":            {"node_id": "84", "input": "noise_seed",      "class_type": "KSamplerAdvanced",         "note": "high-noise pass; the only sampler with add_noise=enable"},
+    "filename_prefix": {"node_id": "83", "input": "filename_prefix", "class_type": "SaveVideo"}
+  },
+  "outputs": [
+    {"node_id": "83", "class_type": "SaveVideo", "kind": "video"}
+  ],
+  "assertions": [
+    {"node_id": "84", "class_type": "KSamplerAdvanced", "input": "add_noise", "equals": "enable",
+     "reason": "seed binding targets the noise-adding high-noise sampler"},
+    {"node_id": "87", "class_type": "KSamplerAdvanced", "input": "add_noise", "equals": "disable",
+     "reason": "low-noise sampler continues leftover noise, so its noise_seed is inert and intentionally unbound"},
+    {"node_id": "84", "class_type": "KSamplerAdvanced", "input": "end_at_step", "equals": 10,
+     "reason": "high/low expert split is coupled to steps=20; steps are not a bound role"},
+    {"node_id": "87", "class_type": "KSamplerAdvanced", "input": "start_at_step", "equals": 10,
+     "reason": "low-noise pass must start where the high-noise pass ends"}
+  ]
+}

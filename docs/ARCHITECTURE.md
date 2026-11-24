@@ -14,7 +14,7 @@ Sequence YAML + assets + local audio
 - `schema.py`: strict Pydantic creative schema, stable IDs and transitions.
 - `timeline.py`: beat/BPM-to-Wan frame planning; exact rational clock.
 - `comfy_client.py`: local REST + WS, timeouts, history/errors, image upload/download, node discovery.
-- `workflow_adapter.py` (to build): semantic bindings for real API-format JSON; validate node `class_type`/`inputs`.
+- `workflow_adapter.py`: semantic bindings from `configs/profiles/*.binding.json` for real API-format JSON; validates node classes, inputs, links, installed model choices and value ranges against `/object_info`; hash-pins the graph and fails closed on drift.
 - `manifest.py`, `scheduler.py`, `cache.py` (to build): immutable content-addressed artifacts with crash recovery.
 - `audio_analysis.py` (to build): librosa-derived beat/onset/envelopes + manual override.
 - `quality.py` (to build): perceptual seam, blur/freeze/flow, endpoint fidelity and contact sheets.

@@ -2,12 +2,14 @@
 
 Profiles supply low-level **actual** ComfyUI node bindings independently of the creative sequence YAML.
 
-- Start from `wan22_flf2v.binding.example.json`; replace `REPLACE_AFTER_API_EXPORT` with real node IDs and input names.
+- `wan22_flf2v.binding.json` binds the real export `workflows/03_wan22_flf2v.json` (validated against ComfyUI 0.46.0 `/object_info` on 2026-11-23). It pins the graph's canonical hash, so a re-export fails `workflow-check` until every binding is re-verified and the hash updated.
+- Check with `python -m morph_studio.cli workflow-check` (live) or add `--object-info tests/fixtures/object_info_wan22_flf2v.json` (offline). Produce a patched graph with `workflow-patch --set seed=42 --set length=81 --out <new file>`; it never submits to ComfyUI.
+- `assertions` record literals the bindings depend on (for example the low-noise sampler adds no noise, so its seed is intentionally unbound).
 - Save the full executable API graph under `workflows/`, not just UI-format workflow JSON.
 - Check `GET /object_info` against node classes and fields before dispatch.
 - Model filenames and hashes are environment-specific and should be discovered from the local installation.
 - For hard scientific comparisons, version exact model hash, inference dtype and UI revision in a run manifest.
-- This repository includes **no guessed runnable bindings**, no `.safetensors` weights, and no guaranteed compatible custom nodes.
+- This repository includes **no guessed bindings** (every node ID comes from a real export), no `.safetensors` weights, and no guaranteed compatible custom nodes.
 
 Profiles are design inputs. A real GPU render requires validated local exports.
 
