@@ -121,7 +121,7 @@ These original ten scope definitions and existing specification directories are 
 | ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
 |---|---|---|---|---|
 | **F11** | `specs/011-measured-gpu-benchmarks/` (created) | F07, F10 | P0 | **OFFLINE-PASS** — `perf-report`, `estimate`, timestamped whole-GPU samples; GPU benchmark matrix + Wan hashing await owner approval |
-| **F12** | `specs/012-reference-anchor-continuity/` (proposed) | F04, F08 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F12** | `specs/012-reference-anchor-continuity/` (created) | F04, F08 | P0 | **OFFLINE-PASS** — geometry heuristics recorded per child anchor, `anchor-check`; matched three-anchor owner approval pending |
 | **F13** | `specs/013-physical-morph-choreography/` (proposed) | F12, F08 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F14** | `specs/014-adaptive-transition-ladders/` (proposed) | F12, F13, F05 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F15** | `specs/015-local-audio-beat-mapping/` (proposed) | F05, F09 | P0 | **PLANNED — NOT IMPLEMENTED** |
@@ -165,6 +165,8 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 **Tests / evidence:** Synthetic anchor shifts/crops/background changes, real generated B/C evaluation, unchanged parent SHA and lossless shared boundary, mismatch and manual approval paths; record improvements against MC-RUN-001/002.
 
 **Acceptance gate:** Owner-approved matched three-anchor set without accidental layout/scale shifts; no undisclosed independent-T2I fallback.
+
+**Status (2026-11-24):** OFFLINE-PASS in `specs/012-reference-anchor-continuity` — see docs/PROGRESS.md F12 entry.
 
 ### F13 — Physical correspondence and prompt orchestration
 

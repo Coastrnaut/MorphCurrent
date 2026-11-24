@@ -126,8 +126,13 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
     rejected = [t for t in qa if reviews.get(t, {}).get("decision") == "rejected"]
     if rejected:
         return _finish(manifest, "rerender_needed", rejected=rejected)
+    anchor_flags = {a: j.record.get("continuity", {}).get("geometry", {}).get("flags")
+                    for a, j in chain.jobs.items()
+                    if j.record.get("continuity", {}).get("geometry", {}).get("flags")}
+    if anchor_flags:
+        manifest.record("anchor_geometry_flags", anchor_flags)
     if pending and not (accept_heuristics and all(qa[t]["status"] == "no_flags" for t in pending)):
-        return _finish(manifest, "awaiting_review", pending=pending)
+        return _finish(manifest, "awaiting_review", pending=pending, anchor_flags=anchor_flags)
     previous = (manifest.data.get("final") or {}).get("output")
     if previous and Path(previous).exists():  # resume: the movie was already joined
         return _finish(manifest, "complete", movie=previous)

@@ -67,8 +67,11 @@ def test_independent_t2i_is_labelled_and_needs_review(image_repo):
     result = chain(image_repo, fake, specs=specs, edit=None, submit=True)
     b = result.jobs["butterfly"]
     assert result.complete and b.record["method"] == "independent_t2i" and b.record["parent"] is None
-    assert b.record["continuity"] == {"parent": "orchid", "parent_sha256": result.jobs["orchid"].record["image"]["sha256"],
-                                      "conditioned_on_parent": False, "review": "required"}
+    cont = b.record["continuity"]
+    assert {k: cont[k] for k in ("parent", "parent_sha256", "conditioned_on_parent", "review")} == {
+        "parent": "orchid", "parent_sha256": result.jobs["orchid"].record["image"]["sha256"],
+        "conditioned_on_parent": False, "review": "required"}
+    assert "geometry" in cont  # F12 heuristic comparison recorded (or marked unavailable)
 
 
 def test_child_dimension_mismatch_fails(image_repo, monkeypatch):

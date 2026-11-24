@@ -34,7 +34,8 @@ from .bridge import (
 )
 from .cache import cache_key, sha256_file
 from .comfy_client import ComfyClient
-from .media import ImageInvalid, inspect_image
+from .geometry import compare_images
+from .media import ImageInvalid, ProbeUnavailable, inspect_image
 from .workflow_adapter import (
     BindingProfile,
     WorkflowBindingError,
@@ -334,6 +335,13 @@ def _check_continuity(child: BridgeJob, parent: BridgeJob, spec: AnchorSpec) -> 
     child.record["continuity"] = {"parent": spec.reference, "parent_sha256": p["sha256"],
                                   "conditioned_on_parent": spec.method == "reference_edit",
                                   "review": review}
+    try:  # F12: advisory framing/scale/viewpoint heuristics, recorded for the reviewer
+        geometry = compare_images(parent.dir / p["local_path"], child.dir / c["local_path"])
+        child.record["continuity"]["geometry"] = geometry["comparison"]
+        if geometry["comparison"]["flags"]:
+            child.record["continuity"]["review"] = "required"
+    except (ProbeUnavailable, RuntimeError) as exc:
+        child.record["continuity"]["geometry"] = {"status": f"unavailable: {exc}"}
     child.save()
     if (c["width"], c["height"]) != (p["width"], p["height"]):
         raise child.fail(f"anchor {spec.id} is {c['width']}x{c['height']} but parent {spec.reference} is "

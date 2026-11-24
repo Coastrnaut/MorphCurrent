@@ -416,3 +416,26 @@ At the owner's request: deleted `assets/anchors/01_glass_orchid.jpg`, `02_metall
 **Results.** Offline **206 passed, 1 deselected**. `estimate configs/sequences/organic-machines.yaml` → orchid 19.4 s, butterfly 51.7 s, phoenix 51.7 s, bridges 496.0 s each, total **1,114.8 s ESTIMATED**. `perf-report outputs/repro/run-ba2d9dbedb6189be` (MC-RUN-003) → exec 20.2/51.8/49.9/496.0/494.1 s = 1,111.8 s MEASURED, per-stage overhead 0.1–1.8 s; VRAM summary-only (pre-F11 run, no timestamped samples → window peaks NOT MEASURED); Wan/UMT5 SHA-256 NOT MEASURED. Correction: MC-RUN-002 phoenix execution was 54.1 s (earlier note said 50 s).
 
 **Blocked (owner approval):** T010 `models-hash --confirm-io` (≈37 GB disk read, idle queue); T011 sampled benchmark renders (cold/warm 832×480, 640×368 variant) — each ≈19 min of GPU. **Next:** F12 offline (anchor geometry contract) while F11 GPU items wait.
+
+## F12 — Composition-aware anchors, offline slice (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --json --number 12 --short-name reference-anchor-continuity` → `specs/012-reference-anchor-continuity`; spec, checklist, plan, tasks 7/8 (T008 owner-approved matched anchor set pending).
+
+**Built.** `src/morph_studio/geometry.py`: FFmpeg-decoded 128×74 RGB, Otsu luminance mask on the dark background → centroid, robust extent, area, left-right mirror symmetry (frontal vs profile proxy), mean subject colour; `compare_geometry` flags `centroid_shift` (> 0.08), `scale_change` (extent ratio outside 0.75–1.33), `symmetry_drop` (> 0.15), `palette_shift` (> 60), `mask_unreliable`, `subject_too_small` — labelled heuristic, advisory (sets `review: required`, never rejects). The anchor chain records it in each child's `continuity.geometry`; `render` stores `anchor_geometry_flags` in the manifest and returns them at the review stop. CLI `anchor-check PARENT CHILD`.
+
+**Real-data check (local outputs, not committed).**
+| Pair | Flags | Key numbers |
+|---|---|---|
+| MC-RUN-001 butterfly vs orchid | scale_change, palette_shift | width ratio 0.70 (orchid mask includes the glass ring), colour distance 87 (intended blue→silver) |
+| MC-RUN-001 **side-on phoenix** vs butterfly | **symmetry_drop** | symmetry 0.94 → 0.49 |
+| MC-RUN-002 **frontal phoenix** vs butterfly | **scale_change** | symmetry 0.79 (passes); wingspan 1.41× wider (real) |
+Would have flagged the side-on phoenix before its 8-minute bridge. Thresholds remain uncalibrated (F16).
+
+**Results.** Offline **214 passed, 1 deselected**.
+
+## Session handoff (2026-11-24, after F12)
+
+- HEAD: see the F12 commit on `main`. Queue was empty at every check this session; no GPU job was started for F11/F12.
+- F11 OFFLINE-PASS (`specs/011-…`), F12 OFFLINE-PASS (`specs/012-…`). F13–F30 PLANNED.
+- **Needs owner approval:** F11 T010 Wan model hashing (`models-hash --confirm-io`, ≈37 GB read); F11 T011 sampled benchmark renders (cold/warm 832×480, 640×368; ≈19 min GPU each); F12 T008 candidate anchors for an approved matched set.
+- **Next offline feature:** F13 (physical correspondence prompt compiler), then F15 (audio beats), F16 (QA calibration — needs owner-labelled frames), F21/F22.

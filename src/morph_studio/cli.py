@@ -20,6 +20,7 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .geometry import compare_images
 from .perf import build_report as build_perf_report, estimate as estimate_plan, load_history
 from .gates import check_gpu_gate
 from .qa import analyze_clip, record_review
@@ -157,6 +158,12 @@ def _estimate(args: argparse.Namespace) -> int:
     """Offline GPU-time estimate for a storyboard from measured history."""
     plan = compile_plan(load_storyboard(args.storyboard))
     print(json.dumps(estimate_plan(plan, load_history(args.history), extrapolate=args.extrapolate), indent=2))
+    return 0
+
+
+def _anchor_check(args: argparse.Namespace) -> int:
+    """Heuristic framing/scale/viewpoint comparison of two anchor images (local only)."""
+    print(json.dumps(compare_images(args.parent, args.child), indent=2))
     return 0
 
 
@@ -370,6 +377,9 @@ def main(argv: list[str] | None = None) -> int:
     est.add_argument("--history", default="configs/perf_history.json")
     est.add_argument("--extrapolate", action="store_true",
                      help="Scale from the nearest measured size when no exact match exists (labelled)")
+    ac = subs.add_parser("anchor-check", help="Compare framing/scale/viewpoint of a parent and child anchor")
+    ac.add_argument("parent")
+    ac.add_argument("child")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -453,6 +463,8 @@ def main(argv: list[str] | None = None) -> int:
             return _perf_report(args)
         elif args.command == "estimate":
             return _estimate(args)
+        elif args.command == "anchor-check":
+            return _anchor_check(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":
