@@ -38,7 +38,7 @@ The **dry-run path** must work before any GPU access, show exactly which models/
 | F07 | `multi-stage-recovery-and-metrics` → `specs/007-recovery-provenance-metrics` | F06 | Existing single-bridge job log | **OFFLINE-PASS** — model hashes and sampled peak VRAM NOT MEASURED on hardware yet |
 | F08 | `visual-quality-selective-rerender` → `specs/008-quality-selective-rerender` | F06, F07 | Baseline clip observations | **OFFLINE-PASS** — heuristics uncalibrated; human review required |
 | F09 | `seam-safe-video-and-audio` → `specs/009-seam-safe-join` | F05–F08 | Timeline + FFmpeg foundations | **GPU-VERIFIED** (MC-RUN-001 join: real seam diff 0.96, 129 frames) |
-| F10 | `one-command-end-to-end-release` → `specs/010-one-command-render` | F01–F09 | CLI + native Windows CI | **GPU-VERIFIED** (MC-RUN-001: YAML → 3 generated anchors → 2 bridges → approved → movie; rerun reused all stages) |
+| F10 | `one-command-end-to-end-release` → `specs/010-one-command-render` | F01–F09 | CLI + native Windows CI | **GPU-VERIFIED** (MC-RUN-001/002: YAML → 3 generated anchors → 2 bridges → approved → movie; MC-RUN-003 from-scratch rerun byte-identical) |
 
 **Statuses:** PLANNED → SPECCED → IMPLEMENTING → OFFLINE-PASS → GPU-VERIFIED → COMPLETE. If the feature requires an image-model download or a new GPU run, set **BLOCKED** and state the exact permission or missing artifact; do not mark it complete on mocked tests. The ten IDs above are *logical ledger identifiers*, not guaranteed free numbered branch names.
 

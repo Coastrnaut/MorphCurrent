@@ -358,3 +358,10 @@ At the owner's request: deleted `assets/anchors/01_glass_orchid.jpg`, `02_metall
 - `render … --confirm-gpu --sample-vram` (new plan `ba2d9dbe…`): orchid, butterfly and orchid→butterfly **reused** with no new prompts; new phoenix `52d69920…` (image `148c0638…5844`) and bridge `4cd0b1bc…` (clip `896df441…7aa5`, 496.8 s). Owner pre-approved both bridges in chat; the same process joined `final/movie.mp4`: 129 frames, 832×480, 16 fps, 8.0625 s, seam diff 1.02, no crossfade, SHA-256 `ce687958…99ab`.
 - Visual: the side-on cut is gone; transition stays centered and continuous (brief inward wing fold ~frames 32–40). Sampled VRAM: baseline 35,604, peak 47,838 MiB (all processes). Selective rerender (F08 goal: rerender only the affected anchor/bridge) demonstrated on real hardware.
 - Still open: clean from-scratch reproducibility run.
+
+## MC-RUN-003 — reproducibility check (2026-11-24)
+
+- `render configs/sequences/organic-machines.yaml --confirm-gpu --accept-heuristics --sample-vram --runs-root outputs/repro` (fresh root, plan `ba2d9dbe…`), 15:46–16:05 UTC, exit 0.
+- All 5 GPU stages recomputed (execution times equal the original run, so no ComfyUI cache shortcut) and every artifact is **byte-identical** to MC-RUN-002: three anchor PNGs, both bridge MP4s, and the joined movie (`ce687958c40bd8d94b25ac28820ebf0ca5bddb53d86908ba4c052c74b80f99ab`); decoded PSNR ∞ / SSIM 1.000. First movie written with the new name `final/organic-machines_20261124-160448Z_ba2d9dbe.mp4`.
+- Sampled VRAM (all processes): baseline 35,449, peak 48,056 MiB.
+- **CLAUDE.md completion bar now met:** YAML → ComfyUI-generated A, B, C → two Wan bridges → verified seam → final movie + manifest + contact sheet; reproducible second run; human review (owner approved MC-RUN-001/002); model/license gates documented in `docs/MODELS.md`. Remaining optional items: Wan model SHA-256 (`models-hash --confirm-io`), QA threshold calibration, optional licensed soundtrack on real clips.
