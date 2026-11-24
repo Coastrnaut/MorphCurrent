@@ -46,8 +46,8 @@ def test_claude_handoff_is_paste_ready_and_references_existing_runtime():
     assert "Co-Authored-By" in prompt and "no" in prompt.lower()
     assert "specs/001" in prompt and "specs/010" in prompt
 
-def test_twenty_feature_scope_is_synced_across_supporting_docs():
-    assert "F01–F20" in (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+def test_thirty_feature_scope_is_synced_across_supporting_docs():
+    assert "F01–F30" in (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
     assert "F11–F30" in (ROOT / ".specify" / "memory" / "constitution.md").read_text(encoding="utf-8")
     assert "F11–F30" in (ROOT / "docs" / "DEVELOPMENT.md").read_text(encoding="utf-8")
     assert "F11–F30" in (ROOT / "README.md").read_text(encoding="utf-8")
