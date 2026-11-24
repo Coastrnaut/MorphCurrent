@@ -11,6 +11,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from .prompt_compiler import compile_bridge_prompts
 from .schema import Storyboard
 from .timeline import compile_timeline, derived_seed
 
@@ -62,6 +63,7 @@ def compile_plan(storyboard: Storyboard, *, profiles: dict[str, str] | None = No
     bridges = compile_timeline(storyboard)
     for transition, bridge in zip(storyboard.transitions, bridges):
         task_id = f"bridge:{bridge.from_anchor}->{bridge.to_anchor}"
+        positive, negative = compile_bridge_prompts(transition)
         tasks[task_id] = {
             "id": task_id, "kind": "bridge",
             "from": bridge.from_anchor, "to": bridge.to_anchor,
@@ -69,13 +71,15 @@ def compile_plan(storyboard: Storyboard, *, profiles: dict[str, str] | None = No
             "width": render.width, "height": render.height,
             "seed": bridge.seed,
             "seed_source": "storyboard" if transition.seed is not None else "derived(master_seed, index:from:to)",
-            "positive_prompt": " ".join(bridge.transition_prompt.split()),
+            "positive_prompt": positive,
             "candidates": bridge.candidates, "motion": transition.motion, "mode": transition.mode,
             "requested_seconds": bridge.requested_seconds,
             "anchor_span_seconds": bridge.actual_span_seconds,
             "timing_error_seconds": bridge.timing_error_seconds,
             "depends_on": [f"anchor:{bridge.from_anchor}", f"anchor:{bridge.to_anchor}"],
         }
+        if negative is not None:  # only choreographed bridges; keeps older plan hashes unchanged
+            tasks[task_id]["negative_prompt"] = negative
         order.append(task_id)
 
     fps = render.generation_fps

@@ -122,7 +122,7 @@ These original ten scope definitions and existing specification directories are 
 |---|---|---|---|---|
 | **F11** | `specs/011-measured-gpu-benchmarks/` (created) | F07, F10 | P0 | **OFFLINE-PASS** — `perf-report`, `estimate`, timestamped whole-GPU samples; GPU benchmark matrix + Wan hashing await owner approval |
 | **F12** | `specs/012-reference-anchor-continuity/` (created) | F04, F08 | P0 | **OFFLINE-PASS** — geometry heuristics recorded per child anchor, `anchor-check`; matched three-anchor owner approval pending |
-| **F13** | `specs/013-physical-morph-choreography/` (proposed) | F12, F08 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F13** | `specs/013-physical-morph-choreography/` (created) | F12, F08 | P0 | **OFFLINE-PASS** — `choreography` → compiled bridge prompts/negatives, `prompt-preview --variants`; fixed-seed GPU A/B pending |
 | **F14** | `specs/014-adaptive-transition-ladders/` (proposed) | F12, F13, F05 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F15** | `specs/015-local-audio-beat-mapping/` (proposed) | F05, F09 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F16** | `specs/016-calibrated-qa-candidates/` (proposed) | F12, F13, F08 | P0 | **PLANNED — NOT IMPLEMENTED** |
@@ -177,6 +177,8 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 **Tests / evidence:** Golden prompt-format/escaping fixtures, fixed-seed prompt-only A/B experiments, manual review of collapsed midframes; do not conflate sampler/length changes with prompt effects.
 
 **Acceptance gate:** At least one user-approved candidate demonstrably better on defined defects, or report an honest negative result.
+
+**Status (2026-11-24):** OFFLINE-PASS in `specs/013-physical-morph-choreography` — see docs/PROGRESS.md F13 entry.
 
 ### F14 — Intermediate anchors and variable-length morph routing
 

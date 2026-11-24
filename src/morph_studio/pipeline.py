@@ -35,6 +35,7 @@ class BridgeStageResult:
 def bridge_request_for(task: dict, start: Path, end: Path, profile: str) -> BridgeRequest:
     return BridgeRequest(profile=profile, start_image=str(start), end_image=str(end),
                          seed=task["seed"], positive_prompt=task["positive_prompt"],
+                         negative_prompt=task.get("negative_prompt"),
                          width=task["width"], height=task["height"], length=task["frames"],
                          fps=float(task["fps"]))
 

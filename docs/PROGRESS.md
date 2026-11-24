@@ -448,3 +448,11 @@ Owner approved in chat ("Approve both"). Queue idle; `models-hash --confirm-io -
 - `umt5_xxl_fp8_e4m3fn_scaled.safetensors` `c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68`
 - `wan_2.1_vae.safetensors` `2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b`
 All model files used by MorphCurrent now have measured SHA-256 (cache `outputs/model_hashes.json`). Benchmark renders (T011) started afterwards.
+
+## F13 — Physical choreography prompt compiler, offline slice (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --json --number 13 --short-name physical-morph-choreography` → `specs/013-physical-morph-choreography`; spec, checklist, plan, tasks 6/7 (T007 fixed-seed GPU A/B pending).
+
+**Built.** Storyboard transitions accept an optional `choreography` (correspondences source→target, ≤ 5 ordered phases, camera `static|slow_push|slow_pull|orbit_left|orbit_right|rising`, `keep_centered`, `keep_scale`, extra negatives). `src/morph_studio/prompt_compiler.py` compiles it deterministically into a positive prompt (prose + correspondences + sequence + camera + framing + continuity clause) and a negative prompt (continuity defaults + user terms, deduplicated), cleans control characters and caps each at 1,500 characters. Choreographed bridge tasks carry `negative_prompt`, which now reaches the Wan graph's bound negative node (78); un-choreographed bridges keep the export's default and the **plan hash of `organic-machines.yaml` is unchanged** (`ba2d9dbe…`), so MC-RUN reuse is preserved. CLI `prompt-preview STORYBOARD [--variants]` shows compiled prompts and a fixed-seed prompt-only A/B plan (nothing rendered).
+
+**Results.** Offline **222 passed, 1 deselected** (golden prompts, dedup, length cap, schema errors, plan-hash regression, negative in the Wan graph via fake ComfyUI, CLI). **Next:** F11 benchmark results (running), then F15 audio beats.

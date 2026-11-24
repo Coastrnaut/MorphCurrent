@@ -57,6 +57,21 @@ class Anchor(StrictModel):
     reference: str | None = None
 
 
+class Correspondence(StrictModel):
+    source: str = Field(min_length=1, max_length=200)
+    target: str = Field(min_length=1, max_length=200)
+
+
+class Choreography(StrictModel):
+    """Structured physical transformation plan compiled into bridge prompts (F13)."""
+    correspondences: list[Correspondence] = Field(default_factory=list, max_length=8)
+    phases: list[str] = Field(default_factory=list, max_length=5)
+    camera: Literal["static", "slow_push", "slow_pull", "orbit_left", "orbit_right", "rising"] = "static"
+    keep_centered: bool = True
+    keep_scale: bool = True
+    negative: list[str] = Field(default_factory=list, max_length=20)
+
+
 class Transition(StrictModel):
     from_anchor: str = Field(alias="from")
     to_anchor: str = Field(alias="to")
@@ -66,6 +81,7 @@ class Transition(StrictModel):
     motion: str = "slow_push"
     prompt: str = Field(min_length=1)
     mode: Literal["direct", "camera", "intermediate"] = "direct"
+    choreography: Choreography | None = None
 
 
 class Storyboard(StrictModel):

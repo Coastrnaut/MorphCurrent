@@ -20,6 +20,7 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .prompt_compiler import NOTE as PROMPT_NOTE, variants as prompt_variants
 from .geometry import compare_images
 from .perf import build_report as build_perf_report, estimate as estimate_plan, load_history
 from .gates import check_gpu_gate
@@ -164,6 +165,22 @@ def _estimate(args: argparse.Namespace) -> int:
 def _anchor_check(args: argparse.Namespace) -> int:
     """Heuristic framing/scale/viewpoint comparison of two anchor images (local only)."""
     print(json.dumps(compare_images(args.parent, args.child), indent=2))
+    return 0
+
+
+def _prompt_preview(args: argparse.Namespace) -> int:
+    """Show compiled bridge prompts (and optional prompt-only A/B plan); offline."""
+    sequence = load_storyboard(args.storyboard)
+    plan = compile_plan(sequence)
+    out = []
+    for transition in sequence.transitions:
+        task = plan["tasks"][f"bridge:{transition.from_anchor}->{transition.to_anchor}"]
+        entry = {"bridge": task["id"], "choreography": transition.choreography is not None,
+                 "positive": task["positive_prompt"], "negative": task.get("negative_prompt", "(workflow default)")}
+        if args.variants:
+            entry["ab_plan"] = prompt_variants(transition, task["seed"])
+        out.append(entry)
+    print(json.dumps({"bridges": out, "note": PROMPT_NOTE}, indent=2, ensure_ascii=False))
     return 0
 
 
@@ -380,6 +397,9 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("anchor-check", help="Compare framing/scale/viewpoint of a parent and child anchor")
     ac.add_argument("parent")
     ac.add_argument("child")
+    pp = subs.add_parser("prompt-preview", help="Show compiled bridge prompts for a storyboard (offline)")
+    pp.add_argument("storyboard")
+    pp.add_argument("--variants", action="store_true", help="Also list a fixed-seed prompt-only A/B plan")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -465,6 +485,8 @@ def main(argv: list[str] | None = None) -> int:
             return _estimate(args)
         elif args.command == "anchor-check":
             return _anchor_check(args)
+        elif args.command == "prompt-preview":
+            return _prompt_preview(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":
