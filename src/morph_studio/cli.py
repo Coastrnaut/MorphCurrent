@@ -317,6 +317,44 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _production(args: argparse.Namespace) -> int:
+    """F36 production budget, approvals, batch storyboards and status (offline; renders stay owner-run)."""
+    from . import production as pr
+    from .dag import compile_plan
+    from .schema import load_storyboard
+    try:
+        if args.command == "history-ingest":
+            out = pr.ingest(args.runs_root, args.history)
+            print(json.dumps(out, indent=2, ensure_ascii=True))
+            return 0
+        sb = load_storyboard(args.storyboard)
+        log = Path(args.approvals) if getattr(args, "approvals", None) else pr.default_approvals(sb.name)
+        if args.command == "prod-approve":
+            out = pr.approve(log, args.storyboard, args.act, args.note, owner=args.owner, revoke=args.revoke)
+            print(json.dumps(out, indent=2, ensure_ascii=True))
+            return 0
+        hist = pr._load_history(Path(args.history))["entries"]
+        plan = compile_plan(sb, repo_root=Path("."), storyboard_bytes=Path(args.storyboard).read_bytes())
+        if args.command == "prod-budget":
+            out = pr.budget(plan, hist, cold_s=args.cold_s, max_batch_s=args.max_batch_s, max_jobs=args.max_jobs)
+            code = 0
+        elif args.command == "prod-batch":
+            out_dir = Path(args.out_dir) if args.out_dir else Path("outputs/production") / sb.name
+            files = pr.write_batches(args.storyboard, args.act, out_dir, approvals_log=log, history=args.history,
+                                     max_batch_s=args.max_batch_s, max_jobs=args.max_jobs, cold_s=args.cold_s)
+            out = {"act": args.act, "files": files,
+                   "note": "Render the batches in order with `render <file> --confirm-gpu`; earlier stages are cached."}
+            code = 0
+        else:
+            out = pr.status(plan, args.runs_root, hist)
+            code = 0 if out["ok"] else 1
+    except (pr.ProductionError, FileExistsError) as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return code
+
+
 def _lineage(args: argparse.Namespace) -> int:
     """F35 lineage depth, drift curve, explicit re-anchor proposals and shared-anchor check (offline)."""
     from . import lineage as ln
@@ -1166,6 +1204,32 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    hin = subs.add_parser("history-ingest", help="Add measured, verified job timings to the cost history (F36)")
+    hin.add_argument("--runs-root", default="outputs/runs")
+    hin.add_argument("--history", default="configs/perf_history.json")
+    for name, help_text in (("prod-budget", "Per-act GPU budget, batches and storage for a storyboard"),
+                            ("prod-approve", "Record (or revoke) the owner's approval of an act"),
+                            ("prod-batch", "Write batch storyboards for an approved act (seeds pinned)"),
+                            ("prod-status", "Progress, estimate-vs-actual and duplicate-submission check")):
+        psub = subs.add_parser(name, help=help_text)
+        psub.add_argument("storyboard")
+        psub.add_argument("--approvals", default=None)
+        if name == "prod-approve":
+            psub.add_argument("--act", required=True)
+            psub.add_argument("--note", default="")
+            psub.add_argument("--owner", default="owner")
+            psub.add_argument("--revoke", action="store_true")
+            continue
+        psub.add_argument("--history", default="configs/perf_history.json")
+        if name in ("prod-budget", "prod-batch"):
+            psub.add_argument("--max-batch-s", type=float, default=7200.0)
+            psub.add_argument("--max-jobs", type=int, default=20)
+            psub.add_argument("--cold-s", type=float, default=60.0)
+        if name == "prod-batch":
+            psub.add_argument("--act", required=True)
+            psub.add_argument("--out-dir", default=None)
+        if name == "prod-status":
+            psub.add_argument("--runs-root", default="outputs/runs")
     for name, help_text in (("lineage", "Reference-edit lineage depth per anchor (F35)"),
                             ("lineage-drift", "Drift curve of rendered anchors versus their act reference"),
                             ("lineage-propose", "Propose explicit independent re-anchors (written to a new file)"),
@@ -1390,6 +1454,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command == "history-ingest" or args.command.startswith("prod-"):
+            return _production(args)
         elif args.command.startswith("lineage"):
             return _lineage(args)
         elif args.command.startswith("look-"):

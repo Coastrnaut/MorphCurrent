@@ -1,285 +1,321 @@
 {
- "schema": 1,
- "source": "execution_seconds from ComfyUI /history recorded in job.json (RTX A6000, ComfyUI 0.46.0); reused stages excluded",
- "entries": [
-  {
-   "run": "MC-FLF2V-003",
-   "kind": "bridge",
-   "width": 640,
-   "height": 368,
-   "frames": 65,
-   "exec_s": 234.038,
-   "job": "4b5d5805e77bcbe0"
-  },
-  {
-   "run": "MC-RUN-001",
-   "kind": "anchor",
-   "method": "text_to_image",
-   "width": 832,
-   "height": 480,
-   "exec_s": 18.667,
-   "job": "8c2cb744e2a7eeea",
-   "task": "anchor:orchid"
-  },
-  {
-   "run": "MC-RUN-001",
-   "kind": "anchor",
-   "method": "reference_edit",
-   "width": 832,
-   "height": 480,
-   "exec_s": 51.712,
-   "job": "c773ff52fdee51bd",
-   "task": "anchor:butterfly"
-  },
-  {
-   "run": "MC-RUN-001",
-   "kind": "anchor",
-   "method": "reference_edit",
-   "width": 832,
-   "height": 480,
-   "exec_s": 49.487,
-   "job": "72c76af4a929aa82",
-   "task": "anchor:phoenix"
-  },
-  {
-   "run": "MC-RUN-001",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "frames": 65,
-   "exec_s": 497.195,
-   "job": "9785f0ae3ba196df",
-   "task": "bridge:orchid->butterfly"
-  },
-  {
-   "run": "MC-RUN-001",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "frames": 65,
-   "exec_s": 494.602,
-   "job": "61df594564c2e37c",
-   "task": "bridge:butterfly->phoenix"
-  },
-  {
-   "run": "MC-RUN-002",
-   "kind": "anchor",
-   "method": "reference_edit",
-   "width": 832,
-   "height": 480,
-   "exec_s": 54.061,
-   "job": "52d69920fbc6b626",
-   "task": "anchor:phoenix"
-  },
-  {
-   "run": "MC-RUN-002",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "frames": 65,
-   "exec_s": 496.805,
-   "job": "4cd0b1bcbe51520d",
-   "task": "bridge:butterfly->phoenix"
-  },
-  {
-   "run": "MC-RUN-003",
-   "kind": "anchor",
-   "method": "text_to_image",
-   "width": 832,
-   "height": 480,
-   "exec_s": 20.154,
-   "job": "8c2cb744e2a7eeea",
-   "task": "anchor:orchid"
-  },
-  {
-   "run": "MC-RUN-003",
-   "kind": "anchor",
-   "method": "reference_edit",
-   "width": 832,
-   "height": 480,
-   "exec_s": 51.752,
-   "job": "c773ff52fdee51bd",
-   "task": "anchor:butterfly"
-  },
-  {
-   "run": "MC-RUN-003",
-   "kind": "anchor",
-   "method": "reference_edit",
-   "width": 832,
-   "height": 480,
-   "exec_s": 49.913,
-   "job": "52d69920fbc6b626",
-   "task": "anchor:phoenix"
-  },
-  {
-   "run": "MC-RUN-003",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "frames": 65,
-   "exec_s": 495.96,
-   "job": "9785f0ae3ba196df",
-   "task": "bridge:orchid->butterfly"
-  },
-  {
-   "run": "MC-RUN-003",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "frames": 65,
-   "exec_s": 494.066,
-   "job": "4cd0b1bcbe51520d",
-   "task": "bridge:butterfly->phoenix"
-  },
-  {
-   "run": "BENCH-cold832",
-   "kind": "anchor",
-   "width": 832,
-   "height": 480,
-   "exec_s": 19.541,
-   "job": "8c2cb744e2a7eeea",
-   "task": "anchor:orchid",
-   "method": "text_to_image"
-  },
-  {
-   "run": "BENCH-cold832",
-   "kind": "anchor",
-   "width": 832,
-   "height": 480,
-   "exec_s": 51.572,
-   "job": "c773ff52fdee51bd",
-   "task": "anchor:butterfly",
-   "method": "reference_edit"
-  },
-  {
-   "run": "BENCH-cold832",
-   "kind": "anchor",
-   "width": 832,
-   "height": 480,
-   "exec_s": 49.553,
-   "job": "52d69920fbc6b626",
-   "task": "anchor:phoenix",
-   "method": "reference_edit"
-  },
-  {
-   "run": "BENCH-cold832",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "exec_s": 496.482,
-   "job": "9785f0ae3ba196df",
-   "task": "bridge:orchid->butterfly",
-   "frames": 65
-  },
-  {
-   "run": "BENCH-cold832",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "exec_s": 493.656,
-   "job": "4cd0b1bcbe51520d",
-   "task": "bridge:butterfly->phoenix",
-   "frames": 65
-  },
-  {
-   "run": "BENCH-warm832",
-   "kind": "anchor",
-   "width": 832,
-   "height": 480,
-   "exec_s": 20.432,
-   "job": "8c2cb744e2a7eeea",
-   "task": "anchor:orchid",
-   "method": "text_to_image"
-  },
-  {
-   "run": "BENCH-warm832",
-   "kind": "anchor",
-   "width": 832,
-   "height": 480,
-   "exec_s": 53.265,
-   "job": "c773ff52fdee51bd",
-   "task": "anchor:butterfly",
-   "method": "reference_edit"
-  },
-  {
-   "run": "BENCH-warm832",
-   "kind": "anchor",
-   "width": 832,
-   "height": 480,
-   "exec_s": 50.214,
-   "job": "52d69920fbc6b626",
-   "task": "anchor:phoenix",
-   "method": "reference_edit"
-  },
-  {
-   "run": "BENCH-warm832",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "exec_s": 496.758,
-   "job": "9785f0ae3ba196df",
-   "task": "bridge:orchid->butterfly",
-   "frames": 65
-  },
-  {
-   "run": "BENCH-warm832",
-   "kind": "bridge",
-   "width": 832,
-   "height": 480,
-   "exec_s": 491.696,
-   "job": "4cd0b1bcbe51520d",
-   "task": "bridge:butterfly->phoenix",
-   "frames": 65
-  },
-  {
-   "run": "BENCH-w640",
-   "kind": "anchor",
-   "width": 640,
-   "height": 368,
-   "exec_s": 17.22,
-   "job": "1e9bc859e3cadca0",
-   "task": "anchor:orchid",
-   "method": "text_to_image"
-  },
-  {
-   "run": "BENCH-w640",
-   "kind": "anchor",
-   "width": 640,
-   "height": 368,
-   "exec_s": 46.368,
-   "job": "893b5ccb2b7643ac",
-   "task": "anchor:butterfly",
-   "method": "reference_edit"
-  },
-  {
-   "run": "BENCH-w640",
-   "kind": "anchor",
-   "width": 640,
-   "height": 368,
-   "exec_s": 43.936,
-   "job": "4eb2e3e9ff42a95c",
-   "task": "anchor:phoenix",
-   "method": "reference_edit"
-  },
-  {
-   "run": "BENCH-w640",
-   "kind": "bridge",
-   "width": 640,
-   "height": 368,
-   "exec_s": 240.985,
-   "job": "65f99b7787041f16",
-   "task": "bridge:orchid->butterfly",
-   "frames": 65
-  },
-  {
-   "run": "BENCH-w640",
-   "kind": "bridge",
-   "width": 640,
-   "height": 368,
-   "exec_s": 239.038,
-   "job": "a684b02348542d36",
-   "task": "bridge:butterfly->phoenix",
-   "frames": 65
-  }
- ]
+  "schema": 1,
+  "source": "execution_seconds from ComfyUI /history recorded in job.json (RTX A6000, ComfyUI 0.46.0); reused stages excluded",
+  "entries": [
+    {
+      "run": "MC-FLF2V-003",
+      "kind": "bridge",
+      "width": 640,
+      "height": 368,
+      "frames": 65,
+      "exec_s": 234.038,
+      "job": "4b5d5805e77bcbe0"
+    },
+    {
+      "run": "MC-RUN-001",
+      "kind": "anchor",
+      "method": "text_to_image",
+      "width": 832,
+      "height": 480,
+      "exec_s": 18.667,
+      "job": "8c2cb744e2a7eeea",
+      "task": "anchor:orchid"
+    },
+    {
+      "run": "MC-RUN-001",
+      "kind": "anchor",
+      "method": "reference_edit",
+      "width": 832,
+      "height": 480,
+      "exec_s": 51.712,
+      "job": "c773ff52fdee51bd",
+      "task": "anchor:butterfly"
+    },
+    {
+      "run": "MC-RUN-001",
+      "kind": "anchor",
+      "method": "reference_edit",
+      "width": 832,
+      "height": 480,
+      "exec_s": 49.487,
+      "job": "72c76af4a929aa82",
+      "task": "anchor:phoenix"
+    },
+    {
+      "run": "MC-RUN-001",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "frames": 65,
+      "exec_s": 497.195,
+      "job": "9785f0ae3ba196df",
+      "task": "bridge:orchid->butterfly"
+    },
+    {
+      "run": "MC-RUN-001",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "frames": 65,
+      "exec_s": 494.602,
+      "job": "61df594564c2e37c",
+      "task": "bridge:butterfly->phoenix"
+    },
+    {
+      "run": "MC-RUN-002",
+      "kind": "anchor",
+      "method": "reference_edit",
+      "width": 832,
+      "height": 480,
+      "exec_s": 54.061,
+      "job": "52d69920fbc6b626",
+      "task": "anchor:phoenix"
+    },
+    {
+      "run": "MC-RUN-002",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "frames": 65,
+      "exec_s": 496.805,
+      "job": "4cd0b1bcbe51520d",
+      "task": "bridge:butterfly->phoenix"
+    },
+    {
+      "run": "MC-RUN-003",
+      "kind": "anchor",
+      "method": "text_to_image",
+      "width": 832,
+      "height": 480,
+      "exec_s": 20.154,
+      "job": "8c2cb744e2a7eeea",
+      "task": "anchor:orchid"
+    },
+    {
+      "run": "MC-RUN-003",
+      "kind": "anchor",
+      "method": "reference_edit",
+      "width": 832,
+      "height": 480,
+      "exec_s": 51.752,
+      "job": "c773ff52fdee51bd",
+      "task": "anchor:butterfly"
+    },
+    {
+      "run": "MC-RUN-003",
+      "kind": "anchor",
+      "method": "reference_edit",
+      "width": 832,
+      "height": 480,
+      "exec_s": 49.913,
+      "job": "52d69920fbc6b626",
+      "task": "anchor:phoenix"
+    },
+    {
+      "run": "MC-RUN-003",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "frames": 65,
+      "exec_s": 495.96,
+      "job": "9785f0ae3ba196df",
+      "task": "bridge:orchid->butterfly"
+    },
+    {
+      "run": "MC-RUN-003",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "frames": 65,
+      "exec_s": 494.066,
+      "job": "4cd0b1bcbe51520d",
+      "task": "bridge:butterfly->phoenix"
+    },
+    {
+      "run": "BENCH-cold832",
+      "kind": "anchor",
+      "width": 832,
+      "height": 480,
+      "exec_s": 19.541,
+      "job": "8c2cb744e2a7eeea",
+      "task": "anchor:orchid",
+      "method": "text_to_image"
+    },
+    {
+      "run": "BENCH-cold832",
+      "kind": "anchor",
+      "width": 832,
+      "height": 480,
+      "exec_s": 51.572,
+      "job": "c773ff52fdee51bd",
+      "task": "anchor:butterfly",
+      "method": "reference_edit"
+    },
+    {
+      "run": "BENCH-cold832",
+      "kind": "anchor",
+      "width": 832,
+      "height": 480,
+      "exec_s": 49.553,
+      "job": "52d69920fbc6b626",
+      "task": "anchor:phoenix",
+      "method": "reference_edit"
+    },
+    {
+      "run": "BENCH-cold832",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "exec_s": 496.482,
+      "job": "9785f0ae3ba196df",
+      "task": "bridge:orchid->butterfly",
+      "frames": 65
+    },
+    {
+      "run": "BENCH-cold832",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "exec_s": 493.656,
+      "job": "4cd0b1bcbe51520d",
+      "task": "bridge:butterfly->phoenix",
+      "frames": 65
+    },
+    {
+      "run": "BENCH-warm832",
+      "kind": "anchor",
+      "width": 832,
+      "height": 480,
+      "exec_s": 20.432,
+      "job": "8c2cb744e2a7eeea",
+      "task": "anchor:orchid",
+      "method": "text_to_image"
+    },
+    {
+      "run": "BENCH-warm832",
+      "kind": "anchor",
+      "width": 832,
+      "height": 480,
+      "exec_s": 53.265,
+      "job": "c773ff52fdee51bd",
+      "task": "anchor:butterfly",
+      "method": "reference_edit"
+    },
+    {
+      "run": "BENCH-warm832",
+      "kind": "anchor",
+      "width": 832,
+      "height": 480,
+      "exec_s": 50.214,
+      "job": "52d69920fbc6b626",
+      "task": "anchor:phoenix",
+      "method": "reference_edit"
+    },
+    {
+      "run": "BENCH-warm832",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "exec_s": 496.758,
+      "job": "9785f0ae3ba196df",
+      "task": "bridge:orchid->butterfly",
+      "frames": 65
+    },
+    {
+      "run": "BENCH-warm832",
+      "kind": "bridge",
+      "width": 832,
+      "height": 480,
+      "exec_s": 491.696,
+      "job": "4cd0b1bcbe51520d",
+      "task": "bridge:butterfly->phoenix",
+      "frames": 65
+    },
+    {
+      "run": "BENCH-w640",
+      "kind": "anchor",
+      "width": 640,
+      "height": 368,
+      "exec_s": 17.22,
+      "job": "1e9bc859e3cadca0",
+      "task": "anchor:orchid",
+      "method": "text_to_image"
+    },
+    {
+      "run": "BENCH-w640",
+      "kind": "anchor",
+      "width": 640,
+      "height": 368,
+      "exec_s": 46.368,
+      "job": "893b5ccb2b7643ac",
+      "task": "anchor:butterfly",
+      "method": "reference_edit"
+    },
+    {
+      "run": "BENCH-w640",
+      "kind": "anchor",
+      "width": 640,
+      "height": 368,
+      "exec_s": 43.936,
+      "job": "4eb2e3e9ff42a95c",
+      "task": "anchor:phoenix",
+      "method": "reference_edit"
+    },
+    {
+      "run": "BENCH-w640",
+      "kind": "bridge",
+      "width": 640,
+      "height": 368,
+      "exec_s": 240.985,
+      "job": "65f99b7787041f16",
+      "task": "bridge:orchid->butterfly",
+      "frames": 65
+    },
+    {
+      "run": "BENCH-w640",
+      "kind": "bridge",
+      "width": 640,
+      "height": 368,
+      "exec_s": 239.038,
+      "job": "a684b02348542d36",
+      "task": "bridge:butterfly->phoenix",
+      "frames": 65
+    },
+    {
+      "run": "ingest:2ef8c4d60a9175fc",
+      "width": 832,
+      "height": 480,
+      "exec_s": 489.614,
+      "job": "2ef8c4d60a9175fc",
+      "kind": "bridge",
+      "frames": 65
+    },
+    {
+      "run": "ingest:57fa275ea2e19992",
+      "width": 832,
+      "height": 480,
+      "exec_s": 660.136,
+      "job": "57fa275ea2e19992",
+      "kind": "bridge",
+      "frames": 81
+    },
+    {
+      "run": "ingest:5b44bb9a5f05199a",
+      "width": 832,
+      "height": 480,
+      "exec_s": 655.443,
+      "job": "5b44bb9a5f05199a",
+      "kind": "bridge",
+      "frames": 81
+    },
+    {
+      "run": "ingest:acb69c381ad1d9f0",
+      "width": 832,
+      "height": 480,
+      "exec_s": 489.367,
+      "job": "acb69c381ad1d9f0",
+      "kind": "bridge",
+      "frames": 65
+    }
+  ]
 }
