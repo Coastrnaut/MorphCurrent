@@ -363,6 +363,47 @@ def _soundtrack(args: argparse.Namespace) -> int:
     return code
 
 
+def _titles(args: argparse.Namespace) -> int:
+    """F38 titles safe-area check, overlay render and act-boundary proposals (offline)."""
+    from . import titles as tt
+    try:
+        if args.command == "titles-check":
+            d = tt.load_titles(args.titles)
+            res = tt.resolve(d, args.storyboard)
+            from .schema import load_storyboard
+            r = load_storyboard(args.storyboard).render
+            safe = tt.safe_check(res["overlays"], r.width, r.height, vertical=args.vertical)
+            out = {"overlays": res["overlays"], "warnings": res["warnings"], "duration_s": res["duration_s"],
+                   "safe_area": safe}
+            code = 0 if safe["ok"] else 1
+            if not args.json:
+                flagged = {r["id"] for r in safe["rows"] if r["flagged"]}
+                for o in res["overlays"]:
+                    print(f"{o['id']:<12} {o['start_s']:8.2f}-{o['end_s']:8.2f} s  size {safe['sizes'][o['id']]:>3} px  "
+                          f"{'FLAGGED' if o['id'] in flagged else 'ok':<7}  {o['text']}".encode("ascii", "replace").decode("ascii"))
+                for w in res["warnings"]:
+                    print(f"warning: {w}".encode("ascii", "replace").decode("ascii"))
+                return code
+        elif args.command == "titles-render":
+            out = tt.render(args.movie, args.out, args.titles, args.storyboard, vertical=args.vertical)
+            code = 0 if out["ok"] else 1
+        else:
+            out = tt.act_boundaries(args.storyboard, args.plan, window=args.window)
+            if not args.json:
+                for r in out["boundaries"]:
+                    print(f"act {r['act']:<10} anchor {r['anchor']:>3} ({r['t']:8.2f} s) event {r['event'] or '-':<12} "
+                          f"section {'-' if r['section_anchor'] is None else r['section_anchor']:>3} "
+                          f"offset {'-' if r['offset'] is None else format(r['offset'], '+d'):>3}  "
+                          f"{r['proposal'] or 'no section start within the window'}")
+                return 0
+            code = 0
+    except (tt.TitlesError, FileExistsError) as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return code
+
+
 def _production(args: argparse.Namespace) -> int:
     """F36 production budget, approvals, batch storyboards and status (offline; renders stay owner-run)."""
     from . import production as pr
@@ -1250,6 +1291,22 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    tcp = subs.add_parser("titles-check", help="Resolve film titles and check 16:9 / 9:16 safe areas (F38)")
+    tcp.add_argument("--titles", default="configs/film/titles.yaml")
+    tcp.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
+    tcp.add_argument("--vertical", action="store_true", help="Also fit the 9:16 centre crop")
+    tcp.add_argument("--json", action="store_true")
+    trp = subs.add_parser("titles-render", help="Draw titles onto a new copy of a movie (input untouched)")
+    trp.add_argument("movie")
+    trp.add_argument("out")
+    trp.add_argument("--titles", default="configs/film/titles.yaml")
+    trp.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
+    trp.add_argument("--vertical", action="store_true")
+    abp = subs.add_parser("act-boundaries", help="Act boundaries vs music section starts, with move proposals")
+    abp.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
+    abp.add_argument("--plan", "--sync-plan", dest="plan", default="configs/film/sync-plan.json")
+    abp.add_argument("--window", type=int, default=6)
+    abp.add_argument("--json", action="store_true")
     srp = subs.add_parser("sync-report", help="Anchor-vs-music sync report for a frame-locked storyboard (F37)")
     srp.add_argument("storyboard")
     srp.add_argument("--plan", default="configs/film/sync-plan.json")
@@ -1530,6 +1587,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("titles-check", "titles-render", "act-boundaries"):
+            return _titles(args)
         elif args.command in ("sync-report", "warp-report", "animatic", "captions", "narration-check",
                               "click-track", "beatmap-verify"):
             return _soundtrack(args)

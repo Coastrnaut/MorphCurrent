@@ -1,0 +1,26 @@
+# F38 titles for the engineering film: a finishing layer drawn onto a copy of the joined movie (or animatic).
+# Text is the owner's; it is never placed in generation prompts. Sizes and positions are fractions of frame
+# height (y = vertical centre of the text). Act titles start at each act's first anchor; empty act text means
+# "use the act title from configs/film/acts.yaml".
+version: 1
+font: C:/Windows/Fonts/arial.ttf
+defaults:
+  fade_s: 0.5
+  color: white
+opening:
+  text: From Lightning to Silicon
+  start_s: 0
+  duration_s: 5
+  size: 0.10
+  y: 0.45
+acts:
+  duration_s: 4
+  size: 0.08
+  y: 0.80
+  text: {}
+lower_thirds: []
+end:
+  text: MorphCurrent
+  duration_s: 5
+  size: 0.10
+  y: 0.45
