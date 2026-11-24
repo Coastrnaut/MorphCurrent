@@ -132,7 +132,7 @@ These original ten scope definitions and existing specification directories are 
 | **F19** | `specs/019-resumable-longform-timeline/` (proposed) | F14, F15, F17 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F20** | `specs/020-release-reproducible-pipeline/` (proposed) | F11–F19 | P0 final | **PLANNED — NOT IMPLEMENTED** |
 | **F21** | `specs/021-style-packs-asset-library/` (created) | F12, F18 | P1 | **OFFLINE-PASS** — versioned style packs with inheritance, per-scene overrides, pack SHA-256 in plan identity, private-library asset checks; `engineering-noir` packs for the film |
-| **F22** | `specs/022-story-brief-to-storyboard/` (proposed) | F14, F18, F21 | P1 | **PLANNED — NOT IMPLEMENTED** |
+| **F22** | `specs/022-story-brief-to-storyboard/` (created) | F14, F18, F21 | P1 | **OFFLINE-PASS** — `brief-plan`: deterministic brief → schema-valid storyboard with choreography, style pack, 4n+1 timing and preview; 8-scene engineering pilot generated; local-LLM drafting deferred |
 | **F23** | `specs/023-camera-framing-keyframes/` (proposed) | F12, F13, F14 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F24** | `specs/024-temporal-shape-stability/` (proposed) | F13, F16, F23 | P0 quality | **PLANNED — NOT IMPLEMENTED** |
 | **F25** | `specs/025-optical-frame-interpolation/` (proposed) | F09, F15, F24 | P1 | **PLANNED — NOT IMPLEMENTED** |

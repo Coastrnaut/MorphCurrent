@@ -1,0 +1,24 @@
+# Pilot brief for the F31-F40 five-minute electrical & compute engineering film (first ~32 s).
+# Generate an editable storyboard (nothing is rendered):
+#   python -m morph_studio.cli brief-plan configs/briefs/engineering-pilot.yaml --out configs/sequences/engineering-pilot.yaml
+title: engineering-pilot
+duration_s: 32
+bpm: 120
+style_pack: engineering-noir
+seed: 31
+scenes:
+  - subject: a forked lightning bolt frozen in a glass sphere
+    morph: the branching bolt condenses into a glowing column of charge
+  - subject: a glass Leyden jar with a brass electrode and chain
+    morph: the jar's metal foil rings separate into stacked discs
+  - subject: a voltaic pile of alternating copper and zinc discs
+    morph: the discs spin and wind into a copper coil
+  - subject: a hand-cranked copper dynamo with a horseshoe magnet
+    morph: the coil grows laminated iron plates around it
+  - subject: a large laminated-iron power transformer with ceramic bushings
+    morph: the bushings narrow into a single glass envelope
+  - subject: a glowing vacuum tube with visible filament and grid
+    morph: the glass shrinks and flattens into a tiny three-legged package
+  - subject: an early germanium point-contact transistor
+    morph: the transistor multiplies into a grid etched on a silicon square
+  - subject: an integrated circuit die with fine golden bond wires
