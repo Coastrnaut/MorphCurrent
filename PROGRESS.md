@@ -153,7 +153,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | F06 | `specs/006-generated-anchor-bridges` | OFFLINE-PASS; GPU BLOCKED | `pipeline.run_bridge_stage` on the unchanged Wan bridge path |
 | F07 | `specs/007-recovery-provenance-metrics` | OFFLINE-PASS | run manifest, crash-resume tests, `models-hash`, VRAM sampler |
 | F08 | `specs/008-quality-selective-rerender` | OFFLINE-PASS (heuristics uncalibrated) | `qa.py`, `qa`/`review` CLI, selective rerender plan |
-| F09 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F09 | `specs/009-seam-safe-join` | OFFLINE-PASS | `stitcher.join_verified`, seam checks, optional audio |
 | F10 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 
 ## F01 — Safe baseline, GPU gate, provenance (2026-11-24)
@@ -257,3 +257,11 @@ At the owner's request, `Co-Authored-By` trailers were removed from all commits 
 **Calibration observation (local CPU decode, no GPU).** `qa` on MC-FLF2V-003 (`outputs/runs/4b5d5805e77bcbe0/outputs/bridge_00001_.mp4`) with the two example anchors: 65 frames, median diff 1.93, max 6.25, endpoint diffs 3.8 / 4.85, **no flags** — although the contact sheet shows petal collapse (~frames 24–40) and a wing flare (~48). The heuristics catch gross cuts/freezes/flashes/endpoint errors only; they are **not** a creative-quality gate. Human review remains required.
 
 **Results.** Offline **181 passed, 1 deselected**.
+
+## F09 — Seam-safe join and optional soundtrack, offline slice (2026-11-24)
+
+**Spec Kit.** `specs/009-seam-safe-join` (`--number 9`); tasks 4/5 (T005 real seam blocked).
+
+**Built.** `stitcher.check_seams()` compares decoded boundary frames (64×36 gray mean abs diff ≤ 8; optionally against the shared anchor image). `join_verified()` refuses mismatched size/fps or seams, builds the existing concat/trim command (drops only later clips' first frame; never xfade), writes `<name>.part.mp4`, verifies frame count Σ L − (n−1) with ffprobe, then renames. Optional audio: existing local file only, `-ss offset`, cut to video duration, AAC; default has no audio stream. Existing `build_join_command` tests unchanged.
+
+**Results.** Offline **186 passed, 1 deselected**: two 17-frame lossless synthetic ramps sharing the boundary value → 33 frames with correct first/seam/last values; mismatched seam refused and nothing written; video-only vs audio variants; remote audio URL refused. Seam tolerance is provisional until two real Wan bridges sharing B are measured.

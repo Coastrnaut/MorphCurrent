@@ -37,7 +37,7 @@ The **dry-run path** must work before any GPU access, show exactly which models/
 | F06 | `generated-anchors-to-wan-bridges` → `specs/006-generated-anchor-bridges` | F05 | Proven `bridge.py` / FLF2V profile | **OFFLINE-PASS; GPU BLOCKED** (needs generated A/B from F03/F04 GPU gates) |
 | F07 | `multi-stage-recovery-and-metrics` → `specs/007-recovery-provenance-metrics` | F06 | Existing single-bridge job log | **OFFLINE-PASS** — model hashes and sampled peak VRAM NOT MEASURED on hardware yet |
 | F08 | `visual-quality-selective-rerender` → `specs/008-quality-selective-rerender` | F06, F07 | Baseline clip observations | **OFFLINE-PASS** — heuristics uncalibrated; human review required |
-| F09 | `seam-safe-video-and-audio` | F05–F08 | Timeline + FFmpeg foundations | **PLANNED** |
+| F09 | `seam-safe-video-and-audio` → `specs/009-seam-safe-join` | F05–F08 | Timeline + FFmpeg foundations | **OFFLINE-PASS** — real Wan seam not yet measured (GPU chain blocked) |
 | F10 | `one-command-end-to-end-release` | F01–F09 | CLI + native Windows CI | **PLANNED** |
 
 **Statuses:** PLANNED → SPECCED → IMPLEMENTING → OFFLINE-PASS → GPU-VERIFIED → COMPLETE. If the feature requires an image-model download or a new GPU run, set **BLOCKED** and state the exact permission or missing artifact; do not mark it complete on mocked tests. The ten IDs above are *logical ledger identifiers*, not guaranteed free numbered branch names.
@@ -136,6 +136,7 @@ Spec Kit 1.2.4, `script=py`, skills `speckit-*` under `.claude/skills/`. Feature
 | F06 | `specs/006-generated-anchor-bridges` | OFFLINE-PASS (GPU BLOCKED) | see PROGRESS F06 entry | offline 160 passed | `pipeline.run_bridge_stage`: bridge endpoints only from verified anchor jobs; unchanged Wan profile/executor; shared B SHA asserted | NOT RUN | F03/F04 GPU gates | approved generated-A/B bridge |
 | F07 | `specs/007-recovery-provenance-metrics` | OFFLINE-PASS | see PROGRESS F07 entry | offline 173 passed | `RunManifest`, crash-after-every-transition resume (7 states, 1 `/prompt`), `models-hash` (opt-in, idle queue only, size+mtime cache), `VramSampler` | NOT RUN | owner timing for multi-GB hashing; an approved render to sample | F09 |
 | F08 | `specs/008-quality-selective-rerender` | OFFLINE-PASS | see PROGRESS F08 entry | offline 181 passed | `qa.py` cut/freeze/flare/endpoint heuristics; candidate seeds; rerender only failed/rejected bridges; `review.json`; on MC-FLF2V-003 heuristics report no flags although collapse/flare is visible → not a quality gate | NOT RUN | owner visual review to calibrate | F09 |
+| F09 | `specs/009-seam-safe-join` | OFFLINE-PASS | see PROGRESS F09 entry | offline 186 passed | `join_verified`: decoded seam check, concat/trim (no xfade), ffprobe frame count Σ L − (n−1), `.part`, optional local audio cut to video length | NOT RUN | real generated A→B, B→C clips | F10 |
 
 ## Per-feature Spec Kit execution protocol (mandatory)
 
