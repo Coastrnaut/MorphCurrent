@@ -149,7 +149,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | F02 | `specs/002-image-workflow-onboarding` | OFFLINE-PASS; GPU/export BLOCKED | capability contracts, `workflow-inspect`, `docs/ANCHOR_MODEL_DECISION.md`; awaiting owner model approval |
 | F03 | `specs/003-first-anchor-t2i` | OFFLINE-PASS; GPU BLOCKED | `anchor` CLI + `anchors.py` on the shared bridge executor; image integrity checks |
 | F04 | `specs/004-reference-edit-anchors` | OFFLINE-PASS; GPU BLOCKED | `run_anchor_chain`, explicit `independent_t2i`, contact sheet |
-| F05 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F05 | `specs/005-storyboard-task-dag` | COMPLETE (offline feature) | `dag.py` + `morphcurrent dag`; 16-multiple size check |
 | F06 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F07 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F08 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
@@ -215,3 +215,11 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 - An unbound negative prompt makes planning fail rather than being dropped silently.
 
 **Results.** Offline **146 passed, 1 deselected** (7 chain tests incl. real FFmpeg contact sheet). GPU: NOT RUN.
+
+## F05 — Storyboard task DAG (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --number 5 --short-name storyboard-task-dag` → `specs/005-storyboard-task-dag`; tasks 6/6.
+
+**Built.** `src/morph_studio/dag.py` `compile_plan()` + `morphcurrent dag STORYBOARD` (no network): tasks `anchor:<id>` (method, capability, positive = anchor prompt + style description, negative, seed + `seed_source`, size, dependency on the reference), `bridge:<from>-><to>` (4n+1 frames from beats/BPM/fps via `timeline.py`, seed, prompt, candidates, timing error; depends on both endpoint anchors, so B is one task used by two bridges), `final:movie` (unique frames `1+Σ(L−1)`, anchor span, nominal duration, delivery fps, optional audio, verified-seam join rule). Requirements list per capability with profile existence; `plan_sha256` over canonical task content. Schema: render width/height must be multiples of 16 (Wan step 16).
+
+**Results.** Offline **155 passed, 1 deselected**. `morphcurrent dag configs/sequences/organic-machines.yaml` → plan `cefb16ae…faea8`, order orchid → butterfly → phoenix → two bridges → final, 129 unique frames, blocked: `text_to_image` and `reference_edit` profiles missing (expected until F02).

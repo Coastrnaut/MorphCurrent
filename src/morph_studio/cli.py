@@ -18,6 +18,7 @@ from .bridge import (
     request_from_job,
     run_bridge,
 )
+from .dag import compile_plan
 from .anchors import AnchorRequest, plan_anchor, request_from_anchor_job, run_anchor
 from .onboarding import as_json as inspect_json, inspect_export, load_export
 from .preflight import build_baseline_report
@@ -80,6 +81,18 @@ def _workflow_patch(args: argparse.Namespace) -> int:
         print(f"WROTE {args.out} (not submitted to ComfyUI)")
     else:
         sys.stdout.write(text)
+    return 0
+
+
+def _dag(args: argparse.Namespace) -> int:
+    """Offline storyboard -> task DAG (no ComfyUI contact)."""
+    sequence = load_storyboard(args.storyboard)
+    profiles = {k: v for k, v in (("text_to_image", args.t2i_profile), ("reference_edit", args.edit_profile),
+                                  ("wan_flf2v", args.bridge_profile)) if v}
+    with open(args.storyboard, "rb") as stream:
+        raw = stream.read()
+    print(json.dumps(compile_plan(sequence, profiles=profiles, storyboard_bytes=raw), indent=2,
+                     ensure_ascii=False))
     return 0
 
 
@@ -244,6 +257,11 @@ def main(argv: list[str] | None = None) -> int:
     bridge.add_argument("--allow-busy-queue", action="store_true",
                         help="Submit even when ComfyUI already has queued work")
     bridge.add_argument("--timeout", type=float, default=3600, help="Seconds to wait for the render")
+    dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
+    dag.add_argument("storyboard")
+    dag.add_argument("--t2i-profile")
+    dag.add_argument("--edit-profile")
+    dag.add_argument("--bridge-profile")
     anchor = subs.add_parser("anchor", help="Plan, validate and (with --confirm-gpu) generate one anchor image")
     anchor.add_argument("--profile", help="text_to_image or reference_edit binding profile")
     anchor.add_argument("--url", default="http://127.0.0.1:8188")
@@ -310,6 +328,8 @@ def main(argv: list[str] | None = None) -> int:
             return _baseline(args)
         elif args.command == "workflow-inspect":
             return _workflow_inspect(args)
+        elif args.command == "dag":
+            return _dag(args)
         elif args.command == "anchor":
             return _anchor(args)
         elif args.command == "anchor-status":

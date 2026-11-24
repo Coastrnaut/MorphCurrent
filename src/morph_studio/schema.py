@@ -26,6 +26,9 @@ class RenderConfig(StrictModel):
     def check_length(self) -> "RenderConfig":
         if (self.max_bridge_frames - 1) % 4:
             raise ValueError("max_bridge_frames must be 4n+1")
+        if self.width % 16 or self.height % 16:
+            # WanFirstLastFrameToVideo width/height use object_info step 16 (ComfyUI 0.46.0)
+            raise ValueError("render width/height must be multiples of 16 for Wan 2.2")
         return self
 
 
