@@ -53,7 +53,7 @@ Start ComfyUI ([docs/COMFYUI_SETUP.md](docs/COMFYUI_SETUP.md)), then:
 .venv\Scripts\python.exe -m morph_studio.cli review-ui
 ```
 
-Results land in `outputs\runs\run-<id>\` (manifest, contact sheet and the movie, e.g. `final\organic-machines_20261124-153637Z_ba2d9dbe.mp4`). `render --status <run dir>` shows progress at any time. `camera-check` tests camera moves and framing against the anchors, `run-compare A B` checks a replay byte-for-byte, `audit` checks sources and licences, and `run-backup` / `run-restore` archive a run with checksums.
+Results land in `outputs\runs\run-<id>\` (manifest, contact sheet and the movie, e.g. `final\organic-machines_20261124-153637Z_ba2d9dbe.mp4`). `render --status <run dir>` shows progress at any time. `camera-check` tests camera moves and framing against the anchors, `continuity` locates shape/colour breaks in a clip, `run-compare A B` checks a replay byte-for-byte, `audit` checks sources and licences, and `run-backup` / `run-restore` archive a run with checksums.
 
 ## Storyboard
 

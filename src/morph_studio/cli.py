@@ -315,6 +315,37 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _continuity(args: argparse.Namespace) -> int:
+    """F24 continuity diagnostics, evaluation, repair proposals and controlled comparison (offline)."""
+    from . import continuity as ct
+    if args.command == "continuity":
+        report = ct.analyze_clip(args.clip, with_metrics=args.metrics)
+        print(json.dumps(report, indent=2))
+        return 13 if report["flags"] else 0
+    if args.command == "continuity-eval":
+        print(json.dumps(ct.evaluate(args.labels, args.repo_root), indent=2))
+        return 0
+    if args.command == "repair-propose":
+        from .release import _stage_files
+        out = Path(args.out)
+        if out.exists():
+            print(f"error: {out} exists; refusing to overwrite", file=sys.stderr)
+            return 2
+        stage = _stage_files(Path(args.run)).get(args.task)
+        if not stage or not stage.get("file") or not Path(stage["file"]).is_file():
+            print(f"error: no verified clip for {args.task} in {args.run}", file=sys.stderr)
+            return 2
+        plan = json.loads((Path(args.run) / "plan.json").read_text(encoding="utf-8"))
+        proposal = ct.propose_repair(ct.analyze_clip(stage["file"]), plan["tasks"][args.task])
+        out.write_text(json.dumps(proposal, indent=2) + "\n", encoding="utf-8", newline="\n")
+        print(json.dumps(proposal, indent=2))
+        return 0
+    from .qa_subject import decode_rgb_frames
+    result = ct.compare_repair(decode_rgb_frames(args.original), decode_rgb_frames(args.repaired))
+    print(json.dumps(result, indent=2))
+    return 0 if result["verdict"] == ct.COMPARE_VERDICT_OK else 14
+
+
 def _camera_check(args: argparse.Namespace) -> int:
     """F23: camera-move labels, endpoint satisfiability, framing and crops (offline)."""
     from .camera import camera_check
@@ -691,6 +722,19 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    ct_ = subs.add_parser("continuity", help="Shape/topology/background/motion/colour continuity flags for a clip")
+    ct_.add_argument("clip")
+    ct_.add_argument("--metrics", action="store_true", help="Include per-frame metrics")
+    ce = subs.add_parser("continuity-eval", help="Evaluate continuity + subject detectors on labelled clips")
+    ce.add_argument("--labels", default="configs/qa_labels.json")
+    ce.add_argument("--repo-root", default=".")
+    rpp = subs.add_parser("repair-propose", help="Write a repair proposal for a flagged bridge (nothing renders)")
+    rpp.add_argument("run")
+    rpp.add_argument("task", help="e.g. bridge:orchid->butterfly")
+    rpp.add_argument("--out", required=True)
+    rcm = subs.add_parser("repair-compare", help="Controlled comparison of an original and a repaired clip")
+    rcm.add_argument("original")
+    rcm.add_argument("repaired")
     cc = subs.add_parser("camera-check", help="Camera-move labels, endpoint satisfiability, framing and crops")
     cc.add_argument("storyboard")
     cc.add_argument("--run", help="Run directory whose anchors to measure")
@@ -847,6 +891,8 @@ def main(argv: list[str] | None = None) -> int:
             return _style(args)
         elif args.command == "brief-plan":
             return _brief_plan(args)
+        elif args.command in ("continuity", "continuity-eval", "repair-propose", "repair-compare"):
+            return _continuity(args)
         elif args.command == "camera-check":
             return _camera_check(args)
         elif args.command in ("run-compare", "replay", "audit", "run-backup", "run-restore", "acceptance"):
