@@ -127,6 +127,6 @@ def test_cli_baseline_skip_comfy_and_out_refuses_overwrite(tmp_path, capsys):
 def test_environment_doc_labels_unmeasured_values():
     text = (REPO / "docs" / "ENVIRONMENT.md").read_text(encoding="utf-8")
     assert "NOT MEASURED" in text
-    assert re.search(r"[Pp]eak VRAM.*NOT MEASURED", text)
-    assert re.search(r"SHA-256.*NOT MEASURED", text)
+    assert re.search(r"[Pp]eak VRAM.*per-process peak \*\*NOT MEASURED\*\*", text)
+    assert re.search(r"SHA-256.*Wan files measured", text)
     assert not re.search(r"C:\\Users\\", text)

@@ -13,7 +13,7 @@
 | GPU | NVIDIA RTX A6000, 51,526,500,352 bytes total (49,140 MiB per nvidia-smi) | `/system_stats`, nvidia-smi |
 | GPU memory in use | 35,616 MiB — **snapshot (not peak)**, ComfyUI idle; held by other processes (see PROGRESS M3) | nvidia-smi |
 | `/system_stats` vram_free | 14,177,250,198 bytes — **snapshot (not peak)**; observed static during a render in M3 | `/system_stats` |
-| Peak VRAM during any render | **NOT MEASURED** (opt-in sampler is F07) | — |
+| Peak VRAM during renders | Whole-GPU sampled peaks recorded per run since MC-RUN-001 (e.g. 48,056 MiB of 49,140 in MC-RUN-003, all processes); per-process peak **NOT MEASURED** (Windows WDDM reports none) | `--sample-vram`, `perf-report` |
 | Queue at measurement | running 0, pending 0 | `/queue` |
 | FFmpeg / ffprobe | 8.1.2 full build on PATH (WinGet Gyan.FFmpeg) | `which` |
 

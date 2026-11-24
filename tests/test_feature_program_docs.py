@@ -23,7 +23,7 @@ def test_constitution_is_not_unfilled_template_and_image_workflows_not_faked():
     architecture = (ROOT / "docs" / "ARCHITECTURE.md").read_text(encoding="utf-8")
     assert "[PRINCIPLE_1_NAME]" not in constitution
     assert "model" in constitution.lower() and "ComfyUI" in constitution
-    assert "NOT MEASURED" in models
+    assert "6122e79d55e0f235698d11d657f3b196c5273c830da00b2b013c5a048d5e6a42" in models  # Wan high-noise, measured
     assert "01_anchor_t2i.json" in models and "02_anchor_edit.json" in models
     assert "byte" in architecture.lower() and "129" in architecture
 
