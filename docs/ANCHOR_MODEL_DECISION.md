@@ -47,4 +47,13 @@ Image stages and Wan stages run **sequentially**, never concurrently. About 35.6
 
 | Date | Option | Approved by | Scope (files, size, GPU renders) |
 |---|---|---|---|
-| — | — | — | *none yet* |
+| 2026-11-24 | A (Qwen-Image + Qwen-Image-Edit-2509, fp8) | owner, in Claude Code chat ("Option A (Qwen)", then "Yes, download") | Download only: 4 files, 50.5 GB, from `huggingface.co/Comfy-Org/Qwen-Image` and `Comfy-Org/Qwen-Image-Edit`, each verified against the SHA-256 published by Hugging Face before install. Licenses per Hugging Face metadata: Apache-2.0 (Comfy-Org/Qwen-Image, Comfy-Org/Qwen-Image-Edit, Qwen/Qwen-Image, Qwen/Qwen-Image-Edit-2509, Qwen/Qwen2.5-VL-7B-Instruct). **No GPU render approved by this entry.** |
+
+Expected SHA-256 (Hugging Face LFS metadata, 2026-11-24):
+
+| File | Bytes | SHA-256 |
+|---|---|---|
+| `diffusion_models/qwen_image_fp8_e4m3fn.safetensors` | 20,430,635,136 | `98763a127701eb6fb59096f7742cb3aa7d64ed510b9f4e882d8351f8176e3ce3` |
+| `diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors` | 20,430,698,424 | `318568f61951ab9da21100c7b896e3c1da67f0d2efad6421545e022cfaa2b2b4` |
+| `text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors` | 9,384,670,680 | `cb5636d852a0ea6a9075ab1bef496c0db7aef13c02350571e388aea959c5c0b4` |
+| `vae/qwen_image_vae.safetensors` | 253,806,246 | `a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f` |
