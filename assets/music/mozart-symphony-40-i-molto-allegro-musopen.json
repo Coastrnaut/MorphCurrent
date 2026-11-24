@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "file": "assets/music/mozart-symphony-40-i-molto-allegro-musopen.opus",
+  "sha256": "56ca09095831c8d66f963e30261b75323aa1fdc4da035100e5a3f49b47f0e5f5",
+  "bytes": 5968413,
+  "format": {"codec": "opus", "bitrate_kbps": 128, "sample_rate": 48000, "channels": 2, "duration_s": 358.822},
+  "work": {
+    "composer": "Wolfgang Amadeus Mozart (1756-1791)",
+    "title": "Symphony No. 40 in G minor, K. 550 - I. Molto allegro",
+    "performer": "Musopen Symphony",
+    "recorded": "2012",
+    "project": "Musopen Kickstarter Project"
+  },
+  "license": {
+    "recording": "Public domain - released by the copyright holder (Wikimedia Commons template PD-author, Musopen)",
+    "composition": "Public domain - author died 1791 (Wikimedia Commons template PD-old-auto-expired)",
+    "commons_license_field": "Public domain",
+    "internet_archive_license": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution_required": false,
+    "attribution_courtesy": "Mozart, Symphony No. 40, I. Molto allegro - Musopen Symphony (public domain, musopen.org)",
+    "verified": "2026-11-24, licence fields read from the Commons API (imageinfo extmetadata + file page wikitext) and the Internet Archive metadata API"
+  },
+  "source": {
+    "commons_page": "https://commons.wikimedia.org/wiki/File:Mozart_-_Symphony_No._40_in_G_minor,_K550_-_I._Molto_allegro_(Musopen_Symphony).flac",
+    "musopen_page": "https://musopen.org/music/1577-symphony-no-40-in-g-minor-k-550/",
+    "downloaded_from": "https://archive.org/download/MusopenCollectionAsFlac/Mozart_SymphonyNo.40inGMinor/WolfgangAmadeusMozart-SymphonyNo.40InGMinorK.550-01-MoltoAllegro.flac",
+    "download_note": "Commons upload server returned HTTP 429; the Internet Archive item cited as the Commons source served the identical file (same SHA-1).",
+    "original": {
+      "format": "FLAC 24-bit 48 kHz stereo",
+      "bytes": 65272320,
+      "duration_s": 358.8155,
+      "sha1": "379ad65b2e21d1452f4e0e6ebe3ef61b4815cac5",
+      "sha1_matches": ["Wikimedia Commons imageinfo", "Internet Archive file metadata"],
+      "sha256": "e291748465d6a8972b79ea60e075bab56dc845eca48d6abcdc3d49f87144f005"
+    }
+  },
+  "processing": {
+    "tool": "FFmpeg 8.1.2 (libopus)",
+    "command": "ffmpeg -i original.flac -map_metadata -1 -c:a libopus -b:a 128k -vbr on -application audio -metadata title=... -metadata artist=\"Musopen Symphony\" -metadata composer=\"Wolfgang Amadeus Mozart\" -metadata copyright=\"Public domain ...\" out.opus",
+    "edits": "none (full movement, no trimming; film edits are made by the pipeline at render time)"
+  },
+  "approval": {
+    "date": "2026-11-24",
+    "by": "repository owner, in Claude Code chat",
+    "words": "approved for symphony 40, compress and add to repo with licesne tracking info"
+  },
+  "storyboard_use": "audio: {file: assets/music/mozart-symphony-40-i-molto-allegro-musopen.opus, licensed: true}"
+}
