@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -37,6 +37,8 @@ class Style(StrictModel):
     composition: str = "centered_subject"
     camera: str = "continuous_slow_push"
     palette: list[str] = Field(default_factory=list)
+    # F21: id of a versioned style pack in configs/styles (replaces `description` text in prompts)
+    pack: str | None = Field(default=None, pattern=r"^[a-z0-9][a-z0-9-]{0,62}$")
 
 
 class Audio(StrictModel):
@@ -66,6 +68,8 @@ class Anchor(StrictModel):
     # the continuity parent for size/review, it is NOT image-conditioned (F04).
     generation: Literal["text_to_image", "reference_edit", "independent_t2i"] = "text_to_image"
     reference: str | None = None
+    # F21: per-scene override of style-pack fields (lighting, palette, negative, ...)
+    style_override: dict[str, Any] | None = None
 
 
 class Correspondence(StrictModel):

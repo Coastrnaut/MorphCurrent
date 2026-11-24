@@ -20,6 +20,7 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .styles import StyleError, check_assets, list_packs, resolve_pack, style_text
 from .ladder import (LadderError, propose_ladder, risk_report, sha256_text as ladder_sha256,
                      write_proposal)
 from .qa_subject import calibrate as calibrate_qa
@@ -265,6 +266,20 @@ def _ladder_propose(args: argparse.Namespace) -> int:
     return 0
 
 
+def _style(args: argparse.Namespace) -> int:
+    """List, show (resolved + hash) or check style packs; read-only."""
+    if args.command == "style-list":
+        print(json.dumps(list_packs(args.styles_dir), indent=2))
+        return 0
+    resolved = resolve_pack(args.pack, args.styles_dir)
+    if args.command == "style-show":
+        print(json.dumps({**resolved, "prompt_clause": style_text(resolved)}, indent=2, ensure_ascii=False))
+        return 0
+    report = check_assets(resolved, args.library)
+    print(json.dumps({"pack": args.pack, "assets": report}, indent=2))
+    return 0 if all(a["status"] == "ok" for a in report) else 4
+
+
 def _dag(args: argparse.Namespace) -> int:
     """Offline storyboard -> task DAG (no ComfyUI contact)."""
     sequence = load_storyboard(args.storyboard)
@@ -506,6 +521,14 @@ def main(argv: list[str] | None = None) -> int:
     lp.add_argument("--max-gpu-s", type=float, help="Refuse if the ladder adds more GPU seconds")
     lp.add_argument("--history", default="configs/perf_history.json")
     lp.add_argument("--out", required=True, help="New storyboard path (refused if it exists)")
+    sl = subs.add_parser("style-list", help="List style packs in configs/styles")
+    sl.add_argument("--styles-dir", default="configs/styles")
+    for name, help_text in (("style-show", "Show a resolved style pack, its prompt clause and SHA-256"),
+                            ("style-check", "Check a style pack's reference assets in the private library")):
+        sp = subs.add_parser(name, help=help_text)
+        sp.add_argument("pack")
+        sp.add_argument("--styles-dir", default="configs/styles")
+        sp.add_argument("--library", default="library")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -605,6 +628,8 @@ def main(argv: list[str] | None = None) -> int:
             return _ladder_risk(args)
         elif args.command == "ladder-propose":
             return _ladder_propose(args)
+        elif args.command in {"style-list", "style-show", "style-check"}:
+            return _style(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":
@@ -620,7 +645,7 @@ def main(argv: list[str] | None = None) -> int:
             with ComfyClient(args.url) as client:
                 print(json.dumps(client.health(), indent=2))
         return 0
-    except (ValidationError, ValueError, OSError, AudioError, LadderError, ComfyError, WorkflowBindingError, BridgeError) as exc:
+    except (ValidationError, ValueError, OSError, AudioError, LadderError, StyleError, ComfyError, WorkflowBindingError, BridgeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 

@@ -13,6 +13,7 @@ from pathlib import Path
 
 from .prompt_compiler import compile_bridge_prompts
 from .schema import Storyboard
+from .styles import apply_override, negative_text, resolve_pack, style_text
 from .timeline import compile_timeline, derived_seed
 
 DEFAULT_PROFILES = {
@@ -33,6 +34,14 @@ def anchor_prompt(anchor_prompt_text: str, style: str) -> str:
     return " ".join(anchor_prompt_text.split()) + " " + " ".join(style.split())
 
 
+def _styled(anchor, pack: dict) -> dict:
+    """Prompt/negative from a resolved style pack (+ per-anchor override); artist text kept first."""
+    resolved = apply_override(pack, anchor.style_override)
+    return {"positive_prompt": " ".join(anchor.prompt.split()) + " " + style_text(resolved),
+            "negative_prompt": negative_text(resolved, anchor.negative_prompt),
+            "style_pack": resolved["lineage"][-1], "style_sha256": resolved["sha256"]}
+
+
 def compile_plan(storyboard: Storyboard, *, profiles: dict[str, str] | None = None,
                  repo_root: str | Path = ".", storyboard_bytes: bytes | None = None) -> dict:
     root = Path(repo_root)
@@ -40,6 +49,12 @@ def compile_plan(storyboard: Storyboard, *, profiles: dict[str, str] | None = No
     render = storyboard.render
     tasks: dict[str, dict] = {}
     order: list[str] = []
+
+    pack = None
+    if storyboard.style.pack:
+        pack = resolve_pack(storyboard.style.pack, root / "configs" / "styles")
+    elif any(a.style_override for a in storyboard.anchors):
+        raise ValueError("anchors[].style_override requires style.pack")
 
     for anchor in storyboard.anchors:  # schema guarantees references point to earlier anchors
         task_id = f"anchor:{anchor.id}"
@@ -53,6 +68,7 @@ def compile_plan(storyboard: Storyboard, *, profiles: dict[str, str] | None = No
             "conditioned_on_parent": anchor.generation == "reference_edit",
             "positive_prompt": anchor_prompt(anchor.prompt, storyboard.style.description),
             "negative_prompt": anchor.negative_prompt,
+            **(_styled(anchor, pack) if pack else {}),
             "seed": anchor.seed if explicit else derived_seed(render.master_seed, task_id),
             "seed_source": "storyboard" if explicit else "derived(master_seed, task id)",
             "width": render.width, "height": render.height,

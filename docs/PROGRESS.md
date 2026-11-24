@@ -540,3 +540,13 @@ Owner requests: "rework the beat detection feature using a reference music visua
 **Real check.** `ladder-risk configs/sequences/organic-machines.yaml --run outputs/runs/run-ba2d9dbedb6189be` → orchid→butterfly 0.75 high (prompt distance 0.83, scale_change, palette_shift), butterfly→phoenix 0.72 high (0.95, scale_change). Both read "high" although orchid→butterfly rendered acceptably — the prompt-distance term is coarse; calibrate with owner-reviewed outcomes (F16 labels) before relying on the levels.
 
 **Results.** Offline **258 passed, 1 deselected**. A 1-step split of butterfly→phoenix yields two 33-frame segments (unique movie frames 129 = 1 + 64 + 32 + 32).
+
+## F21 — Style packs and private asset collections (2026-11-24)
+
+Owner reiterated: keep working autonomously through all features until done (now in CLAUDE.md, `245bba8`).
+
+**Spec Kit.** `create_new_feature.py --json --number 21 --short-name style-packs-asset-library` → `specs/021-style-packs-asset-library`; tasks 6/6.
+
+**Built.** `src/morph_studio/styles.py`: strict `StylePack` (id slug, version, `extends`, description, palette, lighting, lens, composition, materials, negative, advisory size, reference assets with SHA-256 + licence); parent-first resolution (scalars override, negatives merge in order without duplicates, palette replaces; cycle/unknown-parent/unsafe-id errors); canonical pack SHA-256 and lineage; deterministic style clause appended after the artist's prompt (never rewritten); `apply_override`; read-only `check_assets` (ok / missing / changed / unsafe) against a gitignored `library/`. Schema: `style.pack`, `anchors[].style_override`. DAG: when a pack is used, anchor tasks carry the styled prompt, merged negative, `style_pack` and `style_sha256` (so editing a pack invalidates the plan); without a pack nothing changes (sample plan hash still `ba2d9dbe…`). CLI `style-list`, `style-show ID`, `style-check ID`. Example packs for the F31–F40 film: `configs/styles/engineering-noir.yaml` and `engineering-noir-power.yaml` (extends it: warmer palette/lighting, extra negative).
+
+**Results.** Offline **266 passed, 1 deselected**, including the ledger's acceptance case: three linked scenes share `engineering-noir` with one per-scene lighting override (only that scene's hash and prompt change). **Next feature:** F22 (creative brief → editable storyboard).

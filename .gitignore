@@ -53,3 +53,6 @@ configs/local/
 
 # Owner-approved public-domain/CC0 music with provenance JSON (see assets/music/README.md)
 !assets/music/*.opus
+
+# F21 private style-reference library (never committed)
+library/

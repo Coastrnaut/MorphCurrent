@@ -1,0 +1,6 @@
+id: engineering-noir-power
+version: 1
+extends: engineering-noir
+palette: [polished copper, hot amber, deep blue]
+lighting: warm rim light with a faint electric glow, soft fill
+negative: [sparks covering the subject]

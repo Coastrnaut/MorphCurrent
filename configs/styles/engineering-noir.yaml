@@ -1,0 +1,12 @@
+id: engineering-noir
+version: 1
+description: >
+  Cinematic macro photograph of a physical engineering artifact, isolated on a deep
+  black studio background, photorealistic, crisp detail
+palette: [polished copper, brushed steel, phosphor green, silicon blue]
+lighting: low-key rim light from the left, soft fill, subtle reflections
+lens: 100mm macro, shallow depth of field, subject sharp
+composition: single subject centered, fully in frame, consistent scale, front-facing
+materials: metal, glass and ceramic surfaces with realistic wear
+negative: [text, letters, labels, logo, watermark, brand names, people, hands, cluttered background, cropped subject]
+size: [832, 480]
