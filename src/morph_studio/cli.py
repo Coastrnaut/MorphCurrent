@@ -315,6 +315,26 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _project(args: argparse.Namespace) -> int:
+    """F28 portable project packages: export, inspect, import (no inference, no downloads)."""
+    from . import package as pk
+    try:
+        if args.command == "project-export":
+            out = pk.export_project(args.storyboard, args.out, repo_root=args.repo_root, run_dir=args.run,
+                                    include_media=args.include_media, include_audio=args.include_audio)
+        elif args.command == "project-inspect":
+            out = pk.inspect_package(args.package)
+            print(json.dumps(out, indent=2, ensure_ascii=True))
+            return 0 if out["ok"] else 2
+        else:
+            out = pk.import_project(args.package, args.dest, models_root=args.models_root)
+    except (pk.PackageError, FileExistsError) as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return 0
+
+
 def _registry(args: argparse.Namespace) -> int:
     """F27 capability registry, compatibility preview, approved selection and rollback (no downloads)."""
     from . import registry as rg
@@ -829,6 +849,19 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    pex = subs.add_parser("project-export", help="Write a portable project package (F28; media opt-in)")
+    pex.add_argument("storyboard")
+    pex.add_argument("--out", required=True)
+    pex.add_argument("--run", default=None, help="Run folder whose provenance to include (paths redacted)")
+    pex.add_argument("--include-media", action="store_true", help="Owner authorizes including images/videos")
+    pex.add_argument("--include-audio", action="store_true", help="Owner authorizes including the licensed music")
+    pex.add_argument("--repo-root", default=".")
+    pin = subs.add_parser("project-inspect", help="Verify a project package without extracting it")
+    pin.add_argument("package")
+    pim = subs.add_parser("project-import", help="Restore a verified package into a new folder; replay report")
+    pim.add_argument("package")
+    pim.add_argument("--dest", required=True)
+    pim.add_argument("--models-root", default=None)
     reg = subs.add_parser("registry", help="Read-only capability registry of every binding profile (F27)")
     reg.add_argument("--profiles", default=None, help="Profiles folder (default configs/profiles)")
     reg.add_argument("--strict", action="store_true", help="Exit 1 if any entry is not ready")
@@ -1057,6 +1090,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("project-export", "project-inspect", "project-import"):
+            return _project(args)
         elif args.command in ("registry", "registry-diff", "registry-select", "registry-rollback"):
             return _registry(args)
         elif args.command in ("interpolate", "warp-apply"):
