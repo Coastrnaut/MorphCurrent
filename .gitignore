@@ -49,3 +49,7 @@ configs/local/
 
 # Local backups of Spec Kit before regenerated Python-only scaffolding
 .local/
+
+# Editor settings (personal)
+.vscode/
+.idea/
