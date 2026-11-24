@@ -8,7 +8,7 @@ MorphCurrent generates a still image for each storyboard concept, editing each o
 orchid (text-to-image) ──edit──▶ butterfly ──edit──▶ phoenix
         └──── Wan 2.2 bridge ────┘    └──── Wan 2.2 bridge ────┘
                          ▼ seam-verified join ▼
-                              final movie.mp4
+              final/<storyboard>_<timestamp>_<plan>.mp4
 ```
 
 ## Features
@@ -50,7 +50,7 @@ Start ComfyUI ([docs/COMFYUI_SETUP.md](docs/COMFYUI_SETUP.md)), then:
 .venv\Scripts\python.exe -m morph_studio.cli review outputs\runs\run-<id> bridge:orchid->butterfly approved
 ```
 
-Results land in `outputs\runs\run-<id>\` (manifest, contact sheet, `final\movie.mp4`). `render --status <run dir>` shows progress at any time.
+Results land in `outputs\runs\run-<id>\` (manifest, contact sheet and the movie, e.g. `final\organic-machines_20261124-153637Z_ba2d9dbe.mp4`). `render --status <run dir>` shows progress at any time.
 
 ## Storyboard
 

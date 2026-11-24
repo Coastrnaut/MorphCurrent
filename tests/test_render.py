@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -83,8 +84,22 @@ def test_full_offline_render_review_gate_join_and_resume(image_repo):
     assert all(s["match"] for s in final["seams"]) and final["measured"]["frame_count"] == 129
     assert manifest["stages"]["anchor:butterfly"]["image_sha256"] == b_sha
     assert (run_dir / "anchors_contact_sheet.png").exists()
+    movie = Path(done["movie"])
+    assert movie.parent == run_dir / "final" and movie.is_file()
+    assert re.fullmatch(r"organic-machines_\d{8}-\d{6}Z_[0-9a-f]{8}\.mp4", movie.name), movie.name
+    assert final["output"] == str(movie)
     again = run_render(sb, fake.client, confirm_gpu=True, **kw(image_repo))
     assert again["status"] == "complete" and fake.prompt_posts == 5
+    assert again["movie"] == str(movie)  # resume reuses the joined file, no second movie
+    assert list((run_dir / "final").glob("*.mp4")) == [movie]
+
+
+def test_final_movie_name_is_unique_and_safe():
+    from datetime import datetime, timezone
+    from morph_studio.render import final_movie_name
+    when = datetime(2026, 11, 24, 15, 36, 37, tzinfo=timezone.utc)
+    assert final_movie_name("organic-machines", "ba2d9dbedb61" + "0" * 52, when) ==         "organic-machines_20261124-153637Z_ba2d9dbe.mp4"
+    assert final_movie_name("my show / v2", "a" * 64, when).startswith("my-show-v2_")
 
 
 @needs_ffmpeg

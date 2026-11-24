@@ -54,7 +54,7 @@ State machine (persisted after every transition): `planned → uploaded → vali
 
 ## Timing and joining
 
-For Wan length `L` at `F` fps, anchors are `(L-1)/F` seconds apart; a clip lasts `L/F`. Adjacent bridges share anchor B **byte for byte**. After decoding and comparing the last frame of A→B with the first frame of B→C, the duplicate is dropped and clips are concatenated with no crossfade: two 65-frame bridges give **129** unique frames (8.0 s anchor span, 129/16 s playback). A seam that doesn't match is refused, not trimmed.
+For Wan length `L` at `F` fps, anchors are `(L-1)/F` seconds apart; a clip lasts `L/F`. Adjacent bridges share anchor B **byte for byte**. After decoding and comparing the last frame of A→B with the first frame of B→C, the duplicate is dropped and clips are concatenated with no crossfade: two 65-frame bridges give **129** unique frames (8.0 s anchor span, 129/16 s playback). A seam that doesn't match is refused, not trimmed. The join is scripted (`stitcher.join_verified`, called by `render`): FFmpeg `trim=start_frame=1` on every later clip, `concat`, H.264 re-encode to a `.part` file, ffprobe frame-count check, then rename to `final/<storyboard>_<UTC timestamp>_<plan8>.mp4`, whose path is recorded in the run manifest so reruns reuse it.
 
 ## Quality
 

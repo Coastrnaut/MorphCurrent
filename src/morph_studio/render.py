@@ -5,7 +5,9 @@ again resumes without repeating inference. GPU work only with ``confirm_gpu``.
 """
 from __future__ import annotations
 
+import re
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
@@ -124,9 +126,10 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
         return _finish(manifest, "rerender_needed", rejected=rejected)
     if pending and not (accept_heuristics and all(qa[t]["status"] == "no_flags" for t in pending)):
         return _finish(manifest, "awaiting_review", pending=pending)
-    movie = manifest.dir / "final" / "movie.mp4"
-    if movie.exists():
-        return _finish(manifest, "complete", movie=str(movie))
+    previous = (manifest.data.get("final") or {}).get("output")
+    if previous and Path(previous).exists():  # resume: the movie was already joined
+        return _finish(manifest, "complete", movie=previous)
+    movie = manifest.dir / "final" / final_movie_name(storyboard.name, manifest.data["plan_sha256"])
     shared = [anchor_paths[plan["tasks"][t]["to"]] for t in qa][:-1]
     audio = storyboard.audio.file
     report = join_verified(clips, movie, fps=storyboard.render.generation_fps, anchors=shared,
@@ -135,6 +138,13 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
     manifest.record("final", {**report, "approval": "human" if not pending else "heuristics (--accept-heuristics)"})
     manifest.record_stage("final:movie", state="verified", frames=report["frames"])
     return _finish(manifest, "complete", movie=str(movie))
+
+
+def final_movie_name(storyboard_name: str, plan_sha256: str, now: datetime | None = None) -> str:
+    """``<storyboard>_<UTC timestamp>_<plan8>.mp4``, e.g. ``organic-machines_20261124-153637Z_ba2d9dbe.mp4``."""
+    stamp = (now or datetime.now(timezone.utc)).strftime("%Y%m%d-%H%M%SZ")
+    safe = re.sub(r"[^A-Za-z0-9_-]+", "-", storyboard_name).strip("-") or "movie"
+    return f"{safe}_{stamp}_{plan_sha256[:8]}.mp4"
 
 
 def _finish(manifest: RunManifest, status: str, **info) -> dict:
