@@ -15,7 +15,9 @@ from .anchors import AnchorSpec, anchor_image_path, run_anchor_chain
 from .comfy_client import ComfyClient
 from .dag import compile_plan
 from .media import ProbeUnavailable, contact_sheet, probe_video
+from .perf import load_history
 from .pipeline import run_bridge_stage
+from .scheduler import Budget, RunLock, cost_function
 from .qa import analyze_clip, load_reviews
 from .run_manifest import RunManifest
 from .schema import load_storyboard
@@ -56,7 +58,8 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
                profiles: dict | None = None, confirm_gpu: bool = False,
                accept_heuristics: bool = False, allow_busy_queue: bool = False,
                sample_vram: bool = False, poll_seconds: float = 2,
-               probe: Callable[[Path], dict] = probe_video) -> dict:
+               probe: Callable[[Path], dict] = probe_video, max_jobs: int | None = None,
+               max_gpu_s: float | None = None) -> dict:
     root = Path(repo_root)
     plan = build_plan(storyboard_path, profiles, root)
     if plan["blocked"]:  # preflight: nothing contacted, nothing written
@@ -70,6 +73,33 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
     specs = [AnchorSpec(t["anchor"], t["method"], t["positive_prompt"], t["seed"],
                         negative_prompt=t["negative_prompt"], reference=t["reference"])
              for t in plan["tasks"].values() if t["kind"] == "anchor"]
+    budget = None
+    if confirm_gpu and (max_jobs is not None or max_gpu_s is not None):  # F17 caps on new GPU work
+        history_file = root / "configs" / "perf_history.json"
+        history = load_history(history_file) if history_file.is_file() else []
+        budget = Budget(max_jobs, max_gpu_s, cost_function(plan, history))
+    lock = RunLock(runs_root) if confirm_gpu else None
+    if lock:
+        lock.acquire()  # F17: one MorphCurrent GPU render per runs root
+        if lock.took_over:
+            manifest.record("events", {"event": "stale_lock_taken_over", "previous": lock.took_over})
+        if budget:
+            budget.on_check = lock.heartbeat
+    try:
+        result = _stages(manifest, plan, storyboard, specs, req, client_factory, root, runs_root,
+                         confirm_gpu, allow_busy_queue, sample_vram, poll_seconds, probe, budget)
+    finally:
+        if lock:
+            lock.release()
+    if isinstance(result, dict):
+        return result
+    chain, bridges = result
+    return _finish_render(manifest, plan, storyboard, specs, chain, bridges, accept_heuristics, probe,
+                          confirm_gpu)
+
+
+def _stages(manifest, plan, storyboard, specs, req, client_factory, root, runs_root, confirm_gpu,
+            allow_busy_queue, sample_vram, poll_seconds, probe, budget):
     with client_factory() as client:
         sampler = VramSampler() if sample_vram and confirm_gpu else None
         if sampler:
@@ -80,24 +110,36 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
                 t2i_profile=req.get("text_to_image", {}).get("profile"),
                 edit_profile=req.get("reference_edit", {}).get("profile"),
                 width=storyboard.render.width, height=storyboard.render.height,
-                submit=confirm_gpu, allow_busy_queue=allow_busy_queue, poll_seconds=poll_seconds)
+                submit=confirm_gpu, allow_busy_queue=allow_busy_queue, poll_seconds=poll_seconds,
+                budget=budget)
             for anchor_id, job in chain.jobs.items():
                 manifest.record_stage(f"anchor:{anchor_id}", job)
             for anchor_id, reason in chain.blocked.items():
                 manifest.record_stage(f"anchor:{anchor_id}", state="blocked", reason=reason)
+            if budget and budget.blocked:
+                return _finish(manifest, "paused_budget", budget=budget.summary())
             if not chain.complete:
                 state = "validated" if not confirm_gpu else "blocked"
                 return _finish(manifest, state, blocked=chain.blocked)
             bridges = run_bridge_stage(plan, chain.jobs, client=client, runs_root=runs_root,
                                        repo_root=root, submit=confirm_gpu,
                                        allow_busy_queue=allow_busy_queue, poll_seconds=poll_seconds,
-                                       probe=probe)
+                                       probe=probe, budget=budget)
         finally:
             if sampler:
                 sampler.__exit__(None, None, None)
                 samples_file = sampler.write(manifest.dir / "vram_samples.json")
                 manifest.record("vram", {"stage": "anchors+bridges", "samples_file": samples_file.name,
                                          **sampler.summary()})
+    if budget and budget.blocked:
+        for task_id, job in bridges.jobs.items():
+            manifest.record_stage(task_id, job)
+        return _finish(manifest, "paused_budget", budget=budget.summary())
+    return chain, bridges
+
+
+def _finish_render(manifest, plan, storyboard, specs, chain, bridges, accept_heuristics, probe,
+                   confirm_gpu):
     for task_id, job in bridges.jobs.items():
         manifest.record_stage(task_id, job)
     if not bridges.complete:

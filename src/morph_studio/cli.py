@@ -20,6 +20,7 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .scheduler import LockBusy, schedule_preview
 from .brief import Brief, BriefError, plan_storyboard
 from .schema import Storyboard
 from .styles import StyleError, check_assets, list_packs, resolve_pack, style_text
@@ -148,13 +149,17 @@ def _render(args: argparse.Namespace) -> int:
     result = run_render(args.storyboard, lambda: ComfyClient(args.url), runs_root=args.runs_root,
                         profiles=profiles, confirm_gpu=args.confirm_gpu,
                         accept_heuristics=args.accept_heuristics,
-                        allow_busy_queue=args.allow_busy_queue, sample_vram=args.sample_vram)
+                        allow_busy_queue=args.allow_busy_queue, sample_vram=args.sample_vram,
+                        max_jobs=args.max_jobs, max_gpu_s=args.max_gpu_s)
     print(json.dumps(result, indent=2, ensure_ascii=False))
     if result["status"] == "awaiting_review":
         print("REVIEW: inspect the clips/contact sheet, then `morphcurrent review RUN_DIR TASK approved` "
               "and re-run the same render command.", file=sys.stderr)
+    if result["status"] == "paused_budget":
+        print("PAUSED: budget reached before the next GPU job; re-run the same command (optionally with a "
+              "new --max-jobs/--max-gpu-s) to continue without repeating finished stages.", file=sys.stderr)
     return {"complete": 0, "validated": 0, "blocked": 6, "awaiting_review": 7,
-            "rerender_needed": 7}.get(result["status"], 5)
+            "rerender_needed": 7, "paused_budget": 8}.get(result["status"], 5)
 
 
 def _perf_report(args: argparse.Namespace) -> int:
@@ -302,6 +307,14 @@ def _brief_plan(args: argparse.Namespace) -> int:
     print(json.dumps({"out": str(out), **preview, "bridges": len(sequence.transitions),
                       "estimated_gpu_s": est.get("total_gpu_s"), "estimate_label": est.get("label"),
                       "blocked": plan["blocked"]}, indent=2))
+    return 0
+
+
+def _schedule(args: argparse.Namespace) -> int:
+    """Dependency-ordered stage list with estimates and what fits a budget (offline)."""
+    plan = compile_plan(load_storyboard(args.storyboard))
+    history = load_history(args.history) if Path(args.history).is_file() else []
+    print(json.dumps(schedule_preview(plan, history, max_gpu_s=args.max_gpu_s, max_jobs=args.max_jobs), indent=2))
     return 0
 
 
@@ -493,6 +506,8 @@ def main(argv: list[str] | None = None) -> int:
                         help="Join without human review when QA heuristics raise no flags")
     render.add_argument("--allow-busy-queue", action="store_true")
     render.add_argument("--sample-vram", action="store_true", help="Opt-in nvidia-smi memory sampling")
+    render.add_argument("--max-jobs", type=int, help="Stop before more than N new GPU jobs (resumable)")
+    render.add_argument("--max-gpu-s", type=float, help="Stop before estimated new GPU time exceeds S seconds")
     render.add_argument("--t2i-profile")
     render.add_argument("--edit-profile")
     render.add_argument("--bridge-profile")
@@ -558,6 +573,11 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    sc = subs.add_parser("schedule", help="Preview stage order, estimated GPU time and budget fit (offline)")
+    sc.add_argument("storyboard")
+    sc.add_argument("--max-gpu-s", type=float)
+    sc.add_argument("--max-jobs", type=int)
+    sc.add_argument("--history", default="configs/perf_history.json")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -661,6 +681,8 @@ def main(argv: list[str] | None = None) -> int:
             return _style(args)
         elif args.command == "brief-plan":
             return _brief_plan(args)
+        elif args.command == "schedule":
+            return _schedule(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":
@@ -676,7 +698,7 @@ def main(argv: list[str] | None = None) -> int:
             with ComfyClient(args.url) as client:
                 print(json.dumps(client.health(), indent=2))
         return 0
-    except (ValidationError, ValueError, OSError, AudioError, LadderError, StyleError, BriefError, ComfyError, WorkflowBindingError, BridgeError) as exc:
+    except (ValidationError, ValueError, OSError, AudioError, LadderError, StyleError, BriefError, LockBusy, ComfyError, WorkflowBindingError, BridgeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 

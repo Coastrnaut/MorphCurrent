@@ -280,7 +280,7 @@ def run_anchor_chain(specs: list[AnchorSpec], *, client: ComfyClient, runs_root:
                      width: int | None = None, height: int | None = None,
                      submit: bool = False, retry: bool = False, allow_busy_queue: bool = False,
                      repo_root: str | Path | None = None, timeout: float = 1800,
-                     poll_seconds: float = 2) -> ChainResult:
+                     poll_seconds: float = 2, budget=None) -> ChainResult:
     """Generate anchors in storyboard order, one GPU job at a time.
 
     A ``reference_edit`` child is planned only once its parent is verified, from
@@ -317,6 +317,9 @@ def run_anchor_chain(specs: list[AnchorSpec], *, client: ComfyClient, runs_root:
                                 height=height if "height" in bound else None,
                                 reference_image=reference_image, label=spec.id)
         plan = plan_anchor(request, object_info, repo_root=repo_root)
+        if submit and budget is not None and not job_is_verified(runs_root, plan.job_id)                 and not budget.allow("anchor", {"id": f"anchor:{spec.id}"}):
+            result.stopped_at = spec.id  # F17: budget reached before a new GPU submission
+            break
         job = run_anchor(plan, client, runs_root, submit=submit, retry=retry,
                          allow_busy_queue=allow_busy_queue, timeout=timeout, poll_seconds=poll_seconds)
         result.jobs[spec.id] = job
@@ -346,6 +349,15 @@ def _check_continuity(child: BridgeJob, parent: BridgeJob, spec: AnchorSpec) -> 
     if (c["width"], c["height"]) != (p["width"], p["height"]):
         raise child.fail(f"anchor {spec.id} is {c['width']}x{c['height']} but parent {spec.reference} is "
                          f"{p['width']}x{p['height']}; both endpoints of a bridge must match")
+
+
+def job_is_verified(runs_root: str | Path, job_id: str) -> bool:
+    """True when a content-addressed job already finished (no GPU needed to 'run' it)."""
+    record = Path(runs_root) / job_id[:16] / "job.json"
+    try:
+        return json.loads(record.read_text(encoding="utf-8")).get("state") == "verified"
+    except (OSError, ValueError):
+        return False
 
 
 def request_from_anchor_job(job_dir: str | Path) -> AnchorRequest:

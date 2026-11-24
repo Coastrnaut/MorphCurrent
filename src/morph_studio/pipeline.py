@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
-from .anchors import AnchorError, anchor_image_path
+from .anchors import AnchorError, anchor_image_path, job_is_verified
 from .bridge import BridgeJob, BridgeRequest, plan_bridge, run_bridge
 from .comfy_client import ComfyClient
 from .media import probe_video
@@ -44,7 +44,7 @@ def run_bridge_stage(dag_plan: dict, anchor_jobs: dict[str, BridgeJob], *, clien
                      runs_root: str | Path, submit: bool = False, retry: bool = False,
                      allow_busy_queue: bool = False, repo_root: str | Path | None = None,
                      timeout: float = 3600, poll_seconds: float = 2,
-                     probe: Callable[[Path], dict] = probe_video) -> BridgeStageResult:
+                     probe: Callable[[Path], dict] = probe_video, budget=None) -> BridgeStageResult:
     """Plan/run every DAG bridge from verified anchors, one GPU job at a time."""
     profile = dag_plan["requirements"]["wan_flf2v"]["profile"]
     result = BridgeStageResult()
@@ -61,6 +61,9 @@ def run_bridge_stage(dag_plan: dict, anchor_jobs: dict[str, BridgeJob], *, clien
             result.blocked[task_id] = f"BLOCKED: {exc}"
             continue
         plan = plan_bridge(bridge_request_for(task, start, end, profile), object_info, repo_root=repo_root)
+        if submit and budget is not None and not job_is_verified(runs_root, plan.job_id)                 and not budget.allow("bridge", task):
+            result.stopped_at = task_id  # F17: budget reached before a new GPU submission
+            break
         for anchor_id, role in ((task["from"], "start_image"), (task["to"], "end_image")):
             digest = plan.image_sha256[role]
             if shared.setdefault(anchor_id, digest) != digest:

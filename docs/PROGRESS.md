@@ -560,3 +560,11 @@ Owner reiterated: keep working autonomously through all features until done (now
 **Film pilot.** `configs/briefs/engineering-pilot.yaml` (8 scenes: lightning → Leyden jar → voltaic pile → dynamo → transformer → vacuum tube → transistor → IC die, 32 s, `engineering-noir`) → `configs/sequences/engineering-pilot.yaml`: 8 anchors, 7 × 73-frame bridges, 31.5 s anchor span, 505 unique frames; `render … --dry-run` → ready, nothing blocked. GPU estimate NO DATA (73-frame bridges never measured) — a short measured run would calibrate it.
 
 **Results.** Offline **272 passed, 1 deselected**. **Next feature:** F23 (camera/framing keyframes) or F17 (scheduler) — continuing autonomously.
+
+## F17 — Queue- and budget-aware execution (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --json --number 17 --short-name vram-aware-job-scheduler` → `specs/017-vram-aware-job-scheduler`; tasks 6/7 (T007 owner-approved bounded multi-session batch pending).
+
+**Built.** `src/morph_studio/scheduler.py`: `RunLock` (exclusive `outputs/runs/.morphcurrent-gpu.lock` with pid/host/heartbeat; second GPU render refused with the holder's details; heartbeat older than 30 min = stale and taken over, logged; released in `finally`; validation-only runs never lock); `Budget` (caps on *new* GPU submissions and F11-estimated GPU seconds; checked before submitting; cached/verified stages free; unknown cost under a finite cap stops rather than guesses; heartbeats the lock); `schedule_preview`. Hooks in `run_anchor_chain` / `run_bridge_stage` (`job_is_verified` skips budget for finished stages). `render --max-jobs N --max-gpu-s S` → `paused_budget` (exit 8) naming the next task; re-running continues. CLI `schedule STORYBOARD [--max-gpu-s] [--max-jobs]`.
+
+**Results.** Offline **279 passed, 1 deselected**: lock contention/stale takeover/heartbeat; budget rules; E2E with fake ComfyUI + real FFmpeg clips — `--max-jobs 2` → 2 prompts, paused at `anchor:phoenix`; again → 4; uncapped → 5 total (no duplicates); concurrent GPU render refused while locked with zero prompts. For the five-minute film this allows bounded sessions (e.g. `--max-gpu-s 7200`) that resume where they stopped.

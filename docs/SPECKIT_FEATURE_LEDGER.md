@@ -127,7 +127,7 @@ These original ten scope definitions and existing specification directories are 
 | **F14** | `specs/014-adaptive-transition-ladders/` (created) | F12, F13, F05 | P1 | **OFFLINE-PASS** — `ladder-risk` (prompt distance + F12 geometry), `ladder-propose` (intermediate reference-edit anchors, 4n+1 splits, GPU budget); reviewed multi-hop render pending |
 | **F15** | `specs/015-local-audio-beat-mapping/` (created) | F05, F09 | P0 | **OFFLINE-PASS** — tempo/beats/downbeat, visualizer-style bass/mid/treb bands, licence guard, drift report, timeline PNG; real licensed track pending |
 | **F16** | `specs/016-calibrated-qa-candidates/` (created) | F12, F13, F08 | P0 | **OFFLINE-PASS (partial)** — subject collapse/drift/blur detectors + `qa-calibrate`; collapse recall 2/3 on real clips, drift/blur 0; owner labels pending |
-| **F17** | `specs/017-vram-aware-job-scheduler/` (proposed) | F11, F07, F14 | P1 | **PLANNED — NOT IMPLEMENTED** |
+| **F17** | `specs/017-vram-aware-job-scheduler/` (created) | F11, F07, F14 | P1 | **OFFLINE-PASS** — cross-process GPU run lock (heartbeat/stale takeover), `render --max-jobs/--max-gpu-s` pause/resume with no duplicate submissions (exit 8), `schedule` preview; bounded multi-session GPU batch pending |
 | **F18** | `specs/018-local-creative-review-ui/` (proposed) | F08, F15, F16 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F19** | `specs/019-resumable-longform-timeline/` (proposed) | F14, F15, F17 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F20** | `specs/020-release-reproducible-pipeline/` (proposed) | F11–F19 | P0 final | **PLANNED — NOT IMPLEMENTED** |
