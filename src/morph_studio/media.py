@@ -84,6 +84,31 @@ def _inspect_jpeg(data: bytes) -> dict:
     raise ImageInvalid("JPEG has no SOF segment before scan data")
 
 
+def contact_sheet(images: list[Path], output: Path, *, height: int = 240,
+                  ffmpeg: str | None = None, timeout: float = 120) -> Path:
+    """Side-by-side PNG of ``images`` scaled to one height (review aid; never overwrites)."""
+    executable = ffmpeg or shutil.which("ffmpeg")
+    if not executable:
+        raise ProbeUnavailable("ffmpeg not found on PATH")
+    if len(images) < 2:
+        raise ValueError("contact sheet needs at least two images")
+    if output.exists():
+        raise FileExistsError(output)
+    args = [executable, "-hide_banner", "-nostdin", "-v", "error", "-n"]
+    for image in images:
+        args += ["-i", str(image)]
+    chains = [f"[{i}:v]scale=-2:{height},format=rgb24[s{i}]" for i in range(len(images))]
+    graph = ";".join(chains) + ";" + "".join(f"[s{i}]" for i in range(len(images))) \
+        + f"hstack=inputs={len(images)}[out]"
+    args += ["-filter_complex", graph, "-map", "[out]", "-frames:v", "1", str(output)]
+    output.parent.mkdir(parents=True, exist_ok=True)
+    done = subprocess.run(args, capture_output=True, text=True, errors="replace",
+                          timeout=timeout, shell=False, check=False)
+    if done.returncode != 0:
+        raise RuntimeError(f"ffmpeg contact sheet failed: {done.stderr.strip()[:500]}")
+    return output
+
+
 class ProbeUnavailable(RuntimeError):
     """ffprobe is not on PATH; verification must be reported as skipped, not passed."""
 

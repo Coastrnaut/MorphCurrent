@@ -148,7 +148,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | F01 | `specs/001-safe-baseline-provenance` | COMPLETE (offline + live read-only) | `gates.py`, `preflight.py`, `baseline` CLI, cloud-node rejection, `docs/ENVIRONMENT.md`; 100 offline tests |
 | F02 | `specs/002-image-workflow-onboarding` | OFFLINE-PASS; GPU/export BLOCKED | capability contracts, `workflow-inspect`, `docs/ANCHOR_MODEL_DECISION.md`; awaiting owner model approval |
 | F03 | `specs/003-first-anchor-t2i` | OFFLINE-PASS; GPU BLOCKED | `anchor` CLI + `anchors.py` on the shared bridge executor; image integrity checks |
-| F04 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F04 | `specs/004-reference-edit-anchors` | OFFLINE-PASS; GPU BLOCKED | `run_anchor_chain`, explicit `independent_t2i`, contact sheet |
 | F05 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F06 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F07 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
@@ -203,3 +203,15 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 - Tests: `tests/fake_comfy.py` (generic image+video fake ComfyUI), `tests/conftest.py` (`image_repo` fixture), `test_anchors.py` (17), `test_media_images.py` (6): success, no-consent, cache hit with zero calls, seed change, missing model on the **real** captured object_info, hash drift, wrong capability, non-image / truncated / wrong size / zero / two outputs, lost `/prompt` response without double submit, execution error + retry, tamper, busy queue, CLI.
 
 **Results.** Offline **137 passed, 1 deselected**. GPU: NOT RUN (no T2I model/profile).
+
+## F04 — Reference-guided next anchors, offline slice (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --number 4 --short-name reference-edit-anchors` → `specs/004-reference-edit-anchors`; tasks 6/7 (T007 GPU edit render blocked).
+
+**Built.**
+- Storyboard schema: `generation` accepts `independent_t2i` (explicit fallback; optional `reference` names a continuity parent, not image-conditioned); per-anchor `negative_prompt`. Existing storyboard still validates.
+- `anchors.run_anchor_chain()`: storyboard-order generation, one GPU job at a time. A `reference_edit` child is planned only after its parent is verified and gets the parent's exact verified file (SHA re-checked) as `reference_image`, so B is byte-identical for both bridges. Missing edit profile → **BLOCKED** with a message naming the explicit `independent_t2i` option; never a silent T2I substitute. Child size must equal parent size. `continuity` block records parent hash, whether conditioned, and `review: required` for `independent_t2i`.
+- `media.contact_sheet()`: FFmpeg `hstack` side-by-side PNG (argument list, never overwrites).
+- An unbound negative prompt makes planning fail rather than being dropped silently.
+
+**Results.** Offline **146 passed, 1 deselected** (7 chain tests incl. real FFmpeg contact sheet). GPU: NOT RUN.

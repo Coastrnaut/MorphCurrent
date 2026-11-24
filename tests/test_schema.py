@@ -45,3 +45,20 @@ def test_non_mapping_yaml_rejected(tmp_path: Path):
     filename.write_text("- a\n- b\n", encoding="utf-8")
     with pytest.raises(ValueError):
         load_storyboard(filename)
+
+
+def test_independent_t2i_is_explicit_and_reference_optional():
+    model = load_storyboard("configs/sequences/organic-machines.yaml").model_dump(by_alias=True)
+    model["anchors"][2]["generation"] = "independent_t2i"
+    assert Storyboard.model_validate(model).anchors[2].reference == "butterfly"
+    model["anchors"][2]["reference"] = None
+    assert Storyboard.model_validate(model).anchors[2].generation == "independent_t2i"
+    model["anchors"][2]["reference"] = "phoenix"  # self/forward reference
+    with pytest.raises(ValidationError):
+        Storyboard.model_validate(model)
+
+
+def test_negative_prompt_per_anchor():
+    model = load_storyboard("configs/sequences/organic-machines.yaml").model_dump(by_alias=True)
+    model["anchors"][0]["negative_prompt"] = "text, watermark"
+    assert Storyboard.model_validate(model).anchors[0].negative_prompt == "text, watermark"
