@@ -325,3 +325,9 @@ Nothing in this session queued GPU work; ComfyUI queue was empty at every check.
 - Live: `workflow-check` ok; `anchor --profile anchor_edit … --reference <orchid>` → `validated`, nothing queued; `render configs/sequences/organic-machines.yaml --dry-run` → **ready** (3 anchors, 2 bridges, nothing blocked). Queue empty.
 - Creative notes for review: the test edit enlarged the subject and kept the green stem; the storyboard prompts (not the test prompts) are what MorphCurrent will send.
 - **Next (needs bounded owner GPU approval):** first MorphCurrent image renders (F03/F04), then bridges (F06; 832×480 untested on Wan), full `render --confirm-gpu --sample-vram` (F10).
+
+## GPU consent and first full render start (2026-11-24)
+
+- Owner, in chat: "i authorize gpu use to complete tasks, remember this" — standing consent for local ComfyUI renders needed to complete F01–F10 (recorded in Claude memory). Safeguards kept: submit only on an idle queue, one job at a time, no interrupting/restarting, downloads still need separate approval.
+- Pre-run: queue empty; nvidia-smi 46,994 / 49,140 MiB used (snapshot; ComfyUI pid 7220 likely holding the Qwen models from the owner's test renders; WDDM reports no per-process memory).
+- Started: `python -m morph_studio.cli render configs/sequences/organic-machines.yaml --confirm-gpu --sample-vram` (3 anchors → 2 bridges at 832×480, then QA + review gate).
