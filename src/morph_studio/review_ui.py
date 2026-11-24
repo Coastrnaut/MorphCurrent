@@ -345,6 +345,9 @@ def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, re
                 return self._error(HTTPStatus.NOT_FOUND, "not found")
             length = int(self.headers.get("Content-Length") or 0)
             if length > 10_000:
+                if length <= 1_000_000:  # drain so the client can read the reply (Windows aborts otherwise)
+                    self.rfile.read(length)
+                self.close_connection = True
                 return self._error(HTTPStatus.REQUEST_ENTITY_TOO_LARGE, "form too large")
             form = {k: v[0] for k, v in parse_qs(self.rfile.read(length).decode("utf-8", "replace")).items()}
             if not secrets.compare_digest(form.get("csrf", ""), self.csrf_token):
