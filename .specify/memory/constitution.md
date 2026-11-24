@@ -28,10 +28,10 @@ A full system generates **both endpoint images** inside ComfyUI; any independent
 
 ## VI. Ten actual Spec Kit feature lifecycles
 
-Execute exactly ten *logical* features F01–F10 from `docs/SPECKIT_FEATURE_LEDGER.md`, sequentially respecting dependencies. Check installed Python Spec Kit/Claude skill names; use **real** specify → clarify if needed → plan/research → tasks → analyze → implement. Map logical IDs to actual nonconflicting `specs/NNN-slug/` names; never overwrite prior specs or promise unique 001–010 prefixes. Update `PROGRESS.md` with evidence and a commit for each coherent step. A blocked GPU gate is not COMPLETE.
+Execute exactly ten *logical* features F01–F10 from `docs/SPECKIT_FEATURE_LEDGER.md`, sequentially respecting dependencies. Check installed Python Spec Kit/Claude skill names; use **real** specify → clarify if needed → plan/research → tasks → analyze → implement. Map logical IDs to actual nonconflicting `specs/NNN-slug/` names; never overwrite prior specs or promise unique 001–010 prefixes. Update `docs/PROGRESS.md` with evidence and a commit for each coherent step. A blocked GPU gate is not COMPLETE.
 
 ## VII. Source compatibility and governance
 
 Preserve existing Wan bridge, repo history, local dirty state, tests and working CLI; add regression tests before incompatible changes. Use typed Python, `pathlib`, subprocess argument lists (`shell=False`), private localhost networking and minimal permissions. Amend this constitution through a separate reviewed/committed change that states migration and reconciles `CLAUDE.md` plus the feature ledger. Do not bypass test/consent gates to satisfy a schedule.
 
-**Authority order:** `CLAUDE.md` and this constitution (non-negotiable safety), `docs/SPECKIT_FEATURE_LEDGER.md` (ten feature scope/gates), `PROGRESS.md` (measured status), real workflow exports/profiles (executable node truth), code/tests (actual implemented behavior).
+**Authority order:** `CLAUDE.md` and this constitution (non-negotiable safety), `docs/SPECKIT_FEATURE_LEDGER.md` (ten feature scope/gates), `docs/PROGRESS.md` (measured status), real workflow exports/profiles (executable node truth), code/tests (actual implemented behavior).

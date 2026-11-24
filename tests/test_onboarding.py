@@ -115,10 +115,10 @@ def test_cli_inspect_writes_nothing(tmp_path, capsys):
     assert sorted(p.name for p in tmp_path.iterdir()) == before
 
 
-def test_decision_record_keeps_gate_blocked():
-    text = (REPO / "docs/ANCHOR_MODEL_DECISION.md").read_text(encoding="utf-8")
-    assert "BLOCKED" in text and "owner to verify" in text
-    assert "No model has been downloaded" in text
+def test_models_doc_records_approvals_and_hashes():
+    text = (REPO / "docs/MODELS.md").read_text(encoding="utf-8")
+    assert "owner to verify" in text and "Approval log" in text
+    assert "98763a127701eb6fb59096f7742cb3aa7d64ed510b9f4e882d8351f8176e3ce3" in text
 
 
 def test_matchtype_switch_links_are_type_compatible():

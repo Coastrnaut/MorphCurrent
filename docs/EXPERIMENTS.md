@@ -1,49 +1,32 @@
-# Experimental design: reproduce visual quality, not anecdotes
+# Experiments
 
-## Baseline
-- Triplet: orchid -> butterfly -> phoenix, consistent color, lighting, composition.
-- Candidate resolution: 832 x 480, 16 FPS, 65 frames/bridge, 120 BPM x 8 beats/bridge.
-- Real endpoint span: 4s/bridge; output deduped total: 129 frames (8s anchor timestamp span).
-- No fake quality metrics or hardware benchmarks.
+Rendered media is not committed (Git ignores `.mp4`); hashes identify the files.
 
-## Controlled matrix
-| Trial | Change | Hold constant | Measure |
-|---|---|---|---|
-| E1 | independent vs reference-edited anchors | same anchors' prompts, resolution | silhouette, palette, start/end match |
-| E2 | generic vs physically explicit prompt | anchor bitmaps, seed, model, steps | blur, cut/fade, semantic morph |
-| E3 | static vs moving camera prompt | same anchors, sampler | optical flow, motion continuity |
-| E4 | varying seed, 3 candidates | all else | repeatability, quality variance |
-| E5 | FP8 scaled vs staged FP16 | resolution, steps, prompt | peak VRAM, elapsed, visual comparison |
-| E6 | seam handling | same decoded bridge outputs | duplicate removal, color delta, motion |
-| E7 | beat grid vs rounded Wan frames | fixed audio | beat residual / drift |
-| E8 | optional intermediate anchor | same endpoints | recognizable continuous transformation |
+| ID | Date | What | Settings | Result | Evidence |
+|---|---|---|---|---|---|
+| MC-FLF2V-001 | 2026-11-23 | Owner's manual Wan 2.2 FLF2V, orchid → butterfly example anchors | 640 × 368, 49 frames, 16 fps (3.0625 s); seed recovered later from `/history`: 1091897826965482, 20 steps (10/10), CFG 4, euler/simple | Faithful endpoints; petals clip out of frame and wings distort at 0.75–1.5 s | MP4 SHA-256 `a638f6e1d58d876670ddc72c0bb773f9f6c83d93076ac3a9403c41618823120c`; VRAM/time NOT MEASURED |
+| MC-FLF2V-002 | 2026-11-23 | Owner's manual run of the exported graph with the continuity prompt below | 640 × 368, 65 frames, 16 fps (4.0625 s); seed 844823683741909 | Not visually reviewed | ComfyUI `/history` prompt `160616bb…` |
+| MC-FLF2V-003 | 2026-11-24 | First MorphCurrent-dispatched bridge (`bridge --confirm-gpu`), same graph and seed as 002 | as 002 | Decoded frames identical to 002 (PSNR ∞, SSIM 1.000). Petals collapse ~frames 24–40, bright wing flare ~48. `qa` heuristics raise **no flags** on it | MP4 SHA-256 `2d145e6b563fb2b7ccf75412fae7522e3bb5446c6363eec0cac779b13647843c`; 234 s execution; peak VRAM NOT MEASURED |
 
-Every trial must have unique ID, time, model hashes, dtype, workflow hash, ComfyUI commit, step/CFG/sampler, seeds, resolution, frame count, time, peak VRAM, evaluator notes and artifact paths.
+Frame-identical reproduction (003 vs 002) proves determinism of the dispatcher, not creative quality.
 
-## First actual manual video baseline (MC-FLF2V-001)
+## Continuity prompt (candidate, used in 002/003)
 
-- **Observed:** user-rendered `ComfyUI_00002_.mp4`, 640×368 H.264, 49 frames at 16 FPS, encoded duration 3.0625 seconds (3.0 seconds endpoint timestamp span). This differs from the earlier suggested 640×360 setting.
-- **Qualitative results:** identifiable flower→butterfly progression, visually faithful endpoints, generally stable dark background; temporary petal clipping and stretched/irregular wing geometry around 0.75–1.5 s.
-- **Unknown:** exact positive/negative prompts used in the MP4, seed, sampler, steps/CFG, checkpoint hashes, ComfyUI version, peak VRAM and elapsed GPU render time; do not retroactively invent metadata.
-- **Next experiment:** MC-FLF2V-002 proposes a more physically explicit continuity prompt and 65 frames, retaining 640×368 and 16 FPS; full trial design, provenance and exact prompt are in [`RENDER_BASELINE_001.md`](RENDER_BASELINE_001.md).
-- **Causal attribution:** changing prompt **and** length at the same time is an artistic iteration, not a controlled estimate of either change's effect. Separate prompt-only and duration-only A/B tests with fixed captured seeds and sampler settings for rigorous comparisons.
+> A translucent glass orchid transforms continuously into an intricate mechanical butterfly. Every crystal petal gradually bends, folds, and reshapes into a matching silver and blue glass wing, remaining fully inside the frame. The flower's center develops into a detailed metallic butterfly body. All components remain physically connected throughout the transformation. Smooth gradual changes, stable centered composition, fixed camera, consistent lighting, no disappearing petals, no sudden cuts or abrupt changes.
 
-## Quality gates
-No silent OOM/offload; no generic xfade; no stitched jump or duplicate freeze; no missing endpoint; no unverifiable experiment entries.
+001 changed prompt and length together, so it is an artistic iteration, not a controlled comparison. For controlled tests, change one variable at a time and keep model, resolution, sampler, steps and seed fixed.
 
-## Native Windows experiment capture
-Record native Windows 11 build, NVIDIA Windows driver, distinct ComfyUI Python version, actual CUDA PyTorch support, FFmpeg.exe version, and whether ComfyUI used default/--highvram/offload. Python helpers must be used rather than WSL/PowerShell wrappers. Windows CI is not an A6000 benchmark.
+## Example anchor fixtures
 
-## Future automated anchor-to-video trial matrix
+`assets/anchors/01_glass_orchid.jpg` and `02_metallic_butterfly.jpg` (1280 × 720) are the hand-prepared pair used for 001–003 and remain regression fixtures for the bridge. They are **not** generated anchors. To try them in the ComfyUI UI:
 
-The feature program uses the following **future** controlled tests (not results). Requirements and execution gates live in [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md).
+```cmd
+python scripts\windows\stage_example_anchors.py --install-root C:\AI\ComfyUI_windows_portable --dry-run
+python scripts\windows\stage_example_anchors.py --install-root C:\AI\ComfyUI_windows_portable
+```
 
-| Trial | Intervention | Fixed variables | Expected evidence |
-|---|---|---|---|
-| E9 | reference-edit B-from-A vs independent T2I B with shared style cues | A image, target description, dimensions, geometry/lighting goals | output image SHA, seeds, scene compatibility, human approval |
-| E10 | storyboard direct A→B vs automatically generated A/B→Wan bridge | same Wan binding/seed/frames/CFG, input pair recorded | actual graph/profile validation, video ffprobe, endpoint fidelity |
-| E11 | rerender only flawed bridge B→C | A/B/C byte hashes, approved A→B video | no extra A/bridge A→B GPU submissions, changed B→C candidate |
-| E12 | 2×65-frame seam and optional audio | saved bridge decoded frames, 16 FPS | 129 unique frames only when B duplicate proven; PTS and soundtrack offsets recorded |
-| E13 | cold vs warm run/restart | same storyboard, graph/model identity and seed | immutable manifest, same content hashes, zero duplicate GPU submission on complete rerun |
+The script only copies the two JPGs into `ComfyUI\input\` and refuses to overwrite different files.
 
-Keep manual MC-FLF2V-001 and programmatic MC-FLF2V-003 baseline observations separate from any new anchor-model tests. Peak VRAM measurement must use actual sampled GPU evidence; no inferring from `vram_free` snapshots.
+## Ideas not yet run
+
+Reference edit vs independent T2I anchors; prompt-only and length-only comparisons; seed sweeps (3 candidates); camera motion prompts; 832 × 480 vs 640 × 368 bridges; cold vs warm reruns with sampled VRAM.

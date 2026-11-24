@@ -20,7 +20,7 @@ from .schema import load_storyboard
 from .stitcher import join_verified
 from .vram import VramSampler
 
-DECISION_DOC = "docs/ANCHOR_MODEL_DECISION.md"
+DECISION_DOC = "docs/MODELS.md"
 
 
 def _repo_head(root: Path) -> str | None:

@@ -231,7 +231,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if args.status or (report.valid and not report.fallback_ps1) else 2
     if not executable:
         print("Install or upgrade official specify-cli and ensure specify.exe is on PATH. "
-              "See docs/WINDOWS_DEVELOPMENT.md.", file=sys.stderr)
+              "See docs/DEVELOPMENT.md.", file=sys.stderr)
         return 2
     try:
         return run_init(ROOT, executable, force_repair=args.repair)

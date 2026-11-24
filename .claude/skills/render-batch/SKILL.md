@@ -4,13 +4,13 @@ description: Validate and plan a MorphCurrent storyboard, then dispatch only aft
 ---
 # Render batch
 
-1. Read `CLAUDE.md`, `PROGRESS.md`, `docs/ARCHITECTURE.md`.
+1. Read `CLAUDE.md`, `docs/PROGRESS.md`, `docs/ARCHITECTURE.md`.
 2. Run `python -m morph_studio.cli validate <storyboard>` and `python -m morph_studio.cli plan <storyboard>`.
 3. Verify `/system_stats` and `/object_info`, real API exports, semantic node bindings, checkpoint paths and license status.
 4. Before any GPU job, record target resolution, frame count, model precision, VRAM strategy and intended candidates.
 5. If render executor is not implemented or prerequisites are missing, stop with actionable BLOCKED status, not a fake render.
 6. On approved live renders, persist prompt IDs and manifests; after completion verify outputs via ComfyUI history.
-7. Update `PROGRESS.md` with artifacts and real measurements.
+7. Update `docs/PROGRESS.md` with artifacts and real measurements.
 
 Windows-only: invoke existing Python .py helpers in scripts/windows/; do not use WSL, .ps1 or .sh. Keep ComfyUI's Python separate from the controller venv. Spec Kit generated scripts must use --script py.
 

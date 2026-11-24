@@ -193,19 +193,13 @@ by this repository or GitHub Actions.
 
 Official model workflow and folder reference:
 https://docs.comfy.org/tutorials/video/wan/wan2_2
-## Next: first real MorphCurrent generation
+## Next
 
-1. Open the **official Wan 2.2** tutorial:
-   https://docs.comfy.org/tutorials/video/wan/wan2_2
-2. In ComfyUI, load and run a first/last-frame video workflow with the **actual**
-   installed Wan I2V/FLF2V model variants and node classes. Resolve any
-   missing-weight/node warnings in ComfyUI first.
-3. Once a short bridge succeeds, use **Save (API Format)** and store its
-   sanitized workflow at `C:\GIT\MorphCurrent\workflows\03_wan22_flf2v.json`.
-4. Open this repo in Claude Desktop **Code**, read
-   `docs/CLAUDE_DESKTOP_ONESHOT.md`, and ask Claude to verify node mappings
-   against `/object_info`. Do not invent node IDs or download models silently.
+Check the installed models and workflows against [MODELS.md](MODELS.md), then from `C:\GIT\MorphCurrent`:
 
-**No automatic downloads**: this document contains an official link for a
-manual installation. The repository does not bundle the ComfyUI archive,
-model weights, or external custom-node code.
+```cmd
+.venv\Scripts\python.exe -m morph_studio.cli baseline
+.venv\Scripts\python.exe -m morph_studio.cli render configs\sequences\organic-machines.yaml --dry-run
+```
+
+The repository does not bundle the ComfyUI archive, model weights or custom-node code, and never downloads them automatically.

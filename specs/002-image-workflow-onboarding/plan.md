@@ -4,7 +4,7 @@
 
 ## Summary
 
-Add capability role contracts to profile validation, a read-only `workflow-inspect` command for fresh API exports, and an owner decision record (`docs/ANCHOR_MODEL_DECISION.md`) built from the ComfyUI templates installed locally. The real exports and the GPU gate stay BLOCKED pending owner approval.
+Add capability role contracts to profile validation, a read-only `workflow-inspect` command for fresh API exports, and an owner decision record (`docs/MODELS.md`) built from the ComfyUI templates installed locally. The real exports and the GPU gate stay BLOCKED pending owner approval.
 
 ## Technical Context
 
@@ -28,7 +28,7 @@ src/morph_studio/workflow_adapter.py  # CAPABILITY_CONTRACTS + checks in validat
 src/morph_studio/onboarding.py        # NEW inspect_export()
 src/morph_studio/cli.py               # workflow-inspect
 tests/test_onboarding.py              # NEW
-docs/ANCHOR_MODEL_DECISION.md         # NEW owner decision record
+docs/MODELS.md         # NEW owner decision record
 configs/models.yaml                   # point at decision record; still null/unverified
 ```
 

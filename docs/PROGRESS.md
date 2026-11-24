@@ -25,7 +25,7 @@ M6 — Higher resolution + frame interpolation + resumable multi-song render job
 ## Experiment ledger
 | ID | Date | Change | Resolution | Steps/CFG/Seed | VRAM/time | Quality observation | Evidence |
 |---|---|---|---|---|---|---|---|
-| MC-FLF2V-001 | 2026-11-23 local | Owner manual Wan 2.2 Orchid → Butterfly, uploaded MP4 | **640×368**, 49 frames, 16 FPS; 3.0625 s | 20 steps (split 10/10), CFG 4, euler/simple, seed 1091897826965482 — recovered from ComfyUI `/history` prompt `748d6c59…` | VRAM/time **NOT MEASURED** | Faithful anchors; transitory petal clipping and distorted wings at 0.75–1.5 s | `docs/RENDER_BASELINE_001.md`; MP4 SHA-256 `a638f6e1d58d876670ddc72c0bb773f9f6c83d93076ac3a9403c41618823120c` |
+| MC-FLF2V-001 | 2026-11-23 local | Owner manual Wan 2.2 Orchid → Butterfly, uploaded MP4 | **640×368**, 49 frames, 16 FPS; 3.0625 s | 20 steps (split 10/10), CFG 4, euler/simple, seed 1091897826965482 — recovered from ComfyUI `/history` prompt `748d6c59…` | VRAM/time **NOT MEASURED** | Faithful anchors; transitory petal clipping and distorted wings at 0.75–1.5 s | `docs/EXPERIMENTS.md`; MP4 SHA-256 `a638f6e1d58d876670ddc72c0bb773f9f6c83d93076ac3a9403c41618823120c` |
 | MC-FLF2V-002 (manual) | 2026-11-23 local | Owner manual run of the exact exported graph (refined continuity prompt) | 640×368, 65 frames, 16 FPS; 4.0625 s per `/history` metadata | 20 steps (10/10), CFG 4, euler/simple, seed 844823683741909 — `/history` prompt `160616bb…`, output `video/ComfyUI_00003_.mp4` | **NOT MEASURED** | **NOT REVIEWED** — MP4 not inspected | ComfyUI `/history`; graph differs from `03_wan22_flf2v.json` only in node 84 `noise_seed` |
 | MC-FLF2V-003 | 2026-11-24 local | **First MorphCurrent-dispatched render** (`bridge --resume … --confirm-gpu`), same graph + seed as 002 | 640×368, 65 frames, 16 FPS, H.264, 4.0625 s (ffprobe) | 20 steps (10/10), CFG 4, euler/simple, seed 844823683741909; prompt_id `5f38ed34-db9d-4e6d-b11b-22726fb27ab3` | ComfyUI execution 234.0 s (history timestamps); submit→verified 3 min 55 s; peak VRAM **NOT MEASURED** (~35.7 GB already held by other processes, e.g. LM Studio, per nvidia-smi) | Decoded frames **identical** to manual 002 (PSNR ∞, SSIM 1.000 over 65 frames). Contact sheet (heuristic, owner review pending): endpoints match anchors; petals collapse to a thin vertical form ~frames 24–40, wings appear quickly with a bright flare ~frame 48 | `outputs/runs/4b5d5805e77bcbe0/` (gitignored); MP4 SHA-256 `2d145e6b563fb2b7ccf75412fae7522e3bb5446c6363eec0cac779b13647843c` |
 
@@ -48,12 +48,12 @@ M6 — Higher resolution + frame interpolation + resumable multi-song render job
 
 - [x] Two matched 16:9 Glass Orchid → Metallic Butterfly endpoint images created from original AI-generated artwork, manually composed/cropped for consistent framing and stored as small JPEG fixtures in `assets/anchors/`.
 - [x] Documented the positive transformation prompt, manual ComfyUI first/last-frame loading and Python-only optional staging helper (`docs/ANCHOR_EXAMPLES.md`).
-- [x] Owner reports successful local Wan 2.2 FLF2V smoke render; uploaded `ComfyUI_00002_.mp4` was inspected. See `docs/RENDER_BASELINE_001.md` for measured video metadata and limitations.
+- [x] Owner reports successful local Wan 2.2 FLF2V smoke render; uploaded `ComfyUI_00002_.mp4` was inspected. See `docs/EXPERIMENTS.md` for measured video metadata and limitations.
 - [x] Real Wan 2.2 ComfyUI API export saved and validated; MorphCurrent subsequently dispatched a programmatic 65-frame bridge MC-FLF2V-003. Exact overall GPU peak VRAM remains **NOT MEASURED**.
 
 ## First video baseline and next trial (2026-11-23)
 
-- [x] Reviewed owner-uploaded 49-frame H.264 baseline at 640×368 / 16 FPS, with hash, endpoint fidelity and mid-transition issues documented in `docs/RENDER_BASELINE_001.md`.
+- [x] Reviewed owner-uploaded 49-frame H.264 baseline at 640×368 / 16 FPS, with hash, endpoint fidelity and mid-transition issues documented in `docs/EXPERIMENTS.md`.
 - [x] MC-FLF2V-002: owner rendered 65 frames with revised prompt, with actual node/seed captured in ComfyUI history. **Visual creative review remains NOT DONE**, notwithstanding MC-FLF2V-003's decoded-frame equality.
 - [x] Export user-run ComfyUI FLF2V graph as `workflows/03_wan22_flf2v.json`, capture sampler/seed and actual model names, and validate `/object_info` before API integration (see M1 section below).
 
@@ -146,7 +146,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | Logical feature | Actual Spec Kit folder | State | Implementation evidence |
 |---|---|---|---|
 | F01 | `specs/001-safe-baseline-provenance` | COMPLETE (offline + live read-only) | `gates.py`, `preflight.py`, `baseline` CLI, cloud-node rejection, `docs/ENVIRONMENT.md`; 100 offline tests |
-| F02 | `specs/002-image-workflow-onboarding` | COMPLETE | capability contracts, `workflow-inspect`, `docs/ANCHOR_MODEL_DECISION.md`; awaiting owner model approval |
+| F02 | `specs/002-image-workflow-onboarding` | COMPLETE | capability contracts, `workflow-inspect`, `docs/MODELS.md`; awaiting owner model approval |
 | F03 | `specs/003-first-anchor-t2i` | OFFLINE-PASS; GPU BLOCKED | `anchor` CLI + `anchors.py` on the shared bridge executor; image integrity checks |
 | F04 | `specs/004-reference-edit-anchors` | OFFLINE-PASS; GPU BLOCKED | `run_anchor_chain`, explicit `independent_t2i`, contact sheet |
 | F05 | `specs/005-storyboard-task-dag` | COMPLETE (offline feature) | `dag.py` + `morphcurrent dag`; 16-multiple size check |
@@ -184,7 +184,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 **Built.**
 - Capability role contracts in `validate_profile`: `text_to_image` needs `positive_prompt`, `seed` + image output; `reference_edit` adds `reference_image`; `wan_flf2v` needs `start_image`, `end_image`, `positive_prompt`, `seed`, `length` + video output (Wan profile passes).
 - `morphcurrent workflow-inspect EXPORT [--object-info|--offline]` (`src/morph_studio/onboarding.py`): read-only; lists nodes, cloud nodes, model literals with installed status, schema errors and *candidate* roles; rejects UI-format files with Save (API Format) guidance; writes nothing.
-- `docs/ANCHOR_MODEL_DECISION.md`: candidate sets copied from the `models` metadata of ComfyUI's **locally installed** official templates (Option A: Qwen-Image + Qwen-Image-Edit-2509 sharing Qwen2.5-VL encoder and VAE; Option B: Qwen-Image 2.1). Licenses marked *owner to verify*; sizes approximate; manual export procedure; empty approval log.
+- `docs/MODELS.md`: candidate sets copied from the `models` metadata of ComfyUI's **locally installed** official templates (Option A: Qwen-Image + Qwen-Image-Edit-2509 sharing Qwen2.5-VL encoder and VAE; Option B: Qwen-Image 2.1). Licenses marked *owner to verify*; sizes approximate; manual export procedure; empty approval log.
 - `tests/image_graphs.py`: synthetic API graphs built only from real captured classes, plus a *simulated-install* object_info, reused by later anchor tests. They are not owner exports.
 
 **Results.** Offline **113 passed, 1 deselected**; live `workflow-check` ok. No download, no GPU job.
@@ -294,7 +294,7 @@ At the owner's request, `Co-Authored-By` trailers were removed from all commits 
 | F10 | specs/010-one-command-render | OFFLINE-PASS; GPU E2E BLOCKED |
 
 **Single blocker:** no image-generation weights on this machine. **Owner steps, in order:**
-1. Pick a model set in `docs/ANCHOR_MODEL_DECISION.md` (Option A recommended), check the licenses, record the approval, download the files into the ComfyUI model folders.
+1. Pick a model set in `docs/MODELS.md` (Option A recommended), check the licenses, record the approval, download the files into the ComfyUI model folders.
 2. Render once from the Qwen-Image template and once from the Qwen-Image-Edit-2509 template in the ComfyUI UI; Export (API) to `workflows/01_anchor_t2i.json` and `workflows/02_anchor_edit.json`.
 3. Next session: `workflow-inspect` both exports, write `configs/profiles/anchor_t2i.binding.json` / `anchor_edit.binding.json` from the real node IDs (F02 T013), `workflow-check`, then with a bounded approval: one T2I anchor (F03), one edit (F04), one generated-A/B bridge at 832×480 (F06, size not yet GPU-tested), then the full `render --confirm-gpu --sample-vram` (F10) and a second reproducible run. Optional: `models-hash --confirm-io` while idle (F07); visual review of MC-FLF2V-003 to calibrate QA (F08).
 
@@ -331,3 +331,7 @@ Nothing in this session queued GPU work; ComfyUI queue was empty at every check.
 - Owner, in chat: "i authorize gpu use to complete tasks, remember this" — standing consent for local ComfyUI renders needed to complete F01–F10 (recorded in Claude memory). Safeguards kept: submit only on an idle queue, one job at a time, no interrupting/restarting, downloads still need separate approval.
 - Pre-run: queue empty; nvidia-smi 46,994 / 49,140 MiB used (snapshot; ComfyUI pid 7220 likely holding the Qwen models from the owner's test renders; WDDM reports no per-process memory).
 - Started: `python -m morph_studio.cli render configs/sequences/organic-machines.yaml --confirm-gpu --sample-vram` (3 anchors → 2 bridges at 832×480, then QA + review gate).
+
+## Repository cleanup (2026-11-24)
+
+At the owner's request: removed AI steering documents and stale duplicates (`AutoCreator.md`, `docs/CLAUDE_DESKTOP_ONESHOT.md`, `docs/SETUP_WINDOWS.md`, `docs/ANCHOR_MODEL_ONBOARDING.md`, `docs/ANCHOR_EXAMPLES.md`, `docs/FULL_PIPELINE_DESIGN.md`, old `docs/EXPERIMENTS.md`, `workflows/README.md`, `configs/profiles/README.md`) and two unused config placeholders (`configs/models.yaml`, `.env.example`). All docs now live in `docs/`: `ARCHITECTURE.md` (absorbs the pipeline design and profile/workflow notes), `MODELS.md` (was `ANCHOR_MODEL_DECISION.md`; now the installed-model/workflow reference), `EXPERIMENTS.md` (was `RENDER_BASELINE_001.md` + fixtures), `DEVELOPMENT.md`, `COMFYUI_SETUP.md`, `TROUBLESHOOTING.md`, `ENVIRONMENT.md`, `SPECKIT_FEATURE_LEDGER.md` and this file (moved from the root). README rewritten as a standard project README. `CLAUDE.md` stays at the root (Claude Code reads it there); references updated. Older entries above mention removed file names as history. Tests: 194 passed.

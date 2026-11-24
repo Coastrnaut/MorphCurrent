@@ -3,14 +3,14 @@
 **Project:** `Coastrnaut/MorphCurrent`, native Windows 11, Python 3.11+, isolated ComfyUI Portable on `http://127.0.0.1:8188`, RTX A6000 48 GiB.  
 **Primary goal:** generate **both first and last anchor images automatically through local ComfyUI**, then generate true Wan 2.2 first/last-frame morph clips and stitch a reproducible movie.  
 **Spec Kit scope:** ten features F01–F10 in [`docs/SPECKIT_FEATURE_LEDGER.md`](docs/SPECKIT_FEATURE_LEDGER.md).  
-**Claude one-shot:** paste *whole* contents of [`docs/CLAUDE_DESKTOP_ONESHOT.md`](docs/CLAUDE_DESKTOP_ONESHOT.md) into Claude Desktop Code (that file is only the prompt, no wrapper).
+**Docs:** everything lives in [`docs/`](docs/); measured status in [`docs/PROGRESS.md`](docs/PROGRESS.md).
 
 ## On every new session (mandatory)
 
-1. Read latest repo HEAD, `git status` and diffs. Read this file, `README.md`, `AutoCreator.md`, `.specify/memory/constitution.md`, `docs/SPECKIT_FEATURE_LEDGER.md`, `docs/FULL_PIPELINE_DESIGN.md`, `PROGRESS.md`, real API workflow/binding configs, source/tests. Never discard existing work or reset the owner's branch.
-2. Record reality: existing Wan 2.2 15-node API export + pinned profile, `bridge.py`/CLI, user manual FLF2V runs MC-FLF2V-001/002, first programmatic run MC-FLF2V-003. Its output matched the owner's manual video frame-by-frame, **not** a general creative-quality acceptance; peak VRAM still NOT MEASURED. Anchor T2I and reference-edit workflow exports are **absent** until locally captured.
+1. Read latest repo HEAD, `git status` and diffs. Read this file, `README.md`, `.specify/memory/constitution.md`, `docs/SPECKIT_FEATURE_LEDGER.md`, `docs/ARCHITECTURE.md`, `docs/MODELS.md`, `docs/PROGRESS.md`, real API workflow/binding configs, source/tests. Never discard existing work or reset the owner's branch.
+2. Record reality: existing Wan 2.2 15-node API export + pinned profile, `bridge.py`/CLI, user manual FLF2V runs MC-FLF2V-001/002, first programmatic run MC-FLF2V-003. Its output matched the owner's manual video frame-by-frame, **not** a general creative-quality acceptance; peak VRAM still NOT MEASURED. Anchor T2I (`01_anchor_t2i.json`, Qwen-Image) and reference-edit (`02_anchor_edit.json`, Qwen-Image-Edit-2509) exports and profiles exist since 2026-11-24 (see `docs/MODELS.md`).
 3. **Read-only** inspect live ComfyUI `/queue`, `/history`, `/system_stats`, `/object_info` if safely accessible. If GPU occupied, **do not** start/restart models/ComfyUI, hash large checkpoints, change launch flags, interrupt others or queue additional inference. Offline code/tests/specs can proceed.
-4. Verify installed Python Spec Kit via `python scripts/windows/speckit.py --status` and `--verify`; do NOT re-run `--init` if already valid. Inspect installed skill names. Reconcile latest active spec mapping in ledger and `PROGRESS.md`.
+4. Verify installed Python Spec Kit via `python scripts/windows/speckit.py --status` and `--verify`; do NOT re-run `--init` if already valid. Inspect installed skill names. Reconcile latest active spec mapping in ledger and `docs/PROGRESS.md`.
 5. Pick highest-priority unblocked F01–F10, write real Spec Kit spec/plan/tasks, write failing tests when practical, implement and validate; update ledger with actual commands, evidence and commits.
 
 ## System boundaries: local GPU, permission and licensing
@@ -25,8 +25,8 @@
 
 - `.specify` already exists. `script=py` in `.specify/integration.json`; installed skills live under `.claude/skills/speckit-*/SKILL.md`. Use real specify → clarify (when necessary) → plan/research → tasks → analyze → implement. Detect actual invocation rather than guessing `/speckit.*` from other Spec Kit releases. No ceremonial empty `spec.md` or invented CLI success.
 - F01–F10 are **logical ledger IDs**. Real `specs/<NNN>-slug/` prefix must be collision-free; installed `create_new_feature.py --help` supports `--number` and `--short-name`, and may automatically renumber collisions. Record the returned directory and active spec. Do **one active feature at a time**, preserving all existing files and branches.
-- Each feature must have verifiable requirements and acceptance tests; record plan, mock test outputs, hardware/consent evidence (or BLOCKED) and a coherent commit SHA. Update `PROGRESS.md` and feature ledger on every durable milestone. Do not mark GPU verification COMPLETE based on CI or prior unrelated render.
-- `CLAUDE.md` + `.specify/memory/constitution.md`: binding rules; `docs/SPECKIT_FEATURE_LEDGER.md`: ten feature scope; `PROGRESS.md`: measured evidence; real ComfyUI exports/profile: node truth; source/tests: implemented behavior.
+- Each feature must have verifiable requirements and acceptance tests; record plan, mock test outputs, hardware/consent evidence (or BLOCKED) and a coherent commit SHA. Update `docs/PROGRESS.md` and feature ledger on every durable milestone. Do not mark GPU verification COMPLETE based on CI or prior unrelated render.
+- `CLAUDE.md` + `.specify/memory/constitution.md`: binding rules; `docs/SPECKIT_FEATURE_LEDGER.md`: ten feature scope; `docs/PROGRESS.md`: measured evidence; real ComfyUI exports/profile: node truth; source/tests: implemented behavior.
 
 ## Preserve and extend existing architecture
 
@@ -34,7 +34,7 @@
 - Before automatic anchor generation, acquire real **local** T2I and reference-edit image workflow API exports (`workflows/01_anchor_t2i.json`, `02_anchor_edit.json`) and semantic bindings, inspect model license and validate nodes/choices against `/object_info`. No image model is known installed simply because Wan 2.2 video renders. Model downloads require owner approval.
 - Generate A by real local T2I, B by actual image-to-image/reference-edit of A and C of B. Optional independent-T2I fallback is explicit, never silently masquerades as reference editing. The exact B image SHA must be shared by bridges A→B and B→C. All anchor and bridge stages have immutable source hashes, prompts, seeds, graph/model identity and atomic manifests.
 - For Wan lengths `L=4n+1`, anchor timestamp separation `(L-1)/F`; joined 65+65 shared-boundary accepted bridges = 129 unique frames if endpoint images match. Validate actual boundary frames before deduplication; do not use xfade as fake metamorphosis. Music is optional and only owner-authorized/licensed.
-- Quality tests: decoded endpoint fidelity, subject placement, mid-morph collapse/flare, optical discontinuity, freezes, blur and manual creative approval. MC-FLF2V-001/003 are evidence, not a blanket quality pass. The continuity prompt in `docs/RENDER_BASELINE_001.md` is a candidate experiment.
+- Quality tests: decoded endpoint fidelity, subject placement, mid-morph collapse/flare, optical discontinuity, freezes, blur and manual creative approval. MC-FLF2V-001/003 are evidence, not a blanket quality pass. The continuity prompt in `docs/EXPERIMENTS.md` is a candidate experiment.
 
 ## Engineering and completion standards
 

@@ -15,7 +15,7 @@
 ### US2 - Approved render, resume, status (P1)
 `render STORYBOARD --confirm-gpu` runs anchors → bridges (one GPU job at a time) → QA + contact sheet, then stops `awaiting_review` until each bridge is approved with `review` (or `--accept-heuristics` is given explicitly), then joins with verified seams into `final/movie.mp4`. Re-running the same command resumes with zero repeat inference. `render --status RUN_DIR` is read-only. Without `--confirm-gpu` it validates only.
 ### US3 - Precise BLOCKED preflight (P1)
-Missing T2I/edit profile → exit 6 with the missing files and the pointer to `docs/ANCHOR_MODEL_DECISION.md`; no ComfyUI write.
+Missing T2I/edit profile → exit 6 with the missing files and the pointer to `docs/MODELS.md`; no ComfyUI write.
 
 **Acceptance (offline, fake ComfyUI producing real FFmpeg clips)**: organic-machines → 3 anchors, 2 bridges (shared B SHA), QA, contact sheet, review gate, final MP4 with 129 frames, manifest complete; second run 0 new `/prompt`. **Acceptance (GPU)**: same with real models — BLOCKED (F02).
 

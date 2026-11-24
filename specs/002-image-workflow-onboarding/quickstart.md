@@ -5,7 +5,7 @@ Offline:
 .venv\Scripts\python.exe -m pytest -m "not integration and not gpu"
 .venv\Scripts\python.exe -m morph_studio.cli workflow-check
 ```
-After the owner approves a model set and exports a graph (procedure in `docs/ANCHOR_MODEL_DECISION.md`):
+After the owner approves a model set and exports a graph (procedure in `docs/MODELS.md`):
 ```cmd
 .venv\Scripts\python.exe -m morph_studio.cli workflow-inspect workflows\01_anchor_t2i.json
 .venv\Scripts\python.exe -m morph_studio.cli workflow-check --profile configs\profiles\anchor_t2i.binding.json

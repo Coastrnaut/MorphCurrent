@@ -2,7 +2,7 @@
 
 ## R1. Which local model families can ComfyUI 0.46.0 run without custom nodes?
 - **Decision**: shortlist Qwen-Image family; it is supported by core nodes present in live `/object_info` (`TextEncodeQwenImageEdit`, `TextEncodeQwenImageEditPlus`, `TextEncodeQwenImage21`, `ModelSamplingAuraFlow`, `EmptySD3LatentImage`, `FluxKontextImageScale`) and ships official templates in the installed `comfyui_workflow_templates_json` package.
-- **Evidence (read 2026-11-24, local files)**: `image_qwen_image.json`, `image_qwen_image_edit_2509.json`, `image_qwen_image_edit_2511.json`, `image_qwen_image_2_1_t2i.json`, `image_qwen_image_2_1_image_edit.json` — model filenames, folders and source URLs taken from their `models` metadata (see docs/ANCHOR_MODEL_DECISION.md).
+- **Evidence (read 2026-11-24, local files)**: `image_qwen_image.json`, `image_qwen_image_edit_2509.json`, `image_qwen_image_edit_2511.json`, `image_qwen_image_2_1_t2i.json`, `image_qwen_image_2_1_image_edit.json` — model filenames, folders and source URLs taken from their `models` metadata (see docs/MODELS.md).
 - **Alternatives**: FLUX.1 Kontext / FLUX.2 (core nodes exist) — not shortlisted first because the owner must accept a separate license and no local template metadata was examined; can be added later via the same procedure.
 
 ## R2. Shared components reduce VRAM/disk

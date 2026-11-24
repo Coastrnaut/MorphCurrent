@@ -19,7 +19,7 @@ description: "Task list for F02 image model and workflow onboarding"
 - [X] T006 [US2] Add `workflow-inspect` subcommand (`--object-info`, `--offline`; exit 0/4/2) in src/morph_studio/cli.py
 
 ## Phase 4: User Story 3 — decision record (P2)
-- [X] T007 [US3] Write docs/ANCHOR_MODEL_DECISION.md (candidates from local templates, licenses `owner to verify`, manual export procedure, approval line) and link from docs/ANCHOR_MODEL_ONBOARDING.md and configs/models.yaml
+- [X] T007 [US3] Write docs/MODELS.md (candidates from local templates, licenses `owner to verify`, manual export procedure, approval line) and link from docs/ANCHOR_MODEL_ONBOARDING.md and configs/models.yaml
 - [X] T008 [US3] Docs test (gate BLOCKED, no download without approval) in tests/test_onboarding.py
 
 ## Phase 5: Polish
