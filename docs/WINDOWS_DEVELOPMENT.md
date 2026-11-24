@@ -98,6 +98,14 @@ For manual ComfyUI, substitute that installation's own `.venv\Scripts\python.exe
 
 The user reports placing `wan_2.1_vae.safetensors` at `C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors`. Select it in ComfyUI's **Load VAE** node for Wan 2.2 I2V/FLF2V. Verify with `dir C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors`; refresh or restart ComfyUI if it is not in the dropdown. Keep `.safetensors` files out of Git. See [the ComfyUI setup guide](COMFYUI_PORTABLE_WINDOWS.md).
 
+### Matching text encoder and FP8 I2V model pair
+
+- Text encoder: `C:\AI\ComfyUI_windows_portable\ComfyUI\models\text_encoders\umt5_xxl_fp8_e4m3fn_scaled.safetensors` — select with **Load CLIP** (Wan type, as supported by installed workflow).
+- High-noise image-to-video expert: `C:\AI\ComfyUI_windows_portable\ComfyUI\models\diffusion_models\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors` — first/high-noise **Load Diffusion Model**.
+- Low-noise image-to-video expert: `C:\AI\ComfyUI_windows_portable\ComfyUI\models\diffusion_models\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` — second/low-noise **Load Diffusion Model**.
+
+Do not substitute T2V checkpoints for the I2V pair. Unlike the user-reported VAE placement, these three file paths are setup instructions; local presence is unverified. The official template may name FP16 variants: select the *actual* compatible FP8 I2V models installed on this system. Refresh/restart ComfyUI after copying. See [the full checklist](COMFYUI_PORTABLE_WINDOWS.md).
+
 ## 6. Safe offline and live checks
 
 ```text

@@ -46,6 +46,19 @@ If Spec Kit was initialized earlier with PowerShell, the same `--init` command r
 
 **Windows-only guide:** [docs/WINDOWS_DEVELOPMENT.md](docs/WINDOWS_DEVELOPMENT.md). **Python-based setup scripts:** [scripts/windows/](scripts/windows/). Controller Python and ComfyUI's Python must remain isolated. `--highvram` is optional, not a substitute for VRAM capacity.
 
+## Wan 2.2 14B I2V/FLF2V model file checklist (Windows Portable)
+
+The Wan 2.1 VAE path was previously user-reported; these text-encoder and diffusion model paths are **required/recommended locations**, not verified installs:
+
+| File | Subdirectory under `C:\AI\ComfyUI_windows_portable\ComfyUI\models` |
+| --- | --- |
+| `wan_2.1_vae.safetensors` | `vae` |
+| `umt5_xxl_fp8_e4m3fn_scaled.safetensors` | `text_encoders` |
+| `wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors` | `diffusion_models` (I2V high-noise) |
+| `wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` | `diffusion_models` (I2V low-noise) |
+
+Select the two **I2V** diffusion models in the corresponding high-/low-noise loader nodes, **not** similarly named T2V models. Select UMT5 in **Load CLIP** and Wan 2.1 VAE in **Load VAE**. See [ComfyUI Portable model file checks](docs/COMFYUI_PORTABLE_WINDOWS.md) for exact Windows paths and `dir` commands. Do not commit the model files.
+
 ## Repo navigation
 
 - `docs/ARCHITECTURE.md`: contracts, render DAG, caching, memory, beat timing, stitching and failure recovery.

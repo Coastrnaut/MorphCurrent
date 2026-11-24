@@ -35,3 +35,25 @@ def test_wan_21_vae_setup_path_and_node_documented():
         content = (ROOT / document).read_text(encoding="utf-8")
         assert vae_path in content
         assert "Load VAE" in content
+
+
+def test_wan22_i2v_fp8_checkpoints_and_encoder_documented():
+    """Both I2V experts and the matching text encoder must have Windows paths."""
+    common = r"C:\AI\ComfyUI_windows_portable\ComfyUI\models"
+    expected = (
+        common + r"\diffusion_models\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+        common + r"\diffusion_models\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+        common + r"\text_encoders\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        common + r"\vae\wan_2.1_vae.safetensors",
+    )
+    for document in (
+        "docs/COMFYUI_PORTABLE_WINDOWS.md",
+        "docs/SETUP_WINDOWS.md",
+        "docs/WINDOWS_DEVELOPMENT.md",
+    ):
+        contents = (ROOT / document).read_text(encoding="utf-8")
+        for model in expected:
+            assert model in contents, (document, model)
+    guide = (ROOT / "docs/COMFYUI_PORTABLE_WINDOWS.md").read_text(encoding="utf-8")
+    assert "Load CLIP" in guide and "Load Diffusion Model" in guide
+    assert "not independently verified" not in guide or "Installation evidence" in guide

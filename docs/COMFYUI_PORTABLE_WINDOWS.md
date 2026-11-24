@@ -142,6 +142,57 @@ Place VAE files under `models\vae`, **not** `models\diffusion_models`.
 
 This placement is user-reported and has not been checked directly on the Windows host.
 Do not add the `.safetensors` model to the Git repository.
+
+## Wan 2.2 I2V/FLF2V: FP8 text encoder and diffusion experts
+
+For the **14B image-to-video / first-and-last-frame** workflow, place the following
+files in the **existing native Windows ComfyUI Portable installation**:
+
+```text
+C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors
+C:\AI\ComfyUI_windows_portable\ComfyUI\models\text_encoders\umt5_xxl_fp8_e4m3fn_scaled.safetensors
+C:\AI\ComfyUI_windows_portable\ComfyUI\models\diffusion_models\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors
+C:\AI\ComfyUI_windows_portable\ComfyUI\models\diffusion_models\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors
+```
+
+| File | Model role | ComfyUI workflow node |
+| --- | --- | --- |
+| `wan_2.1_vae.safetensors` | Wan 2.1 VAE (compatible with 14B Wan 2.2 I2V/FLF2V) | **Load VAE** |
+| `umt5_xxl_fp8_e4m3fn_scaled.safetensors` | UMT5-XXL scaled FP8 prompt text encoder | **Load CLIP** (select `wan` model type when applicable) |
+| `wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors` | **I2V** high-noise 14B diffusion expert | First / high-noise **Load Diffusion Model** |
+| `wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` | **I2V** low-noise 14B diffusion expert | Second / low-noise **Load Diffusion Model** |
+
+**Important:** These are the **I2V** files, not the T2V variants. Both I2V
+diffusion checkpoints belong in `models\diffusion_models`; the UMT5 encoder
+belongs in `models\text_encoders`; the VAE belongs in `models\vae`.
+
+These exact FP8-scaled filenames are the variants requested for MorphCurrent.
+The official ComfyUI tutorial illustrates the compatible I2V/FLF2V model
+locations, but some example templates may reference **FP16** variants or
+different checkpoint names. Select your actual available **FP8 I2V** files
+in both diffusion loaders, and verify the workflow's node compatibility
+instead of assuming template defaults are correct.
+
+To check the files with Windows **Command Prompt** (no PowerShell, WSL, or `py.exe`):
+
+```cmd
+dir "C:\AI\ComfyUI_windows_portable\ComfyUI\models\vae\wan_2.1_vae.safetensors"
+dir "C:\AI\ComfyUI_windows_portable\ComfyUI\models\text_encoders\umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+dir "C:\AI\ComfyUI_windows_portable\ComfyUI\models\diffusion_models\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors"
+dir "C:\AI\ComfyUI_windows_portable\ComfyUI\models\diffusion_models\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors"
+```
+
+Refresh the model dropdowns or restart ComfyUI if newly copied files do not
+appear. A listed file is not yet proof that the workflow executes successfully.
+Test a short FLF2V clip first. Do not commit `.safetensors` model weights.
+
+**Installation evidence:** the VAE's placement was explicitly reported by
+the user. The text encoder and both diffusion model paths are setup
+instructions only; their presence on the Windows machine has not been checked
+by this repository or GitHub Actions.
+
+Official model workflow and folder reference:
+https://docs.comfy.org/tutorials/video/wan/wan2_2
 ## Next: first real MorphCurrent generation
 
 1. Open the **official Wan 2.2** tutorial:
