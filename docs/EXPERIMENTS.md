@@ -22,3 +22,18 @@ Frame-identical reproduction (003 vs 002) proves determinism of the dispatcher, 
 ## Ideas not yet run
 
 Reference edit vs independent T2I anchors; prompt-only and length-only comparisons; seed sweeps (3 candidates); camera motion prompts; 832 × 480 vs 640 × 368 bridges; cold vs warm reruns with sampled VRAM.
+
+## F11–F30 proposed verification experiments (none executed in this update)
+
+| Features | Controlled comparison or acceptance | Evidence needed |
+|---|---|---|
+| F11 / F17 | Warm/cold stage run with separate external GPU load recorded | Stage latency + sampled whole-GPU VRAM with coverage, no guessed per-process usage |
+| F12 / F13 / F23 / F24 | Same first/last anchors, seed and steps; vary framing or correspondence prompt one factor at a time | Contact sheets, geometry/framing windows, owner-rated motion quality |
+| F14 / F19 | One morph versus multi-hop intermediate-anchor ladder; short vs multi-scene | SHA-identical shared endpoints, frame/PTS count and verified seam integrity |
+| F15 | User-owned/licensed 90/120/140 BPM synthetic or real music with manual override | Beat-offset error, soundtrack mux PTS and final duration |
+| F16 / F29 | Blind-held-out labelled quality windows and bounded seed/prompt A/B | Detection recall/false positives, run caps, honest Pareto runtime results |
+| F18 / F21 / F22 | Same YAML via CLI and local UI/brief + style library | Editable generated plan, approvals, determinism and private asset handling |
+| F25 / F26 / F30 | Native 16 fps vs approved interpolated/upscaled/cropped delivery | Decode/ffprobe counts, seam/subject integrity, audio sync and visual review |
+| F27 / F28 | Hash-pinned profile migration and project archive restore | Safe failure/rollback, no private asset leakage or external model download |
+
+Existing **MC-RUN-003** from-scratch exact-byte reproducibility is already a verified result in the table above. These new studies are future tests, not outcomes.

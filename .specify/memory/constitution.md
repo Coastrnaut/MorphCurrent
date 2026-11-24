@@ -8,11 +8,11 @@ This replaces the unfilled stock constitution template. Historical feature work,
 
 ## I. Factual evidence before completion claims
 
-Source files, real API exports, local `/object_info`, recorded `/history`, hashes, verified outputs and committed tests establish what actually works. Always distinguish DOCUMENTED, MOCKED, LOCALLY VALIDATED, GPU-VERIFIED, VISUALLY ACCEPTED and BLOCKED. Offline CI does not verify local NVIDIA inference; a successful clip does not prove peak VRAM or artistic acceptability. Preserve MC-FLF2V-001, 002 and 003 observations.
+Source files, real API exports, local `/object_info`, recorded `/history`, hashes, verified outputs and committed tests establish what actually works. Always distinguish DOCUMENTED, MOCKED, LOCALLY VALIDATED, GPU-VERIFIED, VISUALLY ACCEPTED and BLOCKED. Offline CI does not verify local NVIDIA inference; a successful clip does not prove peak VRAM or artistic acceptability. Preserve MC-FLF2V-001/002/003 and MC-RUN-001/002/003 observations, including MC-RUN-003's byte-identical fresh-root repeatability.
 
 ## II. Native Windows, privacy, GPU consent
 
-Sole supported runtime is **native Windows 11**, Python 3.11+ automation, an isolated ComfyUI Portable Python/Torch environment and a loopback-only local ComfyUI server. No PowerShell `.ps1` scripts, WSL, Linux containers or assumed `py.exe`. No remote inference/media upload, custom-node/model installation, expensive GPU jobs or disruption of the owner's ongoing run without explicit permission. Read-only discovery and offline work may continue while the GPU is busy. Prior GPU approval is not blanket consent.
+Sole supported runtime is **native Windows 11**, Python 3.11+ automation, an isolated ComfyUI Portable Python/Torch environment and a loopback-only local ComfyUI server. No PowerShell `.ps1` scripts, WSL, Linux containers or assumed `py.exe`. No remote inference/media upload, custom-node/model installation, expensive GPU jobs or disruption of the owner's ongoing run without explicit permission. Read-only discovery and offline work may continue while the GPU is busy. Standing consent documented for the earlier F01–F10 implementation does not automatically authorize unbounded new F11–F30 inference or model installations. Confirm current scoped permission before new consequential GPU workloads.
 
 ## III. Real ComfyUI graph contracts, test-first
 
@@ -26,12 +26,12 @@ Every generated image and bridge video must have immutable source bytes, content
 
 A full system generates **both endpoint images** inside ComfyUI; any independent T2I fallback is explicit and is not misrepresented as reference editing. Adjacent bridges must share byte-identical anchor B. Prefer physically continuous transformations over cuts/dissolves, honor Wan 4n+1 frames and `(L-1)/FPS` anchor time, verify seam duplicate removal, use optional (never mandatory) owner-licensed soundtrack and human qualitative review.
 
-## VI. Ten actual Spec Kit feature lifecycles
+## VI. Thirty logical Spec Kit features and twenty new feature lifecycles
 
-Execute exactly ten *logical* features F01–F10 from `docs/SPECKIT_FEATURE_LEDGER.md`, sequentially respecting dependencies. Check installed Python Spec Kit/Claude skill names; use **real** specify → clarify if needed → plan/research → tasks → analyze → implement. Map logical IDs to actual nonconflicting `specs/NNN-slug/` names; never overwrite prior specs or promise unique 001–010 prefixes. Update `docs/PROGRESS.md` with evidence and a commit for each coherent step. A blocked GPU gate is not COMPLETE.
+Honor the historical ten *logical* features F01–F10, with their existing spec directories and GPU evidence; implement the next **F11–F30** features from `docs/SPECKIT_FEATURE_LEDGER.md` sequentially, respecting dependencies. Do not restart or recreate completed F01–F10 specs. Check the installed Python Spec Kit/Claude skill names; use **real** specify → clarify if needed → plan/research → tasks → analyze → implement. Map new logical IDs to actual nonconflicting `specs/NNN-slug/` names; check for directory collisions, never overwrite prior specs, and don't assume 011–020 remain free. Update `docs/PROGRESS.md` with evidence and a commit for each coherent step. A blocked GPU gate is not COMPLETE.
 
 ## VII. Source compatibility and governance
 
 Preserve existing Wan bridge, repo history, local dirty state, tests and working CLI; add regression tests before incompatible changes. Use typed Python, `pathlib`, subprocess argument lists (`shell=False`), private localhost networking and minimal permissions. Amend this constitution through a separate reviewed/committed change that states migration and reconciles `CLAUDE.md` plus the feature ledger. Do not bypass test/consent gates to satisfy a schedule.
 
-**Authority order:** `CLAUDE.md` and this constitution (non-negotiable safety), `docs/SPECKIT_FEATURE_LEDGER.md` (ten feature scope/gates), `docs/PROGRESS.md` (measured status), real workflow exports/profiles (executable node truth), code/tests (actual implemented behavior).
+**Authority order:** `CLAUDE.md` and this constitution (non-negotiable safety), `docs/SPECKIT_FEATURE_LEDGER.md` (thirty feature scope/gates), `docs/PROGRESS.md` (measured status), real workflow exports/profiles (executable node truth), code/tests (actual implemented behavior).

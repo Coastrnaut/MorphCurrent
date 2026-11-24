@@ -365,3 +365,38 @@ At the owner's request: deleted `assets/anchors/01_glass_orchid.jpg`, `02_metall
 - All 5 GPU stages recomputed (execution times equal the original run, so no ComfyUI cache shortcut) and every artifact is **byte-identical** to MC-RUN-002: three anchor PNGs, both bridge MP4s, and the joined movie (`ce687958c40bd8d94b25ac28820ebf0ca5bddb53d86908ba4c052c74b80f99ab`); decoded PSNR ∞ / SSIM 1.000. First movie written with the new name `final/organic-machines_20261124-160448Z_ba2d9dbe.mp4`.
 - Sampled VRAM (all processes): baseline 35,449, peak 48,056 MiB.
 - **CLAUDE.md completion bar now met:** YAML → ComfyUI-generated A, B, C → two Wan bridges → verified seam → final movie + manifest + contact sheet; reproducible second run; human review (owner approved MC-RUN-001/002); model/license gates documented in `docs/MODELS.md`. Remaining optional items: Wan model SHA-256 (`models-hash --confirm-io`), QA threshold calibration, optional licensed soundtrack on real clips.
+
+## 30-feature roadmap update — 20 NEW features F11–F30 (2026-11-24)
+
+- Audited connected GitHub `main` at **`9b79301b31ef6c31db3a465967928ca6aa457b3c`** and recent source/tests. This commit, MC-RUN-003, **proved fresh-root reproducibility**: 3 newly generated Qwen anchors, 2 Wan bridges, and joined MP4 all byte-identical to MC-RUN-002, with decoded PSNR infinity/SSIM 1.0. Original F01–F10 implementation and spec folders remain intact.
+- This document preserves historical progress and stale early blockers for chronology; later dated measurements supersede those early states. F07 VRAM snapshots reflect whole-GPU usage, not MorphCurrent-only allocation. Wan checkpoints SHA still NOT MEASURED and creative quality is not guaranteed by exact reproduction.
+- **Twenty new logical Spec Kit features F11–F30 are planned, not implemented.** They expand the platform with GPU benchmarking; anchor/camera/material continuity; intermediate morphs; real local beat-matched music; calibrated QA; GPU scheduler; private local project UI; long-form scenes; release/packaging; style libraries; brief-to-storyboard generation; stabilization and camera choreography; frame interpolation; image/video enhancement; safe model adapters; project archives; budgeted A/B experiments; and multi-format delivery.
+- New source-of-truth scope and acceptance: `docs/SPECKIT_FEATURE_LEDGER.md` (all F01–F30); new paste-ready Claude Desktop Code one-shot: `docs/CLAUDE_DESKTOP_ONESHOT.md`; root `CLAUDE.md`, `.specify/memory/constitution.md` and `docs/ARCHITECTURE.md` synchronized. No active GPU job was launched by this documentation-only change.
+- Next engineering action is **F11**: inspect newest HEAD/dirty work and read-only local ComfyUI queue, run current offline tests and installed Python Spec Kit verification, then create and execute the **real F11** spec/plan/tasks using the supported Claude skills. Do not create empty specs/011..030 all at once; use one feature and preserve numbers/actual script outputs.
+
+### New feature tracker (initial roadmap, no implementation claims)
+
+| Feature | Current status | Actual spec directory | GPU/testing evidence | Dependency/gate |
+|---|---|---|---|---|
+| F11 | PLANNED | Not created — proposed `specs/011-*` | NOT RUN; NOT IMPLEMENTED | See ledger F11 acceptance criteria |
+| F12 | PLANNED | Not created — proposed `specs/012-*` | NOT RUN; NOT IMPLEMENTED | See ledger F12 acceptance criteria |
+| F13 | PLANNED | Not created — proposed `specs/013-*` | NOT RUN; NOT IMPLEMENTED | See ledger F13 acceptance criteria |
+| F14 | PLANNED | Not created — proposed `specs/014-*` | NOT RUN; NOT IMPLEMENTED | See ledger F14 acceptance criteria |
+| F15 | PLANNED | Not created — proposed `specs/015-*` | NOT RUN; NOT IMPLEMENTED | See ledger F15 acceptance criteria |
+| F16 | PLANNED | Not created — proposed `specs/016-*` | NOT RUN; NOT IMPLEMENTED | See ledger F16 acceptance criteria |
+| F17 | PLANNED | Not created — proposed `specs/017-*` | NOT RUN; NOT IMPLEMENTED | See ledger F17 acceptance criteria |
+| F18 | PLANNED | Not created — proposed `specs/018-*` | NOT RUN; NOT IMPLEMENTED | See ledger F18 acceptance criteria |
+| F19 | PLANNED | Not created — proposed `specs/019-*` | NOT RUN; NOT IMPLEMENTED | See ledger F19 acceptance criteria |
+| F20 | PLANNED | Not created — proposed `specs/020-*` | NOT RUN; NOT IMPLEMENTED | See ledger F20 acceptance criteria |
+| F21 | PLANNED | Not created — proposed `specs/021-*` | NOT RUN; NOT IMPLEMENTED | See ledger F21 acceptance criteria |
+| F22 | PLANNED | Not created — proposed `specs/022-*` | NOT RUN; NOT IMPLEMENTED | See ledger F22 acceptance criteria |
+| F23 | PLANNED | Not created — proposed `specs/023-*` | NOT RUN; NOT IMPLEMENTED | See ledger F23 acceptance criteria |
+| F24 | PLANNED | Not created — proposed `specs/024-*` | NOT RUN; NOT IMPLEMENTED | See ledger F24 acceptance criteria |
+| F25 | PLANNED | Not created — proposed `specs/025-*` | NOT RUN; NOT IMPLEMENTED | See ledger F25 acceptance criteria |
+| F26 | PLANNED | Not created — proposed `specs/026-*` | NOT RUN; NOT IMPLEMENTED | See ledger F26 acceptance criteria |
+| F27 | PLANNED | Not created — proposed `specs/027-*` | NOT RUN; NOT IMPLEMENTED | See ledger F27 acceptance criteria |
+| F28 | PLANNED | Not created — proposed `specs/028-*` | NOT RUN; NOT IMPLEMENTED | See ledger F28 acceptance criteria |
+| F29 | PLANNED | Not created — proposed `specs/029-*` | NOT RUN; NOT IMPLEMENTED | See ledger F29 acceptance criteria |
+| F30 | PLANNED | Not created — proposed `specs/030-*` | NOT RUN; NOT IMPLEMENTED | See ledger F30 acceptance criteria |
+
+**Historical correction:** The fresh-root reproducibility requirement formerly marked pending is now met by MC-RUN-003, not a blocker for F11. New F20/F30 release/long-form gates are separate future work.

@@ -11,7 +11,7 @@ C:\GIT\MorphCurrent\
   src\morph_studio\               package
   tests\                          offline tests (fake ComfyUI)
   workflows\  configs\            ComfyUI API exports, binding profiles, storyboards
-  specs\  .specify\               Spec Kit feature specs (F01–F10)
+  specs\  .specify\               Spec Kit specs (F01–F10 existing; F11–F30 future)
   outputs\                        run artifacts (gitignored)
 ```
 
@@ -41,6 +41,9 @@ Offline tests use a stateful fake ComfyUI (`tests/fake_comfy.py`) and real FFmpe
 
 ## Spec Kit
 
+The 30-feature roadmap and true F01–F10 GPU evidence are in [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md). F11–F30 (20 new features) must be created one at a time with real spec/plan/tasks/implementation artifacts. The [Claude Desktop one-shot](CLAUDE_DESKTOP_ONESHOT.md) is **paste-only**: copy its entire contents into Claude Desktop Code, no trimming of wrappers required.
+
+
 Spec Kit is installed with the Python script backend (`.specify/integration.json`: `script=py`); the Claude skills are `speckit-specify`, `-plan`, `-tasks`, `-analyze`, `-implement`, etc.
 
 ```cmd
@@ -48,11 +51,11 @@ python scripts\windows\speckit.py --status
 python scripts\windows\speckit.py --verify
 ```
 
-Do not run bare `specify init` on Windows (it defaults to PowerShell scripts); `speckit.py --repair` restores the Python backend with a backup in `.local/`. New features: `python .specify\scripts\python\create_new_feature.py --json --number N --short-name SLUG "description"`.
+Do not run bare `specify init` on Windows (it defaults to PowerShell scripts); `speckit.py --repair` restores the Python backend with a backup in `.local/`. New features: `python .specify\scripts\python\create_new_feature.py --json --number N --short-name SLUG "description"`. Check existing `specs/001`–`010` and any concurrent new directories; capture the script-returned real spec path. Do not reinitialize an already valid Spec Kit.
 
 ## Conventions
 
 - Typed Python, `pathlib`, subprocess argument lists (`shell=False`); never put storyboard text into commands or URLs.
 - ComfyUI URL must be loopback; fail closed on graph hash, node, model or output drift.
-- Commit directly on `main`; no AI co-author trailers. Record measured results in [PROGRESS.md](PROGRESS.md).
+- Commit only on the currently owner-authorized branch (usually `main`); no AI co-author trailers. Record measured results in [PROGRESS.md](PROGRESS.md).
 - Never commit weights, generated media, `outputs/` or credentials. Text files are LF (`.gitattributes`).

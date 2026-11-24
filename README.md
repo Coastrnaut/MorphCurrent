@@ -90,10 +90,12 @@ See [`configs/sequences/organic-machines.yaml`](configs/sequences/organic-machin
 - [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) — dev setup, tests, Spec Kit
 - [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
 - [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md) and [docs/PROGRESS.md](docs/PROGRESS.md) — render results and project log
+- [docs/SPECKIT_FEATURE_LEDGER.md](docs/SPECKIT_FEATURE_LEDGER.md) — existing F01–F10 evidence and planned F11–F30 new functionality
+- [docs/CLAUDE_DESKTOP_ONESHOT.md](docs/CLAUDE_DESKTOP_ONESHOT.md) — **paste the entire file contents** into Claude Desktop Code for the next implementation wave
 
 ## Status
 
-All ten planned features are implemented and covered by offline tests. The Wan bridge has been verified on the GPU; the first full storyboard render with generated anchors is in progress. See [docs/PROGRESS.md](docs/PROGRESS.md).
+**F01–F10 working and reproduced:** MC-RUN-001 generated three Qwen anchors, two 832×480 Wan morphs and a reviewed **129-frame** movie. MC-RUN-002 selectively regenerated the phoenix and second bridge. MC-RUN-003 computed all five GPU stages in a fresh output root and reproduced their image/video outputs byte-identically. The current CLI names finished MP4s `<storyboard>_<UTC timestamp>_<plan8>.mp4`. The latest audit's Windows test run reported 193 passing offline tests. **F11–F30 comprise twenty new, planned (not implemented) features:** GPU benchmarking, continuity, intermediate anchors, actual licensed music alignment, quality calibration, local UI, long-form workflows, private style packs, creative-brief storyboards, camera/motion repair, interpolation/upscaling, model capability upgrades, portable archives, bounded experiments and multi-format delivery. See [the ledger](docs/SPECKIT_FEATURE_LEDGER.md) and [progress log](docs/PROGRESS.md).
 
 ## License
 

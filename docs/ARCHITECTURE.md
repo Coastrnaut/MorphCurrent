@@ -66,3 +66,23 @@ For Wan length `L` at `F` fps, anchors are `(L-1)/F` seconds apart; a clip lasts
 - GPU work only with `--confirm-gpu`, one job at a time, never while ComfyUI's queue is busy; never cancels others' jobs.
 - Peak VRAM comes only from the opt-in sampler; `/system_stats` snapshots are never treated as peaks.
 - Weights, generated media and run outputs stay out of Git (`outputs/` is ignored).
+
+## F11–F30 extensions (planned, not yet built)
+
+The existing Qwen→Qwen-edit→Wan→QA→human review→FFmpeg pipeline is **GPU-demonstrated**; future features must extend those modules rather than replacing working code. See [the 20-feature ledger](SPECKIT_FEATURE_LEDGER.md) for acceptance gates and exact dependencies.
+
+- **Observability and cost (F11, F17):** benchmark per-stage latency and opt-in whole-GPU VRAM, account for unrelated processes, and use an idle-queue single-job scheduler. Keep current `--confirm-gpu` and safe crash/resume semantics.
+- **Continuity and transition intelligence (F12–F14, F16):** anchor framing/orientation constraints, physical correspondence plan, bounded multi-hop intermediate anchors and owner-labelled defect calibration. Preserve exact reference byte identity; QA metrics never silently replace human review.
+- **Audio synchronization (F15):** import only owner-authorized local audio, estimate tempo/downbeats with confidence and manual overrides, allocate 4n+1 frame budgets and record tempo/duration residuals before joining.
+- **Operator UI (F18):** optional local desktop/strict-loopback review workflow that edits the same typed storyboard and manifest as the CLI; no remote service or mandatory account; approval must remain explicit.
+- **Longform and release (F19–F20):** chapter-level DAG/partial cache invalidation, previews and storage quotas, fresh-output-root replay, Windows packaging and a full acceptance suite. All source model weights/media remain outside Git.
+
+These are **design targets only**. The latest verified baseline uses timestamped output `final/<storyboard>_<UTC timestamp>_<plan8>.mp4` and a manifest-held path; do not revert to a fixed filename or assume these future extensions are already implemented.
+
+- **F21–F22 — local assets and authoring:** private style/reference collections and approved editable creative-brief-to-storyboard planning, optional owner-enabled local LLM only.
+- **F23–F24 — spatial/temporal continuity:** actual-workflow-supported camera and framing constraints, material motion continuity and human-approved repair of collapse/flare defects.
+- **F25–F26 — local finishing:** frame interpolation to target FPS, optional upscale/color/denoise, preservation of 16 FPS originals, true FFmpeg PTS/seam/audio verification.
+- **F27–F28 — compatibility and portable projects:** versioned real ComfyUI model capability adapters, safe migration and archive restore, no weights or private media by default.
+- **F29–F30 — experimental optimization and delivery:** bounded A/B sweeps, Pareto quality/cost analysis, safe export presets and final audited 30-feature acceptance.
+
+MC-RUN-003 reproduced all Qwen-generated anchors, Wan bridges and 129-frame final video byte-identically to MC-RUN-002 in a fresh output root; this is **baseline evidence**, not evidence that F11–F30 exist.
