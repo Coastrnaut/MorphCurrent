@@ -470,3 +470,15 @@ Owner request: ten more features (40 total) to plan a five-minute video about el
 - Added P0–P3 film preproduction gates: offline 8–12-bridge pilot, bounded owner-approved GPU pilot, one fully reviewed act, then the five-minute film. Cost ~6–11.4 baseline generation GPU-hours is ESTIMATED, excluding rerenders, cold loads, reviewing and finishing. Five-minute baseline arithmetic: 75×65-frame bridges → 4801 deduplicated frames → 300 s anchor span / 300.0625 s playback at 16 FPS.
 - **Cache validity correction:** replacing a reference-edited anchor invalidates its transitive edited descendants and associated morph bridges until a separate independent reanchor, **not** just its two adjacent bridges. Requires deterministic DAG invalidation tests in F19/F35/F39.
 - **Next:** reconcile current local git/ComfyUI queue and F11 T011 results without running duplicate jobs; continue the next unblocked feature (F15 audio offline, F14 ladders after F13 or F16 QA with owner-labelled frames), and F31/F33 source-backed engineering research offline. No new GPU jobs were launched by this documentation review.
+
+## F15 — Local music analysis and beat sync, offline slice (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --json --number 15 --short-name local-audio-beat-mapping` → `specs/015-local-audio-beat-mapping`; tasks 6/7 (T007 real owner-licensed track pending).
+
+**Built.**
+- `src/morph_studio/audio.py`: local decode (WAV directly, other formats via FFmpeg; URLs refused), energy-flux onsets, autocorrelation tempo 60–200 BPM with smoothing and tempo-octave correction (accented bars otherwise give half tempo), confidence + half/double alternatives, phase-matched beat grid (centre of the tied phase run, wrap at t=0), downbeat guess, `sync_report` (bridge boundary vs beats: error ms/frames, cumulative drift, > 1 frame flagged).
+- `src/morph_studio/audio_bands.py`: **visualizer-style band loudness** — independent Python reimplementation of the visualizer's music-visualizer algorithm (owner pointed to a local reference checkout, LGPL-2.1; no code copied): Hann-windowed 1024-point FFT per frame, bass/mid/treble 0–3.7/3.7–7.4/7.4–11 kHz, instant and `_att` values relative to the long-term average with frame-rate-adjusted decays (0.2/0.5 short, 0.9→0.992 long); `band_hits` (rising edges > 1.3); `render_timeline_png` (bass red, mid green, treble blue, beat ticks, bridge boundaries).
+- Schema: `audio.licensed` must be true when `audio.file` is set; plan hash of the sample storyboard unchanged.
+- CLI: `audio-analyze FILE`, `audio-sync STORYBOARD [--audio FILE]`, `audio-visualize FILE --out PNG [--storyboard]`.
+
+**Results.** Offline **241 passed, 1 deselected**: click tracks at 90/120/140 BPM within ±1 BPM and beats within ±30 ms, 0.37 s offset, 22.05/44.1/48 kHz and stereo, silence, missing file, URL refusal, licence guard, 0 ms drift at 120 BPM, 110 BPM rounding flagged (−114 ms), bass kicks raise only bass, hi-hats only treble, steady tone ≈ 1.0. Demo visualization of a synthetic 120 BPM track: 119.9 BPM detected.

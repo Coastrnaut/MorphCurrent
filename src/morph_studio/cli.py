@@ -20,6 +20,8 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .audio import AudioError, analyze_audio, sync_report
+from .audio_bands import analyze_bands, band_hits, render_timeline_png
 from .prompt_compiler import NOTE as PROMPT_NOTE, variants as prompt_variants
 from .geometry import compare_images
 from .perf import build_report as build_perf_report, estimate as estimate_plan, load_history
@@ -181,6 +183,38 @@ def _prompt_preview(args: argparse.Namespace) -> int:
             entry["ab_plan"] = prompt_variants(transition, task["seed"])
         out.append(entry)
     print(json.dumps({"bridges": out, "note": PROMPT_NOTE}, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _audio_analyze(args: argparse.Namespace) -> int:
+    """Local beat/tempo analysis of an audio file (offline)."""
+    result = analyze_audio(args.file)
+    if not args.full:
+        result["beats"] = result.get("beats", [])[:64]
+        result.pop("onsets", None)
+    print(json.dumps(result, indent=2))
+    return 0
+
+
+def _audio_sync(args: argparse.Namespace) -> int:
+    """Bridge-boundary timing vs beats, with cumulative drift (offline)."""
+    sequence = load_storyboard(args.storyboard)
+    analysis = analyze_audio(args.audio) if args.audio else None
+    print(json.dumps(sync_report(sequence, analysis), indent=2))
+    return 0
+
+
+def _audio_visualize(args: argparse.Namespace) -> int:
+    """visualizer-style bass/mid/treble timeline PNG with beats and bridge boundaries (local)."""
+    levels = analyze_bands(args.file, fps=args.fps)
+    analysis = analyze_audio(args.file)
+    boundaries = []
+    if args.storyboard:
+        report = sync_report(load_storyboard(args.storyboard), analysis)
+        boundaries = [b["time_s"] for b in report["boundaries"]]
+    out = render_timeline_png(levels, Path(args.out), beats=analysis.get("beats"), boundaries=boundaries)
+    print(json.dumps({"png": str(out), "frames": len(levels), "fps": args.fps, "bpm": analysis.get("bpm"),
+                      "bass_hits_s": band_hits(levels)[:64], "boundaries_s": boundaries}, indent=2))
     return 0
 
 
@@ -400,6 +434,17 @@ def main(argv: list[str] | None = None) -> int:
     pp = subs.add_parser("prompt-preview", help="Show compiled bridge prompts for a storyboard (offline)")
     pp.add_argument("storyboard")
     pp.add_argument("--variants", action="store_true", help="Also list a fixed-seed prompt-only A/B plan")
+    aa = subs.add_parser("audio-analyze", help="Local tempo/beat/downbeat analysis of an audio file")
+    aa.add_argument("file")
+    aa.add_argument("--full", action="store_true", help="Print all beats and onsets")
+    asy = subs.add_parser("audio-sync", help="Bridge boundary timing vs beats and drift (offline)")
+    asy.add_argument("storyboard")
+    asy.add_argument("--audio", help="Analyse this local file instead of using the storyboard BPM grid")
+    av = subs.add_parser("audio-visualize", help="visualizer-style band timeline PNG with beats and boundaries")
+    av.add_argument("file")
+    av.add_argument("--out", required=True, help="PNG path (refused if it exists)")
+    av.add_argument("--storyboard", help="Overlay this storyboard's bridge boundaries")
+    av.add_argument("--fps", type=float, default=30.0)
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -487,6 +532,12 @@ def main(argv: list[str] | None = None) -> int:
             return _anchor_check(args)
         elif args.command == "prompt-preview":
             return _prompt_preview(args)
+        elif args.command == "audio-analyze":
+            return _audio_analyze(args)
+        elif args.command == "audio-sync":
+            return _audio_sync(args)
+        elif args.command == "audio-visualize":
+            return _audio_visualize(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":
@@ -502,7 +553,7 @@ def main(argv: list[str] | None = None) -> int:
             with ComfyClient(args.url) as client:
                 print(json.dumps(client.health(), indent=2))
         return 0
-    except (ValidationError, ValueError, OSError, ComfyError, WorkflowBindingError, BridgeError) as exc:
+    except (ValidationError, ValueError, OSError, AudioError, ComfyError, WorkflowBindingError, BridgeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 

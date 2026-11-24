@@ -44,6 +44,17 @@ class Audio(StrictModel):
     bpm: float | None = Field(default=None, gt=0, le=400)
     beat_offset_seconds: float = 0.0
     synchronization: Literal["none", "beat", "downbeat"] = "none"
+    # F15: the owner must confirm they may use the track; MorphCurrent never fetches audio.
+    licensed: bool = False
+
+    @model_validator(mode="after")
+    def check_file(self) -> "Audio":
+        if self.file is not None:
+            if "://" in self.file:
+                raise ValueError("audio.file must be a local file path, not a URL")
+            if not self.licensed:
+                raise ValueError("audio.file requires audio.licensed: true (owner confirms the track may be used)")
+        return self
 
 
 class Anchor(StrictModel):
