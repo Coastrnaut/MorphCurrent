@@ -213,8 +213,11 @@ def _audio_visualize(args: argparse.Namespace) -> int:
     if args.storyboard:
         report = sync_report(load_storyboard(args.storyboard), analysis)
         boundaries = [b["time_s"] for b in report["boundaries"]]
-    out = render_timeline_png(levels, Path(args.out), beats=analysis.get("beats"), boundaries=boundaries)
+    section_times = [s["t"] for s in analysis.get("sections", [])]
+    out = render_timeline_png(levels, Path(args.out), beats=analysis.get("beats"), boundaries=boundaries,
+                              sections=section_times)
     print(json.dumps({"png": str(out), "frames": len(levels), "fps": args.fps, "bpm": analysis.get("bpm"),
+                      "confidence": analysis.get("confidence"), "sections_s": section_times,
                       "bass_hits_s": band_hits(levels)[:64], "boundaries_s": boundaries}, indent=2))
     return 0
 

@@ -21,12 +21,16 @@ A storyboard with `audio.file` must set `audio.licensed: true` (owner acknowledg
 `audio-sync STORYBOARD` (offline) compares each bridge boundary (cumulative `(L−1)/fps`) to the nearest analysed (or grid) beat/downbeat, reporting per-boundary error and cumulative drift in ms and frames; flags boundaries off by more than one frame.
 **Acceptance**: 120 BPM, 16 fps, 8-beat bridges → 0 ms drift; 90 BPM 8 beats → 5.333 s requested vs 81 frames (5.0 s) → error reported, flagged.
 
+### US4 - Classical-music analysis (P1, owner request 2026-11-24)
+Classical recordings have soft onsets, wide dynamics, rubato and little percussion; the click-track analyzer gave Mozart 40/I 203 BPM at confidence 0.30. Rework modelled on a reference music visualizer's (historical) `BeatDetect` energy-statistics approach (Patin): log-spaced sub-band energies relative to a running history, log-compressed; local tempo curve with a perceptual prior (octave errors); dynamic-programming beat tracking that follows tempo drift; phrase/section boundaries from loudness/brightness novelty. **One analyzer for every kind of music — no style switch** (owner direction): the same pipeline must pass the click-track and the classical-style tests.
+**Acceptance**: synthetic soft-attack notes with an accelerando 90→110 BPM → beats within ±60 ms, tempo curve rising; *pp*→*ff* swell → onsets in the quiet part; loud/quiet/loud sections → boundaries within ±1.5 s; existing click-track tests unchanged; real Mozart 40/I result recorded honestly.
+
 ### Edge Cases
 Very short file (< 4 s) → low confidence; tempo outside 60–200 → folded with alternatives listed; video-only storyboards unaffected.
 
 ## Requirements *(mandatory)*
 - **FR-001** Analysis is local and offline (FFmpeg decode only); never fetches or uploads audio.
-- **FR-002** Onset strength from frame energy flux; tempo by autocorrelation over 60–200 BPM; beats by phase alignment to onsets; confidence = normalised autocorrelation peak.
+- **FR-002** (revised for US4) Onset strength from log-spaced sub-band energies relative to a primed ~1.3 s running history (Patin-style); one global tempo octave (summed autocorrelation × prior, sub-multiple check), local tempo within ±25%; DP beat tracking that always links; BPM from median inter-beat interval; window-centre time stamps; confidence = mean local autocorrelation.
 - **FR-003** `Audio.licensed` boolean; `file` set without `licensed: true` → validation error; URLs rejected.
 - **FR-004** Drift report: per boundary planned time, nearest beat, error (ms, frames), cumulative; `>1 frame` flagged.
 - **FR-005** Storyboards without audio produce identical plan hashes (no new fields in tasks).

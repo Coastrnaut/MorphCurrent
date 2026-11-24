@@ -100,10 +100,11 @@ def _png(width: int, height: int, rows: list[list[list[int]]]) -> bytes:
 
 
 def render_timeline_png(levels: list[dict], out: Path, *, beats: list[float] | None = None,
-                        boundaries: list[float] | None = None, height: int = 180,
-                        px_per_frame: int = 2) -> Path:
+                        boundaries: list[float] | None = None, sections: list[float] | None = None,
+                        height: int = 180, px_per_frame: int = 2) -> Path:
     """Bass (red), mid (green), treble (blue) relative levels; beats as dotted grey
-    ticks; bridge boundaries as white lines; dim line at 1.0. Never overwrites."""
+    ticks; musical sections as amber lines; bridge boundaries as white lines; dim line
+    at 1.0. Never overwrites."""
     out = Path(out)
     if out.exists():
         raise FileExistsError(out)
@@ -123,6 +124,10 @@ def render_timeline_png(levels: list[dict], out: Path, *, beats: list[float] | N
         if 0 <= t <= duration:
             for y in range(0, height, 3):
                 img[y][x_of(t)] = [95, 95, 95]
+    for t in sections or []:  # musical sections/phrases: amber
+        if 0 <= t <= duration:
+            for y in range(height):
+                img[y][x_of(t)] = [240, 180, 40]
     for t in boundaries or []:
         if 0 <= t <= duration:
             for y in range(height):

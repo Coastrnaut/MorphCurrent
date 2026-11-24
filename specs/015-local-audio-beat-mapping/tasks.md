@@ -13,3 +13,9 @@ description: "Task list for F15 local music analysis and sync"
 
 ## Blocked / owner
 - [ ] T007 Owner-licensed real track: analysis + approved synced render
+
+## Phase: US4 classical rework (owner request 2026-11-24)
+- [X] T008 [P] [US4] Synthetic classical tests (soft attacks + accelerando, pp→ff swell, sections) in tests/test_audio_classical.py
+- [X] T009 [US4] Sub-band (Patin-style) onset strength, local tempo curve with prior, DP beat tracker, section novelty in src/morph_studio/audio_classical.py
+- [X] T010 [US4] Single `analyze_audio` for all music (owner: no style switch); sections in `audio-visualize`
+- [X] T011 [US4] Run on Mozart 40/I; record in PROGRESS; commit
