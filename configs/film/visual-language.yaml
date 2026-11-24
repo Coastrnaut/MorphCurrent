@@ -3,10 +3,10 @@
 # bridge camera per act; adjacent acts always share at least one palette colour so act boundaries don't jump.
 # The owner picks a look after the A/B test (`look-test`); until then the default look is used.
 version: 1
-status: draft
+status: approved
 base_pack: engineering-noir
 default_look: copper-to-silicon
-selected: null
+selected: copper-to-silicon  # owner blanket approval 2026-11-24 (A/B not yet rendered; revisit after look-test)
 geometry:
   centroid_max: 0.08        # F12: subject centroid offset from frame centre
   scale_ratio: [0.75, 1.33] # F12: neighbour subject extent ratio

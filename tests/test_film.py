@@ -128,7 +128,7 @@ def test_build_storyboard_real_inputs():
     assert b[0]["subject"] in sb.anchors[0].prompt
     assert b[0]["morph_to_next"] in sb.transitions[0].prompt and "motion feel" in sb.transitions[0].prompt
     assert sb.audio.file is None and sb.style.pack == "engineering-noir"
-    assert sync_plan()["plan_sha256"] in header and "draft" in header
+    assert sync_plan()["plan_sha256"] in header and "status approved" in header
 
 
 def test_build_storyboard_audio_and_refusals(tmp_path):

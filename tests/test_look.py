@@ -53,7 +53,9 @@ def test_definition_valid_and_choice():
     language = lk.load_language(LANG, ACT_IDS)
     assert set(language["looks"]) == {"copper-to-silicon", "steel-accent"}
     name, look, how = lk.choose(language)
-    assert name == "copper-to-silicon" and how == "default (not owner-selected)"
+    assert name == "copper-to-silicon" and how == "owner-selected"
+    unselected = dict(language, selected=None)
+    assert lk.choose(unselected)[2] == "default (not owner-selected)"
     assert lk.choose(language, "steel-accent")[2] == "requested"
     with pytest.raises(lk.LookError, match="unknown look"):
         lk.choose(language, "neon")
@@ -212,7 +214,7 @@ def test_look_test(tmp_path):
 def test_cli(tmp_path, capsys):
     assert cli.main(["look-check", str(FILM)]) == 0
     out = json.loads(capsys.readouterr().out)
-    assert out["ok"] and out["selection"] == "default (not owner-selected)"
+    assert out["ok"] and out["selection"] == "owner-selected"
     assert cli.main(["look-check", str(FILM), "--look", "steel-accent"]) == 1
     capsys.readouterr()
     assert cli.main(["look-check", str(FILM), "--look", "neon"]) == 2

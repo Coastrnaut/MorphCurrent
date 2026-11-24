@@ -2,8 +2,10 @@
 # Generic, physically plausible depictions only (no brands, logos, trademarked designs or real people).
 # Accuracy is UNVERIFIED until the F33 review; the owner approves by filling `approval`.
 version: 1
-status: draft
-approval: null
+status: approved
+approval:
+  owner: owner
+  date: '2026-11-24'
 drafted_by: Claude (text-only drafting in a Claude session, 2026-11-24; no local LLM)
 eras:
 - natural electricity

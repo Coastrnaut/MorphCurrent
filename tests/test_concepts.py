@@ -48,10 +48,10 @@ def test_banned_terms():
 def test_real_bank_passes():
     rep = cc.check(BANK, target=96)
     assert rep["ok"], rep["problems"]
-    assert rep["total"] == 96 and rep["status"] == "draft"
+    assert rep["total"] == 96 and rep["status"] == "approved"  # owner blanket approval 2026-11-24
     assert list(rep["counts"]) == cc.ERAS and all(n >= 5 for n in rep["counts"].values())
     data = load()
-    assert data["approval"] is None
+    assert data["approval"] == {"owner": "owner", "date": "2026-11-24"}
     assert all(e["accuracy"] == "unverified" and "F33" in e["sources"] for e in data["entries"])
     assert "morph_to_next" not in data["entries"][-1]
 
@@ -112,7 +112,7 @@ def test_counts_against_target_and_plan(tmp_path):
 
 
 def test_approval_rules(tmp_path):
-    assert "approval" in mutate(tmp_path, lambda d: d.update(status="approved"))
+    assert "approval" in mutate(tmp_path, lambda d: d.update(status="approved", approval=None))
     assert "approval" in mutate(tmp_path, lambda d: d.update(status="approved", approval={"owner": "", "date": "2026-11-24"}))
     assert "approval" in mutate(tmp_path, lambda d: d.update(status="approved", approval={"owner": "x", "date": "24/11/2026"}))
     data = copy.deepcopy(load())
