@@ -61,7 +61,8 @@ def run_bridge_stage(dag_plan: dict, anchor_jobs: dict[str, BridgeJob], *, clien
             result.blocked[task_id] = f"BLOCKED: {exc}"
             continue
         plan = plan_bridge(bridge_request_for(task, start, end, profile), object_info, repo_root=repo_root)
-        if submit and budget is not None and not job_is_verified(runs_root, plan.job_id)                 and not budget.allow("bridge", task):
+        if (submit and budget is not None and not job_is_verified(runs_root, plan.job_id)
+                and not budget.allow("bridge", task)):
             result.stopped_at = task_id  # F17: budget reached before a new GPU submission
             break
         for anchor_id, role in ((task["from"], "start_image"), (task["to"], "end_image")):

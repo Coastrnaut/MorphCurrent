@@ -70,6 +70,8 @@ class Anchor(StrictModel):
     reference: str | None = None
     # F21: per-scene override of style-pack fields (lighting, palette, negative, ...)
     style_override: dict[str, Any] | None = None
+    # F19: optional chapter id; anchors of one chapter must be contiguous
+    chapter: str | None = Field(default=None, pattern=r"^[A-Za-z0-9][A-Za-z0-9 _.-]{0,62}$")
 
 
 class Correspondence(StrictModel):
@@ -123,6 +125,12 @@ class Storyboard(StrictModel):
                                      "must be an earlier anchor")
             elif anchor.reference:
                 raise ValueError(f"text_to_image anchor {anchor.id!r} cannot declare reference")
+        seen_chapters: list[str] = []
+        for anchor in self.anchors:
+            if anchor.chapter is not None and (not seen_chapters or seen_chapters[-1] != anchor.chapter):
+                if anchor.chapter in seen_chapters:
+                    raise ValueError(f"chapter {anchor.chapter!r} must be contiguous")
+                seen_chapters.append(anchor.chapter)
         if len(self.transitions) != len(self.anchors) - 1:
             raise ValueError("V1 transitions must exactly connect consecutive anchors")
         for i, transition in enumerate(self.transitions):

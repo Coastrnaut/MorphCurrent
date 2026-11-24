@@ -317,7 +317,8 @@ def run_anchor_chain(specs: list[AnchorSpec], *, client: ComfyClient, runs_root:
                                 height=height if "height" in bound else None,
                                 reference_image=reference_image, label=spec.id)
         plan = plan_anchor(request, object_info, repo_root=repo_root)
-        if submit and budget is not None and not job_is_verified(runs_root, plan.job_id)                 and not budget.allow("anchor", {"id": f"anchor:{spec.id}"}):
+        if (submit and budget is not None and not job_is_verified(runs_root, plan.job_id)
+                and not budget.allow("anchor", {"id": f"anchor:{spec.id}"})):
             result.stopped_at = spec.id  # F17: budget reached before a new GPU submission
             break
         job = run_anchor(plan, client, runs_root, submit=submit, retry=retry,

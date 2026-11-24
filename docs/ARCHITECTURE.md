@@ -71,6 +71,7 @@ For Wan length `L` at `F` fps, anchors are `(L-1)/F` seconds apart; a clip lasts
 
 The existing Qwen→Qwen-edit→Wan→QA→human review→FFmpeg pipeline is **GPU-demonstrated**; future features must extend those modules rather than replacing working code. See [the 40-feature ledger](SPECKIT_FEATURE_LEDGER.md) for acceptance gates and exact dependencies.
 
+- **Long-form sequencing (F19):** `longform.py` gives each stage a Merkle identity (inference-relevant fields + profiles + dependency identities) so `plan-diff` shows what an edit re-runs; optional contiguous `anchors[].chapter` feeds `timeline` (anchor/chapter timestamps, FFMETADATA1 chapters, proxy storyboard); `render --confirm-gpu` refuses before any submission if estimated outputs would breach `--min-free-gb`.
 - **Observability and cost (F11, F17):** benchmark per-stage latency and opt-in whole-GPU VRAM, account for unrelated processes, and use an idle-queue single-job scheduler. Keep current `--confirm-gpu` and safe crash/resume semantics.
 - **Continuity and transition intelligence (F12–F14, F16):** anchor framing/orientation constraints, physical correspondence plan, bounded multi-hop intermediate anchors and owner-labelled defect calibration. Preserve exact reference byte identity; QA metrics never silently replace human review.
 - **Audio synchronization (F15):** import only owner-authorized local audio, estimate tempo/downbeats with confidence and manual overrides, allocate 4n+1 frame budgets and record tempo/duration residuals before joining.

@@ -14,6 +14,7 @@ from typing import Callable
 from .anchors import AnchorSpec, anchor_image_path, run_anchor_chain
 from .comfy_client import ComfyClient
 from .dag import compile_plan
+from .longform import disk_preflight
 from .media import ProbeUnavailable, contact_sheet, probe_video
 from .perf import load_history
 from .pipeline import run_bridge_stage
@@ -59,7 +60,8 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
                accept_heuristics: bool = False, allow_busy_queue: bool = False,
                sample_vram: bool = False, poll_seconds: float = 2,
                probe: Callable[[Path], dict] = probe_video, max_jobs: int | None = None,
-               max_gpu_s: float | None = None) -> dict:
+               max_gpu_s: float | None = None, min_free_gb: float = 2.0,
+               disk_usage: Callable | None = None) -> dict:
     root = Path(repo_root)
     plan = build_plan(storyboard_path, profiles, root)
     if plan["blocked"]:  # preflight: nothing contacted, nothing written
@@ -78,6 +80,12 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
         history_file = root / "configs" / "perf_history.json"
         history = load_history(history_file) if history_file.is_file() else []
         budget = Budget(max_jobs, max_gpu_s, cost_function(plan, history))
+    if confirm_gpu:  # F19: refuse before any submission if outputs would fill the disk
+        done = {k for k, v in manifest.data.get("stages", {}).items() if v.get("state") == "verified"}
+        disk = disk_preflight(plan, runs_root, done=done, min_free_gb=min_free_gb,
+                              **({"disk_usage": disk_usage} if disk_usage else {}))
+        if not disk["ok"]:
+            return _finish(manifest, "blocked_disk", disk=disk)
     lock = RunLock(runs_root) if confirm_gpu else None
     if lock:
         lock.acquire()  # F17: one MorphCurrent GPU render per runs root

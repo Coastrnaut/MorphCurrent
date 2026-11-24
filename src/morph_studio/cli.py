@@ -150,7 +150,7 @@ def _render(args: argparse.Namespace) -> int:
                         profiles=profiles, confirm_gpu=args.confirm_gpu,
                         accept_heuristics=args.accept_heuristics,
                         allow_busy_queue=args.allow_busy_queue, sample_vram=args.sample_vram,
-                        max_jobs=args.max_jobs, max_gpu_s=args.max_gpu_s)
+                        max_jobs=args.max_jobs, max_gpu_s=args.max_gpu_s, min_free_gb=args.min_free_gb)
     print(json.dumps(result, indent=2, ensure_ascii=False))
     if result["status"] == "awaiting_review":
         print("REVIEW: inspect the clips/contact sheet, then `morphcurrent review RUN_DIR TASK approved` "
@@ -159,7 +159,7 @@ def _render(args: argparse.Namespace) -> int:
         print("PAUSED: budget reached before the next GPU job; re-run the same command (optionally with a "
               "new --max-jobs/--max-gpu-s) to continue without repeating finished stages.", file=sys.stderr)
     return {"complete": 0, "validated": 0, "blocked": 6, "awaiting_review": 7,
-            "rerender_needed": 7, "paused_budget": 8}.get(result["status"], 5)
+            "rerender_needed": 7, "paused_budget": 8, "blocked_disk": 9}.get(result["status"], 5)
 
 
 def _perf_report(args: argparse.Namespace) -> int:
@@ -307,6 +307,45 @@ def _brief_plan(args: argparse.Namespace) -> int:
     print(json.dumps({"out": str(out), **preview, "bridges": len(sequence.transitions),
                       "estimated_gpu_s": est.get("total_gpu_s"), "estimate_label": est.get("label"),
                       "blocked": plan["blocked"]}, indent=2))
+    return 0
+
+
+def _plan_diff(args: argparse.Namespace) -> int:
+    """Which stages an edit re-runs (offline)."""
+    from .longform import plan_diff
+    old, new = (compile_plan(load_storyboard(s), repo_root=args.repo_root) for s in (args.old, args.new))
+    report = plan_diff(old, new)
+    print(json.dumps(report if args.all else {**report, "stages": [r for r in report["stages"]
+                                                                    if r["status"] != "cached"]}, indent=2))
+    return 0
+
+
+def _timeline(args: argparse.Namespace) -> int:
+    """Anchor/chapter timestamps of the final movie; optional FFmpeg chapters and proxy storyboard."""
+    import yaml as _yaml
+    from .longform import chapter_index, ffmetadata, plan_bytes, proxy_storyboard
+    storyboard = load_storyboard(args.storyboard)
+    plan = compile_plan(storyboard, repo_root=args.repo_root)
+    index = chapter_index(storyboard, plan)
+    if args.ffmetadata:
+        Path(args.ffmetadata).write_text(ffmetadata(index), encoding="utf-8", newline="\n")
+        index["ffmetadata"] = args.ffmetadata
+    if args.write_proxy:
+        out = Path(args.write_proxy)
+        if out.exists():
+            raise ValueError(f"{out} exists; refusing to overwrite")
+        data = _yaml.safe_load(Path(args.storyboard).read_text(encoding="utf-8"))
+        out.write_text(_yaml.safe_dump(proxy_storyboard(data), sort_keys=False, allow_unicode=True),
+                       encoding="utf-8", newline="\n")
+        index["proxy_storyboard"] = str(out)
+    index["estimated_new_bytes"] = plan_bytes(plan)["total_bytes"]
+    print(json.dumps(index, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _storage(args: argparse.Namespace) -> int:
+    from .longform import storage_report
+    print(json.dumps(storage_report(args.runs_root), indent=2))
     return 0
 
 
@@ -507,6 +546,8 @@ def main(argv: list[str] | None = None) -> int:
     render.add_argument("--allow-busy-queue", action="store_true")
     render.add_argument("--sample-vram", action="store_true", help="Opt-in nvidia-smi memory sampling")
     render.add_argument("--max-jobs", type=int, help="Stop before more than N new GPU jobs (resumable)")
+    render.add_argument("--min-free-gb", type=float, default=2.0,
+                        help="Refuse GPU work if estimated outputs would leave less free disk (default 2)")
     render.add_argument("--max-gpu-s", type=float, help="Stop before estimated new GPU time exceeds S seconds")
     render.add_argument("--t2i-profile")
     render.add_argument("--edit-profile")
@@ -578,6 +619,18 @@ def main(argv: list[str] | None = None) -> int:
     sc.add_argument("--max-gpu-s", type=float)
     sc.add_argument("--max-jobs", type=int)
     sc.add_argument("--history", default="configs/perf_history.json")
+    pd = subs.add_parser("plan-diff", help="Which stages an edited storyboard re-runs, and why (offline)")
+    pd.add_argument("old")
+    pd.add_argument("new")
+    pd.add_argument("--all", action="store_true", help="Also list cached stages")
+    pd.add_argument("--repo-root", default=".")
+    tl = subs.add_parser("timeline", help="Anchor/chapter timestamps, FFmpeg chapters, proxy storyboard (offline)")
+    tl.add_argument("storyboard")
+    tl.add_argument("--ffmetadata", help="Write an FFMETADATA1 chapter file")
+    tl.add_argument("--write-proxy", help="Write a 640x368 '-proxy' preview storyboard")
+    tl.add_argument("--repo-root", default=".")
+    stg = subs.add_parser("storage", help="Bytes used in the runs root by job kind/state (read-only)")
+    stg.add_argument("--runs-root", default="outputs/runs")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -681,6 +734,12 @@ def main(argv: list[str] | None = None) -> int:
             return _style(args)
         elif args.command == "brief-plan":
             return _brief_plan(args)
+        elif args.command == "plan-diff":
+            return _plan_diff(args)
+        elif args.command == "timeline":
+            return _timeline(args)
+        elif args.command == "storage":
+            return _storage(args)
         elif args.command == "schedule":
             return _schedule(args)
         elif args.command == "dag":

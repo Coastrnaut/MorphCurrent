@@ -74,6 +74,8 @@ def compile_plan(storyboard: Storyboard, *, profiles: dict[str, str] | None = No
             "width": render.width, "height": render.height,
             "depends_on": depends,
         }
+        if anchor.chapter is not None:  # F19; absent keeps older plan hashes unchanged
+            tasks[task_id]["chapter"] = anchor.chapter
         order.append(task_id)
 
     bridges = compile_timeline(storyboard)
