@@ -351,3 +351,10 @@ At the owner's request: removed AI steering documents and stale duplicates (`Aut
 ## Example anchors removed (2026-11-24)
 
 At the owner's request: deleted `assets/anchors/01_glass_orchid.jpg`, `02_metallic_butterfly.jpg`, the staging helper `scripts/windows/stage_example_anchors.py` and its test; removed the `.gitignore` exceptions and doc mentions (EXPERIMENTS fixture section, ledger, CLAUDE.md). Bridge tests now use generated temp images; the JPEG integrity test uses an FFmpeg-made frame. The two filenames remain only as literals inside the owner's real `workflows/03_wan22_flf2v.json` export and the captured `/object_info` fixtures (ComfyUI input-folder names; MorphCurrent patches them per job). Earlier entries above mention the files as history. Tests: 192 passed.
+
+## MC-RUN-002 — phoenix transition fix (2026-11-24)
+
+- Changed `configs/sequences/organic-machines.yaml`: phoenix prompt now frontal, centered, wings spread to match the butterfly, with a negative prompt (side view, profile, walking, off-center); butterfly→phoenix bridge `mode: direct`, `motion: static`, prompt for a fixed front-facing transformation (was a rising orbit).
+- `render … --confirm-gpu --sample-vram` (new plan `ba2d9dbe…`): orchid, butterfly and orchid→butterfly **reused** with no new prompts; new phoenix `52d69920…` (image `148c0638…5844`) and bridge `4cd0b1bc…` (clip `896df441…7aa5`, 496.8 s). Owner pre-approved both bridges in chat; the same process joined `final/movie.mp4`: 129 frames, 832×480, 16 fps, 8.0625 s, seam diff 1.02, no crossfade, SHA-256 `ce687958…99ab`.
+- Visual: the side-on cut is gone; transition stays centered and continuous (brief inward wing fold ~frames 32–40). Sampled VRAM: baseline 35,604, peak 47,838 MiB (all processes). Selective rerender (F08 goal: rerender only the affected anchor/bridge) demonstrated on real hardware.
+- Still open: clean from-scratch reproducibility run.
