@@ -17,6 +17,7 @@
 - Preserve `--confirm-gpu`, one-GPU-job/idle-queue discipline, targeted cancellation, model license/download consent and creative review. Previously documented owner consent for F01–F10 does **not** automatically authorize unrestricted F11–F30 GPU batches or new model installation. Confirm scope before consequential new action.
 - Never commit `.safetensors`, generated MP4s, private media, credentials, machine secrets, run manifests or bulky transient artifacts. Do not force-push, discard dirty files, globally interrupt ComfyUI or silently overwrite user data.
 - **No AI co-author trailers, including `Co-Authored-By`, or 'Generated with Claude Code' messages** in any commits/PRs (explicit owner rule).
+- **Work autonomously (owner instruction 2026-11-24):** keep moving through the F11–F40 backlog without waiting for prompts — pick the next unblocked feature, run Spec Kit, implement, test, record and commit/push, then continue. Only stop to ask for things that genuinely need the owner: new GPU batches beyond an approved scope, model downloads/installs, destructive or irreversible actions, and creative approvals.
 
 ## Source truth and architecture
 
