@@ -318,3 +318,17 @@ def test_replay_with_consent_reproduces(image_repo):
     assert all(v == "identical" for k, v in statuses.items() if k != "final:movie")
     assert statuses["final:movie"] == "not_verified"  # awaiting review: not joined yet
     assert out["comparison"]["verdict"] == "incomplete"
+
+
+def test_validation_replay_leaves_fresh_root_empty(image_repo, tmp_path):
+    import yaml
+    from morph_studio.release import replay
+    data = yaml.safe_load((REPO / "configs/sequences/organic-machines.yaml").read_text(encoding="utf-8"))
+    sb = image_repo / "sb.yaml"
+    sb.write_text(yaml.safe_dump(data), encoding="utf-8")
+    fresh = image_repo / "fresh"
+    out = replay(sb, tmp_path, fresh, FakeComfy().client, repo_root=image_repo,
+                 profiles={"text_to_image": "configs/profiles/test_t2i.binding.json",
+                           "reference_edit": "configs/profiles/test_edit.binding.json"})
+    assert out["render"]["status"] == "validated" and out["render"]["gpu_jobs"] == {"anchors": 3, "bridges": 2}
+    assert not fresh.exists() or not any(fresh.iterdir())

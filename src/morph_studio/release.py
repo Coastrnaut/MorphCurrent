@@ -128,10 +128,14 @@ def compare_runs(a: str | Path, b: str | Path, frames: bool = False) -> dict:
 def replay(storyboard: str | Path, reference: str | Path, runs_root: str | Path,
            client_factory: Callable, *, confirm_gpu: bool = False, frames: bool = False, **render_kw) -> dict:
     """Render into a fresh, empty runs root (GPU only with consent), then compare to ``reference``."""
-    from .render import run_render
+    from .render import dry_run, run_render
     root = Path(runs_root)
     if root.exists() and any(root.iterdir()):
         raise ReleaseError(f"{root} is not empty; replay needs a fresh, empty runs root")
+    if not confirm_gpu:  # validate only: write nothing, so the fresh root stays usable for the real replay
+        report = dry_run(storyboard, render_kw.get("profiles"), render_kw.get("repo_root", "."))
+        return {"render": {"status": "validated" if report["status"] == "ready" else "blocked",
+                           "blocked": report["blocked"], "gpu_jobs": report["gpu_jobs"]}}
     result = run_render(storyboard, client_factory, runs_root=root, confirm_gpu=confirm_gpu, **render_kw)
     out = {"render": result}
     if result.get("status") in ("complete", "awaiting_review") and confirm_gpu:

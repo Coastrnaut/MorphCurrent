@@ -69,3 +69,7 @@ MVP = US1 run comparison; then audit, backup/restore, matrix.
 - [X] T016 Test replay with GPU consent (fake ComfyUI) into an empty runs root, compared against a prior run of the same storyboard, in tests/test_release.py per FR-003, US1/AC4 (partial)
 - [X] T017 Make `replay` CLI exit codes follow the render exit-code table when the render does not finish, in src/morph_studio/cli.py per contracts/cli.md (partial)
 - [X] T018 Roll back already-moved folders if restore fails mid-way, with a test, in src/morph_studio/release.py per US3/AC2 (partial)
+
+## Phase 10: Convergence (found during the owner-approved replay)
+
+- [X] T019 Validation-only `replay` must not write into the fresh runs root (it wrote a run manifest, making the root non-empty for the real replay); use `dry_run` and test that the root stays empty, in src/morph_studio/release.py and tests/test_release.py per FR-003 (contradicts)
