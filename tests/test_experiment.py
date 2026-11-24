@@ -258,6 +258,7 @@ def test_ratings_and_report(repo):
     assert len(rep["unrated"]) == 13 - 4
     lvl = rep["levels"]["length"]["65"]
     assert lvl["rated"] == 4 and lvl["mean_rating"] == pytest.approx(4.25)
+    assert lvl["n"] == 7  # 6 factor candidates + the baseline, whose exported length is 65
     assert "observational" in rep["caveat"].lower()
     md = (out / "report.md").read_text(encoding="utf-8")
     assert "Pareto" in md and "Controls" in md and "observational" in md.lower()

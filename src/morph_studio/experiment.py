@@ -387,6 +387,17 @@ def _mean(values: list) -> float | None:
     return round(sum(vals) / len(vals), 3) if vals else None
 
 
+def _effective(c: dict, factor: str):
+    """A candidate's effective value for a factor (the baseline uses the workflow's exported value)."""
+    if factor in c["levels"]:
+        return c["levels"][factor]
+    if factor == "length":
+        return c["frames"]
+    if factor in ("width", "height"):
+        return c[factor]
+    return c["settings"].get(factor)
+
+
 def report(defn: Definition, *, out_root: str | Path, repo_root: str | Path = ".") -> dict:
     candidates = {c["id"]: c for c in design(defn, [], repo_root=repo_root)}
     out = out_dir_for(defn, out_root)
@@ -404,7 +415,7 @@ def report(defn: Definition, *, out_root: str | Path, repo_root: str | Path = ".
     for factor, values in defn.factors.items():
         levels[factor] = {}
         for value in values:
-            ids = [i for i, c in candidates.items() if c["levels"].get(factor) == value and i in results]
+            ids = [i for i, c in candidates.items() if _effective(c, factor) == value and i in results]
             rows = [results[i] for i in ids if results[i]["status"] == "done"]
             levels[factor][str(value)] = {
                 "n": len(ids), "rated": sum(1 for i in ids if i in ratings),
