@@ -70,4 +70,5 @@ def test_first_real_video_baseline_and_refinement_documented():
     assert "a638f6e1d58d876670ddc72c0bb773f9f6c83d93076ac3a9403c41618823120c" in baseline
     assert "NOT MEASURED" in baseline or "not retrieved" in baseline
     assert "RENDER_BASELINE_001.md" in progress and "RENDER_BASELINE_001.md" in experiments
-    assert "not yet rendered" in progress
+    assert "MC-FLF2V-002" in progress and "MC-FLF2V-003" in progress
+    assert "not yet rendered" not in progress
