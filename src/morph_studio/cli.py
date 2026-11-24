@@ -317,6 +317,52 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _soundtrack(args: argparse.Namespace) -> int:
+    """F37 sync verification, animatic, captions, narration timing and beat-map review (offline)."""
+    from . import soundtrack as st
+    from .schema import load_storyboard
+    out_root = Path("outputs")
+    try:
+        if args.command == "sync-report":
+            out = st.sync_report(args.storyboard, args.plan)
+            code = 0 if out["gate"] else 1
+        elif args.command == "warp-report":
+            out = st.warp_report(args.plan)
+            code = 0 if out["ok"] else 1
+        elif args.command == "animatic":
+            name = load_storyboard(args.storyboard).name
+            target = Path(args.out) if args.out else out_root / "animatic" / f"{name}.mp4"
+            out = st.animatic(args.storyboard, target, plan=args.plan, run_dir=args.run, audio=args.audio,
+                              licensed=args.audio_licensed, offset=args.offset)
+            code = 0 if out["ok"] else 1
+        elif args.command == "captions":
+            name = load_storyboard(args.storyboard).name
+            target = Path(args.out) if args.out else out_root / "captions" / f"{name}.srt"
+            cues = st.captions(args.storyboard, args.bank)
+            out = {"out": str(st.srt_write(cues, target)), "cues": len(cues)}
+            code = 0
+        elif args.command == "narration-check":
+            name = load_storyboard(args.storyboard).name
+            target = Path(args.out) if args.out else out_root / "narration" / f"{name}.srt"
+            out = st.narration_check(args.script, args.storyboard, target)
+            code = 0 if out["ok"] else 1
+        elif args.command == "click-track":
+            target = Path(args.out) if args.out else out_root / "beatmap" / (Path(args.beatmap).stem + ".clicks.wav")
+            out = st.click_track(args.beatmap, target, music=args.music)
+            code = 0
+        else:
+            corrections = {int(k): float(v) for k, v in (c.split("=", 1) for c in args.correct)}
+            target = Path(args.out) if args.out else out_root / "beatmap" / (Path(args.beatmap).stem + ".verified.json")
+            out = st.verify_beatmap(args.beatmap, target, owner=args.owner, corrections=corrections)
+            out["out"] = str(target)
+            code = 0
+    except (st.SoundtrackError, FileExistsError) as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return code
+
+
 def _production(args: argparse.Namespace) -> int:
     """F36 production budget, approvals, batch storyboards and status (offline; renders stay owner-run)."""
     from . import production as pr
@@ -1204,6 +1250,36 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    srp = subs.add_parser("sync-report", help="Anchor-vs-music sync report for a frame-locked storyboard (F37)")
+    srp.add_argument("storyboard")
+    srp.add_argument("--plan", default="configs/film/sync-plan.json")
+    wrp = subs.add_parser("warp-report", help="Energy-warp speed range and pinned endpoints per bridge")
+    wrp.add_argument("--plan", default="configs/film/sync-plan.json")
+    anp = subs.add_parser("animatic", help="Stills/plain cards cut at anchor times, muxed with licensed audio")
+    anp.add_argument("storyboard")
+    anp.add_argument("--plan", default="configs/film/sync-plan.json")
+    anp.add_argument("--run", default=None)
+    anp.add_argument("--audio", default=None)
+    anp.add_argument("--audio-licensed", action="store_true")
+    anp.add_argument("--offset", type=float, default=0.0)
+    anp.add_argument("--out", default=None)
+    cap = subs.add_parser("captions", help="SRT caption track naming each anchor's subject")
+    cap.add_argument("storyboard")
+    cap.add_argument("--bank", default="configs/concepts/engineering-film.yaml")
+    cap.add_argument("--out", default=None)
+    nrc = subs.add_parser("narration-check", help="Check narration line timing; write an SRT")
+    nrc.add_argument("script")
+    nrc.add_argument("storyboard")
+    nrc.add_argument("--out", default=None)
+    clk = subs.add_parser("click-track", help="Clicks on beat-map downbeats (optionally under the music)")
+    clk.add_argument("beatmap")
+    clk.add_argument("--music", default=None)
+    clk.add_argument("--out", default=None)
+    bmv = subs.add_parser("beatmap-verify", help="Apply corrections and record the owner's beat-map verification")
+    bmv.add_argument("beatmap")
+    bmv.add_argument("--owner", required=True)
+    bmv.add_argument("--correct", action="append", default=[], help="INDEX=SECONDS (repeatable)")
+    bmv.add_argument("--out", default=None)
     hin = subs.add_parser("history-ingest", help="Add measured, verified job timings to the cost history (F36)")
     hin.add_argument("--runs-root", default="outputs/runs")
     hin.add_argument("--history", default="configs/perf_history.json")
@@ -1454,6 +1530,9 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("sync-report", "warp-report", "animatic", "captions", "narration-check",
+                              "click-track", "beatmap-verify"):
+            return _soundtrack(args)
         elif args.command == "history-ingest" or args.command.startswith("prod-"):
             return _production(args)
         elif args.command.startswith("lineage"):
