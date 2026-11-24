@@ -20,6 +20,7 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .perf import build_report as build_perf_report, estimate as estimate_plan, load_history
 from .gates import check_gpu_gate
 from .qa import analyze_clip, record_review
 from .render import dry_run, render_status, run_render
@@ -144,6 +145,19 @@ def _render(args: argparse.Namespace) -> int:
               "and re-run the same render command.", file=sys.stderr)
     return {"complete": 0, "validated": 0, "blocked": 6, "awaiting_review": 7,
             "rerender_needed": 7}.get(result["status"], 5)
+
+
+def _perf_report(args: argparse.Namespace) -> int:
+    """Local-file performance report for a run (no ComfyUI, no GPU)."""
+    print(json.dumps(build_perf_report(args.run_dir, args.models_cache), indent=2, default=str))
+    return 0
+
+
+def _estimate(args: argparse.Namespace) -> int:
+    """Offline GPU-time estimate for a storyboard from measured history."""
+    plan = compile_plan(load_storyboard(args.storyboard))
+    print(json.dumps(estimate_plan(plan, load_history(args.history), extrapolate=args.extrapolate), indent=2))
+    return 0
 
 
 def _dag(args: argparse.Namespace) -> int:
@@ -348,6 +362,14 @@ def main(argv: list[str] | None = None) -> int:
     review.add_argument("task", help="e.g. bridge:orchid->butterfly")
     review.add_argument("decision", choices=["approved", "rejected", "pending"])
     review.add_argument("--note")
+    perf = subs.add_parser("perf-report", help="Measured stage times and whole-GPU VRAM for a run (local files only)")
+    perf.add_argument("run_dir")
+    perf.add_argument("--models-cache", default="outputs/model_hashes.json")
+    est = subs.add_parser("estimate", help="Estimated GPU time for a storyboard from measured history (offline)")
+    est.add_argument("storyboard")
+    est.add_argument("--history", default="configs/perf_history.json")
+    est.add_argument("--extrapolate", action="store_true",
+                     help="Scale from the nearest measured size when no exact match exists (labelled)")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -427,6 +449,10 @@ def main(argv: list[str] | None = None) -> int:
             return _qa(args)
         elif args.command == "review":
             return _review(args)
+        elif args.command == "perf-report":
+            return _perf_report(args)
+        elif args.command == "estimate":
+            return _estimate(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":

@@ -1,0 +1,135 @@
+{
+ "schema": 1,
+ "source": "execution_seconds from ComfyUI /history recorded in job.json (RTX A6000, ComfyUI 0.46.0); reused stages excluded",
+ "entries": [
+  {
+   "run": "MC-FLF2V-003",
+   "kind": "bridge",
+   "width": 640,
+   "height": 368,
+   "frames": 65,
+   "exec_s": 234.038,
+   "job": "4b5d5805e77bcbe0"
+  },
+  {
+   "run": "MC-RUN-001",
+   "kind": "anchor",
+   "method": "text_to_image",
+   "width": 832,
+   "height": 480,
+   "exec_s": 18.667,
+   "job": "8c2cb744e2a7eeea",
+   "task": "anchor:orchid"
+  },
+  {
+   "run": "MC-RUN-001",
+   "kind": "anchor",
+   "method": "reference_edit",
+   "width": 832,
+   "height": 480,
+   "exec_s": 51.712,
+   "job": "c773ff52fdee51bd",
+   "task": "anchor:butterfly"
+  },
+  {
+   "run": "MC-RUN-001",
+   "kind": "anchor",
+   "method": "reference_edit",
+   "width": 832,
+   "height": 480,
+   "exec_s": 49.487,
+   "job": "72c76af4a929aa82",
+   "task": "anchor:phoenix"
+  },
+  {
+   "run": "MC-RUN-001",
+   "kind": "bridge",
+   "width": 832,
+   "height": 480,
+   "frames": 65,
+   "exec_s": 497.195,
+   "job": "9785f0ae3ba196df",
+   "task": "bridge:orchid->butterfly"
+  },
+  {
+   "run": "MC-RUN-001",
+   "kind": "bridge",
+   "width": 832,
+   "height": 480,
+   "frames": 65,
+   "exec_s": 494.602,
+   "job": "61df594564c2e37c",
+   "task": "bridge:butterfly->phoenix"
+  },
+  {
+   "run": "MC-RUN-002",
+   "kind": "anchor",
+   "method": "reference_edit",
+   "width": 832,
+   "height": 480,
+   "exec_s": 54.061,
+   "job": "52d69920fbc6b626",
+   "task": "anchor:phoenix"
+  },
+  {
+   "run": "MC-RUN-002",
+   "kind": "bridge",
+   "width": 832,
+   "height": 480,
+   "frames": 65,
+   "exec_s": 496.805,
+   "job": "4cd0b1bcbe51520d",
+   "task": "bridge:butterfly->phoenix"
+  },
+  {
+   "run": "MC-RUN-003",
+   "kind": "anchor",
+   "method": "text_to_image",
+   "width": 832,
+   "height": 480,
+   "exec_s": 20.154,
+   "job": "8c2cb744e2a7eeea",
+   "task": "anchor:orchid"
+  },
+  {
+   "run": "MC-RUN-003",
+   "kind": "anchor",
+   "method": "reference_edit",
+   "width": 832,
+   "height": 480,
+   "exec_s": 51.752,
+   "job": "c773ff52fdee51bd",
+   "task": "anchor:butterfly"
+  },
+  {
+   "run": "MC-RUN-003",
+   "kind": "anchor",
+   "method": "reference_edit",
+   "width": 832,
+   "height": 480,
+   "exec_s": 49.913,
+   "job": "52d69920fbc6b626",
+   "task": "anchor:phoenix"
+  },
+  {
+   "run": "MC-RUN-003",
+   "kind": "bridge",
+   "width": 832,
+   "height": 480,
+   "frames": 65,
+   "exec_s": 495.96,
+   "job": "9785f0ae3ba196df",
+   "task": "bridge:orchid->butterfly"
+  },
+  {
+   "run": "MC-RUN-003",
+   "kind": "bridge",
+   "width": 832,
+   "height": 480,
+   "frames": 65,
+   "exec_s": 494.066,
+   "job": "4cd0b1bcbe51520d",
+   "task": "bridge:butterfly->phoenix"
+  }
+ ]
+}

@@ -95,7 +95,9 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
         finally:
             if sampler:
                 sampler.__exit__(None, None, None)
-                manifest.record("vram", {"stage": "anchors+bridges", **sampler.summary()})
+                samples_file = sampler.write(manifest.dir / "vram_samples.json")
+                manifest.record("vram", {"stage": "anchors+bridges", "samples_file": samples_file.name,
+                                         **sampler.summary()})
     for task_id, job in bridges.jobs.items():
         manifest.record_stage(task_id, job)
     if not bridges.complete:

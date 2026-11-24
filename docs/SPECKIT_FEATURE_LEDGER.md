@@ -120,7 +120,7 @@ These original ten scope definitions and existing specification directories are 
 
 | ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
 |---|---|---|---|---|
-| **F11** | `specs/011-measured-gpu-benchmarks/` (proposed) | F07, F10 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F11** | `specs/011-measured-gpu-benchmarks/` (created) | F07, F10 | P0 | **OFFLINE-PASS** — `perf-report`, `estimate`, timestamped whole-GPU samples; GPU benchmark matrix + Wan hashing await owner approval |
 | **F12** | `specs/012-reference-anchor-continuity/` (proposed) | F04, F08 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F13** | `specs/013-physical-morph-choreography/` (proposed) | F12, F08 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F14** | `specs/014-adaptive-transition-ladders/` (proposed) | F12, F13, F05 | P1 | **PLANNED — NOT IMPLEMENTED** |
@@ -153,6 +153,8 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 **Tests / evidence:** Mock nv-smi samples including missing intervals and concurrent external process; numerical report and no fake per-process peaks; real A6000 samples only when owner authorizes a bounded run; regression with MC-RUN-001/002 historical data.
 
 **Acceptance gate:** Report explicitly distinguishes MEASURED / ESTIMATED / NOT MEASURED; no unapproved model hashing or disruptive jobs.
+
+**Status (2026-11-24):** OFFLINE-PASS in `specs/011-measured-gpu-benchmarks` — see docs/PROGRESS.md F11 entry. Blocked on owner approval: T010 Wan SHA-256 (`models-hash --confirm-io`), T011 sampled cold/warm and 640×368 vs 832×480 benchmark renders.
 
 ### F12 — Composition-aware anchor generation and reference-edit QA
 

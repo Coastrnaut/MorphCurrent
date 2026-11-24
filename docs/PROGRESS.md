@@ -400,3 +400,19 @@ At the owner's request: deleted `assets/anchors/01_glass_orchid.jpg`, `02_metall
 | F30 | PLANNED | Not created — proposed `specs/030-*` | NOT RUN; NOT IMPLEMENTED | See ledger F30 acceptance criteria |
 
 **Historical correction:** The fresh-root reproducibility requirement formerly marked pending is now met by MC-RUN-003, not a blocker for F11. New F20/F30 release/long-form gates are separate future work.
+
+## F11 — Measured performance and provenance, offline slice (2026-11-24)
+
+**Reconciliation before work.** HEAD `64395b0` (= origin/main, clean; includes the owner's 30-feature roadmap commits `34c6508`, `64395b0`). ComfyUI queue empty (GET `/queue`). `speckit.py --verify` → ready, no problems. Offline baseline: **196 passed, 1 deselected** (historical 193 superseded by the roadmap's doc tests).
+
+**Spec Kit.** `create_new_feature.py --json --number 11 --short-name measured-gpu-benchmarks` → `specs/011-measured-gpu-benchmarks`; spec, checklist, plan, research, data-model, contracts/perf-cli.md, quickstart, tasks 9/11 (T010–T011 owner-gated).
+
+**Built.**
+- `VramSampler` keeps UTC-stamped samples and `render --sample-vram` now writes `RUN_DIR/vram_samples.json` (summary in the manifest unchanged + `samples_file`).
+- `src/morph_studio/perf.py`: `analyze_samples` (gaps > 3× interval, coverage %, external baseline = median of samples before the first submission, peak/rise), `collect_stages` (exec from ComfyUI `/history`, wall = submitted→verified, overhead, reused detection by job creation time), `stage_window_peaks` (whole-GPU peak inside each fresh stage's submitted→completed window ±1 s), `build_report` (+ provenance: ComfyUI/PyTorch/GPU from snapshots, model SHA-256 from the hash cache or NOT MEASURED), `estimate` (median of matching measured history; NO DATA otherwise; `--extrapolate` labelled ESTIMATED-EXTRAPOLATED).
+- `configs/perf_history.json`: 13 measured stages from MC-FLF2V-003 and MC-RUN-001..003 (reused stages excluded).
+- CLI: `perf-report RUN_DIR`, `estimate STORYBOARD` — local files only.
+
+**Results.** Offline **206 passed, 1 deselected**. `estimate configs/sequences/organic-machines.yaml` → orchid 19.4 s, butterfly 51.7 s, phoenix 51.7 s, bridges 496.0 s each, total **1,114.8 s ESTIMATED**. `perf-report outputs/repro/run-ba2d9dbedb6189be` (MC-RUN-003) → exec 20.2/51.8/49.9/496.0/494.1 s = 1,111.8 s MEASURED, per-stage overhead 0.1–1.8 s; VRAM summary-only (pre-F11 run, no timestamped samples → window peaks NOT MEASURED); Wan/UMT5 SHA-256 NOT MEASURED. Correction: MC-RUN-002 phoenix execution was 54.1 s (earlier note said 50 s).
+
+**Blocked (owner approval):** T010 `models-hash --confirm-io` (≈37 GB disk read, idle queue); T011 sampled benchmark renders (cold/warm 832×480, 640×368 variant) — each ≈19 min of GPU. **Next:** F12 offline (anchor geometry contract) while F11 GPU items wait.

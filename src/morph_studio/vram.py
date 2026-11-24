@@ -6,11 +6,13 @@ guaranteed true peak between samples. ``/system_stats`` snapshots are never used
 """
 from __future__ import annotations
 
+import json
 import shutil
 import subprocess
 import threading
 import time
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Callable
 
 LABEL = "overall GPU memory used (all processes), sampled via nvidia-smi"
@@ -42,6 +44,7 @@ class VramSampler:
         self.gpu_index = gpu_index
         self.query = query
         self.samples: list[tuple[float, int]] = []
+        self.samples_utc: list[tuple[float, int]] = []  # (UTC epoch seconds, used MiB), F11
         self.total_mib: int | None = None
         self.started: str | None = None
         self.ended: str | None = None
@@ -56,6 +59,7 @@ class VramSampler:
             self.unavailable = self.unavailable or out is None
             return
         self.samples.append((time.monotonic(), parsed[0]))
+        self.samples_utc.append((round(time.time(), 3), parsed[0]))
         self.total_mib = parsed[1]
 
     def _loop(self) -> None:
@@ -76,6 +80,14 @@ class VramSampler:
             self._thread.join(timeout=self.interval * 4 + 10)
         self.sample_once()
         self.ended = datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+    def write(self, path: str | Path) -> Path:
+        """Persist the UTC-stamped samples (whole-GPU) for later per-stage analysis."""
+        target = Path(path)
+        target.write_text(json.dumps({"schema": 1, "label": LABEL, "interval_s": self.interval,
+                                      "gpu_index": self.gpu_index, "total_mib": self.total_mib,
+                                      "samples": self.samples_utc}) + "\n", encoding="utf-8")
+        return target
 
     def summary(self) -> dict:
         if not self.samples:
