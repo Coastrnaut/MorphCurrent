@@ -150,7 +150,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | F03 | `specs/003-first-anchor-t2i` | OFFLINE-PASS; GPU BLOCKED | `anchor` CLI + `anchors.py` on the shared bridge executor; image integrity checks |
 | F04 | `specs/004-reference-edit-anchors` | OFFLINE-PASS; GPU BLOCKED | `run_anchor_chain`, explicit `independent_t2i`, contact sheet |
 | F05 | `specs/005-storyboard-task-dag` | COMPLETE (offline feature) | `dag.py` + `morphcurrent dag`; 16-multiple size check |
-| F06 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F06 | `specs/006-generated-anchor-bridges` | OFFLINE-PASS; GPU BLOCKED | `pipeline.run_bridge_stage` on the unchanged Wan bridge path |
 | F07 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F08 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F09 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
@@ -223,3 +223,11 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 **Built.** `src/morph_studio/dag.py` `compile_plan()` + `morphcurrent dag STORYBOARD` (no network): tasks `anchor:<id>` (method, capability, positive = anchor prompt + style description, negative, seed + `seed_source`, size, dependency on the reference), `bridge:<from>-><to>` (4n+1 frames from beats/BPM/fps via `timeline.py`, seed, prompt, candidates, timing error; depends on both endpoint anchors, so B is one task used by two bridges), `final:movie` (unique frames `1+Σ(L−1)`, anchor span, nominal duration, delivery fps, optional audio, verified-seam join rule). Requirements list per capability with profile existence; `plan_sha256` over canonical task content. Schema: render width/height must be multiples of 16 (Wan step 16).
 
 **Results.** Offline **155 passed, 1 deselected**. `morphcurrent dag configs/sequences/organic-machines.yaml` → plan `cefb16ae…faea8`, order orchid → butterfly → phoenix → two bridges → final, 129 unique frames, blocked: `text_to_image` and `reference_edit` profiles missing (expected until F02).
+
+## F06 — Generated anchors → Wan bridges, offline slice (2026-11-24)
+
+**Spec Kit.** `specs/006-generated-anchor-bridges` (`--number 6`); tasks 4/5 (T005 GPU blocked).
+
+**Built.** `src/morph_studio/pipeline.py` `run_bridge_stage(dag_plan, anchor_jobs, …)`: for each DAG bridge task, endpoints are `anchor_image_path()` of verified anchor jobs (SHA re-checked), the request uses the task's prompt/seed/length/fps/size and the Wan profile from the plan requirements, and execution is the unchanged `plan_bridge` + `run_bridge` (MC-FLF2V-003 path). Raises if one anchor id appears with two byte versions; records anchor job IDs and `candidates_requested` (multi-candidate ranking is F08). Unverified anchors block their bridges.
+
+**Results.** Offline **160 passed, 1 deselected**: storyboard → 3 fake-generated anchors → 2 bridges whose inputs are exactly the generated SHAs (B shared), rerun 0 new `/prompt`, no-consent stops at `validated`, missing Wan model fails validation with no substitute, busy queue refused. Note: the storyboard renders at 832×480 while MC-FLF2V-003 used 640×368; 832×480 is schema-valid but **not GPU-tested**.
