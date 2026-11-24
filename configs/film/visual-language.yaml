@@ -1,0 +1,32 @@
+# F34 visual language for the full-song engineering film. Base look: the engineering-noir style pack
+# (dark studio, rim light, macro lens, centred subject). Each candidate look shifts palette, lighting and the
+# bridge camera per act; adjacent acts always share at least one palette colour so act boundaries don't jump.
+# The owner picks a look after the A/B test (`look-test`); until then the default look is used.
+version: 1
+status: draft
+base_pack: engineering-noir
+default_look: copper-to-silicon
+selected: null
+geometry:
+  centroid_max: 0.08        # F12: subject centroid offset from frame centre
+  scale_ratio: [0.75, 1.33] # F12: neighbour subject extent ratio
+drift:
+  act_spread_max: 60        # RGB 0-255 Euclidean distance of an anchor's subject colour from its act mean
+  boundary_jump_max: 70     # subject colour distance across an act boundary
+looks:
+  copper-to-silicon:
+    description: a warm-to-cool journey from copper and amber to silicon blue
+    acts:
+      spark:  {palette: [polished copper, hot amber, deep black], lighting: warm amber rim light with a faint electric glow, camera: slow_push}
+      power:  {palette: [polished copper, brushed steel, deep black], lighting: hard copper-toned rim light, industrial and heavy, camera: static}
+      signal: {palette: [brushed steel, phosphor green, deep black], lighting: cool steel rim light with a soft phosphor glow, camera: slow_push}
+      logic:  {palette: [phosphor green, silicon blue, deep black], lighting: crisp cool rim light, precise and clean, camera: static}
+      scale:  {palette: [silicon blue, brushed steel, deep black], lighting: cold blue rim light with subtle reflections, camera: slow_pull}
+  steel-accent:
+    description: brushed steel throughout with one accent colour per act
+    acts:
+      spark:  {palette: [brushed steel, hot amber], lighting: neutral rim light with amber accents, camera: static}
+      power:  {palette: [brushed steel, polished copper], lighting: neutral rim light with copper accents, camera: static}
+      signal: {palette: [brushed steel, phosphor green], lighting: neutral rim light with green accents, camera: static}
+      logic:  {palette: [brushed steel, silicon blue], lighting: neutral rim light with blue accents, camera: static}
+      scale:  {palette: [brushed steel, violet], lighting: neutral rim light with violet accents, camera: slow_pull}

@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+
+import yaml
 from pathlib import Path
 from pydantic import ValidationError
 
@@ -315,6 +317,34 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _look(args: argparse.Namespace) -> int:
+    """F34 engineering visual language: enforcement check, drift report, A/B test storyboards."""
+    from . import look as lk
+    from .dag import compile_plan
+    from .schema import load_storyboard
+    root = Path(args.repo_root)
+    try:
+        acts = [a["id"] for a in yaml.safe_load(Path(args.acts).read_text(encoding="utf-8"))["acts"]]
+        language = lk.load_language(args.language, acts)
+        if args.command == "look-check":
+            sb = load_storyboard(args.storyboard)
+            plan = compile_plan(sb, repo_root=root, storyboard_bytes=Path(args.storyboard).read_bytes())
+            out = lk.look_check(plan, sb, language, args.look)
+            code = 0 if out["ok"] else 1
+        elif args.command == "look-drift":
+            out = lk.drift_report(args.storyboard, args.run, language)
+            code = 0 if out["ok"] else 1
+        else:
+            out = {"files": lk.look_test(args.storyboard, language, act=args.act, count=args.count,
+                                         out_dir=args.out_dir)}
+            code = 0
+    except (lk.LookError, FileExistsError) as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return code
+
+
 def _accuracy(args: argparse.Namespace) -> int:
     """F33 technical-accuracy review: checklist, owner verdicts, text-free check, rejection impact, status."""
     from . import accuracy as ac
@@ -357,13 +387,14 @@ def _film(args: argparse.Namespace) -> int:
     from . import film as fm
     try:
         if args.command == "film-storyboard":
-            data = fm.write_storyboard(args.plan, args.bank, args.acts, args.out, audio=args.audio)
+            data = fm.write_storyboard(args.plan, args.bank, args.acts, args.out, audio=args.audio,
+                                       language=args.language or None, look=args.look)
             out = {"out": args.out, "anchors": len(data["anchors"]), "bridges": len(data["transitions"]),
                    "acts": list(dict.fromkeys(a["chapter"] for a in data["anchors"])),
                    "text_to_image": sum(a["generation"] == "text_to_image" for a in data["anchors"])}
         else:
             out = fm.film_report(args.storyboard, sync_plan=args.plan, history=args.history, repo_root=args.repo_root)
-    except (fm.FilmError, FileExistsError) as exc:
+    except (fm.FilmError, FileExistsError, ValueError) as exc:
         print(f"REFUSED: {exc}", file=sys.stderr)
         return 2
     print(json.dumps(out, indent=2, ensure_ascii=True))
@@ -1100,6 +1131,24 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    for name, help_text in (("look-check", "Check the film look is enforced in compiled prompts (F34)"),
+                            ("look-drift", "Subject colour and geometry drift of rendered anchors"),
+                            ("look-test", "Write two short A/B storyboards, one per candidate look")):
+        lsub = subs.add_parser(name, help=help_text)
+        if name == "look-test":
+            lsub.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
+            lsub.add_argument("--act", default="spark")
+            lsub.add_argument("--count", type=int, default=5)
+            lsub.add_argument("--out-dir", default="outputs/look-test")
+        else:
+            lsub.add_argument("storyboard")
+        if name == "look-check":
+            lsub.add_argument("--look", default=None)
+        if name == "look-drift":
+            lsub.add_argument("--run", required=True)
+        lsub.add_argument("--language", default="configs/film/visual-language.yaml")
+        lsub.add_argument("--acts", default="configs/film/acts.yaml")
+        lsub.add_argument("--repo-root", default=".")
     for name, help_text in (("accuracy-checklist", "Per-anchor accuracy checklist with concept context (F33)"),
                             ("accuracy-review", "Record an owner verdict (accurate / reject / waive) for an anchor image"),
                             ("accuracy-negatives", "Check every anchor/bridge prompt carries text/logo negatives"),
@@ -1132,6 +1181,9 @@ def main(argv: list[str] | None = None) -> int:
     fst.add_argument("--acts", default="configs/film/acts.yaml")
     fst.add_argument("--out", required=True)
     fst.add_argument("--audio", default=None, help="Owner-licensed track to reference (never fetched)")
+    fst.add_argument("--language", default="configs/film/visual-language.yaml",
+                     help="F34 visual language ('' for none)")
+    fst.add_argument("--look", default=None, help="Look name (default: owner-selected, else default_look)")
     frp = subs.add_parser("film-report", help="Dry-run film report: per-act frames, coverage, GPU-hour estimate")
     frp.add_argument("storyboard")
     frp.add_argument("--plan", default="configs/film/sync-plan.json")
@@ -1289,6 +1341,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command.startswith("look-"):
+            return _look(args)
         elif args.command.startswith("accuracy-"):
             return _accuracy(args)
         elif args.command in ("film-storyboard", "film-report"):
