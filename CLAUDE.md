@@ -1,6 +1,6 @@
 # CLAUDE.md — MorphCurrent engineering rules
 
-**System:** native Windows 11 + Python 3.11+ controller, independent ComfyUI Portable on `127.0.0.1:8188`, RTX A6000 48 GiB. **Goal:** automatically generate reference-linked images with Qwen, morph with validated Wan 2.2 FLF2V, inspect/review and assemble seam-safe videos. **Feature program:** F01–F40, with F01–F10 existing, F11–F30 next and F31–F40 the full-song, musically synchronized electrical & compute engineering film track (picture runs the whole song; anchors land on owner-verified downbeats; may exceed five minutes) (see F01–F30 history below). See `docs/SPECKIT_FEATURE_LEDGER.md`.
+**System:** native Windows 11 + Python 3.11+ controller, independent ComfyUI Portable on `127.0.0.1:8188`, RTX A6000 48 GiB. **Goal:** automatically generate reference-linked images with Qwen, morph with validated Wan 2.2 FLF2V, inspect/review and assemble seam-safe videos. **Feature program:** F01–F40, with F01–F10 existing, F11–F30 next and F31–F40 the full-song, musically synchronized electrical & compute engineering film track (picture runs the whole song; anchors land on chosen musical events from a visualizer-style audio feature track — onsets, sections, energy peaks, verified downbeats when reliable — with energy-warped playback; see docs/MUSIC_SYNC.md; may exceed five minutes) (see F01–F30 history below). See `docs/SPECKIT_FEATURE_LEDGER.md`.
 
 ## Session start: inspect reality before edits
 
