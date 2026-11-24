@@ -50,7 +50,7 @@ description: "Task list for F20 Production Acceptance and Reproducible Replay"
 
 ## Blocked / owner
 
-- [ ] T015 Owner-approved bounded fresh-root GPU replay of a multi-scene storyboard; release tag only after owner approval
+- [X] T015 Owner-approved bounded fresh-root GPU replay of a multi-scene storyboard; release tag only after owner approval
 
 ## Dependencies
 

@@ -148,6 +148,21 @@ def render_index(runs: list[dict], storyboards: list[str]) -> str:
                  + (f"<h2>Storyboard plans</h2><ul>{plans}</ul>" if plans else ""))
 
 
+def describe_flag(flag: object) -> str:
+    """Readable QA flag, e.g. ``subject collapse (frames 43-45, min area ratio 0.41)``."""
+    if not isinstance(flag, dict):
+        return str(flag).replace("_", " ")
+    name = str(flag.get("type", "flag")).replace("_", " ")
+    details = []
+    frames = flag.get("frames")
+    if isinstance(frames, list) and frames:
+        details.append(f"frames {frames[0]}-{frames[-1]}" if len(frames) > 1 else f"frame {frames[0]}")
+    for key, value in flag.items():
+        if key not in ("type", "frames"):
+            details.append(f"{key.replace('_', ' ')} {value}")
+    return f"{name} ({', '.join(details)})" if details else name
+
+
 def render_run_page(view: dict, csrf: str, message: str = "") -> str:
     run = view["run"]
     parts = [f"<h1>Run {e(run)}</h1>",
@@ -168,7 +183,7 @@ def render_run_page(view: dict, csrf: str, message: str = "") -> str:
             + "</figure>" for s in anchors)
         parts.append(f"<h2>Anchors</h2><div class=grid>{cells}</div>")
     for s in (x for x in view["stages"] if x["kind"] == "bridge"):
-        flags = ", ".join(map(str, s["qa_flags"]))
+        flags = "; ".join(describe_flag(f) for f in s["qa_flags"])
         review = s["review"] or {}
         buttons = "".join(f"<button type=submit name=decision value={d}>{d.capitalize()}</button>"
                           for d in DECISIONS)
@@ -182,7 +197,8 @@ def render_run_page(view: dict, csrf: str, message: str = "") -> str:
                else f"<p class=flag>{'clip missing' if s['media_missing'] else 'not generated'}</p>")
             + f"<form method=post action='/run/{e(run)}/review'>"
             f"<input type=hidden name=csrf value='{e(csrf)}'><input type=hidden name=task value='{e(s['task'])}'>"
-            f"<label>Note <input name=note maxlength=500 size=40></label> {buttons}</form></section>")
+            f"<label>Note <input name=note maxlength=500 size=40 aria-label='Note for {e(s['task'])}'></label> "
+            f"{buttons}</form></section>")
     if view["final"]:
         parts.append(f"<h2>Final movie</h2><video controls preload=metadata src='/media/{e(run)}/{view['final']}'"
                      " aria-label='Final movie'></video>")
@@ -271,7 +287,7 @@ def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, re
             self.send_response(status)
             for k, v in {"Content-Type": ctype, "Content-Length": str(len(body)),
                          "Content-Security-Policy": CSP, "X-Content-Type-Options": "nosniff",
-                         "X-Frame-Options": "DENY", "Referrer-Policy": "no-referrer",
+                         "X-Frame-Options": "DENY", "Referrer-Policy": "same-origin",
                          "Cache-Control": "no-store", **(extra or {})}.items():
                 self.send_header(k, v)
             self.end_headers()

@@ -75,7 +75,7 @@ def test_run_view_and_pages(runs):
     assert all(p.is_relative_to(runs.resolve()) for p in view["media"].values())
     page = render_run_page(view, CSRF)
     assert page.count("<video") == 2 and page.count("<img") == 4  # 3 anchors + contact sheet
-    assert "endpoint_mismatch_end" in page and "no_flags" in page
+    assert "endpoint mismatch end" in page and "no_flags" in page  # flags rendered readably (F18 walkthrough)
     assert "&lt;b&gt;organic&lt;/b&gt;" in page and "<b>organic" not in page  # escaped
     assert [r["run"] for r in list_runs(runs)] == [RUN]  # corrupt manifest skipped
     assert "No runs yet." in render_index([], [])
@@ -268,3 +268,23 @@ def test_no_render_path_no_logging_and_fast(runs, tmp_path):
     start = time.perf_counter()
     render_run_page(run_view(runs, RUN), CSRF)
     assert time.perf_counter() - start < 1.0
+
+
+def test_walkthrough_regressions(server, runs):
+    """Found in the owner-requested F18 walkthrough (2026-11-24)."""
+    from morph_studio.review_ui import describe_flag
+    # 1. Referrer-Policy no-referrer made Chromium send `Origin: null` on the same-page form post → 403.
+    resp, _ = request(server, "GET", f"/run/{RUN}")
+    assert resp.getheader("Referrer-Policy") == "same-origin"
+    port = server.server_address[1]
+    body, headers = form()
+    assert request(server, "POST", f"/run/{RUN}/review", body,
+                   {**headers, "Origin": f"http://localhost:{port}"})[0].status == 303
+    # 2. QA flags were shown as raw Python dicts.
+    assert describe_flag({"type": "subject_collapse", "frames": [43, 45], "min_area_ratio": 0.41}) == \
+        "subject collapse (frames 43-45, min area ratio 0.41)"
+    assert describe_flag("endpoint_mismatch_end") == "endpoint mismatch end"
+    page = render_run_page(run_view(runs, RUN), CSRF)
+    assert "{&#x27;" not in page and "endpoint mismatch end" in page
+    # 3. Both note fields were labelled just "Note".
+    assert "aria-label='Note for bridge:orchid-&gt;butterfly'" in page

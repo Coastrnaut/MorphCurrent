@@ -53,7 +53,7 @@ description: "Task list for F18 Local Creative Review Experience"
 
 ## Blocked / owner
 
-- [ ] T017 Owner walkthrough: plan, inspect and approve Orchid→Butterfly→Phoenix locally (acceptance gate)
+- [X] T017 Owner walkthrough: plan, inspect and approve Orchid→Butterfly→Phoenix locally (acceptance gate)
 
 ## Dependencies
 
@@ -74,3 +74,9 @@ MVP = US1 (read-only inspection). Then US2 (decisions + security), US3 (plan vie
 - [X] T018 Resolve final movie and contact sheet inside runs_root/<run>/ by basename (manifests store cwd-relative paths) and test a UI started with a different runs root in src/morph_studio/review_ui.py, tests/test_review_ui.py per FR-003, FR-007 (partial)
 - [X] T019 Add Constitution v2.0.0 principles VIII and IX to the Constitution Check in specs/018-local-creative-review-ui/plan.md per plan: Constitution Check (partial)
 - [X] T020 Test that a corrupt review.json or manifest yields an error page, not a crash, in tests/test_review_ui.py per Edge case "corrupt manifest/review file" (partial)
+
+## Phase 8: Convergence (found in the owner walkthrough)
+
+- [X] T021 Use `Referrer-Policy: same-origin` so Chromium sends the page origin on form posts (no-referrer produced `Origin: null` → 403 on real approvals), with a regression test, in src/morph_studio/review_ui.py per FR-005, FR-006 (contradicts)
+- [X] T022 Render QA flags readably (`describe_flag`) instead of raw dicts in src/morph_studio/review_ui.py per FR-003 (partial)
+- [X] T023 Give each note field a bridge-specific accessible name in src/morph_studio/review_ui.py per FR-011 (partial)
