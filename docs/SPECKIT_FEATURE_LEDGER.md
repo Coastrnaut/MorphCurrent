@@ -121,7 +121,7 @@ These original ten scope definitions and existing specification directories are 
 
 | ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
 |---|---|---|---|---|
-| **F11** | `specs/011-measured-gpu-benchmarks/` (created) | F07, F10 | P0 | **OFFLINE-PASS** — `perf-report`, `estimate`, timestamped whole-GPU samples; Wan model hashes verified; sampled benchmark matrix has no completed results committed |
+| **F11** | `specs/011-measured-gpu-benchmarks/` (created) | F07, F10 | P0 | **GPU-VERIFIED** — `perf-report`, `estimate`, timestamped whole-GPU samples; Wan model hashes verified; benchmark matrix (cold/warm 832×480, 640×368) completed 2026-11-24 — see PROGRESS F11 T011 |
 | **F12** | `specs/012-reference-anchor-continuity/` (created) | F04, F08 | P0 | **OFFLINE-PASS** — geometry heuristics recorded per child anchor, `anchor-check`; matched three-anchor owner approval pending |
 | **F13** | `specs/013-physical-morph-choreography/` (created) | F12, F08 | P0 | **OFFLINE-PASS** — `choreography` → compiled bridge prompts/negatives, `prompt-preview --variants`; fixed-seed GPU A/B pending |
 | **F14** | `specs/014-adaptive-transition-ladders/` (proposed) | F12, F13, F05 | P1 | **PLANNED — NOT IMPLEMENTED** |
@@ -354,7 +354,7 @@ These original ten scope definitions and existing specification directories are 
 
 **Goal:** plan and produce a ~5-minute local morph film that travels through the history and inner workings of electrical and compute engineering — for example lightning → Leyden jar → voltaic pile → dynamo → power grid and transformer → telegraph key and waveforms → vacuum tube → transistor → integrated-circuit die → microprocessor → GPU → data-center rack → AI accelerator — as one continuous chain of physical metamorphoses. F31–F40 *use* F11–F30 capabilities (long-form timeline, music sync, style packs, QA, scheduling, finishing) and add what this specific production needs. All start **PLANNED — NOT IMPLEMENTED**.
 
-**Planning numbers (ESTIMATED from measured history in `configs/perf_history.json`):** 300 s at 16 fps with 65-frame bridges (4 s anchor span) ≈ **75 bridges + 76 anchors**. At measured 832×480 rates (bridge ≈ 496 s, edited anchor ≈ 50 s) ≈ **11.4 GPU-hours**; at 640×368 (bridge ≈ 234 s) ≈ **6 GPU-hours**. 81-frame (5 s) bridges would cut the count to ≈ 60, but their cost is NO DATA until measured. Every batch needs explicit bounded owner approval.
+**Planning numbers (ESTIMATED from measured history in `configs/perf_history.json`, confirmed by the F11 benchmark runs of 2026-11-24 — bridge ≈ 496 s at 832×480, ≈ 239 s at 640×368):** 300 s at 16 fps with 65-frame bridges (4 s anchor span) ≈ **75 bridges + 76 anchors**. At measured 832×480 rates (bridge ≈ 496 s, edited anchor ≈ 50 s) ≈ **11.4 GPU-hours**; at 640×368 (bridge ≈ 234 s) ≈ **6 GPU-hours**. 81-frame (5 s) bridges would cut the count to ≈ 60, but their cost is NO DATA until measured. Every batch needs explicit bounded owner approval.
 
 | ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
 |---|---|---|---|---|
