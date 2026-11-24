@@ -294,7 +294,7 @@ These original ten scope definitions and existing specification directories are 
 
 **Purpose:** Deliver smoother motion at 24/30/60 fps without confusing added interpolated frames with original Wan inference frames.
 
-**Build:** Create postprocessing profiles for FFmpeg-native and optionally verified local optical-flow/model-based interpolation, with explicit cadence mapping, PTS preservation, anchor/seam protection and fallback on motion failures. Interpolation runs only on produced/approved clips or verified assembled movies, and its algorithm/version and artifacts are hashed separately from original inference. Keep 16 fps originals lossless/immutable.
+**Build:** Create postprocessing profiles for FFmpeg-native and optionally verified local optical-flow/model-based interpolation, with explicit cadence mapping, PTS preservation, anchor/seam protection (anchor frames sit on 4-frame multiples at 16 fps and must keep their timestamps so music sync survives 16→24/30/48 fps conversion) and fallback on motion failures. Interpolation runs only on produced/approved clips or verified assembled movies, and its algorithm/version and artifacts are hashed separately from original inference. Keep 16 fps originals lossless/immutable.
 
 **Tests / evidence:** Synthetic moving object, hard scene cut and shared-boundary tests, odd frame counts and rational 16→24/30/60 rates, interpolation around seam and frozen-frame handling, ffprobe timing and audio sync.
 
@@ -356,15 +356,66 @@ These original ten scope definitions and existing specification directories are 
 
 **Planning numbers (owner decision 2026-11-24: the picture runs for the full length of the chosen song; five minutes was only a recommendation and the film may run longer).** The licensed track `assets/music/mozart-symphony-40-i-molto-allegro-musopen.opus` is **358.822 s**. Bridge count N = ceil((song_s × fps − 1)/(L − 1)); at 16 fps with 65-frame bridges (4 s anchor span) that is **90 bridges + 91 anchors**. ESTIMATED from measured history in `configs/perf_history.json` (F11 benchmarks 2026-11-24: bridge ≈ 496 s and edited anchor ≈ 50 s at 832×480; bridge ≈ 240 s and anchor ≈ 36 s at 640×368): ≈ **13.7 GPU-hours** at 832×480 or ≈ **6.9 GPU-hours** at 640×368. 81-frame (5 s) bridges would cut the count to 72 (+73 anchors), but their cost is NO DATA until measured. If the soundtrack changes, recompute from its measured duration. Every batch needs explicit bounded owner approval.
 
+### Music synchronization design (planned; owner direction 2026-11-24)
+
+The film is **musically synchronized**: picture structure follows the music's structure, and every
+anchor (the moment the frame *is* a concept image) lands on a musical event. Grounded in the F15
+analysis of the licensed track (`assets/music/mozart-symphony-40-i-molto-allegro-musopen.opus`):
+duration 358.8 s; detected pulse 215.4 BPM with a 107.7 BPM alternative — consistent with the half-note
+beat of this cut-time (2/2) *Molto allegro*, i.e. a bar ≈ 1.11 s; tempo spread ±21 BPM (live orchestral
+rubato) and **low beat confidence (0.215)**; 10 section-novelty boundaries (23.4, 48.3, 79.4, 134.2,
+162.7, 179.4 s, …). Consequences: a constant-BPM grid would drift audibly, and the automatic beats must
+be checked by ear before anything is rendered.
+
+1. **Sync hierarchy.** Music section → film act; phrase (normally 4 bars) → one bridge; downbeat → anchor
+   landing; individual beats inside a bridge are *not* controllable (Wan generates continuous motion) and
+   are not promised.
+2. **Beat map (single source of timing).** `configs/beatmaps/<track>.json`: audio SHA-256, beat times,
+   downbeats with bar numbers, phrase starts, sections (sonata form: exposition / development /
+   recapitulation / coda as identified by ear), tempo curve, analyzer version and an `owner_verified`
+   flag. Built from `audio-analyze` output plus owner corrections (moving or adding downbeats, fixing
+   the half-/double-tempo choice, confirming whether the exposition repeat is played). Its hash joins
+   the plan identity, so a corrected beat map invalidates exactly the bridges whose lengths change.
+3. **Beat-locked timeline.** Anchors target absolute downbeat times t_k. Frame index
+   f_k = 4·round(t_k·fps/4) (Wan lengths are 4n+1, so anchors sit on a 4-frame = 0.25 s grid at 16 fps);
+   bridge length L_k = f_k − f_(k−1) + 1. Because targets are absolute, the error is bounded per anchor
+   (|f_k/fps − t_k| ≤ 2 frames = 125 ms) and never accumulates. Bridge lengths must stay within
+   **33–81 frames (2–5 s)**; a phrase that is too long is split at an inner downbeat, one that is too
+   short is merged with its neighbour.
+4. **Density follows the music.** Default one bridge per 4-bar phrase (≈ 4.46 s → 73 frames). F15
+   band energy and onset density may choose 2-bar bridges (≈ 2.2 s → 37 frames) in climaxes and 8-bar
+   spans split into two bridges in quiet passages; act boundaries (F38) sit on section starts.
+5. **Head and tail holds.** Silence or a pickup before the first chosen downbeat is covered by holding
+   the first anchor (or an F38 title card); after the last anchor the final frame holds until the audio
+   ends. Holds are added at join time as still frames (no GPU) and never touch seam verification.
+6. **Frame-rate conversion keeps sync.** Anchors fall on multiples of 4 frames at 16 fps, which map to
+   exact frames at 24, 30 (approx.) and 48 fps; F25 interpolation must preserve presentation timestamps
+   and anchor frames.
+7. **Animatic before bridges.** A cheap preview — anchor stills (or placeholder cards) cut exactly at
+   their beat-map times, muxed with the music — is the owner's first listening check of the sync. It
+   needs only anchor images (or none), not Wan bridges.
+8. **Verification.** A sync report lists every anchor's target downbeat, actual frame time and error;
+   acceptance: max |error| ≤ 2 frames (125 ms) at 16 fps, mean ≤ 1 frame, zero cumulative drift, audio
+   offset recorded in the manifest, plus an owner listening review of the animatic and of each act.
+9. **Constant-tempo music** (electronic, click-tracked) keeps working with today's `audio.bpm` +
+   `duration_beats` mode; the beat-map mode is for performed music like this recording.
+
+**Planning numbers (beat-locked):** with one bridge per 4-bar phrase the Mozart track needs **≈ 80
+bridges (mostly 73 frames) + ≈ 81 anchors**, exact count from the verified beat map. 73-frame bridge
+cost is **NO DATA** (EXTRAPOLATED linearly from the measured 65-frame 496 s: ≈ 558 s at 832×480,
+≈ 270 s at 640×368) → ≈ 13.5 GPU-hours at 832×480 or ≈ 6.8 at 640×368. Measure a 73-frame bridge in
+the P1 pilot before trusting this. The fixed-grid baseline below (90 × 65-frame bridges) remains the
+upper-bound comparison.
+
 | ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
 |---|---|---|---|---|
 | **F31** | `specs/031-engineering-concept-bank/` (proposed) | F12, F21 | P0 | **PLANNED — NOT IMPLEMENTED** |
-| **F32** | `specs/032-full-song-act-structure/` (proposed) | F19, F22, F31 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F32** | `specs/032-full-song-act-structure/` (proposed) | F15, F19, F22, F31 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F33** | `specs/033-technical-accuracy-review/` (proposed) | F31, F16 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F34** | `specs/034-engineering-visual-language/` (proposed) | F21, F12, F23 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F35** | `specs/035-long-chain-lineage-drift/` (proposed) | F12, F14, F19 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F36** | `specs/036-production-gpu-budget/` (proposed) | F11, F17, F19 | P0 | **PLANNED — NOT IMPLEMENTED** |
-| **F37** | `specs/037-soundtrack-narration-timing/` (proposed) | F15, F32 | P1 | **PLANNED — NOT IMPLEMENTED** |
+| **F37** | `specs/037-soundtrack-narration-timing/` (proposed) | F15, F32 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F38** | `specs/038-act-transitions-titles/` (proposed) | F14, F32, F37 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F39** | `specs/039-batch-review-iteration/` (proposed) | F16, F18, F36 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F40** | `specs/040-full-song-film-delivery/` (proposed) | F25, F26, F30, F31–F39 | P0 final | **PLANNED — NOT IMPLEMENTED** |
@@ -394,13 +445,13 @@ These original ten scope definitions and existing specification directories are 
 
 **Acceptance gate:** Owner-approved concept bank of ≥ 91 entries (one per anchor for the full song) in era order with neighbour notes; no unverified technical claims presented as fact.
 
-### F32 — Full-song act structure and chaptered storyboard
+### F32 — Full-song act structure, beat map and beat-locked storyboard
 
-**Purpose:** Turn the concept bank into a timed, multi-act storyboard the existing pipeline can render.
+**Purpose:** Turn the concept bank into a musically synchronized, multi-act storyboard the existing pipeline can render.
 
-**Build:** Five acts of ~72 s spanning the whole song (act boundaries may follow the music's sections from F15), for example *Spark* (natural and early electricity), *Power* (generation and grid), *Signal* (communication and waveforms), *Logic* (tubes, transistors, ICs), *Scale* (CPUs, GPUs, data centers, AI). Per act: anchors, second/beat budgets, Wan `4n+1` lengths, transition choreography (F13), act-boundary handling (F38). Compile to chapter storyboards (F19) with deterministic plan hashes and a duration report (unique frames = 1 + Σ(L−1)).
+**Build:** The **beat map** (owner-verified downbeats, bars, phrases and sonata-form sections; hashed into plan identity) and the **beat-locked timeline** (anchors on absolute downbeat frames f_k = 4·round(t_k·fps/4), bridge lengths L_k = f_k − f_(k−1) + 1 within 33–81 frames, no cumulative drift; schema: `audio.beatmap` + per-transition `bars`/`to_bar`, alongside the existing constant-BPM mode). Acts follow the music's sections (exposition, development, recapitulation, coda; ≈ five acts over the whole song), for example *Spark* (natural and early electricity), *Power* (generation and grid), *Signal* (communication and waveforms), *Logic* (tubes, transistors, ICs), *Scale* (CPUs, GPUs, data centers, AI). Per act: anchors, second/beat budgets, Wan `4n+1` lengths, transition choreography (F13), act-boundary handling (F38). Compile to chapter storyboards (F19) with deterministic plan hashes and a duration report (unique frames = 1 + Σ(L−1)).
 
-**Tests / evidence:** picture covers the full song duration and overruns it by less than one bridge interval; per-act and total frame math; deterministic hashes; editing one act invalidates only that act; full-film dry run without GPU.
+**Tests / evidence:** every anchor within 2 frames (125 ms) of its target downbeat with zero cumulative drift on a synthetic rubato beat map; bridges within 33–81 frames (split/merge rules); beat-map edit invalidates only bridges whose lengths change; picture plus head/tail holds covers the full song; per-act and total frame math; deterministic hashes; editing one act invalidates only that act; full-film dry run without GPU.
 
 **Acceptance gate:** Owner-approved storyboard whose dry run reports duration, bridge/anchor counts and estimated GPU hours.
 
@@ -436,29 +487,29 @@ These original ten scope definitions and existing specification directories are 
 
 ### F36 — Production GPU budget and batch scheduling
 
-**Purpose:** ~6–11 GPU-hours must run safely in bounded, resumable batches without disturbing other desktop work.
+**Purpose:** ~7–14 GPU-hours (≈ 80 beat-locked bridges of mostly 73 frames; 73-frame cost to be measured) must run safely in bounded, resumable batches without disturbing other desktop work.
 
-**Build:** Budget planner from F11 estimates (per act, per batch, cold/warm), F17 scheduler for off-hours batches with caps (time, job count, VRAM headroom), per-act approval gates, checkpoint/resume after crashes or reboots, progress/ETA reporting, storage budget for ~150 stage artifacts plus previews.
+**Build:** Budget planner from F11 estimates (per act, per batch, cold/warm), F17 scheduler for off-hours batches with caps (time, job count, VRAM headroom), per-act approval gates, checkpoint/resume after crashes or reboots, progress/ETA reporting, storage budget for ~160–180 stage artifacts plus previews; per-length cost history (37/49/65/73/81-frame bridges) because beat-locked bridges vary in length.
 
 **Tests / evidence:** Budget arithmetic vs history, cap enforcement, resume after a simulated mid-batch crash with no duplicate prompts, busy-queue deferral; measured real batch time vs estimate.
 
 **Acceptance gate:** Owner-approved batches finish within ±20% of estimate with zero duplicate submissions.
 
-### F37 — Soundtrack, narration and timing
+### F37 — Soundtrack sync verification, animatic, narration and captions
 
-**Purpose:** Pace the five acts to music and optional voice-over.
+**Purpose:** Prove and deliver the musical synchronization planned in F32, plus optional voice-over and captions.
 
-**Build:** Owner-supplied licensed or original music only; F15 beat/downbeat analysis drives act and bridge durations; optional narration script with per-line timing targets and owner-recorded audio; picture/audio drift report; captions as a separate local track (SRT), never model-rendered text.
+**Build:** Owner-supplied licensed or original music only (licence provenance, F20 audit); beat-map review tools (click-track overlay preview for listening, manual downbeat corrections, `owner_verified` sign-off); **animatic** (anchor stills or placeholder cards cut at beat-map times and muxed with the music, no Wan bridges needed); sync report per anchor (target downbeat, actual frame time, error); head/tail hold computation; audio mux with recorded offset; optional narration script with per-line timing targets and owner-recorded audio; picture/audio drift report; captions as a separate local track (SRT), never model-rendered text.
 
-**Tests / evidence:** Click-track and silence fixtures, narration timing table, caption file validity, a no-audio build still works; measured sync on the real soundtrack.
+**Tests / evidence:** Synthetic rubato and click-track fixtures (sync report errors ≤ 2 frames, zero drift), animatic timing via ffprobe, silence fixtures, narration timing table, caption file validity, a no-audio build still works; measured sync on the real soundtrack.
 
-**Acceptance gate:** Owner-approved soundtrack timing with measured drift below one frame per minute.
+**Acceptance gate:** Owner listening approval of the animatic and of each act; every anchor within 2 frames (125 ms) of its downbeat, mean ≤ 1 frame, zero cumulative drift.
 
 ### F38 — Act transitions, title cards and overlays
 
 **Purpose:** Signal chapter changes without breaking the continuous-morph concept.
 
-**Build:** Act-boundary morphs via longer bridges or intermediate ladders (F14); optional local FFmpeg titles and lower thirds (owner text, local fonts, safe areas) composited after the join, never inside Wan prompts; opening and end cards; overlay timing tied to F32/F37.
+**Build:** Act boundaries on music section starts from the beat map; act-boundary morphs via longer bridges or intermediate ladders (F14); optional local FFmpeg titles and lower thirds (owner text, local fonts, safe areas) composited after the join, never inside Wan prompts; opening and end cards that also fill the head/tail holds; overlay timing tied to beat-map times (F32/F37).
 
 **Tests / evidence:** Overlay placement in 16:9 and 9:16 safe areas, deterministic FFmpeg arguments, overlays never alter the seam frames used for verification, boundary morph frame math.
 

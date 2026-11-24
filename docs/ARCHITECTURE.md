@@ -92,7 +92,7 @@ MC-RUN-003 reproduced all Qwen-generated anchors, Wan bridges and 129-frame fina
 
 ## F31–F40 production track (planned)
 
-An electrical & compute engineering film that runs the full length of its song (358.822 s Mozart track → ~90 bridges, ~91 anchors, ≈ 6.9–13.7 generation GPU-hours ESTIMATED, not including rerenders or finishing; may exceed five minutes) built on F11–F30: concept bank, act structure, technical-accuracy review, visual language, long-chain drift control, GPU budgeting, soundtrack/narration timing, act titles, batch review and final delivery. See `docs/SPECKIT_FEATURE_LEDGER.md`.
+An electrical & compute engineering film that runs the full length of its song (358.822 s Mozart track → ~90 bridges, ~91 anchors, ≈ 6.9–13.7 generation GPU-hours ESTIMATED, not including rerenders or finishing; may exceed five minutes) musically synchronized (anchors land on owner-verified downbeats from a beat map; acts follow the music's sections; ≈ 80 beat-locked bridges of 33–81 frames, |error| ≤ 2 frames with no drift; animatic listening check before bridges), built on F11–F30: concept bank, act structure, technical-accuracy review, visual language, long-chain drift control, GPU budgeting, soundtrack/narration timing, act titles, batch review and final delivery. See `docs/SPECKIT_FEATURE_LEDGER.md`.
 
 
 ### Production pilot and reference-lineage safety

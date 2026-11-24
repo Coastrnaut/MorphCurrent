@@ -80,6 +80,7 @@ def test_film_pilot_gates_and_latest_feature_handoff():
     assert 'T010 is completed' in ledger or 'T010 verified' in ledger
     assert 'P0 — Offline' in ledger and 'P3 — Whole-film' in ledger
     assert '5761' in ledger and '360.0625' in ledger and '358.822' in ledger
+    assert 'Music synchronization design' in ledger and 'beat map' in ledger and '125 ms' in ledger
     assert 'transitive' in ledger
     assert 'F11–F13' in prompt and 'F31–F40' in prompt
     assert 'F14–F40' in governance
