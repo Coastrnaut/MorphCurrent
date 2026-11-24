@@ -31,7 +31,7 @@ The **dry-run path** must work before any GPU access, show exactly which models/
 |---|---|---|---|---|
 | F01 | `safe-baseline-and-provenance` → `specs/001-safe-baseline-provenance` | — | Current Wan bridge, history, tests | **COMPLETE** — offline tests + live read-only checks; F01 has no GPU gate |
 | F02 | `image-model-and-workflow-onboarding` → `specs/002-image-workflow-onboarding` | F01 | ComfyUI API client, semantic bindings | **OFFLINE-PASS; GPU/export BLOCKED** — no image weights installed, owner model approval required |
-| F03 | `first-anchor-text-to-image` | F02 | Client upload/history, hash functions | **PLANNED** |
+| F03 | `first-anchor-text-to-image` → `specs/003-first-anchor-t2i` | F02 | Client upload/history, hash functions | **OFFLINE-PASS; GPU BLOCKED** (needs F02 real T2I profile + owner render approval) |
 | F04 | `reference-guided-next-anchor` | F03 | Storyboard anchor reference semantics | **PLANNED** |
 | F05 | `full-storyboard-task-graph` | F03, F04 | `schema.py`, `timeline.py` | **PLANNED** |
 | F06 | `generated-anchors-to-wan-bridges` | F05 | Proven `bridge.py` / FLF2V profile | **PLANNED** |
@@ -130,6 +130,7 @@ Spec Kit 1.2.4, `script=py`, skills `speckit-*` under `.claude/skills/`. Feature
 |---|---|---|---|---|---|---|---|---|
 | F01 | `specs/001-safe-baseline-provenance` | COMPLETE | see PROGRESS F01 entry | offline 83 → 100 passed (1 deselected); integration 1 passed | live `baseline` 2026-11-24: Wan profile validates; checkpoints folder empty; 363 cloud API classes now rejected | NOT APPLICABLE (read-only only) | — | F02 |
 | F02 | `specs/002-image-workflow-onboarding` | OFFLINE-PASS (GPU/export BLOCKED) | see PROGRESS F02 entry | offline 113 passed | capability role contracts; `workflow-inspect`; candidates from local templates in `docs/ANCHOR_MODEL_DECISION.md` | NOT RUN | owner must approve + download a model set, render once, Save (API Format) `01_`/`02_` | owner decision; meanwhile F05 offline |
+| F03 | `specs/003-first-anchor-t2i` | OFFLINE-PASS (GPU BLOCKED) | see PROGRESS F03 entry | offline 137 passed | `anchors.py` on shared `bridge.advance_job`; stdlib PNG/JPEG checks; synthetic Qwen-shaped profile only | NOT RUN | F02 T011–T013 | one approved T2I render |
 
 ## Per-feature Spec Kit execution protocol (mandatory)
 

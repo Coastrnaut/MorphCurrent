@@ -8,6 +8,82 @@ from fractions import Fraction
 from pathlib import Path
 
 
+class ImageInvalid(ValueError):
+    """Downloaded or supplied anchor bytes are not a complete PNG/JPEG image."""
+
+
+_PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+
+
+def inspect_image(path: str | Path) -> dict:
+    """Structural PNG/JPEG check (stdlib only): format, width, height.
+
+    PNG: every chunk's length bound and CRC32, IHDR first, IEND last.
+    JPEG: SOI, a SOFn segment with dimensions, EOI at the end.
+    Detects truncated or corrupted files; it does not judge image content.
+    """
+    data = Path(path).read_bytes()
+    if data.startswith(_PNG_SIGNATURE):
+        return _inspect_png(data)
+    if data.startswith(b"\xff\xd8"):
+        return _inspect_jpeg(data)
+    raise ImageInvalid(f"{Path(path).name}: not a PNG or JPEG file")
+
+
+def _inspect_png(data: bytes) -> dict:
+    import struct
+    import zlib
+    pos, chunks, size = 8, [], None
+    while pos < len(data):
+        if pos + 12 > len(data):
+            raise ImageInvalid("PNG truncated inside a chunk header")
+        length, kind = struct.unpack(">I4s", data[pos:pos + 8])
+        end = pos + 12 + length
+        if end > len(data):
+            raise ImageInvalid(f"PNG chunk {kind!r} truncated")
+        body = data[pos + 8:pos + 8 + length]
+        (crc,) = struct.unpack(">I", data[pos + 8 + length:end])
+        if zlib.crc32(kind + body) & 0xFFFFFFFF != crc:
+            raise ImageInvalid(f"PNG chunk {kind!r} CRC mismatch")
+        if kind == b"IHDR":
+            size = struct.unpack(">II", body[:8])
+        chunks.append(kind)
+        pos = end
+        if kind == b"IEND":
+            break
+    if not chunks or chunks[0] != b"IHDR" or chunks[-1] != b"IEND" or size is None:
+        raise ImageInvalid("PNG must start with IHDR and end with IEND")
+    if b"IDAT" not in chunks:
+        raise ImageInvalid("PNG has no image data")
+    return {"format": "png", "width": size[0], "height": size[1]}
+
+
+def _inspect_jpeg(data: bytes) -> dict:
+    import struct
+    if not data.rstrip(b"\x00").endswith(b"\xff\xd9"):
+        raise ImageInvalid("JPEG truncated (no EOI marker)")
+    pos = 2
+    while pos + 4 <= len(data):
+        if data[pos] != 0xFF:
+            raise ImageInvalid("JPEG segment marker expected")
+        marker = data[pos + 1]
+        if marker in (0xD8, 0x01) or 0xD0 <= marker <= 0xD7:
+            pos += 2
+            continue
+        (length,) = struct.unpack(">H", data[pos + 2:pos + 4])
+        if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
+            if pos + 9 > len(data):
+                raise ImageInvalid("JPEG SOF truncated")
+            height, width = struct.unpack(">HH", data[pos + 5:pos + 9])
+            if not width or not height:
+                raise ImageInvalid("JPEG has zero dimension")
+            return {"format": "jpeg", "width": width, "height": height}
+        if marker == 0xDA:
+            break
+        pos += 2 + length
+    raise ImageInvalid("JPEG has no SOF segment before scan data")
+
+
 class ProbeUnavailable(RuntimeError):
     """ffprobe is not on PATH; verification must be reported as skipped, not passed."""
 

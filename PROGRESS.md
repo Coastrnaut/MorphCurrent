@@ -147,7 +147,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 |---|---|---|---|
 | F01 | `specs/001-safe-baseline-provenance` | COMPLETE (offline + live read-only) | `gates.py`, `preflight.py`, `baseline` CLI, cloud-node rejection, `docs/ENVIRONMENT.md`; 100 offline tests |
 | F02 | `specs/002-image-workflow-onboarding` | OFFLINE-PASS; GPU/export BLOCKED | capability contracts, `workflow-inspect`, `docs/ANCHOR_MODEL_DECISION.md`; awaiting owner model approval |
-| F03 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F03 | `specs/003-first-anchor-t2i` | OFFLINE-PASS; GPU BLOCKED | `anchor` CLI + `anchors.py` on the shared bridge executor; image integrity checks |
 | F04 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F05 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F06 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
@@ -190,3 +190,16 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 **Results.** Offline **113 passed, 1 deselected**; live `workflow-check` ok. No download, no GPU job.
 
 **BLOCKED (owner):** approve a model set → download into ComfyUI model folders → render once per template → Save (API Format) to `workflows/01_anchor_t2i.json` and `workflows/02_anchor_edit.json`. Then a session writes and live-validates the two binding profiles (T013).
+
+## F03 — First anchor via local T2I, offline slice (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --number 3 --short-name first-anchor-t2i` → `specs/003-first-anchor-t2i`; tasks 8/9 (T009 GPU render blocked).
+
+**Built.**
+- `bridge.advance_job()`: the bridge's crash-safe executor (upload → validate → gate → submit with persisted prompt ID → reconcile → await → `.part` download → verify) extracted and shared; `_upload` iterates the plan's roles. `run_bridge` behaviour unchanged (16/16 bridge tests untouched).
+- `src/morph_studio/anchors.py`: `AnchorRequest` (explicit seed; `reference_image` iff `reference_edit`; methods `text_to_image`, `reference_edit`, `independent_t2i`), `plan_anchor` (capability must match method; content-addressed job ID over graph + reference bytes + workflow hash + version), `run_anchor`, `verify_anchor_image` (exactly one image, structurally valid, bound width/height must match), `anchor_image_path` (refuses unverified/tampered).
+- `media.inspect_image`: stdlib PNG chunk/CRC walk and JPEG SOI/SOF/EOI check (no Pillow).
+- CLI `anchor` (validates only without `--confirm-gpu`) and `anchor-status`.
+- Tests: `tests/fake_comfy.py` (generic image+video fake ComfyUI), `tests/conftest.py` (`image_repo` fixture), `test_anchors.py` (17), `test_media_images.py` (6): success, no-consent, cache hit with zero calls, seed change, missing model on the **real** captured object_info, hash drift, wrong capability, non-image / truncated / wrong size / zero / two outputs, lost `/prompt` response without double submit, execution error + retry, tamper, busy queue, CLI.
+
+**Results.** Offline **137 passed, 1 deselected**. GPU: NOT RUN (no T2I model/profile).

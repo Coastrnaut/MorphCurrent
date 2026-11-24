@@ -277,7 +277,7 @@ def _timings(history_item: dict) -> dict:
 
 def _upload(job: BridgeJob, plan: BridgePlan, client: ComfyClient) -> None:
     uploads = {}
-    for role in IMAGE_ROLES:
+    for role in plan.upload_names:  # bridge: start/end image; anchor edit: reference; T2I: none
         expected = plan.upload_names[role]
         response = client.upload_image(plan.image_paths[role], name=expected)
         if response.get("name") != expected or response.get("subfolder", "") != "":
@@ -412,6 +412,20 @@ def run_bridge(plan: BridgePlan, client: ComfyClient, runs_root: str | Path, *,
                probe: Callable[[Path], dict] = probe_video) -> BridgeJob:
     """Advance a bridge job as far as allowed. Safe to call again after any failure."""
     job = open_job(plan, runs_root)
+    return advance_job(job, plan, client, submit=submit, retry=retry,
+                       allow_busy_queue=allow_busy_queue, timeout=timeout,
+                       poll_seconds=poll_seconds, verify=lambda j: _verify(j, probe))
+
+
+def advance_job(job: BridgeJob, plan: Any, client: ComfyClient, *, submit: bool, retry: bool,
+                allow_busy_queue: bool, timeout: float, poll_seconds: float,
+                verify: Callable[[BridgeJob], None]) -> BridgeJob:
+    """Shared ComfyUI stage executor (bridge clips and anchor images).
+
+    ``plan`` needs ``profile``, ``base_graph``, ``graph``, ``upload_names`` and
+    ``image_paths``; ``verify`` checks downloaded outputs and moves the job to
+    ``verified`` (or fails it).
+    """
     if job.state == "verified":
         return job
     if job.state in TERMINAL:
@@ -440,7 +454,7 @@ def run_bridge(plan: BridgePlan, client: ComfyClient, runs_root: str | Path, *,
     if job.state == "completed":
         _download(job, client)
     if job.state == "downloaded":
-        _verify(job, probe)
+        verify(job)
     return job
 
 

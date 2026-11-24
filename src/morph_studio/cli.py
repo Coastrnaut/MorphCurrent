@@ -18,6 +18,7 @@ from .bridge import (
     request_from_job,
     run_bridge,
 )
+from .anchors import AnchorRequest, plan_anchor, request_from_anchor_job, run_anchor
 from .onboarding import as_json as inspect_json, inspect_export, load_export
 from .preflight import build_baseline_report
 from .windows import windows_diagnostics
@@ -82,6 +83,41 @@ def _workflow_patch(args: argparse.Namespace) -> int:
     return 0
 
 
+def _anchor(args: argparse.Namespace) -> int:
+    """Plan, validate and (with --confirm-gpu) generate one anchor image."""
+    if args.resume:
+        request = request_from_anchor_job(args.resume)
+    else:
+        missing = [flag for flag, value in (("--profile", args.profile), ("--seed", args.seed))
+                   if value is None]
+        prompt = args.prompt
+        if args.prompt_file:
+            with open(args.prompt_file, "r", encoding="utf-8") as stream:
+                prompt = stream.read().strip()
+        if not prompt:
+            missing.append("--prompt/--prompt-file")
+        if missing:
+            raise ValueError(f"missing {', '.join(missing)} (or use --resume JOB_DIR)")
+        method = args.method or ("reference_edit" if args.reference else "text_to_image")
+        request = AnchorRequest(profile=args.profile, method=method, positive_prompt=prompt,
+                                negative_prompt=args.negative, seed=args.seed, width=args.width,
+                                height=args.height, reference_image=args.reference, label=args.label)
+    with ComfyClient(args.url) as client:
+        plan = plan_anchor(request, client.object_info())
+        try:
+            job = run_anchor(plan, client, args.runs_root, submit=args.confirm_gpu, retry=args.retry,
+                             allow_busy_queue=args.allow_busy_queue, timeout=args.timeout)
+        except KeyboardInterrupt:
+            print("INTERRUPTED: ComfyUI keeps rendering. Resume with `anchor --resume <job_dir> "
+                  "--confirm-gpu`.", file=sys.stderr)
+            return 130
+    print(json.dumps(_job_summary(job), indent=2))
+    if job.state == "validated" and not args.confirm_gpu:
+        print("READY: validated against live /object_info; nothing queued. "
+              "Re-run with --confirm-gpu to generate the image on the GPU.", file=sys.stderr)
+    return 0 if job.state in {"verified", "validated", "downloaded"} else 5
+
+
 def _workflow_inspect(args: argparse.Namespace) -> int:
     """Read-only report on a fresh API export (at most GET /object_info; writes nothing)."""
     graph = load_export(args.export)
@@ -125,6 +161,8 @@ def _job_summary(job) -> dict:
         "outputs": [o.get("local_path") or o["filename"] for o in record.get("outputs", [])],
         "timings": record.get("timings"),
         "verification": record.get("verification"),
+        **({"method": record.get("method"), "image": record.get("image"),
+            "parent": record.get("parent")} if record.get("kind") == "anchor_image" else {}),
         "error": record.get("error"),
     }
 
@@ -206,6 +244,28 @@ def main(argv: list[str] | None = None) -> int:
     bridge.add_argument("--allow-busy-queue", action="store_true",
                         help="Submit even when ComfyUI already has queued work")
     bridge.add_argument("--timeout", type=float, default=3600, help="Seconds to wait for the render")
+    anchor = subs.add_parser("anchor", help="Plan, validate and (with --confirm-gpu) generate one anchor image")
+    anchor.add_argument("--profile", help="text_to_image or reference_edit binding profile")
+    anchor.add_argument("--url", default="http://127.0.0.1:8188")
+    anchor_prompt = anchor.add_mutually_exclusive_group()
+    anchor_prompt.add_argument("--prompt")
+    anchor_prompt.add_argument("--prompt-file")
+    anchor.add_argument("--negative")
+    anchor.add_argument("--seed", type=int)
+    anchor.add_argument("--width", type=int)
+    anchor.add_argument("--height", type=int)
+    anchor.add_argument("--reference", help="Parent anchor image for reference_edit")
+    anchor.add_argument("--method", choices=["text_to_image", "reference_edit", "independent_t2i"])
+    anchor.add_argument("--label")
+    anchor.add_argument("--runs-root", default="outputs/runs")
+    anchor.add_argument("--resume", metavar="JOB_DIR")
+    anchor.add_argument("--confirm-gpu", action="store_true",
+                        help="Actually queue the image generation on the local GPU")
+    anchor.add_argument("--retry", action="store_true")
+    anchor.add_argument("--allow-busy-queue", action="store_true")
+    anchor.add_argument("--timeout", type=float, default=1800)
+    anchor_status = subs.add_parser("anchor-status", help="Show an anchor job record")
+    anchor_status.add_argument("job_dir")
     inspect = subs.add_parser("workflow-inspect",
                               help="Read-only report on a new API export: nodes, models, cloud nodes, role candidates")
     inspect.add_argument("export", help="ComfyUI Save (API Format) JSON")
@@ -250,6 +310,10 @@ def main(argv: list[str] | None = None) -> int:
             return _baseline(args)
         elif args.command == "workflow-inspect":
             return _workflow_inspect(args)
+        elif args.command == "anchor":
+            return _anchor(args)
+        elif args.command == "anchor-status":
+            print(json.dumps(_job_summary(load_job(args.job_dir)), indent=2))
         elif args.command == "bridge-status":
             print(json.dumps(_job_summary(load_job(args.job_dir)), indent=2))
         elif args.command == "bridge-cancel":
