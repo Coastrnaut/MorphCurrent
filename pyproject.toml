@@ -1,17 +1,13 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "morphcurrent"
 version = "0.1.0"
-description = "Local-first continuous AI video morphing orchestration foundation"
+description = "Turn a YAML storyboard into a continuous morph video with local ComfyUI"
 readme = "README.md"
-classifiers = [
-  "Operating System :: Microsoft :: Windows :: Windows 11",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-]
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
   "pydantic>=2.8,<3",
@@ -26,10 +22,10 @@ dev = ["pytest>=8,<10"]
 [project.scripts]
 morphcurrent = "morph_studio.cli:main"
 
-[tool.setuptools.packages.find]
-where = ["src"]
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
-markers = ["integration: requires running local ComfyUI", "gpu: performs model inference on local GPU"]
+markers = [
+  "integration: requires a running local ComfyUI",
+  "gpu: performs model inference on the local GPU",
+]
