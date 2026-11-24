@@ -11,7 +11,7 @@ C:\GIT\MorphCurrent\
   src\morph_studio\               package
   tests\                          offline tests (fake ComfyUI)
   workflows\  configs\            ComfyUI API exports, binding profiles, storyboards
-  specs\  .specify\               Spec Kit specs (F01–F10 existing; F11–F30 future)
+  specs\  .specify\               Spec Kit specs (F01–F13 existing; F14–F40 proposed)
   outputs\                        run artifacts (gitignored)
 ```
 
@@ -41,7 +41,7 @@ Offline tests use a stateful fake ComfyUI (`tests/fake_comfy.py`) and real FFmpe
 
 ## Spec Kit
 
-The 40-feature roadmap (F31–F40: five-minute engineering film track) and true F01–F10 GPU evidence are in [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md). F11–F30 (20 new features) must be created one at a time with real spec/plan/tasks/implementation artifacts. The [Claude Desktop one-shot](CLAUDE_DESKTOP_ONESHOT.md) is **paste-only**: copy its entire contents into Claude Desktop Code, no trimming of wrappers required.
+The 40-feature roadmap (F31–F40: five-minute engineering film track) and true F01–F10 GPU evidence are in [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md). F11–F13 already have real specs and implementation slices; F14–F40 must be created one at a time with real spec/plan/tasks/implementation artifacts. The [Claude Desktop one-shot](CLAUDE_DESKTOP_ONESHOT.md) is **paste-only**: copy its entire contents into Claude Desktop Code, no trimming of wrappers required.
 
 
 Spec Kit is installed with the Python script backend (`.specify/integration.json`: `script=py`); the Claude skills are `speckit-specify`, `-plan`, `-tasks`, `-analyze`, `-implement`, etc.
@@ -51,7 +51,7 @@ python scripts\windows\speckit.py --status
 python scripts\windows\speckit.py --verify
 ```
 
-Do not run bare `specify init` on Windows (it defaults to PowerShell scripts); `speckit.py --repair` restores the Python backend with a backup in `.local/`. New features: `python .specify\scripts\python\create_new_feature.py --json --number N --short-name SLUG "description"`. Check existing `specs/001`–`010` and any concurrent new directories; capture the script-returned real spec path. Do not reinitialize an already valid Spec Kit.
+Do not run bare `specify init` on Windows (it defaults to PowerShell scripts); `speckit.py --repair` restores the Python backend with a backup in `.local/`. New features: `python .specify\scripts\python\create_new_feature.py --json --number N --short-name SLUG "description"`. Check existing `specs/001`–`013` and any concurrent new directories; capture the script-returned real spec path. Do not reinitialize an already valid Spec Kit.
 
 ## Conventions
 

@@ -67,9 +67,9 @@ For Wan length `L` at `F` fps, anchors are `(L-1)/F` seconds apart; a clip lasts
 - Peak VRAM comes only from the opt-in sampler; `/system_stats` snapshots are never treated as peaks.
 - Weights, generated media and run outputs stay out of Git (`outputs/` is ignored).
 
-## F11–F30 extensions (planned, not yet built)
+## F11–F30 extensions (F11–F13 offline slices implemented; others planned)
 
-The existing Qwen→Qwen-edit→Wan→QA→human review→FFmpeg pipeline is **GPU-demonstrated**; future features must extend those modules rather than replacing working code. See [the 20-feature ledger](SPECKIT_FEATURE_LEDGER.md) for acceptance gates and exact dependencies.
+The existing Qwen→Qwen-edit→Wan→QA→human review→FFmpeg pipeline is **GPU-demonstrated**; future features must extend those modules rather than replacing working code. See [the 40-feature ledger](SPECKIT_FEATURE_LEDGER.md) for acceptance gates and exact dependencies.
 
 - **Observability and cost (F11, F17):** benchmark per-stage latency and opt-in whole-GPU VRAM, account for unrelated processes, and use an idle-queue single-job scheduler. Keep current `--confirm-gpu` and safe crash/resume semantics.
 - **Continuity and transition intelligence (F12–F14, F16):** anchor framing/orientation constraints, physical correspondence plan, bounded multi-hop intermediate anchors and owner-labelled defect calibration. Preserve exact reference byte identity; QA metrics never silently replace human review.
@@ -77,7 +77,7 @@ The existing Qwen→Qwen-edit→Wan→QA→human review→FFmpeg pipeline is **G
 - **Operator UI (F18):** optional local desktop/strict-loopback review workflow that edits the same typed storyboard and manifest as the CLI; no remote service or mandatory account; approval must remain explicit.
 - **Longform and release (F19–F20):** chapter-level DAG/partial cache invalidation, previews and storage quotas, fresh-output-root replay, Windows packaging and a full acceptance suite. All source model weights/media remain outside Git.
 
-These are **design targets only**. The latest verified baseline uses timestamped output `final/<storyboard>_<UTC timestamp>_<plan8>.mp4` and a manifest-held path; do not revert to a fixed filename or assume these future extensions are already implemented.
+F11 reporting, F12 geometry and F13 choreography are implemented offline; remaining items are **design targets**. The latest verified baseline uses timestamped output `final/<storyboard>_<UTC timestamp>_<plan8>.mp4` and a manifest-held path; do not revert to a fixed filename or assume these future extensions are already implemented.
 
 - **F21–F22 — local assets and authoring:** private style/reference collections and approved editable creative-brief-to-storyboard planning, optional owner-enabled local LLM only.
 - **F23–F24 — spatial/temporal continuity:** actual-workflow-supported camera and framing constraints, material motion continuity and human-approved repair of collapse/flare defects.
@@ -89,4 +89,9 @@ MC-RUN-003 reproduced all Qwen-generated anchors, Wan bridges and 129-frame fina
 
 ## F31–F40 production track (planned)
 
-A five-minute electrical & compute engineering film (~75 bridges, ~76 anchors, ≈ 6–11 GPU-hours ESTIMATED) built on F11–F30: concept bank, act structure, technical-accuracy review, visual language, long-chain drift control, GPU budgeting, soundtrack/narration timing, act titles, batch review and final delivery. See `docs/SPECKIT_FEATURE_LEDGER.md`.
+A five-minute electrical & compute engineering film (~75 bridges, ~76 anchors, ≈ 6–11.4 generation GPU-hours ESTIMATED, not including rerenders or finishing) built on F11–F30: concept bank, act structure, technical-accuracy review, visual language, long-chain drift control, GPU budgeting, soundtrack/narration timing, act titles, batch review and final delivery. See `docs/SPECKIT_FEATURE_LEDGER.md`.
+
+
+### Production pilot and reference-lineage safety
+
+P0: sourced 8–12-bridge offline pilot storyboard, verified frame counts and estimates. P1: bounded owner-approved GPU pilot measuring morphology, VRAM and render cost. P2: complete act with reviewed reanchor/descendant invalidation, seam, optional audio and captions. P3: full five-minute production only after earlier gates pass. A reference-edited anchor's replacement invalidates its transitive dependent image edits and their bridge clips until an independently regenerated reanchor breaks the chain. For 75 adjacent 65-frame bridges, 4801 unique frames = 300s anchor span and 300.0625s nominal playback at 16fps before separate title holds.

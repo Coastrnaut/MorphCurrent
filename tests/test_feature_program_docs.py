@@ -1,11 +1,11 @@
-"""Guard the 30-feature Spec Kit program, workflow contracts and paste-only Claude prompt."""
+"""Guard the 40-feature Spec Kit program, workflow contracts and paste-only Claude prompt."""
 from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_thirty_features_have_unique_ordered_ids_and_explicit_model_gates():
+def test_forty_features_have_unique_ordered_ids_and_explicit_model_gates():
     ledger = (ROOT / "docs" / "SPECKIT_FEATURE_LEDGER.md").read_text(encoding="utf-8")
     feature_ids = re.findall(r"^### (F\d{2}) — ", ledger, re.MULTILINE)
     assert feature_ids == [f"F{i:02d}" for i in range(1, 41)]
@@ -47,10 +47,10 @@ def test_claude_handoff_is_paste_ready_and_references_existing_runtime():
     assert "Co-Authored-By" in prompt and "no" in prompt.lower()
     assert "specs/001" in prompt and "specs/010" in prompt
 
-def test_thirty_feature_scope_is_synced_across_supporting_docs():
+def test_forty_feature_scope_is_synced_across_supporting_docs():
     assert "F01–F40" in (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
-    assert "F11–F30" in (ROOT / ".specify" / "memory" / "constitution.md").read_text(encoding="utf-8")
-    assert "F11–F30" in (ROOT / "docs" / "DEVELOPMENT.md").read_text(encoding="utf-8")
+    assert "F14–F40" in (ROOT / ".specify" / "memory" / "constitution.md").read_text(encoding="utf-8")
+    assert "F14–F40" in (ROOT / "docs" / "DEVELOPMENT.md").read_text(encoding="utf-8")
     assert "F11–F30" in (ROOT / "README.md").read_text(encoding="utf-8")
     assert "F30" in (ROOT / "docs" / "PROGRESS.md").read_text(encoding="utf-8")
     assert (ROOT / "workflows" / "01_anchor_t2i.json").is_file()
@@ -68,3 +68,20 @@ def test_latest_reproduction_and_twenty_new_feature_roadmap_are_grounded():
     assert len(re.findall(r"^### F(?:1[1-9]|2[0-9]|30) — ", ledger, re.MULTILINE)) == 20
     for n in range(11, 31):
         assert f"| F{n:02d} | PLANNED |" in progress
+
+
+def test_film_pilot_gates_and_latest_feature_handoff():
+    ledger = (ROOT / 'docs' / 'SPECKIT_FEATURE_LEDGER.md').read_text(encoding='utf-8')
+    prompt = (ROOT / 'docs' / 'CLAUDE_DESKTOP_ONESHOT.md').read_text(encoding='utf-8')
+    governance = (ROOT / '.specify' / 'memory' / 'constitution.md').read_text(encoding='utf-8')
+    for i, slug in ((11, 'measured-gpu-benchmarks'), (12, 'reference-anchor-continuity'), (13, 'physical-morph-choreography')):
+        assert (ROOT / 'specs' / f'{i:03d}-{slug}' / 'spec.md').is_file()
+    assert ledger.count('### F') == 40
+    assert 'T010 is completed' in ledger or 'T010 verified' in ledger
+    assert 'P0 — Offline' in ledger and 'P3 — Whole-film' in ledger
+    assert '4801' in ledger and '300.0625' in ledger
+    assert 'transitive' in ledger
+    assert 'F11–F13' in prompt and 'F31–F40' in prompt
+    assert 'F14–F40' in governance
+    assert 'start F11 after' not in ledger
+    assert 'Wan weight hashes remain NOT MEASURED' not in ledger

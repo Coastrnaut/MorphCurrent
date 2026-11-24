@@ -1,16 +1,17 @@
 # MorphCurrent — 40-feature GitHub Spec Kit engineering ledger
 
-**Scope:** F01–F10 are the existing pipeline implementation and evidence; **F11–F30 are 20 new proposed features**, evolving MorphCurrent from a working short YAML-to-video pipeline into a long-form, musically synchronized, quality-controlled local creative system; **F31–F40 are a production track for a five-minute electrical & compute engineering film** built on those capabilities.
+**Scope:** F01–F10 are working pipeline milestones; **F11–F30 comprise twenty additional features, of which F11–F13 have offline implementation slices**, evolving MorphCurrent from a working short YAML-to-video pipeline into a long-form, musically synchronized, quality-controlled local creative system; **F31–F40 are a production track for a five-minute electrical & compute engineering film** built on those capabilities.
 
-**Grounded audit:** GitHub `main` at `9b79301b31ef6c31db3a465967928ca6aa457b3c`, 2026-11-24. Future Claude sessions must fetch current HEAD and respect concurrent owner edits; never assume this SHA is latest after today.
+**Grounded audit:** GitHub `main` at `882f58e0f35e5e0c1a08b3b3da67af0d72bc8083`, 2026-11-24; associated Windows CI successful, commit reports 222 offline tests. Future Claude sessions must fetch current HEAD and respect concurrent owner edits; never assume this SHA is latest after today.
 
 ## Current technical reality (not goals)
 
 - Three **real** ComfyUI API-format exports exist and are bound to actual node IDs: `workflows/01_anchor_t2i.json` (Qwen-Image T2I), `workflows/02_anchor_edit.json` (Qwen Image Edit 2509), `workflows/03_wan22_flf2v.json` (Wan 2.2 I2V FP8 high/low experts). Versioned profile JSONs at `configs/profiles/` and live schema fixtures exist; keep them stable.
-- Python implementation already includes `anchors.py`, `bridge.py`, `dag.py`, `render.py`, `qa.py`, `stitcher.py`, `provenance.py`, `vram.py` and supporting schemas, tests, command-line UX and Windows CI. The latest commit reports **193 passing offline tests**. Recheck locally rather than blindly repeating that result.
+- Python implementation already includes `anchors.py`, `bridge.py`, `dag.py`, `render.py`, `qa.py`, `stitcher.py`, `provenance.py`, `vram.py` and supporting schemas, tests, command-line UX and Windows CI. The latest audited commit reports **222 passing offline tests**. Recheck locally rather than blindly repeating that result.
 - `MC-RUN-001` generated orchid→butterfly→phoenix using Qwen image generation/reference editing, completed two 832×480/65-frame/16-fps Wan bridges, and joined a verified **129-frame** H.264 movie after owner review. Original bridge quality was weak in parts despite no QA flags. See `docs/EXPERIMENTS.md` and the end of `docs/PROGRESS.md`.
 - `MC-RUN-002` selectively regenerated the **phoenix** from a more front-facing prompt and reran only the butterfly→phoenix bridge; the orchid, butterfly and earlier bridge were reused. Result was joined without a hard cut, though a mid-bridge wing fold remains. MC-RUN-003 then recomputed all five GPU stages from a fresh output root; all three anchors, both bridges, and the final 129-frame movie were byte-identical to MC-RUN-002 (decoded PSNR ∞ and SSIM 1.000). This proves reproducibility under those recorded conditions, not artistic perfection or general determinism across different driver/model versions. The current final output name is `<storyboard>_<UTC timestamp>_<plan8>.mp4`; manifest tracks the actual path.
-- GPU memory observations come from an opt-in **whole-GPU** `nvidia-smi` sampler, not per-model or per-process allocations. Qwen file hashes are listed; **Wan weight hashes remain NOT MEASURED**. Longer-form music alignment and calibrated quality review are not yet demonstrated. A clean **from-scratch** reproduction was verified in MC-RUN-003; new features require their own acceptance evidence.
+- GPU memory observations come from an opt-in **whole-GPU** `nvidia-smi` sampler, not per-model or per-process allocations. **Wan high/low-noise, UMT5, VAE and Qwen model hashes are now measured** (owner-approved F11 T010; see `docs/MODELS.md`). Longer-form music alignment and calibrated quality review are not yet demonstrated. A clean **from-scratch** reproduction was verified in MC-RUN-003; new features require their own acceptance evidence.
+- **F11–F13 current state:** `specs/011-measured-gpu-benchmarks`, `012-reference-anchor-continuity`, `013-physical-morph-choreography` and their implementation modules (`perf.py`, `geometry.py`, `prompt_compiler.py`) exist. F11's Wan model hashing is complete; the completed T011 benchmark matrix is not documented at this audited HEAD. F12 needs owner-calibrated creative acceptance; F13 needs a fixed-seed GPU A/B comparison. No new speculative model IDs or empty spec directories are needed.
 - **Operational truth:** `docs/PROGRESS.md` is an append-only historical record, so older entries contain stale `BLOCKED` states. Its *latest dated entries* and real code/tests control current factual status. Do not rewrite old evidence as if it never happened.
 
 ## Definition of end-state for F11–F30
@@ -120,7 +121,7 @@ These original ten scope definitions and existing specification directories are 
 
 | ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
 |---|---|---|---|---|
-| **F11** | `specs/011-measured-gpu-benchmarks/` (created) | F07, F10 | P0 | **OFFLINE-PASS** — `perf-report`, `estimate`, timestamped whole-GPU samples; GPU benchmark matrix + Wan hashing await owner approval |
+| **F11** | `specs/011-measured-gpu-benchmarks/` (created) | F07, F10 | P0 | **OFFLINE-PASS** — `perf-report`, `estimate`, timestamped whole-GPU samples; Wan model hashes verified; sampled benchmark matrix has no completed results committed |
 | **F12** | `specs/012-reference-anchor-continuity/` (created) | F04, F08 | P0 | **OFFLINE-PASS** — geometry heuristics recorded per child anchor, `anchor-check`; matched three-anchor owner approval pending |
 | **F13** | `specs/013-physical-morph-choreography/` (created) | F12, F08 | P0 | **OFFLINE-PASS** — `choreography` → compiled bridge prompts/negatives, `prompt-preview --variants`; fixed-seed GPU A/B pending |
 | **F14** | `specs/014-adaptive-transition-ladders/` (proposed) | F12, F13, F05 | P1 | **PLANNED — NOT IMPLEMENTED** |
@@ -130,7 +131,6 @@ These original ten scope definitions and existing specification directories are 
 | **F18** | `specs/018-local-creative-review-ui/` (proposed) | F08, F15, F16 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F19** | `specs/019-resumable-longform-timeline/` (proposed) | F14, F15, F17 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F20** | `specs/020-release-reproducible-pipeline/` (proposed) | F11–F19 | P0 final | **PLANNED — NOT IMPLEMENTED** |
-
 | **F21** | `specs/021-style-packs-asset-library/` (proposed) | F12, F18 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F22** | `specs/022-story-brief-to-storyboard/` (proposed) | F14, F18, F21 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F23** | `specs/023-camera-framing-keyframes/` (proposed) | F12, F13, F14 | P1 | **PLANNED — NOT IMPLEMENTED** |
@@ -142,7 +142,7 @@ These original ten scope definitions and existing specification directories are 
 | **F29** | `specs/029-budgeted-experiment-optimizer/` (proposed) | F11, F16, F17, F24 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F30** | `specs/030-delivery-presets-release-audit/` (proposed) | F18–F29 | P0 final | **PLANNED — NOT IMPLEMENTED** |
 
-No `specs/011-...` through `030-...` are created by this documentation commit. They must be created via the **installed** Python Spec Kit feature flow when that feature becomes active. If a number conflicts, follow the tool's returned directory and update this mapping; preserve existing specs.
+`specs/011-*` through `specs/013-*` are already real feature directories. F14–F40 remain proposed; create one spec at a time with installed Python Spec Kit and preserve the existing directory/feature mapping.
 
 ### F11 — Reproducible A6000 performance and model provenance
 
@@ -154,7 +154,7 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 
 **Acceptance gate:** Report explicitly distinguishes MEASURED / ESTIMATED / NOT MEASURED; no unapproved model hashing or disruptive jobs.
 
-**Status (2026-11-24):** OFFLINE-PASS in `specs/011-measured-gpu-benchmarks` — see docs/PROGRESS.md F11 entry. Blocked on owner approval: T010 Wan SHA-256 (`models-hash --confirm-io`), T011 sampled cold/warm and 640×368 vs 832×480 benchmark renders.
+**Status (2026-11-24):** F11 OFFLINE-PASS, with T010 verified: the Wan expert, UMT5 and VAE files were SHA-256 hashed under owner consent and recorded in `docs/MODELS.md`. T011 benchmark renders were subsequently started according to historical `docs/PROGRESS.md`; the audited GitHub HEAD has **no completed matrix results yet**. Inspect the local GPU queue/history and latest commits before rerunning anything.
 
 ### F12 — Composition-aware anchor generation and reference-edit QA
 
@@ -369,6 +369,21 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 | **F39** | `specs/039-batch-review-iteration/` (proposed) | F16, F18, F36 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F40** | `specs/040-five-minute-film-delivery/` (proposed) | F25, F26, F30, F31–F39 | P0 final | **PLANNED — NOT IMPLEMENTED** |
 
+### Required preproduction gates for the five-minute film
+
+**P0 — Offline continuity pilot:** assemble a sourced, technically reviewed sequence of **8–12 adjacent bridges** (32–48 seconds of anchor span at 65 frames/16 fps), preferably crossing an era or chapter boundary. Produce a validated dry-run plan, correspondences, visual style, source/uncertainty notes and measured-input GPU estimate. No render is authorized by planning.
+
+**P1 — Bounded GPU pilot:** with fresh owner-scoped consent and an idle queue, render only that passage. Record full-stage wall time, whole-GPU VRAM (not per-process memory), reference-edit depth/drift, disk consumption, bridge/anchor continuity, QA false negatives and human creative/technical review. Stop and revise before attempting a full act if quality or budget gates fail.
+
+**P2 — One complete act:** verify explicit lineage reanchors, transitive cache invalidation, seam checks, bulk review, optional licensed music/narration and reproducibility. Replacing a reference-edited anchor can invalidate **all transitively dependent edited descendants and their bridge videos** until an independently generated reanchor cuts the lineage; it is never automatically limited to two adjacent bridges.
+
+**P3 — Whole-film delivery:** only after owner approval of P0–P2, schedule bounded, resumable act batches, followed by approved finishing/audio and two export formats. Preserve original 16 fps masters and recorded provenance. No automatic six-hour-plus GPU batch.
+
+**Duration/cost check:** with 75 adjacent 65-frame bridges the exact deduplicated count is `1 + 75×(65−1) = 4801` frames. This means 300 seconds between the first and last anchor timestamps, and a nominal `4801/16 = 300.0625 s` container duration before additional holds/cards. Seventy-six unique anchor concepts are an **illustrative plan**, not an artistic quota; approved act titles, pauses, different bridge lengths or a shorter list change the count. The published ~6–11.4 GPU-hour range is a **base generation estimate**, not a wall-clock guarantee: price in quality rerenders, reanchors, startup/load, review, storage, joining, interpolation, upscaling and audio separately. 81-frame bridge cost remains unknown until measured.
+
+**Factual storytelling rule:** historical electricity/computing components must have sourced component/era descriptions, an owner review and uncertainty notes; physically impossible transitions can be marked **artistic metamorphoses**, not literal engineering history. Never invent authoritative component labels or citations in model-generated pixels. Use postproduction captions with checked facts.
+
+**Engineering order:** finish/reconcile F11 benchmark evidence without repeating ongoing jobs, run F13 controlled prompt tests only if consented, implement F15 beat mapping and F16 calibrated QA, and research F31/F33 concepts offline. Delay F36/F40 full GPU scheduling until the pilot gates pass.
 ### F31 — Engineering concept bank and anchor subject research
 
 **Purpose:** A vetted, ordered library of ~76 visual subjects spanning electricity and computing, each a good morph partner for its neighbours.
@@ -393,9 +408,9 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 
 **Purpose:** Engineering audiences notice wrong circuits; generative models invent fake text and impossible parts.
 
-**Build:** Per-concept review checklist (correct component class, plausible geometry, no gibberish labels or text, no fake schematic symbols, era-appropriate materials), text-free prompting with negatives (`text, letters, labels, logo, watermark`), reviewer verdicts stored with anchor hashes, rejection → targeted regeneration (seed/prompt) without touching approved neighbours.
+**Build:** Per-concept review checklist (correct component class, plausible geometry, no gibberish labels or text, no fake schematic symbols, era-appropriate materials), text-free prompting with negatives (`text, letters, labels, logo, watermark`), reviewer verdicts stored with anchor hashes, rejection → targeted regeneration (seed/prompt) with dependency-aware invalidation of every downstream reference-edited descendant and clip consuming changed anchors, until a separately generated reanchor; preserve unrelated ancestors/branches.
 
-**Tests / evidence:** Checklist schema, verdict persistence, a rejection invalidates only that anchor and its two bridges, negatives always applied; real anchors reviewed by the owner.
+**Tests / evidence:** Checklist schema, verdict persistence, a rejection invalidates its transitive dependent edit/bridge subgraph, not merely its two neighbours, negatives always applied; real anchors reviewed by the owner.
 
 **Acceptance gate:** Every anchor in the final film has an owner "accurate enough" verdict or an explicit waiver.
 
@@ -455,7 +470,7 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 
 **Build:** Act-level contact sheets and frame strips, side-by-side candidate comparisons, F16 QA ranking, keyboard-driven approve/reject/rerender in the F18 UI, a rerender queue limited to rejected items with a budget preview, version history per bridge.
 
-**Tests / evidence:** Review state for 75 items, bulk approval within an act, rejection queues only affected stages, versions preserved, budget preview matches F36.
+**Tests / evidence:** Review state for 75 items, bulk approval within an act, rejection queues only the affected transitive dependency stages, versions preserved, budget preview matches F36.
 
 **Acceptance gate:** Owner completes review of a full act in the tool with every decision recorded in manifests.
 
@@ -482,7 +497,7 @@ No `specs/011-...` through `030-...` are created by this documentation commit. T
 
 - The first full pipeline is **working**, not just planned. **Do not waste time rebuilding it.**
 - The MC-RUN-003 from-scratch repeat is **complete and byte-identical**; quality improvements and long-form audio sync remain future work; root `docs/PROGRESS.md` is historical and includes earlier superseded blocker notes.
-- F07 and F08 are **partial**: whole-GPU sampled VRAM is not a model-only peak; QA did not catch several creative defects. F09's music branch is unverified; F10's fresh output-root replay was verified by MC-RUN-003; future 30-feature release gates remain pending.
+- F07 and F08 are **partial**: whole-GPU sampled VRAM is not a model-only peak; QA did not catch several creative defects. Model-file SHA-256 was measured in F11 T010, but that does not establish final benchmark/creative quality. F09's music branch is unverified; F10's fresh output-root replay was verified by MC-RUN-003; future 30-feature release gates remain pending.
 - ".specify" and initial 10 feature specs are existing work; do not recreate them.
 
-**Next action:** start F11 after checking the current owner's GPU activity and any newer commits. Continue F12/F13/F15/F16/F21/F22 offline if F11 GPU timing is blocked, without marking GPU gates complete.
+**Next action:** inspect new HEAD, current queue and outstanding F11 T011 benchmark evidence; do not rebuild F11–F13. Start the highest-priority unblocked new Spec Kit feature (F15 offline beat mapping, F14 adaptive ladders after F13, or F16 calibrated QA with labelled examples), while F31 concept research can proceed offline. Any additional GPU inference needs a bounded owner-approved scope.
