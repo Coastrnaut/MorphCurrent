@@ -312,7 +312,7 @@ def restore_run(archive: str | Path, runs_root: str | Path) -> Path:
 
 # --- US4: acceptance matrix ---------------------------------------------------------------------
 
-def acceptance_matrix(ledger: str | Path, all_features: bool = False) -> dict:
+def acceptance_matrix(ledger: str | Path, all_features: bool = False, through: int | None = None) -> dict:
     rows: dict[str, dict] = {}
     for line in Path(ledger).read_text(encoding="utf-8").splitlines():
         m = re.match(r"^\|\s*\*{0,2}(F\d\d)\*{0,2}\s*\|", line)
@@ -323,9 +323,27 @@ def acceptance_matrix(ledger: str | Path, all_features: bool = False) -> dict:
         rows[m.group(1)] = {"feature": m.group(1), "status": status.group(1).strip() if status else "UNKNOWN",
                             "evidenced": not UNRESOLVED.search(text),
                             "gate": (UNRESOLVED.search(text).group(0) if UNRESOLVED.search(text) else None)}
-    limit = 40 if all_features else 20
+    limit = through or (40 if all_features else 20)
+    if limit not in (20, 30, 40):
+        raise ReleaseError("acceptance covers F01-F20, F01-F30 or F01-F40")
     ordered = [rows[f"F{i:02d}"] for i in range(1, limit + 1) if f"F{i:02d}" in rows]
     unresolved = sum(not r["evidenced"] for r in ordered)
     return {"rows": ordered, "evidenced": len(ordered) - unresolved, "unresolved": unresolved,
             "release_ready": unresolved == 0 and len(ordered) == limit,
             "note": "Release tagging requires owner approval even when release_ready is true."}
+
+
+def release_check(ledger: str | Path, repo_root: str | Path = ".", through: int = 30) -> dict:
+    """F30: acceptance matrix + repository audit. Never declares a release from tests; never tags."""
+    matrix = acceptance_matrix(ledger, through=through)
+    audit = audit_repo(repo_root)
+    reasons = [f"{r['feature']}: {r['status']} ({r['gate']})" for r in matrix["rows"] if not r["evidenced"]]
+    if len(matrix["rows"]) != through:
+        reasons.append(f"ledger lists {len(matrix['rows'])} of F01-F{through:02d}")
+    if audit.get("errors"):
+        reasons.append(f"repository audit: {audit['errors']} error(s)")
+    return {"through": through, "evidenced": matrix["evidenced"], "unresolved": matrix["unresolved"],
+            "audit": {"errors": audit.get("errors"), "warnings": audit.get("warnings")},
+            "ready_for_owner_review": not reasons, "reasons": reasons,
+            "note": "Tests and this check never declare a release: the final multi-scene demonstration and any "
+                    "release tag need explicit owner approval."}

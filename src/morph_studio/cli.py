@@ -315,6 +315,32 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _deliver(args: argparse.Namespace) -> int:
+    """F30 multi-format delivery and release check (local FFmpeg; never tags)."""
+    from . import delivery as dv
+    from . import release as rel
+    if args.command == "release-check":
+        out = rel.release_check(args.ledger, args.repo_root, through=args.through)
+        print(json.dumps(out, indent=2, ensure_ascii=True))
+        return 0 if out["ready_for_owner_review"] else 1
+    if args.list_presets:
+        print(json.dumps({"presets": [{"name": n, "recipe_sha256": dv.recipe_sha256(n), **dv.recipe(n)}
+                                      for n in dv.PRESETS]}, indent=2, ensure_ascii=True))
+        return 0
+    if not args.input or not args.out_dir or not args.preset:
+        raise ValueError("deliver needs INPUT, --out-dir and at least one --preset (or --list-presets)")
+    out = dv.deliver(args.input, args.out_dir, args.preset, audio=args.audio, audio_licensed=args.audio_licensed,
+                     audio_offset=args.audio_offset)
+    summary = {"results": [{"preset": r["preset"], "out": r["output"]["path"], "passed": r["verification"]["passed"],
+                            "mismatches": r["verification"]["mismatches"], "crop": r["crop"],
+                            "encoder": r["encoder"], "recipe_sha256": r["recipe_sha256"], "seconds": r["seconds"]}
+                           for r in out["results"]], "errors": out["errors"]}
+    print(json.dumps(summary, indent=2, ensure_ascii=True))
+    if out["errors"]:
+        return 2
+    return 0 if all(r["passed"] for r in summary["results"]) else 5
+
+
 def _experiment(args: argparse.Namespace) -> int:
     """F29 bounded local A/B experiments on one bridge (GPU only with --confirm-gpu)."""
     from . import experiment as ex
@@ -534,7 +560,8 @@ def _release(args: argparse.Namespace) -> int:
             print(json.dumps({"restored": str(rel.restore_run(args.archive, args.runs_root))}, indent=2))
             return 0
         if args.command == "acceptance":
-            print(json.dumps(rel.acceptance_matrix(args.ledger, all_features=args.all), indent=2))
+            print(json.dumps(rel.acceptance_matrix(args.ledger, all_features=args.all, through=args.through),
+                             indent=2))
             return 0
     except rel.ReleaseError as exc:
         print(f"error: {exc}", file=sys.stderr)
@@ -1000,8 +1027,21 @@ def main(argv: list[str] | None = None) -> int:
     rr = subs.add_parser("run-restore", help="Verify and restore a run archive (never overwrites)")
     rr.add_argument("archive")
     rr.add_argument("--runs-root", required=True)
-    ac = subs.add_parser("acceptance", help="F01-F20 acceptance matrix from the ledger")
+    ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
+    ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    rc = subs.add_parser("release-check", help="Acceptance through F30 + repository audit (never tags)")
+    rc.add_argument("--through", type=int, choices=[20, 30, 40], default=30)
+    rc.add_argument("--ledger", default="docs/SPECKIT_FEATURE_LEDGER.md")
+    rc.add_argument("--repo-root", default=".")
+    dl = subs.add_parser("deliver", help="Versioned multi-format delivery presets with verification (F30)")
+    dl.add_argument("input", nargs="?")
+    dl.add_argument("--preset", action="append", default=[])
+    dl.add_argument("--out-dir")
+    dl.add_argument("--audio", default=None, help="Owner-licensed music for licensed-audio-1080p")
+    dl.add_argument("--audio-licensed", action="store_true")
+    dl.add_argument("--audio-offset", type=float, default=0.0)
+    dl.add_argument("--list-presets", action="store_true")
     ac.add_argument("--ledger", default="docs/SPECKIT_FEATURE_LEDGER.md")
     dc = subs.add_parser("draft-check", help="Check a Claude-drafted brief or storyboard locally (offline)")
     dc.add_argument("draft", help="Brief or storyboard YAML")
@@ -1134,6 +1174,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("deliver", "release-check"):
+            return _deliver(args)
         elif args.command in ("experiment-plan", "experiment-run", "experiment-rate", "experiment-report"):
             return _experiment(args)
         elif args.command in ("project-export", "project-inspect", "project-import"):
