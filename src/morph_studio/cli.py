@@ -315,6 +315,34 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _sync(args: argparse.Namespace) -> int:
+    """F15 US5: audio feature track and event-locked sync plan (offline)."""
+    from . import sync_features as sf
+    out = Path(args.out)
+    if out.exists():
+        print(f"error: {out} exists; refusing to overwrite", file=sys.stderr)
+        return 2
+    if args.command == "audio-features":
+        record = sf.track_record(args.file, fps=args.fps)
+        out.write_text(json.dumps(record, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+        print(json.dumps({"out": str(out), "frames": len(record["frames"]), "sections": len(record["sections"]),
+                          "audio_sha256": record["audio_sha256"], "content_sha256": record["content_sha256"]}, indent=2))
+        return 0
+    record = json.loads(Path(args.features).read_text(encoding="utf-8"))
+    beatmap = json.loads(Path(args.beatmap).read_text(encoding="utf-8")) if args.beatmap else None
+    plan = sf.sync_plan(record, beatmap, preferred=args.preferred)
+    out.write_text(json.dumps(plan, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    lengths = [b["frames"] for b in plan["bridges"]]
+    chars: dict[str, int] = {}
+    for b in plan["bridges"]:
+        for word in b["character"]:
+            chars[word] = chars.get(word, 0) + 1
+    print(json.dumps({"out": str(out), **plan["summary"], "coverage": plan["coverage"],
+                      "bridge_frames": {"min": min(lengths), "max": max(lengths), "mean": round(sum(lengths) / len(lengths), 1)},
+                      "character": chars, "plan_sha256": plan["plan_sha256"]}, indent=2))
+    return 0
+
+
 def _continuity(args: argparse.Namespace) -> int:
     """F24 continuity diagnostics, evaluation, repair proposals and controlled comparison (offline)."""
     from . import continuity as ct
@@ -722,6 +750,15 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    afx = subs.add_parser("audio-features", help="Per-video-frame audio feature track (bands, flux, onsets, sections)")
+    afx.add_argument("file")
+    afx.add_argument("--out", required=True)
+    afx.add_argument("--fps", type=float, default=16.0)
+    spl = subs.add_parser("sync-plan", help="Event-locked anchor plan with bridge character and energy warps")
+    spl.add_argument("features", help="JSON written by audio-features")
+    spl.add_argument("--out", required=True)
+    spl.add_argument("--preferred", type=int, default=65, help="Preferred bridge length in frames (4n+1)")
+    spl.add_argument("--beatmap", help="Optional verified/confident beat map JSON (adds a downbeat boost)")
     ct_ = subs.add_parser("continuity", help="Shape/topology/background/motion/colour continuity flags for a clip")
     ct_.add_argument("clip")
     ct_.add_argument("--metrics", action="store_true", help="Include per-frame metrics")
@@ -891,6 +928,8 @@ def main(argv: list[str] | None = None) -> int:
             return _style(args)
         elif args.command == "brief-plan":
             return _brief_plan(args)
+        elif args.command in ("audio-features", "sync-plan"):
+            return _sync(args)
         elif args.command in ("continuity", "continuity-eval", "repair-propose", "repair-compare"):
             return _continuity(args)
         elif args.command == "camera-check":

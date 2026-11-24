@@ -46,8 +46,11 @@ def fft_magnitudes(frame: list[float]) -> list[float]:
     return [abs(c) for c in a[: n // 2]]
 
 
-def band_levels(samples: list[float], fps: float = 30.0, rate: int = BAND_SR) -> list[dict]:
-    """Per-frame relative loudness for bass / mid / treble (relative-to-long-average semantics)."""
+def band_levels(samples: list[float], fps: float = 30.0, rate: int = BAND_SR, on_frame=None) -> list[dict]:
+    """Per-frame relative loudness for bass / mid / treble (relative-to-long-average semantics).
+
+    ``on_frame(row, magnitudes)`` (optional) sees each frame's spectrum so callers (F15 US5 feature
+    track) can derive more features from the same FFT; it may add keys to ``row``."""
     window = [0.5 - 0.5 * math.cos(2 * math.pi * i / (FFT_N - 1)) for i in range(FFT_N)]
     bin_hz = rate / FFT_N
     ranges = {b: (int(lo / bin_hz), max(int(lo / bin_hz) + 1, int(hi / bin_hz)))
@@ -70,6 +73,8 @@ def band_levels(samples: list[float], fps: float = 30.0, rate: int = BAND_SR) ->
             row[band] = round(1.0 if abs(s["long"]) < 1e-3 else cur / s["long"], 4)
             row[f"{band}_att"] = round(1.0 if abs(s["long"]) < 1e-3 else s["avg"] / s["long"], 4)
         row["vol"] = round((row["bass"] + row["mid"] + row["treb"]) / 3, 4)
+        if on_frame is not None:
+            on_frame(row, mags)
         frames.append(row)
     return frames
 
