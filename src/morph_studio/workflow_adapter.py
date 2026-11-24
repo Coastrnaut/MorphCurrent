@@ -249,7 +249,7 @@ class BindingProfile(BaseModel):
     model_config = ConfigDict(extra="forbid")
     profile: str
     # What the graph produces; used by preflight capability reporting and anchor/bridge stages.
-    capability: Literal["text_to_image", "reference_edit", "wan_flf2v"] | None = None
+    capability: Literal["text_to_image", "reference_edit", "wan_flf2v", "upscale"] | None = None
     workflow: str
     workflow_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     verified_against: dict[str, Any] = Field(default_factory=dict)
@@ -339,6 +339,7 @@ CAPABILITY_CONTRACTS: dict[str, tuple[tuple[str, ...], str]] = {
     "text_to_image": (("positive_prompt", "seed"), "image"),
     "reference_edit": (("positive_prompt", "seed", "reference_image"), "image"),
     "wan_flf2v": (("start_image", "end_image", "positive_prompt", "seed", "length"), "video"),
+    "upscale": (("input_video",), "video"),  # F27/F26 T016: learned upscaler applied to an approved clip
 }
 
 

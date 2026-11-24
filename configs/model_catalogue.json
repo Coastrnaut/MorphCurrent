@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "note": "Machine-readable mirror of docs/MODELS.md (people read MODELS.md). Data only; nothing is downloaded.",
+  "models": {
+    "diffusion_models/wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors": {
+      "licence": "NOT RECORDED (ComfyUI Wan 2.2 template download; owner to verify licence)",
+      "source": "ComfyUI template (Comfy-Org repackaged Wan 2.2)",
+      "sha256": "6122e79d55e0f235698d11d657f3b196c5273c830da00b2b013c5a048d5e6a42"
+    },
+    "diffusion_models/wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors": {
+      "licence": "NOT RECORDED (ComfyUI Wan 2.2 template download; owner to verify licence)",
+      "source": "ComfyUI template (Comfy-Org repackaged Wan 2.2)",
+      "sha256": "5471a457b6ac404202a5fbe6c11595a3d5641fc766b00f38763f72303fffc21e"
+    },
+    "text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors": {
+      "licence": "NOT RECORDED (ComfyUI Wan 2.2 template download; owner to verify licence)",
+      "source": "ComfyUI template (Comfy-Org repackaged Wan 2.2)",
+      "sha256": "c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68"
+    },
+    "vae/wan_2.1_vae.safetensors": {
+      "licence": "NOT RECORDED (ComfyUI Wan 2.2 template download; owner to verify licence)",
+      "source": "ComfyUI template (Comfy-Org repackaged Wan 2.2)",
+      "sha256": "2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b"
+    },
+    "diffusion_models/qwen_image_fp8_e4m3fn.safetensors": {
+      "licence": "Apache-2.0 (per Hugging Face metadata; owner to verify on model card)",
+      "source": "huggingface.co/Comfy-Org/Qwen-Image",
+      "sha256": "98763a127701eb6fb59096f7742cb3aa7d64ed510b9f4e882d8351f8176e3ce3"
+    },
+    "diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors": {
+      "licence": "Apache-2.0 (per Hugging Face metadata; owner to verify on model card)",
+      "source": "huggingface.co/Comfy-Org/Qwen-Image-Edit",
+      "sha256": "318568f61951ab9da21100c7b896e3c1da67f0d2efad6421545e022cfaa2b2b4"
+    },
+    "text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors": {
+      "licence": "Apache-2.0 (per Hugging Face metadata; owner to verify on model card)",
+      "source": "huggingface.co/Comfy-Org/Qwen-Image",
+      "sha256": "cb5636d852a0ea6a9075ab1bef496c0db7aef13c02350571e388aea959c5c0b4"
+    },
+    "vae/qwen_image_vae.safetensors": {
+      "licence": "Apache-2.0 (per Hugging Face metadata; owner to verify on model card)",
+      "source": "huggingface.co/Comfy-Org/Qwen-Image",
+      "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f"
+    },
+    "loras/Qwen-Image-Lightning-8steps-V1.0.safetensors": {
+      "licence": "Apache-2.0 (per Hugging Face metadata; owner to verify on model card)",
+      "source": "huggingface.co/lightx2v/Qwen-Image-Lightning",
+      "sha256": "07b5a999881437f63124979844ba1949ce2438f65b6220628a196a7d30a4fff9"
+    },
+    "loras/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors": {
+      "licence": "Apache-2.0 (per Hugging Face metadata; owner to verify on model card)",
+      "source": "huggingface.co/lightx2v/Qwen-Image-Lightning",
+      "sha256": "2a32ce938ec71db2b49a817b4844ae86995569518dea56ee0ddc209cbe8e1377"
+    },
+    "upscale_models/RealESRGAN_x2plus.pth": {
+      "licence": "BSD-3-Clause",
+      "source": "github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth",
+      "sha256": "49fafd45f8fd7aa8d31ab2a22d14d91b536c34494a5cfe31eb5d89c2fa266abb"
+    }
+  }
+}

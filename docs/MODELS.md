@@ -47,6 +47,8 @@ Use those exact template titles (Workflow → Browse Templates → Image); other
 | 2026-11-24 | Qwen Lightning LoRAs (2 files, 2.55 GB) | owner, in chat | download only, SHA-256 verified |
 | 2026-11-24 | Local GPU renders to complete project tasks | owner, in chat | standing; idle queue, one job at a time |
 
+A machine-readable mirror of the table above (licence, source, SHA-256) is `configs/model_catalogue.json`, used by `registry` (F27); `tests/test_registry.py` fails if a hash here is missing from it.
+
 ## Upscaler (F26)
 
 `RealESRGAN_x2plus.pth` — Real-ESRGAN 2× general model, **BSD-3-Clause** (xinntao/Real-ESRGAN), downloaded with owner consent on 2026-11-24 from the official release `https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth` into `ComfyUI/models/upscale_models/` (`.part` then rename). Size verified 67,061,725 bytes against the release metadata (the release publishes no digest); SHA-256 computed locally `49fafd45f8fd7aa8d31ab2a22d14d91b536c34494a5cfe31eb5d89c2fa266abb`. ComfyUI core `UpscaleModelLoader` lists it. Use requires the owner's API export `workflows/04_upscale_x2.json` and a hash-pinned binding profile (F26 T016). Learned upscaling can invent texture: every use runs the F26 identity check and needs owner review.

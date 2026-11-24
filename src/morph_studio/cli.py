@@ -315,6 +315,38 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _registry(args: argparse.Namespace) -> int:
+    """F27 capability registry, compatibility preview, approved selection and rollback (no downloads)."""
+    from . import registry as rg
+    root = Path(args.repo_root) if getattr(args, "repo_root", None) else None
+    info = None
+    if getattr(args, "object_info", None) or getattr(args, "live", False):
+        info = _load_object_info(args)
+    try:
+        if args.command == "registry":
+            entries = rg.build_registry(args.profiles, object_info=info, models_root=args.models_root, repo_root=root)
+            print(json.dumps({"offline": info is None, "entries": entries}, indent=2, ensure_ascii=True))
+            return 1 if args.strict and any(e["status"] != "ready" for e in entries) else 0
+        if args.command == "registry-diff":
+            cur, cand = (rg.build_entry(p, object_info=info, repo_root=root) for p in (args.current, args.candidate))
+            for e in (cur, cand):
+                if e["actual_sha256"] is None:  # profile unreadable or workflow missing: nothing to compare
+                    print(f"ERROR: {e['path']}: {e['problems'][0]['message']}", file=sys.stderr)
+                    return 2
+            print(json.dumps(rg.compare(cur, cand), indent=2, ensure_ascii=True))
+            return 0
+        if args.command == "registry-select":
+            out = rg.select(args.profile, approve=args.approve, note=args.note, object_info=info,
+                            models_root=args.models_root, selection_path=args.selection, repo_root=root)
+        else:
+            out = rg.rollback(args.capability, args.selection)
+    except rg.RegistryRefusal as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return 0
+
+
 def _finish(args: argparse.Namespace) -> int:
     """F26 geometric HD finishing (CPU) and read-only listing of learned upscalers."""
     from . import finishing as fn
@@ -797,6 +829,28 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    reg = subs.add_parser("registry", help="Read-only capability registry of every binding profile (F27)")
+    reg.add_argument("--profiles", default=None, help="Profiles folder (default configs/profiles)")
+    reg.add_argument("--strict", action="store_true", help="Exit 1 if any entry is not ready")
+    rdiff = subs.add_parser("registry-diff", help="Compatibility preview: current vs candidate profile")
+    rdiff.add_argument("current")
+    rdiff.add_argument("candidate")
+    rsel = subs.add_parser("registry-select", help="Make a ready candidate profile active (owner approval)")
+    rsel.add_argument("--profile", required=True)
+    rsel.add_argument("--approve", action="store_true", help="Explicit owner approval")
+    rsel.add_argument("--note", default="")
+    rrb = subs.add_parser("registry-rollback", help="Restore the previously active profile for a capability")
+    rrb.add_argument("--capability", required=True)
+    for sub in (reg, rdiff, rsel):
+        group = sub.add_mutually_exclusive_group()
+        group.add_argument("--object-info", help="Saved /object_info snapshot (offline)")
+        group.add_argument("--live", action="store_true", help="Read-only GET /object_info from local ComfyUI")
+        sub.add_argument("--url", default="http://127.0.0.1:8188")
+        sub.add_argument("--repo-root", default=None)
+    for sub in (reg, rsel):
+        sub.add_argument("--models-root", default=None, help="ComfyUI models folder (presence check only)")
+    for sub in (rsel, rrb):
+        sub.add_argument("--selection", default=None, help="Selection record (default configs/registry/selection.json)")
     fin = subs.add_parser("finish", help="Geometric 1080p/1440p finishing with identity check (CPU)")
     fin.add_argument("input", nargs="?")
     fin.add_argument("--target", default="1080p", choices=["1080p", "1440p"])
@@ -1003,6 +1057,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("registry", "registry-diff", "registry-select", "registry-rollback"):
+            return _registry(args)
         elif args.command in ("interpolate", "warp-apply"):
             return _interp(args)
         elif args.command in ("audio-features", "sync-plan"):

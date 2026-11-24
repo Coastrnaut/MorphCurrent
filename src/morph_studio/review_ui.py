@@ -351,6 +351,15 @@ def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, re
             self._send(status, body, ctype, extra)
 
         def do_POST(self) -> None:
+            # Read (bounded) the body before any refusal: closing a socket with unread request bytes makes
+            # Windows reset the connection, so the client would never see the 403/404/413 reply.
+            try:
+                length = max(0, int(self.headers.get("Content-Length") or 0))
+            except ValueError:
+                length = 0
+            raw = self.rfile.read(length) if length <= 1_000_000 else b""
+            if length > 1_000_000:
+                self.close_connection = True
             if not self._host_ok():
                 return self._error(HTTPStatus.FORBIDDEN, "non-loopback Host header refused")
             origin = self.headers.get("Origin")
@@ -359,13 +368,10 @@ def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, re
             parts = [p for p in urlsplit(self.path).path.split("/") if p]
             if len(parts) != 3 or parts[0] != "run" or parts[2] != "review":
                 return self._error(HTTPStatus.NOT_FOUND, "not found")
-            length = int(self.headers.get("Content-Length") or 0)
             if length > 10_000:
-                if length <= 1_000_000:  # drain so the client can read the reply (Windows aborts otherwise)
-                    self.rfile.read(length)
                 self.close_connection = True
                 return self._error(HTTPStatus.REQUEST_ENTITY_TOO_LARGE, "form too large")
-            form = {k: v[0] for k, v in parse_qs(self.rfile.read(length).decode("utf-8", "replace")).items()}
+            form = {k: v[0] for k, v in parse_qs(raw.decode("utf-8", "replace")).items()}
             if not secrets.compare_digest(form.get("csrf", ""), self.csrf_token):
                 return self._error(HTTPStatus.FORBIDDEN, "missing or invalid form token")
             try:
