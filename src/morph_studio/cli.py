@@ -20,6 +20,7 @@ from .bridge import (
     run_bridge,
 )
 from .dag import compile_plan
+from .qa_subject import calibrate as calibrate_qa
 from .audio import AudioError, analyze_audio, sync_report
 from .audio_bands import analyze_bands, band_hits, render_timeline_png
 from .prompt_compiler import NOTE as PROMPT_NOTE, variants as prompt_variants
@@ -215,6 +216,12 @@ def _audio_visualize(args: argparse.Namespace) -> int:
     out = render_timeline_png(levels, Path(args.out), beats=analysis.get("beats"), boundaries=boundaries)
     print(json.dumps({"png": str(out), "frames": len(levels), "fps": args.fps, "bpm": analysis.get("bpm"),
                       "bass_hits_s": band_hits(levels)[:64], "boundaries_s": boundaries}, indent=2))
+    return 0
+
+
+def _qa_calibrate(args: argparse.Namespace) -> int:
+    """Precision/recall of subject-aware QA against labelled defect windows (local clips)."""
+    print(json.dumps(calibrate_qa(args.labels, args.repo_root), indent=2))
     return 0
 
 
@@ -445,6 +452,9 @@ def main(argv: list[str] | None = None) -> int:
     av.add_argument("--out", required=True, help="PNG path (refused if it exists)")
     av.add_argument("--storyboard", help="Overlay this storyboard's bridge boundaries")
     av.add_argument("--fps", type=float, default=30.0)
+    qc = subs.add_parser("qa-calibrate", help="Score QA detectors against labelled defect windows")
+    qc.add_argument("labels", nargs="?", default="configs/qa_labels.json")
+    qc.add_argument("--repo-root", default=".")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -538,6 +548,8 @@ def main(argv: list[str] | None = None) -> int:
             return _audio_sync(args)
         elif args.command == "audio-visualize":
             return _audio_visualize(args)
+        elif args.command == "qa-calibrate":
+            return _qa_calibrate(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":

@@ -482,3 +482,19 @@ Owner request: ten more features (40 total) to plan a five-minute video about el
 - CLI: `audio-analyze FILE`, `audio-sync STORYBOARD [--audio FILE]`, `audio-visualize FILE --out PNG [--storyboard]`.
 
 **Results.** Offline **241 passed, 1 deselected**: click tracks at 90/120/140 BPM within ±1 BPM and beats within ±30 ms, 0.37 s offset, 22.05/44.1/48 kHz and stereo, silence, missing file, URL refusal, licence guard, 0 ms drift at 120 BPM, 110 BPM rounding flagged (−114 ms), bass kicks raise only bass, hi-hats only treble, steady tone ≈ 1.0. Demo visualization of a synthetic 120 BPM track: 119.9 BPM detected.
+
+## F16 — Subject-aware QA and calibration, offline slice (2026-11-24)
+
+**Spec Kit.** `create_new_feature.py --json --number 16 --short-name calibrated-qa-candidates` → `specs/016-calibrated-qa-candidates`; tasks 5/6 (T006 owner-labelled windows pending).
+
+**Built.** `src/morph_studio/qa_subject.py`: per-frame subject metrics from a local 128×74 RGB decode (F12 mask area, centroid, Laplacian sharpness on the subject); detectors `subject_collapse` (area < 0.55× smaller endpoint for ≥ 3 frames), `subject_drift` (centroid > 0.12 off the endpoint-to-endpoint line), `blur_dip` (sharpness < 0.5× endpoint); `calibrate` (precision/recall by window overlap ± 4 frames). `qa.analyze_clip` now merges these flags (so `render` review and `--accept-heuristics` see them). `configs/qa_labels.json` seeds 4 real clips from documented observations. CLI `qa-calibrate [LABELS]`.
+
+**Real-clip calibration (thresholds fixed before evaluation, not tuned to these labels):**
+| Detector | TP | FN | FP | Precision | Recall |
+|---|---|---|---|---|---|
+| subject_collapse | 2 | 1 | 1 | 0.67 | 0.67 |
+| subject_drift | 0 | 1 | 3 | 0.00 | 0.00 |
+| blur_dip | 0 | 2 | 0 | — | 0.00 |
+Caught: MC-FLF2V-003 petal collapse (frames 28–44) and MC-RUN-001 side-on bridge shrink (16–20) — both missed entirely by F08. Missed: MC-RUN-002 wing fold, the MC-RUN-001 right drift and both blur windows. The 3 drift "false positives" are in the side-on MC-RUN-001 bridge, where the subject arguably does drift (labels incomplete). Honest status: partial improvement; needs owner-labelled windows and a train/test split before tuning.
+
+**Results.** Offline **247 passed, 1 deselected**.

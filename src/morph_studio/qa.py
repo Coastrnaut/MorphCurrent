@@ -86,7 +86,14 @@ def analyze_frames(frames: list[bytes], start_ref: bytes | None = None,
 def analyze_clip(path: Path, start_image: Path | None = None, end_image: Path | None = None) -> dict:
     frames = decode_gray_frames(path)
     refs = [decode_gray_frames(p)[0] if p else None for p in (start_image, end_image)]
-    return {"clip": str(path), **analyze_frames(frames, *refs)}
+    report = {"clip": str(path), **analyze_frames(frames, *refs)}
+    from .qa_subject import analyze_subject  # F16 subject-aware detectors
+    subject = analyze_subject(path)["flags"]
+    if subject:
+        report["flags"] = report["flags"] + subject
+        report["score"] += 2 * len(subject)
+        report["status"] = "flagged"
+    return report
 
 
 def candidate_seeds(task: dict, master_seed: int) -> list[int]:

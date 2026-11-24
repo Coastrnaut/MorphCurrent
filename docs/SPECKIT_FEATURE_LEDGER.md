@@ -126,7 +126,7 @@ These original ten scope definitions and existing specification directories are 
 | **F13** | `specs/013-physical-morph-choreography/` (created) | F12, F08 | P0 | **OFFLINE-PASS** — `choreography` → compiled bridge prompts/negatives, `prompt-preview --variants`; fixed-seed GPU A/B pending |
 | **F14** | `specs/014-adaptive-transition-ladders/` (proposed) | F12, F13, F05 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F15** | `specs/015-local-audio-beat-mapping/` (created) | F05, F09 | P0 | **OFFLINE-PASS** — tempo/beats/downbeat, visualizer-style bass/mid/treb bands, licence guard, drift report, timeline PNG; real licensed track pending |
-| **F16** | `specs/016-calibrated-qa-candidates/` (proposed) | F12, F13, F08 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F16** | `specs/016-calibrated-qa-candidates/` (created) | F12, F13, F08 | P0 | **OFFLINE-PASS (partial)** — subject collapse/drift/blur detectors + `qa-calibrate`; collapse recall 2/3 on real clips, drift/blur 0; owner labels pending |
 | **F17** | `specs/017-vram-aware-job-scheduler/` (proposed) | F11, F07, F14 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F18** | `specs/018-local-creative-review-ui/` (proposed) | F08, F15, F16 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F19** | `specs/019-resumable-longform-timeline/` (proposed) | F14, F15, F17 | P1 | **PLANNED — NOT IMPLEMENTED** |

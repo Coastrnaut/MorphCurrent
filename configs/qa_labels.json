@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "kinds": ["subject_collapse", "subject_drift", "blur_dip"],
+  "note": "Seeded 2026-11-24 from the observations in docs/EXPERIMENTS.md (frame strips sampled every 8 frames, so windows are coarse, +/- 4 frames). Clips are local, gitignored outputs. Owner-labelled windows replace these when available (F16 T006).",
+  "clips": [
+    {
+      "id": "MC-FLF2V-003",
+      "clip": "outputs/runs/4b5d5805e77bcbe0/outputs/bridge_00001_.mp4",
+      "defects": [
+        {"kind": "subject_collapse", "frames": [24, 40], "source": "petals collapse to a thin vertical form (contact sheet review)"}
+      ]
+    },
+    {
+      "id": "MC-RUN-001 orchid->butterfly",
+      "clip": "outputs/runs/9785f0ae3ba196df/outputs/bridge_00001_.mp4",
+      "defects": [
+        {"kind": "subject_drift", "frames": [32, 48], "source": "subject drifts right mid-way before resolving"},
+        {"kind": "blur_dip", "frames": [32, 48], "source": "subject blurs mid-way"}
+      ]
+    },
+    {
+      "id": "MC-RUN-001 butterfly->phoenix (side-on)",
+      "clip": "outputs/runs/61df594564c2e37c/outputs/bridge_00001_.mp4",
+      "defects": [
+        {"kind": "subject_collapse", "frames": [12, 24], "source": "butterfly shrinks to a small blurred figure ~frame 16"},
+        {"kind": "blur_dip", "frames": [12, 24], "source": "small blurred figure, motion blur"}
+      ]
+    },
+    {
+      "id": "MC-RUN-002 butterfly->phoenix (frontal)",
+      "clip": "outputs/runs/4cd0b1bcbe51520d/outputs/bridge_00001_.mp4",
+      "defects": [
+        {"kind": "subject_collapse", "frames": [32, 40], "source": "brief inward wing fold (owner approved the clip anyway)"}
+      ]
+    }
+  ]
+}
