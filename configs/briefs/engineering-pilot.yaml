@@ -1,4 +1,4 @@
-# Pilot brief for the F31-F40 five-minute electrical & compute engineering film (first ~32 s).
+# Pilot brief for the F31-F40 full-song electrical & compute engineering film (first ~32 s of ~6 min).
 # Generate an editable storyboard (nothing is rendered):
 #   python -m morph_studio.cli brief-plan configs/briefs/engineering-pilot.yaml --out configs/sequences/engineering-pilot.yaml
 title: engineering-pilot

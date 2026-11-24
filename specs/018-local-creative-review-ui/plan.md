@@ -26,7 +26,7 @@ A strictly-loopback local review page (`morphcurrent review-ui`) over existing r
 
 **Constraints**: loopback only; no new dependencies; no request logs; no involuntary rendering
 
-**Scale/Scope**: single operator; runs of up to ~150 stages (five-minute film)
+**Scale/Scope**: single operator; runs of up to ~180 stages (full-song film: ~90 bridges + ~91 anchors)
 
 ## Constitution Check
 

@@ -92,9 +92,9 @@ MC-RUN-003 reproduced all Qwen-generated anchors, Wan bridges and 129-frame fina
 
 ## F31–F40 production track (planned)
 
-A five-minute electrical & compute engineering film (~75 bridges, ~76 anchors, ≈ 6–11.4 generation GPU-hours ESTIMATED, not including rerenders or finishing) built on F11–F30: concept bank, act structure, technical-accuracy review, visual language, long-chain drift control, GPU budgeting, soundtrack/narration timing, act titles, batch review and final delivery. See `docs/SPECKIT_FEATURE_LEDGER.md`.
+An electrical & compute engineering film that runs the full length of its song (358.822 s Mozart track → ~90 bridges, ~91 anchors, ≈ 6.9–13.7 generation GPU-hours ESTIMATED, not including rerenders or finishing; may exceed five minutes) built on F11–F30: concept bank, act structure, technical-accuracy review, visual language, long-chain drift control, GPU budgeting, soundtrack/narration timing, act titles, batch review and final delivery. See `docs/SPECKIT_FEATURE_LEDGER.md`.
 
 
 ### Production pilot and reference-lineage safety
 
-P0: sourced 8–12-bridge offline pilot storyboard, verified frame counts and estimates. P1: bounded owner-approved GPU pilot measuring morphology, VRAM and render cost. P2: complete act with reviewed reanchor/descendant invalidation, seam, optional audio and captions. P3: full five-minute production only after earlier gates pass. A reference-edited anchor's replacement invalidates its transitive dependent image edits and their bridge clips until an independently regenerated reanchor breaks the chain. For 75 adjacent 65-frame bridges, 4801 unique frames = 300s anchor span and 300.0625s nominal playback at 16fps before separate title holds.
+P0: sourced 8–12-bridge offline pilot storyboard, verified frame counts and estimates. P1: bounded owner-approved GPU pilot measuring morphology, VRAM and render cost. P2: complete act with reviewed reanchor/descendant invalidation, seam, optional audio and captions. P3: full-song production only after earlier gates pass. A reference-edited anchor's replacement invalidates its transitive dependent image edits and their bridge clips until an independently regenerated reanchor breaks the chain. For 90 adjacent 65-frame bridges, 5761 unique frames = 360 s anchor span and 360.0625 s nominal playback at 16 fps, covering the 358.822 s song.

@@ -34,7 +34,7 @@ only with `--confirm-gpu`) followed by `compare_runs`.
 
 **Constraints**: read-only except backup/restore targets; no network; no release tagging
 
-**Scale/Scope**: runs up to ~150 stages (five-minute film)
+**Scale/Scope**: runs up to ~180 stages (full-song film: ~90 bridges + ~91 anchors)
 
 ## Constitution Check
 

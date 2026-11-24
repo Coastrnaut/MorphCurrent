@@ -81,8 +81,9 @@ never renders, cancels or contacts ComfyUI; the CLI remains authoritative and fu
 Work proceeds autonomously through all remaining features without waiting for prompts. Pause only
 for decisions that are the owner's: new GPU batches beyond an approved bounded scope, model
 downloads/installs, destructive or irreversible actions, and creative approvals — then continue
-other unblocked work. Five-minute film production follows P0 offline plan → P1 authorized pilot →
-P2 one reviewed act → P3 whole-film batches. Engineering facts are recorded separately from
+other unblocked work. Film production runs the picture for the full length of the chosen song
+(five minutes was only a recommendation; the film may exceed it) and follows P0 offline plan →
+P1 authorized pilot → P2 one reviewed act → P3 whole-film batches. Engineering facts are recorded separately from
 artistic metaphors.
 
 ## Technology & Safety Constraints
@@ -117,4 +118,4 @@ Versioning: MAJOR for removed or redefined principles, MINOR for added or materi
 guidance, PATCH for clarifications. Every feature plan's Constitution Check MUST evaluate each
 principle above; consent and test gates are never bypassed to meet a schedule.
 
-**Version**: 2.0.0 | **Ratified**: 2026-11-24 | **Last Amended**: 2026-11-24
+**Version**: 2.0.1 | **Ratified**: 2026-11-24 | **Last Amended**: 2026-11-24

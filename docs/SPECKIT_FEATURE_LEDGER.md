@@ -1,6 +1,6 @@
 # MorphCurrent — 40-feature GitHub Spec Kit engineering ledger
 
-**Scope:** F01–F10 are working pipeline milestones; **F11–F30 comprise twenty additional features, of which F11–F13 have offline implementation slices**, evolving MorphCurrent from a working short YAML-to-video pipeline into a long-form, musically synchronized, quality-controlled local creative system; **F31–F40 are a production track for a five-minute electrical & compute engineering film** built on those capabilities.
+**Scope:** F01–F10 are working pipeline milestones; **F11–F30 comprise twenty additional features, of which F11–F13 have offline implementation slices**, evolving MorphCurrent from a working short YAML-to-video pipeline into a long-form, musically synchronized, quality-controlled local creative system; **F31–F40 are a production track for a full-song electrical & compute engineering film** (picture runs the whole soundtrack; may exceed five minutes) built on those capabilities.
 
 **Grounded audit:** GitHub `main` at `882f58e0f35e5e0c1a08b3b3da67af0d72bc8083`, 2026-11-24; associated Windows CI successful, commit reports 222 offline tests. Future Claude sessions must fetch current HEAD and respect concurrent owner edits; never assume this SHA is latest after today.
 
@@ -350,16 +350,16 @@ These original ten scope definitions and existing specification directories are 
 
 **Acceptance gate:** Final owner-approved demonstration of a multi-scene local project with optional synced audio and at least two delivery presets; each required F01–F30 gate has real evidence or an explicit unresolved blocker. Never declare release complete solely from tests.
 
-## F31–F40 — Production track: five-minute electrical & compute engineering film
+## F31–F40 — Production track: full-song electrical & compute engineering film
 
-**Goal:** plan and produce a ~5-minute local morph film that travels through the history and inner workings of electrical and compute engineering — for example lightning → Leyden jar → voltaic pile → dynamo → power grid and transformer → telegraph key and waveforms → vacuum tube → transistor → integrated-circuit die → microprocessor → GPU → data-center rack → AI accelerator — as one continuous chain of physical metamorphoses. F31–F40 *use* F11–F30 capabilities (long-form timeline, music sync, style packs, QA, scheduling, finishing) and add what this specific production needs. All start **PLANNED — NOT IMPLEMENTED**.
+**Goal:** plan and produce a local morph film that runs for the **full length of the song** (≈ 6 min for the licensed Mozart track; may exceed five minutes) that travels through the history and inner workings of electrical and compute engineering — for example lightning → Leyden jar → voltaic pile → dynamo → power grid and transformer → telegraph key and waveforms → vacuum tube → transistor → integrated-circuit die → microprocessor → GPU → data-center rack → AI accelerator — as one continuous chain of physical metamorphoses. F31–F40 *use* F11–F30 capabilities (long-form timeline, music sync, style packs, QA, scheduling, finishing) and add what this specific production needs. All start **PLANNED — NOT IMPLEMENTED**.
 
-**Planning numbers (ESTIMATED from measured history in `configs/perf_history.json`, confirmed by the F11 benchmark runs of 2026-11-24 — bridge ≈ 496 s at 832×480, ≈ 239 s at 640×368):** 300 s at 16 fps with 65-frame bridges (4 s anchor span) ≈ **75 bridges + 76 anchors**. At measured 832×480 rates (bridge ≈ 496 s, edited anchor ≈ 50 s) ≈ **11.4 GPU-hours**; at 640×368 (bridge ≈ 234 s) ≈ **6 GPU-hours**. 81-frame (5 s) bridges would cut the count to ≈ 60, but their cost is NO DATA until measured. Every batch needs explicit bounded owner approval.
+**Planning numbers (owner decision 2026-11-24: the picture runs for the full length of the chosen song; five minutes was only a recommendation and the film may run longer).** The licensed track `assets/music/mozart-symphony-40-i-molto-allegro-musopen.opus` is **358.822 s**. Bridge count N = ceil((song_s × fps − 1)/(L − 1)); at 16 fps with 65-frame bridges (4 s anchor span) that is **90 bridges + 91 anchors**. ESTIMATED from measured history in `configs/perf_history.json` (F11 benchmarks 2026-11-24: bridge ≈ 496 s and edited anchor ≈ 50 s at 832×480; bridge ≈ 240 s and anchor ≈ 36 s at 640×368): ≈ **13.7 GPU-hours** at 832×480 or ≈ **6.9 GPU-hours** at 640×368. 81-frame (5 s) bridges would cut the count to 72 (+73 anchors), but their cost is NO DATA until measured. If the soundtrack changes, recompute from its measured duration. Every batch needs explicit bounded owner approval.
 
 | ID | Proposed Spec Kit folder (verify numbering before creation) | Dependencies | Priority | Initial status |
 |---|---|---|---|---|
 | **F31** | `specs/031-engineering-concept-bank/` (proposed) | F12, F21 | P0 | **PLANNED — NOT IMPLEMENTED** |
-| **F32** | `specs/032-five-minute-act-structure/` (proposed) | F19, F22, F31 | P0 | **PLANNED — NOT IMPLEMENTED** |
+| **F32** | `specs/032-full-song-act-structure/` (proposed) | F19, F22, F31 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F33** | `specs/033-technical-accuracy-review/` (proposed) | F31, F16 | P0 | **PLANNED — NOT IMPLEMENTED** |
 | **F34** | `specs/034-engineering-visual-language/` (proposed) | F21, F12, F23 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F35** | `specs/035-long-chain-lineage-drift/` (proposed) | F12, F14, F19 | P0 | **PLANNED — NOT IMPLEMENTED** |
@@ -367,9 +367,9 @@ These original ten scope definitions and existing specification directories are 
 | **F37** | `specs/037-soundtrack-narration-timing/` (proposed) | F15, F32 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F38** | `specs/038-act-transitions-titles/` (proposed) | F14, F32, F37 | P1 | **PLANNED — NOT IMPLEMENTED** |
 | **F39** | `specs/039-batch-review-iteration/` (proposed) | F16, F18, F36 | P0 | **PLANNED — NOT IMPLEMENTED** |
-| **F40** | `specs/040-five-minute-film-delivery/` (proposed) | F25, F26, F30, F31–F39 | P0 final | **PLANNED — NOT IMPLEMENTED** |
+| **F40** | `specs/040-full-song-film-delivery/` (proposed) | F25, F26, F30, F31–F39 | P0 final | **PLANNED — NOT IMPLEMENTED** |
 
-### Required preproduction gates for the five-minute film
+### Required preproduction gates for the full-song film
 
 **P0 — Offline continuity pilot:** assemble a sourced, technically reviewed sequence of **8–12 adjacent bridges** (32–48 seconds of anchor span at 65 frames/16 fps), preferably crossing an era or chapter boundary. Produce a validated dry-run plan, correspondences, visual style, source/uncertainty notes and measured-input GPU estimate. No render is authorized by planning.
 
@@ -379,7 +379,7 @@ These original ten scope definitions and existing specification directories are 
 
 **P3 — Whole-film delivery:** only after owner approval of P0–P2, schedule bounded, resumable act batches, followed by approved finishing/audio and two export formats. Preserve original 16 fps masters and recorded provenance. No automatic six-hour-plus GPU batch.
 
-**Duration/cost check:** with 75 adjacent 65-frame bridges the exact deduplicated count is `1 + 75×(65−1) = 4801` frames. This means 300 seconds between the first and last anchor timestamps, and a nominal `4801/16 = 300.0625 s` container duration before additional holds/cards. Seventy-six unique anchor concepts are an **illustrative plan**, not an artistic quota; approved act titles, pauses, different bridge lengths or a shorter list change the count. The published ~6–11.4 GPU-hour range is a **base generation estimate**, not a wall-clock guarantee: price in quality rerenders, reanchors, startup/load, review, storage, joining, interpolation, upscaling and audio separately. 81-frame bridge cost remains unknown until measured.
+**Duration/cost check:** the picture must cover the whole 358.822 s song. With 90 adjacent 65-frame bridges the exact deduplicated count is `1 + 90×(65−1) = 5761` frames: 360 seconds between the first and last anchor timestamps and a nominal `5761/16 = 360.0625 s` container duration, i.e. the picture runs ≈ 1.2 s past the music (allowed; the final anchor may hold or the audio may end first). Ninety-one unique anchor concepts are an **illustrative plan**, not an artistic quota; approved act titles, pauses, different bridge lengths or a shorter list change the count. The published ~6.9–13.7 GPU-hour range is a **base generation estimate**, not a wall-clock guarantee: price in quality rerenders, reanchors, startup/load, review, storage, joining, interpolation, upscaling and audio separately. 81-frame bridge cost remains unknown until measured.
 
 **Factual storytelling rule:** historical electricity/computing components must have sourced component/era descriptions, an owner review and uncertainty notes; physically impossible transitions can be marked **artistic metamorphoses**, not literal engineering history. Never invent authoritative component labels or citations in model-generated pixels. Use postproduction captions with checked facts.
 
@@ -392,15 +392,15 @@ These original ten scope definitions and existing specification directories are 
 
 **Tests / evidence:** Schema validation, unique ids, every concept reachable in the chain, banned-term check (brands/logos), neighbour shape/material notes present; owner review of the list.
 
-**Acceptance gate:** Owner-approved concept bank of ≥ 76 entries in era order with neighbour notes; no unverified technical claims presented as fact.
+**Acceptance gate:** Owner-approved concept bank of ≥ 91 entries (one per anchor for the full song) in era order with neighbour notes; no unverified technical claims presented as fact.
 
-### F32 — Five-minute act structure and chaptered storyboard
+### F32 — Full-song act structure and chaptered storyboard
 
 **Purpose:** Turn the concept bank into a timed, multi-act storyboard the existing pipeline can render.
 
-**Build:** Five acts of ~60 s, for example *Spark* (natural and early electricity), *Power* (generation and grid), *Signal* (communication and waveforms), *Logic* (tubes, transistors, ICs), *Scale* (CPUs, GPUs, data centers, AI). Per act: anchors, second/beat budgets, Wan `4n+1` lengths, transition choreography (F13), act-boundary handling (F38). Compile to chapter storyboards (F19) with deterministic plan hashes and a duration report (unique frames = 1 + Σ(L−1)).
+**Build:** Five acts of ~72 s spanning the whole song (act boundaries may follow the music's sections from F15), for example *Spark* (natural and early electricity), *Power* (generation and grid), *Signal* (communication and waveforms), *Logic* (tubes, transistors, ICs), *Scale* (CPUs, GPUs, data centers, AI). Per act: anchors, second/beat budgets, Wan `4n+1` lengths, transition choreography (F13), act-boundary handling (F38). Compile to chapter storyboards (F19) with deterministic plan hashes and a duration report (unique frames = 1 + Σ(L−1)).
 
-**Tests / evidence:** 300 s ± one bridge interval; per-act and total frame math; deterministic hashes; editing one act invalidates only that act; full-film dry run without GPU.
+**Tests / evidence:** picture covers the full song duration and overruns it by less than one bridge interval; per-act and total frame math; deterministic hashes; editing one act invalidates only that act; full-film dry run without GPU.
 
 **Acceptance gate:** Owner-approved storyboard whose dry run reports duration, bridge/anchor counts and estimated GPU hours.
 
@@ -416,7 +416,7 @@ These original ten scope definitions and existing specification directories are 
 
 ### F34 — Engineering visual language
 
-**Purpose:** Five minutes of morphs must read as one film, not 75 unrelated clips.
+**Purpose:** A full song of morphs must read as one film, not ~90 unrelated clips.
 
 **Build:** A film style pack (F21): palette (copper, steel, phosphor green, silicon blue), lighting (dark studio, rim light), macro lens look, background treatment, per-act palette shifts with continuity rules across act boundaries; F12 geometry targets (centred subject, consistent scale band) and F23 camera rules per act.
 
@@ -464,25 +464,25 @@ These original ten scope definitions and existing specification directories are 
 
 **Acceptance gate:** Owner-approved act boundaries and titles in a preview render.
 
-### F39 — Batch review and iteration for ~75 bridges
+### F39 — Batch review and iteration for ~90 bridges
 
 **Purpose:** Reviewing and fixing dozens of clips needs better tools than one-by-one approval.
 
 **Build:** Act-level contact sheets and frame strips, side-by-side candidate comparisons, F16 QA ranking, keyboard-driven approve/reject/rerender in the F18 UI, a rerender queue limited to rejected items with a budget preview, version history per bridge.
 
-**Tests / evidence:** Review state for 75 items, bulk approval within an act, rejection queues only the affected transitive dependency stages, versions preserved, budget preview matches F36.
+**Tests / evidence:** Review state for 90 items, bulk approval within an act, rejection queues only the affected transitive dependency stages, versions preserved, budget preview matches F36.
 
 **Acceptance gate:** Owner completes review of a full act in the tool with every decision recorded in manifests.
 
-### F40 — Five-minute film delivery and acceptance
+### F40 — Full-song film delivery and acceptance
 
 **Purpose:** Ship the finished electrical and compute engineering film.
 
 **Build:** Join all acts (seam-verified), interpolate to 24/30 fps (F25), finish/upscale to 1080p (F26, owner-installed models only), 16:9 and 9:16 presets (F30), music/narration mux, provenance report (models and hashes, workflows, seeds, licences, owner approvals), reproducible manifest, and measured GPU-hours/wall-clock vs the F36 estimate.
 
-**Tests / evidence:** ffprobe golden checks per preset, frame/PTS/audio integrity across ~75 seams, provenance completeness, fresh-root replay of at least one act byte-identical (as in MC-RUN-003).
+**Tests / evidence:** ffprobe golden checks per preset, frame/PTS/audio integrity across ~90 seams, picture covering the full song, provenance completeness, fresh-root replay of at least one act byte-identical (as in MC-RUN-003).
 
-**Acceptance gate:** Owner-approved five-minute film in at least two delivery formats with a complete provenance report; every F31–F40 gate has evidence or an explicit owner-accepted blocker.
+**Acceptance gate:** Owner-approved full-song film in at least two delivery formats with a complete provenance report; every F31–F40 gate has evidence or an explicit owner-accepted blocker.
 
 ## Execution, status and artifact protocol
 

@@ -9,7 +9,7 @@ def test_forty_features_have_unique_ordered_ids_and_explicit_model_gates():
     ledger = (ROOT / "docs" / "SPECKIT_FEATURE_LEDGER.md").read_text(encoding="utf-8")
     feature_ids = re.findall(r"^### (F\d{2}) — ", ledger, re.MULTILINE)
     assert feature_ids == [f"F{i:02d}" for i in range(1, 41)]
-    assert "F31–F40" in ledger and "five-minute" in ledger
+    assert "F31–F40" in ledger and "full-song" in ledger
     assert "01_anchor_t2i.json" in ledger
     assert "02_anchor_edit.json" in ledger
     assert "03_wan22_flf2v.json" in ledger
@@ -79,7 +79,7 @@ def test_film_pilot_gates_and_latest_feature_handoff():
     assert ledger.count('### F') == 40
     assert 'T010 is completed' in ledger or 'T010 verified' in ledger
     assert 'P0 — Offline' in ledger and 'P3 — Whole-film' in ledger
-    assert '4801' in ledger and '300.0625' in ledger
+    assert '5761' in ledger and '360.0625' in ledger and '358.822' in ledger
     assert 'transitive' in ledger
     assert 'F11–F13' in prompt and 'F31–F40' in prompt
     assert 'F14–F40' in governance

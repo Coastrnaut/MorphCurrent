@@ -41,7 +41,7 @@ Offline tests use a stateful fake ComfyUI (`tests/fake_comfy.py`) and real FFmpe
 
 ## Spec Kit
 
-The 40-feature roadmap (F31–F40: five-minute engineering film track) and true F01–F10 GPU evidence are in [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md). F11–F13 already have real specs and implementation slices; F14–F40 must be created one at a time with real spec/plan/tasks/implementation artifacts. The [Claude Desktop one-shot](CLAUDE_DESKTOP_ONESHOT.md) is **paste-only**: copy its entire contents into Claude Desktop Code, no trimming of wrappers required.
+The 40-feature roadmap (F31–F40: full-song engineering film track) and true F01–F10 GPU evidence are in [SPECKIT_FEATURE_LEDGER.md](SPECKIT_FEATURE_LEDGER.md). F11–F13 already have real specs and implementation slices; F14–F40 must be created one at a time with real spec/plan/tasks/implementation artifacts. The [Claude Desktop one-shot](CLAUDE_DESKTOP_ONESHOT.md) is **paste-only**: copy its entire contents into Claude Desktop Code, no trimming of wrappers required.
 
 
 Spec Kit is installed with the Python script backend (`.specify/integration.json`: `script=py`); the Claude skills are `speckit-specify`, `-plan`, `-tasks`, `-analyze`, `-implement`, etc.

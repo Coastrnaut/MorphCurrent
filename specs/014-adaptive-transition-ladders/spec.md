@@ -7,7 +7,7 @@
 ## Gap analysis
 | Exists | Gap |
 |---|---|
-| Linear storyboards (any number of anchors); per-transition `duration_beats` → 4n+1 frames (49/65/81 all valid); F12 geometry comparison; F13 choreography; F11 time estimates; F08/F16 selective rerender | No way to *judge* that a transition is too far for one bridge, nor to propose an intermediate anchor with a sensible prompt, split the beat budget into valid Wan lengths and check the GPU cost — a five-minute engineering film has many distant pairs (e.g. lightning → Leyden jar) |
+| Linear storyboards (any number of anchors); per-transition `duration_beats` → 4n+1 frames (49/65/81 all valid); F12 geometry comparison; F13 choreography; F11 time estimates; F08/F16 selective rerender | No way to *judge* that a transition is too far for one bridge, nor to propose an intermediate anchor with a sensible prompt, split the beat budget into valid Wan lengths and check the GPU cost — a full-song engineering film (~90 bridges) has many distant pairs (e.g. lightning → Leyden jar) |
 
 ## User Scenarios & Testing *(mandatory)*
 ### US1 - Transition risk (P1)
