@@ -184,6 +184,38 @@ def test_storage_estimates_and_preflight(tmp_path):
     assert not low["ok"] and "reserve" in low["message"]
 
 
+@needs_ffmpeg
+def test_preflight_counts_stages_cached_by_earlier_runs(image_repo):
+    from morph_studio.longform import cached_stages
+    fake = FakeComfy()
+    fake.real_video = True
+    base = sample_data(width=256, height=256)
+    (image_repo / "a.yaml").write_text(yaml.safe_dump(base), encoding="utf-8")
+    kw = dict(runs_root=image_repo / "runs", repo_root=image_repo, profiles=PROFILES, poll_seconds=0,
+              confirm_gpu=True)
+    run_render(image_repo / "a.yaml", fake.client, **kw)
+    edited = json.loads(json.dumps(base))
+    edited["anchors"][2]["seed"] = 777  # new plan hash, new run dir
+    (image_repo / "b.yaml").write_text(yaml.safe_dump(edited), encoding="utf-8")
+    plan = compile_plan(load_storyboard(image_repo / "b.yaml"), profiles=PROFILES, repo_root=image_repo)
+    assert cached_stages(plan, image_repo / "runs") == {"anchor:orchid", "anchor:butterfly",
+                                                       "bridge:orchid->butterfly"}
+    seen = {}
+    result = run_render(image_repo / "b.yaml", fake.client,
+                        disk_usage=lambda p: seen.setdefault("free", (0, 0, 3 * 1024 ** 3)), **kw)
+    assert result["status"] == "awaiting_review"  # only phoenix + one bridge charged; fits
+
+
+def test_cli_render_exit_9_on_low_disk(image_repo, monkeypatch, capsys):
+    import morph_studio.longform as lf
+    monkeypatch.setattr(lf.shutil, "disk_usage", lambda p: (0, 0, 1024 ** 3))
+    (image_repo / "sb.yaml").write_text(yaml.safe_dump(sample_data(width=256, height=256)), encoding="utf-8")
+    monkeypatch.chdir(image_repo)
+    code = cli.main(["render", "sb.yaml", "--confirm-gpu", "--runs-root", "runs", "--t2i-profile", PROFILES["text_to_image"],
+                     "--edit-profile", PROFILES["reference_edit"], "--url", "http://127.0.0.1:9"])
+    assert code == 9 and '"blocked_disk"' in capsys.readouterr().out
+
+
 def test_render_refuses_when_disk_low(image_repo):
     fake = FakeComfy()
     (image_repo / "sb.yaml").write_text(yaml.safe_dump(sample_data(width=256, height=256)), encoding="utf-8")

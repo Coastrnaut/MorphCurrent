@@ -584,3 +584,14 @@ Owner reiterated: keep working autonomously through all features until done (now
 **Built.** `src/morph_studio/review_ui.py` (stdlib only): `run_view` (stage states, media allowlist tokens, missing-media marking), `list_runs`, page builders, `apply_review` (bridge-only, decision enum, note ≤ 500, reuses `qa.record_review`), `plan_summary`/`render_plan_page`, `default_storyboards`, threaded handler (Host check, per-process CSRF token + Origin, 10 kB form cap, Range 206/416, CSP/nosniff/DENY headers, no request logging) and loopback-only `make_server` (IPv4/IPv6). CLI `review-ui [--runs-root] [--host] [--port] [--storyboard] [--repo-root]` (exit 2 for non-loopback host).
 
 **Results.** Offline **314 passed, 1 deselected**; `tests/test_review_ui.py` 16 tests incl. a live server on an ephemeral port: UI/CLI review parity, refusals (anchor/unknown task, bad decision, foreign Host/Origin, bad token, oversize form, traversal/unknown media), Range seeking, escaped storyboard/manifest injection, labelled controls without positive tabindex, no ComfyUI/render import, run page < 1 s. Real runs on disk (run-ba2d9dbe…, run-cefb16ae…) render 3 anchors, 2 clips, contact sheet and final movie in 6–17 ms; `review-ui --port 0` smoke: 2 runs and 2 plans listed, plan page 200. Constitution amended to v2.0.0 during this feature.
+
+## Retroactive Spec Kit converge loop: F17, F19, F21, F22 (2026-11-24)
+
+These four features were built with hand-written spec/plan/tasks before the owner made the full Spec Kit workflow and converge loop mandatory (constitution v2.0.0). `speckit-converge` was run on each in a loop until clean:
+
+- **F17** pass 1 → T008–T012: the run lock now heartbeats before every new GPU submission even without caps (previously an uncapped render > 30 min could look stale and be taken over — a real cross-process safety gap); `paused_budget` budget summary recorded in the manifest; cached-under-`--max-jobs 0` test; plan API and nine-principle Constitution Check aligned. Pass 2 converged.
+- **F19** pass 1 → T009–T011: disk preflight now treats stages verified by *earlier* runs (via `run-*/plan.json` Merkle identities) as cached, so edits are no longer over-charged; `disk_usage` resolved at call time; CLI exit 9 tested; Constitution Check. Pass 2 converged.
+- **F21** pass 1 → T007–T008: `render --dry-run` reports a style-pack size advisory when it differs from the storyboard (never applied); Constitution Check. Pass 2 converged.
+- **F22** pass 1 → T007–T009: `brief-plan --llm` disabled extension point refused with a clear message (exit 2, nothing written); plan API aligned; Constitution Check. Pass 2 converged. T006 (local LLM drafting) remains owner-gated.
+
+Offline **319 passed, 1 deselected**.

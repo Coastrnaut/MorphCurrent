@@ -125,3 +125,18 @@ def test_cli_style_commands(capsys):
     assert "prompt_clause" in json.loads(capsys.readouterr().out)
     assert cli.main(["style-check", "engineering-noir"]) == 0  # no reference assets -> nothing to fail
     assert cli.main(["style-show", "nope"]) == 2
+
+
+def test_pack_size_is_advisory_only(tmp_path):
+    from morph_studio.render import dry_run
+    pilot = REPO / "configs/sequences/engineering-pilot.yaml"  # uses engineering-noir-power (size 832x480)
+    data = yaml.safe_load(pilot.read_text(encoding="utf-8"))
+    assert dry_run(pilot, repo_root=REPO)["advisories"] == []  # sizes agree
+    data["render"].update(width=640, height=368)
+    path = tmp_path / "proxy.yaml"
+    path.write_text(yaml.safe_dump(data), encoding="utf-8")
+    report = dry_run(path, repo_root=REPO)
+    assert report["advisories"] and "832x480" in report["advisories"][0]
+    anchors = [t for t in report["plan"]["tasks"].values() if t["kind"] == "anchor"]
+    assert all((t["width"], t["height"]) == (640, 368) for t in anchors)  # never applied
+    assert dry_run(SAMPLE, repo_root=REPO)["advisories"] == []  # no pack, no advisory

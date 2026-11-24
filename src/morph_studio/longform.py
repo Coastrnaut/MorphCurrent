@@ -158,14 +158,37 @@ def plan_bytes(plan: dict, done: set[str] | frozenset = frozenset()) -> dict:
     return {"stages": rows, "total_bytes": sum(rows.values())}
 
 
+def verified_identities(runs_root: str | Path) -> set[str]:
+    """Stage identities already verified in any earlier run (content-addressed jobs are reused)."""
+    found: set[str] = set()
+    root = Path(runs_root)
+    if not root.is_dir():
+        return found
+    for run in root.glob("run-*"):
+        try:
+            plan = json.loads((run / "plan.json").read_text(encoding="utf-8"))
+            stages = json.loads((run / "manifest.json").read_text(encoding="utf-8")).get("stages", {})
+            ids = stage_identities(plan)
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+        found.update(ids[t] for t, s in stages.items() if s.get("state") == "verified" and t in ids)
+    return found
+
+
+def cached_stages(plan: dict, runs_root: str | Path) -> set[str]:
+    """Tasks of ``plan`` whose identical stage was already verified in some run."""
+    known = verified_identities(runs_root)
+    return {t for t, ident in stage_identities(plan).items() if ident in known}
+
+
 def disk_preflight(plan: dict, runs_root: str | Path, *, done: set[str] | frozenset = frozenset(),
                    min_free_gb: float = 2.0,
-                   disk_usage: Callable[[Path], tuple] = shutil.disk_usage) -> dict:
+                   disk_usage: Callable[[Path], tuple] | None = None) -> dict:
     root = Path(runs_root)
     probe_at = root
     while not probe_at.exists() and probe_at != probe_at.parent:
         probe_at = probe_at.parent
-    free = disk_usage(probe_at)[2]
+    free = (disk_usage or shutil.disk_usage)(probe_at)[2]  # resolved at call time
     need = plan_bytes(plan, done)["total_bytes"]
     reserve = int(min_free_gb * GIB)
     return {"free_bytes": free, "needed_bytes": need, "reserve_bytes": reserve,

@@ -10,3 +10,8 @@ description: "Task list for F21 style packs and asset collections"
 - [X] T004 [US3] `check_assets` (missing/changed/unsafe) + tests; `library/` gitignored
 - [X] T005 CLI `style-list`, `style-show`, `style-check`; example engineering packs
 - [X] T006 Suite, ledger, PROGRESS, commit
+
+## Phase 2: Convergence
+
+- [X] T007 Report a style-pack size advisory in `render --dry-run` when the pack's advisory size differs from the storyboard render size (outside the plan hash; render size unchanged) in src/morph_studio/render.py with a test in tests/test_styles.py per Edge case "pack size is advisory" (partial)
+- [X] T008 Evaluate all nine constitution v2.0.0 principles in the Constitution Check of specs/021-style-packs-asset-library/plan.md per Constitution (partial)

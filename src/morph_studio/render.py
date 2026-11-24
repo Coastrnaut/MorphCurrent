@@ -14,7 +14,7 @@ from typing import Callable
 from .anchors import AnchorSpec, anchor_image_path, run_anchor_chain
 from .comfy_client import ComfyClient
 from .dag import compile_plan
-from .longform import disk_preflight
+from .longform import cached_stages, disk_preflight
 from .media import ProbeUnavailable, contact_sheet, probe_video
 from .perf import load_history
 from .pipeline import run_bridge_stage
@@ -48,10 +48,24 @@ def dry_run(storyboard_path: str | Path, profiles: dict | None = None, repo_root
     plan = build_plan(storyboard_path, profiles, Path(repo_root))
     tasks = plan["tasks"].values()
     return {"status": "blocked" if plan["blocked"] else "ready", "plan": plan,
+            "advisories": style_advisories(load_storyboard(storyboard_path), Path(repo_root)),
             "gpu_jobs": {"anchors": sum(t["kind"] == "anchor" for t in tasks),
                          "bridges": sum(t["kind"] == "bridge" for t in tasks)},
             "blocked": plan["blocked"],
             "hint": f"see {DECISION_DOC}" if plan["blocked"] else "re-run with --confirm-gpu"}
+
+
+def style_advisories(storyboard, repo_root: Path) -> list[str]:
+    """F21: a pack's ``size`` is advisory only — reported, never applied to the render."""
+    if not storyboard.style.pack:
+        return []
+    from .styles import resolve_pack
+    size = resolve_pack(storyboard.style.pack, repo_root / "configs" / "styles").get("size")
+    render = [storyboard.render.width, storyboard.render.height]
+    if size and list(size) != render:
+        return [f"style pack {storyboard.style.pack!r} suggests {size[0]}x{size[1]}; "
+                f"rendering at {render[0]}x{render[1]} as the storyboard says"]
+    return []
 
 
 def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyClient], *,
@@ -82,6 +96,7 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
         budget = Budget(max_jobs, max_gpu_s, cost_function(plan, history))
     if confirm_gpu:  # F19: refuse before any submission if outputs would fill the disk
         done = {k for k, v in manifest.data.get("stages", {}).items() if v.get("state") == "verified"}
+        done |= cached_stages(plan, runs_root)  # identical stages verified by earlier runs are reused
         disk = disk_preflight(plan, runs_root, done=done, min_free_gb=min_free_gb,
                               **({"disk_usage": disk_usage} if disk_usage else {}))
         if not disk["ok"]:
@@ -91,8 +106,9 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
         lock.acquire()  # F17: one MorphCurrent GPU render per runs root
         if lock.took_over:
             manifest.record("events", {"event": "stale_lock_taken_over", "previous": lock.took_over})
-        if budget:
-            budget.on_check = lock.heartbeat
+        if budget is None:  # uncapped: an always-allow budget still heartbeats before each submission
+            budget = Budget()
+        budget.on_check = lock.heartbeat
     try:
         result = _stages(manifest, plan, storyboard, specs, req, client_factory, root, runs_root,
                          confirm_gpu, allow_busy_queue, sample_vram, poll_seconds, probe, budget)
@@ -125,7 +141,7 @@ def _stages(manifest, plan, storyboard, specs, req, client_factory, root, runs_r
             for anchor_id, reason in chain.blocked.items():
                 manifest.record_stage(f"anchor:{anchor_id}", state="blocked", reason=reason)
             if budget and budget.blocked:
-                return _finish(manifest, "paused_budget", budget=budget.summary())
+                return _paused(manifest, budget)
             if not chain.complete:
                 state = "validated" if not confirm_gpu else "blocked"
                 return _finish(manifest, state, blocked=chain.blocked)
@@ -142,8 +158,15 @@ def _stages(manifest, plan, storyboard, specs, req, client_factory, root, runs_r
     if budget and budget.blocked:
         for task_id, job in bridges.jobs.items():
             manifest.record_stage(task_id, job)
-        return _finish(manifest, "paused_budget", budget=budget.summary())
+        return _paused(manifest, budget)
     return chain, bridges
+
+
+def _paused(manifest: RunManifest, budget: Budget) -> dict:
+    """F17: counters, caps and the next blocked task are kept in the manifest for resume."""
+    summary = budget.summary()
+    manifest.record("budget", summary)
+    return _finish(manifest, "paused_budget", budget=summary)
 
 
 def _finish_render(manifest, plan, storyboard, specs, chain, bridges, accept_heuristics, probe,

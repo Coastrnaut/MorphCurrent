@@ -14,3 +14,9 @@ description: "Task list for F19 long-form sequencing"
 
 ## Blocked / owner
 - [ ] T008 Owner-approved bounded multi-scene GPU render with resume
+
+## Phase 2: Convergence
+
+- [X] T009 Treat stages whose identity is verified in any earlier run (run-*/plan.json + manifest) as cached in the render disk preflight, in src/morph_studio/longform.py and src/morph_studio/render.py, with a post-edit test in tests/test_longform.py per US3 "cached stages cost nothing" (partial)
+- [X] T010 Test that `render` exits 9 on blocked_disk via the CLI in tests/test_longform.py per FR-005 (partial)
+- [X] T011 Evaluate all nine constitution v2.0.0 principles in the Constitution Check of specs/019-resumable-longform-timeline/plan.md per Constitution (partial)

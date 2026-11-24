@@ -84,8 +84,25 @@ def test_budget_pauses_and_resumes_without_duplicates(image_repo):
     assert not (image_repo / "runs" / ".morphcurrent-gpu.lock").exists()  # released
     second = run_render(sb, fake.client, max_jobs=2, **kw)  # 1 anchor + 1 bridge more
     assert second["status"] == "paused_budget" and fake.prompt_posts == 4
+    manifest = json.loads((Path(second["run_dir"]) / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["status"] == "paused_budget" and manifest["budget"]["new_jobs"] == 2
+    assert manifest["budget"]["blocked"]["task"] == second["budget"]["blocked"]["task"]
     third = run_render(sb, fake.client, **kw)  # no cap: finish
     assert third["status"] == "awaiting_review" and fake.prompt_posts == 5  # 3 anchors + 2 bridges, no duplicates
+    cached = run_render(sb, fake.client, max_jobs=0, **kw)  # everything verified: a zero cap costs nothing
+    assert cached["status"] == "awaiting_review" and fake.prompt_posts == 5
+
+
+@needs_ffmpeg
+def test_uncapped_render_heartbeats_lock(image_repo, monkeypatch):
+    beats = []
+    original = RunLock.heartbeat
+    monkeypatch.setattr(RunLock, "heartbeat", lambda self: (beats.append(1), original(self)))
+    fake = FakeComfy()
+    fake.real_video = True
+    run_render(small_storyboard(image_repo), fake.client, runs_root=image_repo / "runs", repo_root=image_repo,
+               profiles=PROFILES, poll_seconds=0, confirm_gpu=True)
+    assert len(beats) == fake.prompt_posts == 5  # one heartbeat before every new GPU submission
 
 
 def test_second_gpu_render_refused_while_locked(image_repo):

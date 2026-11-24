@@ -290,6 +290,10 @@ def _style(args: argparse.Namespace) -> int:
 def _brief_plan(args: argparse.Namespace) -> int:
     """Brief -> editable storyboard YAML + preview (offline; nothing rendered)."""
     import yaml as _yaml
+    if args.llm:  # F22 US3: disabled extension point; only a local, owner-enabled endpoint may ever be used
+        print("error: --llm drafting is not enabled: no local, owner-approved LLM endpoint is configured. "
+              "Briefs are planned with deterministic templates; nothing was written.", file=sys.stderr)
+        return 2
     out = Path(args.out)
     if out.exists():
         raise FileExistsError(f"{out} exists; choose another --out")
@@ -635,6 +639,8 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    bp.add_argument("--llm", action="store_true",
+                    help="Draft prompts with a local LLM (disabled: refused until an owner-enabled local endpoint exists)")
     sc = subs.add_parser("schedule", help="Preview stage order, estimated GPU time and budget fit (offline)")
     sc.add_argument("storyboard")
     sc.add_argument("--max-gpu-s", type=float)
