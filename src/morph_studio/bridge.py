@@ -347,7 +347,11 @@ def _await(job: BridgeJob, plan: BridgePlan, client: ComfyClient, *,
     job.record["outputs"] = outputs
     job.record["timings"] = _timings(item)
     job.record["comfyui"]["completed"] = _system_snapshot(client)
-    job.record["comfyui"]["peak_vram"] = "NOT MEASURED (ComfyUI API exposes no peak; vram_free snapshots only)"
+    # Observed on ComfyUI 0.46 + cudaMallocAsync: /system_stats vram_free stayed byte-identical
+    # before, during and after a render while nvidia-smi showed ~35.7 GB used, so the
+    # snapshots are environment context only, never memory evidence.
+    job.record["comfyui"]["peak_vram"] = ("NOT MEASURED (ComfyUI API exposes no peak; /system_stats "
+                                          "vram_free observed static, not usable as evidence)")
     job.transition("completed", outputs=[o["filename"] for o in outputs])
 
 

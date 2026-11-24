@@ -27,6 +27,7 @@ M6 — Higher resolution + frame interpolation + resumable multi-song render job
 |---|---|---|---|---|---|---|---|
 | MC-FLF2V-001 | 2026-11-23 local | Owner manual Wan 2.2 Orchid → Butterfly, uploaded MP4 | **640×368**, 49 frames, 16 FPS; 3.0625 s | 20 steps (split 10/10), CFG 4, euler/simple, seed 1091897826965482 — recovered from ComfyUI `/history` prompt `748d6c59…` | VRAM/time **NOT MEASURED** | Faithful anchors; transitory petal clipping and distorted wings at 0.75–1.5 s | `docs/RENDER_BASELINE_001.md`; MP4 SHA-256 `a638f6e1d58d876670ddc72c0bb773f9f6c83d93076ac3a9403c41618823120c` |
 | MC-FLF2V-002 (manual) | 2026-11-23 local | Owner manual run of the exact exported graph (refined continuity prompt) | 640×368, 65 frames, 16 FPS; 4.0625 s per `/history` metadata | 20 steps (10/10), CFG 4, euler/simple, seed 844823683741909 — `/history` prompt `160616bb…`, output `video/ComfyUI_00003_.mp4` | **NOT MEASURED** | **NOT REVIEWED** — MP4 not inspected | ComfyUI `/history`; graph differs from `03_wan22_flf2v.json` only in node 84 `noise_seed` |
+| MC-FLF2V-003 | 2026-11-24 local | **First MorphCurrent-dispatched render** (`bridge --resume … --confirm-gpu`), same graph + seed as 002 | 640×368, 65 frames, 16 FPS, H.264, 4.0625 s (ffprobe) | 20 steps (10/10), CFG 4, euler/simple, seed 844823683741909; prompt_id `5f38ed34-db9d-4e6d-b11b-22726fb27ab3` | ComfyUI execution 234.0 s (history timestamps); submit→verified 3 min 55 s; peak VRAM **NOT MEASURED** (~35.7 GB already held by other processes, e.g. LM Studio, per nvidia-smi) | Decoded frames **identical** to manual 002 (PSNR ∞, SSIM 1.000 over 65 frames). Contact sheet (heuristic, owner review pending): endpoints match anchors; petals collapse to a thin vertical form ~frames 24–40, wings appear quickly with a bright flare ~frame 48 | `outputs/runs/4b5d5805e77bcbe0/` (gitignored); MP4 SHA-256 `2d145e6b563fb2b7ccf75412fae7522e3bb5446c6363eec0cac779b13647843c` |
 
 ## First run checklist
 - Require native Windows 11, no WSL. Log NVIDIA driver, GPU VRAM, CUDA and PyTorch versions from ComfyUI's **own Python environment**.
@@ -117,7 +118,18 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 - Live, no GPU: `python -m morph_studio.cli bridge --start assets/anchors/01_glass_orchid.jpg --end assets/anchors/02_metallic_butterfly.jpg --seed 844823683741909 --length 65 --width 640 --height 368 --fps 16` → `validated`, job `4b5d5805e77bcbe0`, anchors uploaded as `mc_8cdb3f53b119ff78.jpg` / `mc_c7f2be088ac64194.jpg`, queue empty afterwards. Rerun reused the same job without new uploads. At validation the A6000 reported 14,177,250,198 of 51,526,500,352 bytes free (other processes holding VRAM; not investigated).
 
 **Not done / next.**
-- [ ] First MorphCurrent-submitted GPU render (`bridge ... --confirm-gpu`), pending owner approval. Expect ~3+ minutes per 65-frame 640×368 clip based on the manual runs (not measured here).
+- [x] First MorphCurrent-submitted GPU render — owner approved in chat on 2026-11-24 ("Yes, render it"). See MC-FLF2V-003 and the result notes below.
 - [ ] WebSocket progress display (history polling is authoritative and sufficient for now).
 - [ ] Model checkpoint SHA-256 inventory, so the job hash covers weights rather than filenames.
 - [ ] Storyboard → multi-bridge scheduling using `timeline.py` frame plans.
+
+### M3 result — first programmatic render (2026-11-24)
+- Command: `.venv\Scripts\python.exe -m morph_studio.cli bridge --resume outputs\runs\4b5d5805e77bcbe0 --confirm-gpu --timeout 3600` → exit 0, state `verified`.
+- Events: validated 04:59:37Z → submitting/submitted 05:01:15Z → completed/downloaded/verified 05:05:10Z. Prompt ID was chosen client-side and persisted before the POST, as designed.
+- Determinism: decoded frames match the owner's manual `ComfyUI_00003_.mp4` exactly (ffmpeg `psnr` = inf, `ssim` = 1.000). Container bytes differ (embedded run metadata), so compare decoded frames, not file hashes.
+- Finding: `/system_stats` `vram_free` stayed at 14,177,250,198 bytes before, during and after the run while `nvidia-smi` reported ~35.7 GB used; those snapshots are now labelled non-evidence in `job.json`. Real VRAM benchmarking needs an `nvidia-smi` sampler during execution (next step).
+- Quality is **not** judged here; the contact-sheet notes in the ledger are heuristics for owner review.
+
+**Next.**
+- [ ] Add an opt-in `nvidia-smi` memory sampler around the render for real peak-VRAM numbers (W0/W4 benchmark gate).
+- [ ] Owner review of MC-FLF2V-003 mid-transition (collapse/flare ~frames 24–48); then seed/prompt sweep via `bridge` (each run is a separate content-addressed job).
