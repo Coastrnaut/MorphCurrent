@@ -5,11 +5,13 @@ import copy
 import json
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 import httpx
 import pytest
 
+from fake_comfy import make_png
 from morph_studio.bridge import (
     BridgeError,
     BridgeRequest,
@@ -23,8 +25,12 @@ from morph_studio.media import ProbeUnavailable, probe_video
 
 REPO = Path(__file__).resolve().parents[1]
 FIXTURE = REPO / "tests" / "fixtures" / "object_info_wan22_flf2v.json"
-START = "assets/anchors/01_glass_orchid.jpg"
-END = "assets/anchors/02_metallic_butterfly.jpg"
+# Two distinct small image files; bridge planning hashes bytes, it does not decode them.
+_ANCHOR_DIR = Path(tempfile.mkdtemp(prefix="mc_bridge_anchors_"))
+START = str(_ANCHOR_DIR / "start.jpg")
+END = str(_ANCHOR_DIR / "end.jpg")
+Path(START).write_bytes(make_png(64, 32, (200, 40, 40)))
+Path(END).write_bytes(make_png(64, 32, (40, 40, 200)))
 VIDEO_BYTES = b"\x00\x00\x00\x18ftypmp42fake-video"
 
 
@@ -175,7 +181,7 @@ def test_plan_rejects_invalid_values_before_contacting_comfy(fake):
     with pytest.raises(ValueError, match=r"1 \+ k\*4"):
         plan_bridge(request(length=64), fake.object_info, REPO)
     with pytest.raises(FileNotFoundError):
-        plan_bridge(request(start_image="assets/anchors/missing.jpg"), fake.object_info, REPO)
+        plan_bridge(request(start_image=str(_ANCHOR_DIR / "missing.jpg")), fake.object_info, REPO)
 
 
 def test_without_confirm_gpu_stops_after_validation(fake, client, tmp_path):

@@ -88,7 +88,7 @@ The **dry-run path** must work before any GPU access, show exactly which models/
 
 **Build:** Reuse validated `03_wan22_flf2v.json`, high-noise/low-noise FP8 expert binding, `bridge.py` idempotent upload, queue guard, resume and ffprobe checks. Supply generated image file paths, semantic prompts/seeds, `L=4n+1`, fps, safe namespace. Run GPU serially; keep pre-existing user queue undisturbed. Ensure an absent model/error cannot trigger fallback to unrelated T2V checkpoint.
 
-**Acceptance:** Mock end-to-end T2I→edit→Wan consumes generated image SHA values, not example `assets/anchors/*.jpg`; bridge output verified for frame count/dimensions/fps; one owner-approved live generated-A/B bridge tests actual GPU path after dependencies exist. No duplicate `/prompt` on identical resume.
+**Acceptance:** Mock end-to-end T2I→edit→Wan consumes generated image SHA values, not hand-supplied images; bridge output verified for frame count/dimensions/fps; one owner-approved live generated-A/B bridge tests actual GPU path after dependencies exist. No duplicate `/prompt` on identical resume.
 
 ### F07 — Crash-safe multi-stage recovery, model provenance and VRAM observations
 

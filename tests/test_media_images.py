@@ -1,6 +1,8 @@
 """F03 stdlib PNG/JPEG integrity checks."""
 from __future__ import annotations
 
+import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -33,13 +35,22 @@ def test_corrupt_png_crc(tmp_path):
         inspect_image(path)
 
 
-def test_real_jpeg_fixture_dimensions():
-    info = inspect_image(REPO / "assets/anchors/01_glass_orchid.jpg")
-    assert info["format"] == "jpeg" and info["width"] > 0 and info["height"] > 0
+def _jpeg(tmp_path):
+    if not shutil.which("ffmpeg"):
+        pytest.skip("ffmpeg not installed")
+    path = tmp_path / "frame.jpg"
+    subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "color=c=blue:s=96x54", "-frames:v", "1",
+                    str(path)], check=True, shell=False)
+    return path
+
+
+def test_real_jpeg_dimensions(tmp_path):
+    info = inspect_image(_jpeg(tmp_path))
+    assert info == {"format": "jpeg", "width": 96, "height": 54}
 
 
 def test_truncated_jpeg(tmp_path):
-    data = (REPO / "assets/anchors/01_glass_orchid.jpg").read_bytes()
+    data = _jpeg(tmp_path).read_bytes()
     path = tmp_path / "t.jpg"
     path.write_bytes(data[: len(data) // 2])
     with pytest.raises(ImageInvalid, match="EOI"):

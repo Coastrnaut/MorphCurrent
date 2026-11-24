@@ -19,7 +19,7 @@
 - No new GPU-heavy jobs, model checkpoint downloads, custom-node installers, changed ComfyUI launch flags, blanket permissions, queue clearing or disruptive cleanup without **explicit bounded owner approval**. Prior smoke-render consent does not cover later renders. Never terminate/interrupt an ongoing job except the specific MorphCurrent-owned prompt ID after explicit instruction.
 - RTX A6000 48 GiB: two full FP16 Wan 14B experts cannot both be guaranteed resident; prefer existing verified FP8 I2V workflow, monitor actual available VRAM, schedule anchor T2I/edit and Wan video model usage **sequentially**. `--highvram` does not create capacity.
 - No WSL, Linux VM, Docker Linux/passthrough, PowerShell `.ps1` or Bash project scripts. Python automation only. Do not assume optional `py.exe` launcher; use `python`/`.venv\Scripts\python.exe`. Keep controller isolated from ComfyUI's embedded `python_embeded\python.exe` CUDA/PyTorch.
-- No committing weights, generated video, private raw images/audio, environment files, credentials or multi-GB artifacts. Only owner-authorized small public example anchors may be committed (already present).
+- No committing weights, generated video, private raw images/audio, environment files, credentials or multi-GB artifacts.
 
 ## Spec Kit feature lifecycle and source-of-truth
 

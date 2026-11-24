@@ -32,10 +32,7 @@ models/
 *.png
 *.jpg
 *.jpeg
-# Only the two reviewed 1280x720 example anchors are intentionally tracked.
-!assets/anchors/01_glass_orchid.jpg
-!assets/anchors/02_metallic_butterfly.jpg
-# Other generated media remain ignored. New media require explicit review.
+# Generated media stay out of Git.
 # secrets / local approvals
 .env
 .env.*

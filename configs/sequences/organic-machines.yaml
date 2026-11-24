@@ -43,8 +43,15 @@ anchors:
 
   - id: phoenix
     prompt: >
-      A silver mechanical phoenix with luminous blue wing structures,
-      preserving the same palette and lighting direction.
+      Transform the butterfly into a silver mechanical phoenix seen
+      straight from the front, perfectly centered and symmetrical, wings
+      spread wide in the same position, span and scale as the butterfly's
+      wings, head where the butterfly's head is, long tail feathers hanging
+      straight down; keep the same framing, dark background, palette and
+      lighting direction.
+    negative_prompt: >
+      side view, profile, three-quarter view, walking, standing on legs,
+      off-center, small subject, cropped wings, text, watermark
     seed: 103
     generation: reference_edit
     reference: butterfly
@@ -67,9 +74,12 @@ transitions:
     duration_beats: 8
     seed: 202
     candidates: 3
-    motion: rising_orbit
-    mode: camera
+    motion: static
+    mode: direct
     prompt: >
-      Continuous transformation as the butterfly grows into a
-      metallic phoenix; wings expand and feathers assemble from the
-      wing lattice, with a gently rising orbit, stable lighting.
+      Continuous physical metamorphosis in one fixed, front-facing shot:
+      the butterfly's glass wings widen and grow silver feathers that
+      assemble from the wing lattice, its body lengthens into the
+      phoenix's chest, head and hanging tail feathers. The subject stays
+      centered and the same size the whole time; static camera, stable
+      lighting, no zoom, no turning, no cuts or dissolves.
