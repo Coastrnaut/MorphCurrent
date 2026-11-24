@@ -315,6 +315,24 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _film(args: argparse.Namespace) -> int:
+    """F32 full-song film storyboard and dry-run report (offline; no GPU)."""
+    from . import film as fm
+    try:
+        if args.command == "film-storyboard":
+            data = fm.write_storyboard(args.plan, args.bank, args.acts, args.out, audio=args.audio)
+            out = {"out": args.out, "anchors": len(data["anchors"]), "bridges": len(data["transitions"]),
+                   "acts": list(dict.fromkeys(a["chapter"] for a in data["anchors"])),
+                   "text_to_image": sum(a["generation"] == "text_to_image" for a in data["anchors"])}
+        else:
+            out = fm.film_report(args.storyboard, sync_plan=args.plan, history=args.history, repo_root=args.repo_root)
+    except (fm.FilmError, FileExistsError) as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return 0
+
+
 def _concepts(args: argparse.Namespace) -> int:
     """F31 engineering concept bank: validate and list for owner review (offline)."""
     from . import concepts as cc
@@ -1045,6 +1063,17 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    fst = subs.add_parser("film-storyboard", help="Write the full-song film storyboard from sync plan + concepts + acts (F32)")
+    fst.add_argument("--plan", default="configs/film/sync-plan.json")
+    fst.add_argument("--bank", default="configs/concepts/engineering-film.yaml")
+    fst.add_argument("--acts", default="configs/film/acts.yaml")
+    fst.add_argument("--out", required=True)
+    fst.add_argument("--audio", default=None, help="Owner-licensed track to reference (never fetched)")
+    frp = subs.add_parser("film-report", help="Dry-run film report: per-act frames, coverage, GPU-hour estimate")
+    frp.add_argument("storyboard")
+    frp.add_argument("--plan", default="configs/film/sync-plan.json")
+    frp.add_argument("--history", default="configs/perf_history.json")
+    frp.add_argument("--repo-root", default=".")
     cck = subs.add_parser("concepts-check", help="Validate the F31 engineering concept bank")
     cck.add_argument("--bank", default="configs/concepts/engineering-film.yaml")
     grp = cck.add_mutually_exclusive_group()
@@ -1197,6 +1226,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("film-storyboard", "film-report"):
+            return _film(args)
         elif args.command in ("concepts-check", "concepts-list"):
             return _concepts(args)
         elif args.command in ("deliver", "release-check"):

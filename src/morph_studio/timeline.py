@@ -50,17 +50,21 @@ def derived_seed(master_seed: int, key: str) -> int:
 
 
 def compile_timeline(storyboard: Storyboard) -> list[BridgePlan]:
-    assert storyboard.audio.bpm is not None  # guaranteed by Storyboard validation
     items = []
     for i, t in enumerate(storyboard.transitions):
-        frames = frame_count_for_beats(
-            t.duration_beats,
-            storyboard.audio.bpm,
-            storyboard.render.generation_fps,
-            storyboard.render.max_bridge_frames,
-        )
-        requested = t.duration_beats * 60.0 / storyboard.audio.bpm
-        actual = (frames - 1) / storyboard.render.generation_fps
+        if t.frames is not None:  # F32 frame-locked: exact length from the sync plan, zero timing error
+            frames = t.frames
+            requested = actual = (frames - 1) / storyboard.render.generation_fps
+        else:
+            assert storyboard.audio.bpm is not None  # guaranteed by Storyboard validation
+            frames = frame_count_for_beats(
+                t.duration_beats,
+                storyboard.audio.bpm,
+                storyboard.render.generation_fps,
+                storyboard.render.max_bridge_frames,
+            )
+            requested = t.duration_beats * 60.0 / storyboard.audio.bpm
+            actual = (frames - 1) / storyboard.render.generation_fps
         seed = t.seed if t.seed is not None else derived_seed(
             storyboard.render.master_seed, f"{i}:{t.from_anchor}:{t.to_anchor}"
         )
@@ -88,3 +92,12 @@ def timeline_as_dict(storyboard: Storyboard) -> dict:
         "bridges": [asdict(b) for b in bridges],
         "note": "No GPU inference performed; endpoint de-dup requires visual verification.",
     }
+
+
+def snap_frames(times: list[float], fps: float = 16.0, grid: int = 4) -> list[dict]:
+    """F32: absolute frames on the grid, f = grid*round(t*fps/grid); errors never accumulate."""
+    out = []
+    for t in times:
+        frame = grid * round(t * fps / grid)
+        out.append({"t": t, "frame": frame, "error_frames": round(frame - t * fps, 4)})
+    return out

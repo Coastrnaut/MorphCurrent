@@ -105,6 +105,9 @@ def propose_ladder(data: dict, from_id: str, to_id: str, *, steps: int = 1,
     trans = sb["transitions"][t_index]
     render, audio = sb["render"], sb.get("audio") or {}
     bpm = audio.get("bpm")
+    if trans.get("duration_beats") is None:
+        raise LadderError("ladders split beat-timed transitions; this transition is frame-locked (F32) - "
+                          "re-plan its anchors with sync-plan instead")
     if not bpm:
         raise LadderError("storyboard needs audio.bpm to split beat budgets")
     parts = _split_beats(trans["duration_beats"], bpm, render.get("generation_fps", 16),

@@ -1,0 +1,19 @@
+# F32 act structure for the full-song engineering film: the ten concept-bank eras grouped into five acts.
+# Each act opens with a fresh text-to-image anchor and continues with reference edits (limits lineage drift).
+version: 1
+acts:
+  - id: spark
+    title: Spark
+    eras: [natural electricity, early storage]
+  - id: power
+    title: Power
+    eras: [generation and grid]
+  - id: signal
+    title: Signal
+    eras: [signals and communication]
+  - id: logic
+    title: Logic
+    eras: [vacuum-tube computing, solid state, integrated circuits]
+  - id: scale
+    title: Scale
+    eras: [microprocessors, parallel and GPU compute, data centers and AI hardware]

@@ -118,7 +118,9 @@ class Choreography(StrictModel):
 class Transition(StrictModel):
     from_anchor: str = Field(alias="from")
     to_anchor: str = Field(alias="to")
-    duration_beats: float = Field(gt=0)
+    duration_beats: float | None = Field(default=None, gt=0)
+    # F32: exact Wan length (4n+1 frames) so anchors sit on absolute frames from the sync plan (no drift)
+    frames: int | None = Field(default=None, ge=5)
     seed: int | None = Field(default=None, ge=0)
     candidates: int = Field(default=1, ge=1, le=10)
     motion: str = "slow_push"
@@ -126,6 +128,16 @@ class Transition(StrictModel):
     mode: Literal["direct", "camera", "intermediate"] = "direct"
     choreography: Choreography | None = None
     camera: CameraMove | None = None  # F23
+
+    @model_validator(mode="after")
+    def one_length(self) -> "Transition":
+        if (self.duration_beats is None) == (self.frames is None):
+            raise ValueError(f"transition {self.from_anchor}->{self.to_anchor}: give exactly one of "
+                             "duration_beats or frames")
+        if self.frames is not None and (self.frames - 1) % 4:
+            raise ValueError(f"transition {self.from_anchor}->{self.to_anchor}: frames {self.frames} "
+                             "must be 4n+1 (Wan length rule)")
+        return self
 
     @model_validator(mode="after")
     def one_camera(self) -> "Transition":
@@ -169,7 +181,12 @@ class Storyboard(StrictModel):
         for i, transition in enumerate(self.transitions):
             if (transition.from_anchor, transition.to_anchor) != (ids[i], ids[i + 1]):
                 raise ValueError(f"transition {i} must connect {ids[i]} -> {ids[i+1]}")
-        if self.audio.bpm is None:
+        for transition in self.transitions:
+            if transition.frames is not None and transition.frames > self.render.max_bridge_frames:
+                raise ValueError(f"transition {transition.from_anchor}->{transition.to_anchor}: frames "
+                                 f"{transition.frames} exceed render.max_bridge_frames "
+                                 f"{self.render.max_bridge_frames}")
+        if self.audio.bpm is None and any(t.duration_beats is not None for t in self.transitions):
             raise ValueError("audio.bpm is required for duration_beats in V1")
         return self
 
