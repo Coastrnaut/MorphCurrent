@@ -315,6 +315,32 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _interp(args: argparse.Namespace) -> int:
+    """F25 delivery frame rates and energy-warped retiming (local FFmpeg)."""
+    from . import interpolate as ip
+    try:
+        if args.command == "interpolate":
+            rec = ip.convert(args.input, args.out, fps=args.fps, method=args.method, crf=args.crf)
+            exact = sum(a["exact"] for a in rec["anchor_alignment"])
+            print(json.dumps({"out": args.out, "ok": rec["ok"], "method_used": rec["method_used"],
+                              "fallback": rec["fallback"], "duration_in": rec["input"]["duration"],
+                              "duration_out": rec["output"]["duration"],
+                              "anchors_exact": f"{exact}/{len(rec['anchor_alignment'])}"}, indent=2))
+            return 0 if rec["ok"] else 5
+        if args.plan:
+            plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
+            mapping = plan["bridges"][args.bridge]["warp"]["map"]
+        else:
+            mapping = json.loads(Path(args.map).read_text(encoding="utf-8"))
+        rec = ip.apply_warp(args.clip, mapping, args.out, crf=args.crf)
+        print(json.dumps({"out": args.out, "frames_in": rec["frames_in"], "frames_out": rec["frames_out"],
+                          "endpoints_ok": rec["endpoints_ok"], "speed": rec["speed"]}, indent=2))
+        return 0 if rec["endpoints_ok"] else 5
+    except FileExistsError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+
 def _sync(args: argparse.Namespace) -> int:
     """F15 US5: audio feature track and event-locked sync plan (offline)."""
     from . import sync_features as sf
@@ -750,6 +776,20 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    ipl = subs.add_parser("interpolate", help="Convert a 16 fps clip/movie to 24/30/48/60 fps (new file + record)")
+    ipl.add_argument("input")
+    ipl.add_argument("--fps", type=int, required=True, choices=[24, 30, 48, 60])
+    ipl.add_argument("--method", default="blend", choices=["repeat", "blend", "motion"])
+    ipl.add_argument("--out", required=True)
+    ipl.add_argument("--crf", type=int, default=16)
+    wap = subs.add_parser("warp-apply", help="Retime a bridge with its energy-warp map (endpoints pinned)")
+    wap.add_argument("clip")
+    src = wap.add_mutually_exclusive_group(required=True)
+    src.add_argument("--map", help="JSON list: source position per output frame")
+    src.add_argument("--plan", help="sync-plan JSON (use with --bridge)")
+    wap.add_argument("--bridge", type=int, default=0)
+    wap.add_argument("--out", required=True)
+    wap.add_argument("--crf", type=int, default=16)
     afx = subs.add_parser("audio-features", help="Per-video-frame audio feature track (bands, flux, onsets, sections)")
     afx.add_argument("file")
     afx.add_argument("--out", required=True)
@@ -928,6 +968,8 @@ def main(argv: list[str] | None = None) -> int:
             return _style(args)
         elif args.command == "brief-plan":
             return _brief_plan(args)
+        elif args.command in ("interpolate", "warp-apply"):
+            return _interp(args)
         elif args.command in ("audio-features", "sync-plan"):
             return _sync(args)
         elif args.command in ("continuity", "continuity-eval", "repair-propose", "repair-compare"):
