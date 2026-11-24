@@ -21,6 +21,7 @@ from .bridge import (
 )
 from .dag import compile_plan
 from .gates import check_gpu_gate
+from .qa import analyze_clip, record_review
 from .provenance import DEFAULT_MODELS_ROOT, hash_models, models_in_graph
 from .anchors import AnchorRequest, plan_anchor, request_from_anchor_job, run_anchor
 from .onboarding import as_json as inspect_json, inspect_export, load_export
@@ -102,6 +103,21 @@ def _models_hash(args: argparse.Namespace) -> int:
     results = hash_models(sorted(pairs), Path(args.models_root), Path(args.cache))
     print(json.dumps(results, indent=2))
     return 0 if all(r["status"] != "missing" for r in results.values()) else 4
+
+
+def _qa(args: argparse.Namespace) -> int:
+    """Local heuristic temporal QA of one clip (FFmpeg decode; no GPU, no network)."""
+    report = analyze_clip(Path(args.clip), Path(args.start) if args.start else None,
+                          Path(args.end) if args.end else None)
+    print(json.dumps(report, indent=2))
+    return 0
+
+
+def _review(args: argparse.Namespace) -> int:
+    """Record the human approve/reject decision for one bridge task of a run."""
+    reviews = record_review(Path(args.run_dir) / "review.json", args.task, args.decision, args.note or "")
+    print(json.dumps(reviews, indent=2))
+    return 0
 
 
 def _dag(args: argparse.Namespace) -> int:
@@ -283,6 +299,15 @@ def main(argv: list[str] | None = None) -> int:
     mh.add_argument("--cache", default="outputs/model_hashes.json")
     mh.add_argument("--url", default="http://127.0.0.1:8188")
     mh.add_argument("--confirm-io", action="store_true", help="Acknowledge multi-GB disk reads")
+    qa = subs.add_parser("qa", help="Heuristic temporal QA of a clip (cut/freeze/flare/endpoints)")
+    qa.add_argument("clip")
+    qa.add_argument("--start", help="Start anchor image for endpoint comparison")
+    qa.add_argument("--end", help="End anchor image for endpoint comparison")
+    review = subs.add_parser("review", help="Record a human approve/reject decision for a bridge")
+    review.add_argument("run_dir")
+    review.add_argument("task", help="e.g. bridge:orchid->butterfly")
+    review.add_argument("decision", choices=["approved", "rejected", "pending"])
+    review.add_argument("--note")
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -356,6 +381,10 @@ def main(argv: list[str] | None = None) -> int:
             return _workflow_inspect(args)
         elif args.command == "models-hash":
             return _models_hash(args)
+        elif args.command == "qa":
+            return _qa(args)
+        elif args.command == "review":
+            return _review(args)
         elif args.command == "dag":
             return _dag(args)
         elif args.command == "anchor":

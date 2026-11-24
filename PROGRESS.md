@@ -152,7 +152,7 @@ The profile's assertions fail closed if a re-export changes the assumptions behi
 | F05 | `specs/005-storyboard-task-dag` | COMPLETE (offline feature) | `dag.py` + `morphcurrent dag`; 16-multiple size check |
 | F06 | `specs/006-generated-anchor-bridges` | OFFLINE-PASS; GPU BLOCKED | `pipeline.run_bridge_stage` on the unchanged Wan bridge path |
 | F07 | `specs/007-recovery-provenance-metrics` | OFFLINE-PASS | run manifest, crash-resume tests, `models-hash`, VRAM sampler |
-| F08 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
+| F08 | `specs/008-quality-selective-rerender` | OFFLINE-PASS (heuristics uncalibrated) | `qa.py`, `qa`/`review` CLI, selective rerender plan |
 | F09 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 | F10 | Not yet created | PLANNED | Pending Spec Kit specification, code and tests |
 
@@ -247,3 +247,13 @@ At the owner's request, `Co-Authored-By` trailers were removed from all commits 
 - `vram.VramSampler`: opt-in thread polling `nvidia-smi` (argument list); summary = baseline / peak / min, interval, sample count, labelled overall-GPU (all processes) with a between-samples caveat; no samples → `NOT MEASURED`.
 
 **Results.** Offline **173 passed, 1 deselected**. Model SHA-256 and peak VRAM on the A6000 remain **NOT MEASURED**.
+
+## F08 — Quality heuristics and selective rerender, offline slice (2026-11-24)
+
+**Spec Kit.** `specs/008-quality-selective-rerender` (`--number 8`); tasks 5/6 (T006 calibration needs owner review).
+
+**Built.** `src/morph_studio/qa.py`: FFmpeg-decoded 64×36 gray frames (argument list, local); heuristics for hard cut (diff > 6× median and > 20), freeze (≥ 6 frames diff < 0.5), flare (luminance jump > 40), endpoint mismatch vs anchor (> 25); every report says `method: heuristic`. `candidate_seeds` (task seed + deterministic derived seeds), `rank_candidates`, `rerender_plan` (only bridges flagged-and-not-approved or rejected; anchors and other bridges reused), `review.json` persistence. CLI `qa CLIP [--start --end]`, `review RUN_DIR TASK approved|rejected|pending [--note]`.
+
+**Calibration observation (local CPU decode, no GPU).** `qa` on MC-FLF2V-003 (`outputs/runs/4b5d5805e77bcbe0/outputs/bridge_00001_.mp4`) with the two example anchors: 65 frames, median diff 1.93, max 6.25, endpoint diffs 3.8 / 4.85, **no flags** — although the contact sheet shows petal collapse (~frames 24–40) and a wing flare (~48). The heuristics catch gross cuts/freezes/flashes/endpoint errors only; they are **not** a creative-quality gate. Human review remains required.
+
+**Results.** Offline **181 passed, 1 deselected**.
