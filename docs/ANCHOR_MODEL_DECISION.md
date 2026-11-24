@@ -39,8 +39,8 @@ Image stages and Wan stages run **sequentially**, never concurrently. About 35.6
 1. Confirm the queue is idle (`morphcurrent baseline`).
 2. Download the files of the approved option from the declared sources into the listed folders under `C:\AI\ComfyUI_windows_portable\ComfyUI\models\`. Verify licenses on the model cards.
 3. Refresh ComfyUI (no restart needed for new model files in most cases; if they do not appear, restart ComfyUI yourself).
-4. In the ComfyUI UI open template **Qwen-Image** (Option A). Set prompt to the orchid prompt from `configs/sequences/organic-machines.yaml`, a fixed seed, 832×480 (or the target size), disable the Lightning LoRA switch unless installed. Render once. Then **Workflow → Export (API)** and save as `C:\GIT\MorphCurrent\workflows\01_anchor_t2i.json`.
-5. Open template **Qwen-Image-Edit 2509**, load the orchid image just generated, prompt the butterfly transformation, fixed seed, render once, export (API) as `workflows\02_anchor_edit.json`.
+4. In the ComfyUI UI open **Workflow → Browse Templates → Image** and choose exactly **"Qwen-Image: Text to Image"** (file `image_qwen_image.json`). Not "Qwen Image 2512", "Qwen Image 2.1" or any LoRA/ControlNet variant: those need other weights. Set prompt to the orchid prompt from `configs/sequences/organic-machines.yaml`, a fixed seed, 832×480 (or the target size), disable the Lightning LoRA switch unless installed. Render once. Then **Workflow → Export (API)** and save as `C:\GIT\MorphCurrent\workflows\01_anchor_t2i.json`.
+5. Open exactly **"Qwen Image Edit 2509"** (file `image_qwen_image_edit_2509.json`; not "Qwen Image Edit", "Qwen Image Edit 2511 …" or "Image Relight"), load the orchid image just generated, prompt the butterfly transformation, fixed seed, render once, export (API) as `workflows\02_anchor_edit.json`.
 6. Run `python -m morph_studio.cli workflow-inspect workflows\01_anchor_t2i.json` (and `02_…`): must report `ok: true`, no cloud nodes, all models installed. Then a session writes `configs/profiles/anchor_t2i.binding.json` / `anchor_edit.binding.json` from the real node IDs and validates with `workflow-check`.
 
 ## Approval log
