@@ -21,6 +21,8 @@ class RenderConfig(StrictModel):
     bridge_profile: str = Field(min_length=1)
     master_seed: int = Field(default=0, ge=0)
     max_bridge_frames: int = Field(default=81, ge=5)
+    # F23: delivery crops whose safe areas the subject must fit (checked, never applied to renders)
+    delivery_crops: list[Literal["16:9", "9:16"]] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def check_length(self) -> "RenderConfig":
@@ -59,6 +61,28 @@ class Audio(StrictModel):
         return self
 
 
+class FramingTarget(StrictModel):
+    """F23: desired subject centre (fractions of the frame) and size (mean subject extent)."""
+    center: tuple[float, float] = (0.5, 0.5)
+    tolerance: float = Field(default=0.08, ge=0, le=0.5)
+    size: tuple[float, float] = (0.2, 0.8)
+
+    @model_validator(mode="after")
+    def check(self) -> "FramingTarget":
+        if not all(0 <= v <= 1 for v in (*self.center, *self.size)) or self.size[0] > self.size[1]:
+            raise ValueError("framing center/size must be fractions 0-1 with size min <= max")
+        return self
+
+
+class CameraMove(StrictModel):
+    """F23: camera move for one bridge. The installed Wan FLF2V workflow has no camera input, so
+    ``control: prompt`` (a labelled prompt-only approximation) is the only supported mode."""
+    move: Literal["static", "push_in", "pull_out", "pan_left", "pan_right", "tilt_up", "tilt_down",
+                  "orbit_left", "orbit_right", "rise"]
+    amount: float = Field(default=0.1, ge=0, le=0.5)
+    control: Literal["prompt", "graph"] = "prompt"
+
+
 class Anchor(StrictModel):
     id: str = Field(pattern=r"^[A-Za-z][A-Za-z0-9_-]*$")
     prompt: str = Field(min_length=1)
@@ -72,6 +96,8 @@ class Anchor(StrictModel):
     style_override: dict[str, Any] | None = None
     # F19: optional chapter id; anchors of one chapter must be contiguous
     chapter: str | None = Field(default=None, pattern=r"^[A-Za-z0-9][A-Za-z0-9 _.-]{0,62}$")
+    # F23: framing target checked against measured anchor geometry (not used for generation)
+    framing: FramingTarget | None = None
 
 
 class Correspondence(StrictModel):
@@ -99,6 +125,13 @@ class Transition(StrictModel):
     prompt: str = Field(min_length=1)
     mode: Literal["direct", "camera", "intermediate"] = "direct"
     choreography: Choreography | None = None
+    camera: CameraMove | None = None  # F23
+
+    @model_validator(mode="after")
+    def one_camera(self) -> "Transition":
+        if self.camera and self.choreography and self.choreography.camera != "static":
+            raise ValueError("set either transitions[].camera or a non-static choreography.camera, not both")
+        return self
 
 
 class Storyboard(StrictModel):

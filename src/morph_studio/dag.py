@@ -11,6 +11,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from .camera import LABEL as CAMERA_LABEL, camera_clause, require_graph_control
 from .prompt_compiler import compile_bridge_prompts
 from .schema import Storyboard
 from .styles import apply_override, negative_text, resolve_pack, style_text
@@ -40,6 +41,16 @@ def _styled(anchor, pack: dict) -> dict:
     return {"positive_prompt": " ".join(anchor.prompt.split()) + " " + style_text(resolved),
             "negative_prompt": negative_text(resolved, anchor.negative_prompt),
             "style_pack": resolved["lineage"][-1], "style_sha256": resolved["sha256"]}
+
+
+def _wan_graph(root: Path, profile_rel: str) -> tuple[dict, str]:
+    """The API graph named by the active Wan binding profile (empty if unavailable)."""
+    try:
+        profile = json.loads((root / profile_rel).read_text(encoding="utf-8"))
+        workflow = root / profile["workflow"]
+        return json.loads(workflow.read_text(encoding="utf-8")), workflow.name
+    except (OSError, ValueError, KeyError):
+        return {}, profile_rel
 
 
 def compile_plan(storyboard: Storyboard, *, profiles: dict[str, str] | None = None,
@@ -98,6 +109,12 @@ def compile_plan(storyboard: Storyboard, *, profiles: dict[str, str] | None = No
         }
         if negative is not None:  # only choreographed bridges; keeps older plan hashes unchanged
             tasks[task_id]["negative_prompt"] = negative
+        if transition.camera is not None:  # F23; absent keeps older plan hashes unchanged
+            if transition.camera.control == "graph":
+                require_graph_control(*_wan_graph(root, chosen["wan_flf2v"]))
+            tasks[task_id]["camera"] = {"move": transition.camera.move, "amount": transition.camera.amount,
+                                        "clause": camera_clause(transition.camera.move, transition.camera.amount),
+                                        "label": CAMERA_LABEL}
         order.append(task_id)
 
     fps = render.generation_fps

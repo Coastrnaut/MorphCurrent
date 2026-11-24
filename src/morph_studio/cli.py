@@ -315,6 +315,14 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _camera_check(args: argparse.Namespace) -> int:
+    """F23: camera-move labels, endpoint satisfiability, framing and crops (offline)."""
+    from .camera import camera_check
+    report = camera_check(args.storyboard, run_dir=args.run, repo_root=args.repo_root)
+    print(json.dumps(report, indent=2))  # ASCII-safe for Windows consoles and redirects
+    return 12 if report["verdict"] == "issues" else 0
+
+
 def _release(args: argparse.Namespace) -> int:
     """F20 production-acceptance commands (offline except `replay --confirm-gpu`)."""
     from . import release as rel
@@ -683,6 +691,10 @@ def main(argv: list[str] | None = None) -> int:
     bp.add_argument("brief")
     bp.add_argument("--out", required=True, help="Storyboard YAML to write (refused if it exists)")
     bp.add_argument("--history", default="configs/perf_history.json")
+    cc = subs.add_parser("camera-check", help="Camera-move labels, endpoint satisfiability, framing and crops")
+    cc.add_argument("storyboard")
+    cc.add_argument("--run", help="Run directory whose anchors to measure")
+    cc.add_argument("--repo-root", default=".")
     rc = subs.add_parser("run-compare", help="Compare two runs stage by stage (bytes; --frames decodes)")
     rc.add_argument("run_a")
     rc.add_argument("run_b")
@@ -835,6 +847,8 @@ def main(argv: list[str] | None = None) -> int:
             return _style(args)
         elif args.command == "brief-plan":
             return _brief_plan(args)
+        elif args.command == "camera-check":
+            return _camera_check(args)
         elif args.command in ("run-compare", "replay", "audit", "run-backup", "run-restore", "acceptance"):
             return _release(args)
         elif args.command == "draft-check":

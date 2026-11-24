@@ -43,7 +43,11 @@ def compile_bridge_prompts(transition: Transition) -> tuple[str, str | None]:
     """(positive, negative). Without choreography: cleaned prose and no negative (graph default)."""
     base = clean(transition.prompt)
     plan = transition.choreography
+    move = transition.camera  # F23: labelled prompt-only camera clause
     if plan is None:
+        if move is not None:
+            from .camera import camera_clause
+            return f"{_sentence(base)} {camera_clause(move.move, move.amount)}", None
         return base, None
     parts = [_sentence(base)]
     if plan.correspondences:
@@ -56,7 +60,11 @@ def compile_bridge_prompts(transition: Transition) -> tuple[str, str | None]:
         else:
             middle = "".join(f", then {s}" for s in steps[1:-1])
             parts.append(f"Sequence: first {steps[0]}{middle}, finally {steps[-1]}.")
-    parts.append(CAMERA[plan.camera])
+    if move is not None:
+        from .camera import camera_clause
+        parts.append(camera_clause(move.move, move.amount))
+    else:
+        parts.append(CAMERA[plan.camera])
     framing = [w for w, on in (("stays centered", plan.keep_centered),
                                ("keeps the same size", plan.keep_scale)) if on]
     if framing:
