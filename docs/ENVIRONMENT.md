@@ -25,7 +25,7 @@
 | diffusion_models | `wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors`, `wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors`; **added 2026-11-24 09:18 UTC (owner-approved, SHA-256 verified):** `qwen_image_fp8_e4m3fn.safetensors`, `qwen_image_edit_2509_fp8_e4m3fn.safetensors` |
 | text_encoders | `umt5_xxl_fp8_e4m3fn_scaled.safetensors`; added `qwen_2.5_vl_7b_fp8_scaled.safetensors` |
 | vae | `wan_2.1_vae.safetensors`, added `qwen_image_vae.safetensors` (+ built-in `taef1`, `taesdxl`, `taesd`, `pixel_space`) |
-| loras | *(none)* |
+| loras | added 2026-11-24 (owner-approved, SHA-256 verified): `Qwen-Image-Lightning-8steps-V1.0.safetensors`, `Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors` |
 
 Model checkpoint SHA-256: Qwen files verified at download against Hugging Face's published hashes (see `docs/ANCHOR_MODEL_DECISION.md`); Wan files **NOT MEASURED** (hashing multi-GB weights is deferred to an owner-scheduled F07 step). License review of the installed Wan files: **not recorded** here.
 

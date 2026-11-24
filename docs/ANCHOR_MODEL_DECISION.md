@@ -51,6 +51,8 @@ Image stages and Wan stages run **sequentially**, never concurrently. About 35.6
 |---|---|---|---|
 | 2026-11-24 | A (Qwen-Image + Qwen-Image-Edit-2509, fp8) | owner, in Claude Code chat ("Option A (Qwen)", then "Yes, download") | Download only: 4 files, 50.5 GB, from `huggingface.co/Comfy-Org/Qwen-Image` and `Comfy-Org/Qwen-Image-Edit`, each verified against the SHA-256 published by Hugging Face before install. Licenses per Hugging Face metadata: Apache-2.0 (Comfy-Org/Qwen-Image, Comfy-Org/Qwen-Image-Edit, Qwen/Qwen-Image, Qwen/Qwen-Image-Edit-2509, Qwen/Qwen2.5-VL-7B-Instruct). **No GPU render approved by this entry.** |
 
+| 2026-11-24 | Lightning LoRAs for both templates | owner, in Claude Code chat ("Yes, download both") | Download only: 2 files, 2.55 GB, from `huggingface.co/lightx2v/Qwen-Image-Lightning` (Apache-2.0 per Hugging Face metadata), SHA-256 verified before install. Installed so the templates load complete; keep the Lightning switch **off** for full-step anchors. No GPU render approved. |
+
 Expected SHA-256 (Hugging Face LFS metadata, 2026-11-24):
 
 | File | Bytes | SHA-256 |
@@ -59,3 +61,5 @@ Expected SHA-256 (Hugging Face LFS metadata, 2026-11-24):
 | `diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors` | 20,430,698,424 | `318568f61951ab9da21100c7b896e3c1da67f0d2efad6421545e022cfaa2b2b4` |
 | `text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors` | 9,384,670,680 | `cb5636d852a0ea6a9075ab1bef496c0db7aef13c02350571e388aea959c5c0b4` |
 | `vae/qwen_image_vae.safetensors` | 253,806,246 | `a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f` |
+| `loras/Qwen-Image-Lightning-8steps-V1.0.safetensors` | 1,698,951,104 | `07b5a999881437f63124979844ba1949ce2438f65b6220628a196a7d30a4fff9` |
+| `loras/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors` | 849,608,296 | `2a32ce938ec71db2b49a817b4844ae86995569518dea56ee0ddc209cbe8e1377` |
