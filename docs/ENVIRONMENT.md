@@ -27,7 +27,7 @@
 | vae | `wan_2.1_vae.safetensors`, added `qwen_image_vae.safetensors` (+ built-in `taef1`, `taesdxl`, `taesd`, `pixel_space`) |
 | loras | added 2026-11-24 (owner-approved, SHA-256 verified): `Qwen-Image-Lightning-8steps-V1.0.safetensors`, `Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors` |
 
-Model checkpoint SHA-256: Qwen files verified at download against Hugging Face's published hashes (see `docs/MODELS.md`); Wan files **NOT MEASURED** (hashing multi-GB weights is deferred to an owner-scheduled F07 step). License review of the installed Wan files: **not recorded** here.
+Model checkpoint SHA-256: Qwen files verified at download against Hugging Face's published hashes (see `docs/MODELS.md`); Wan files measured 2026-11-24 (see `docs/MODELS.md`). License review of the installed Wan files: **not recorded** here.
 
 ## Capabilities
 

@@ -6,10 +6,10 @@ All models run inside the local ComfyUI Portable install (`C:\AI\ComfyUI_windows
 
 | Stage | Folder | File | SHA-256 |
 |---|---|---|---|
-| Video (Wan 2.2 I2V FLF2V) | `diffusion_models` | `wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors` | NOT MEASURED |
-| | `diffusion_models` | `wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` | NOT MEASURED |
-| | `text_encoders` | `umt5_xxl_fp8_e4m3fn_scaled.safetensors` | NOT MEASURED |
-| | `vae` | `wan_2.1_vae.safetensors` | NOT MEASURED |
+| Video (Wan 2.2 I2V FLF2V) | `diffusion_models` | `wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors` | `6122e79d55e0f235698d11d657f3b196c5273c830da00b2b013c5a048d5e6a42` |
+| | `diffusion_models` | `wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` | `5471a457b6ac404202a5fbe6c11595a3d5641fc766b00f38763f72303fffc21e` |
+| | `text_encoders` | `umt5_xxl_fp8_e4m3fn_scaled.safetensors` | `c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68` |
+| | `vae` | `wan_2.1_vae.safetensors` | `2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b` |
 | Anchor T2I (Qwen-Image) | `diffusion_models` | `qwen_image_fp8_e4m3fn.safetensors` | `98763a127701eb6fb59096f7742cb3aa7d64ed510b9f4e882d8351f8176e3ce3` |
 | Anchor edit (Qwen-Image-Edit-2509) | `diffusion_models` | `qwen_image_edit_2509_fp8_e4m3fn.safetensors` | `318568f61951ab9da21100c7b896e3c1da67f0d2efad6421545e022cfaa2b2b4` |
 | Both Qwen stages | `text_encoders` | `qwen_2.5_vl_7b_fp8_scaled.safetensors` | `cb5636d852a0ea6a9075ab1bef496c0db7aef13c02350571e388aea959c5c0b4` |
@@ -17,7 +17,7 @@ All models run inside the local ComfyUI Portable install (`C:\AI\ComfyUI_windows
 | Template-referenced, unused (turbo off) | `loras` | `Qwen-Image-Lightning-8steps-V1.0.safetensors` | `07b5a999881437f63124979844ba1949ce2438f65b6220628a196a7d30a4fff9` |
 | | `loras` | `Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors` | `2a32ce938ec71db2b49a817b4844ae86995569518dea56ee0ddc209cbe8e1377` |
 
-Qwen hashes were computed while downloading and match the values Hugging Face publishes. Sources: `huggingface.co/Comfy-Org/Qwen-Image`, `Comfy-Org/Qwen-Image-Edit`, `lightx2v/Qwen-Image-Lightning`; Apache-2.0 per their Hugging Face metadata (owner to verify on the model cards). Wan hashes can be filled in with `morphcurrent models-hash --confirm-io` while ComfyUI is idle.
+Qwen hashes were computed while downloading and match the values Hugging Face publishes. Sources: `huggingface.co/Comfy-Org/Qwen-Image`, `Comfy-Org/Qwen-Image-Edit`, `lightx2v/Qwen-Image-Lightning`; Apache-2.0 per their Hugging Face metadata (owner to verify on the model cards). Wan hashes were measured locally on 2026-11-24 with `models-hash --confirm-io` (owner-approved, idle queue).
 
 ComfyUI's *Setup required* panel shows sizes in GiB (19.03 GiB = 20.43 GB). If it lists installed files as missing, press ↻ or reload the tab; `GET /models/<folder>` is authoritative.
 

@@ -439,3 +439,12 @@ Would have flagged the side-on phoenix before its 8-minute bridge. Thresholds re
 - F11 OFFLINE-PASS (`specs/011-…`), F12 OFFLINE-PASS (`specs/012-…`). F13–F30 PLANNED.
 - **Needs owner approval:** F11 T010 Wan model hashing (`models-hash --confirm-io`, ≈37 GB read); F11 T011 sampled benchmark renders (cold/warm 832×480, 640×368; ≈19 min GPU each); F12 T008 candidate anchors for an approved matched set.
 - **Next offline feature:** F13 (physical correspondence prompt compiler), then F15 (audio beats), F16 (QA calibration — needs owner-labelled frames), F21/F22.
+
+## F11 T010 — Wan model SHA-256 (2026-11-24)
+
+Owner approved in chat ("Approve both"). Queue idle; `models-hash --confirm-io --profile configs/profiles/wan22_flf2v.binding.json` → 23.7 s (files already in the OS cache), 35.6 GB:
+- `wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors` `6122e79d55e0f235698d11d657f3b196c5273c830da00b2b013c5a048d5e6a42`
+- `wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` `5471a457b6ac404202a5fbe6c11595a3d5641fc766b00f38763f72303fffc21e`
+- `umt5_xxl_fp8_e4m3fn_scaled.safetensors` `c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68`
+- `wan_2.1_vae.safetensors` `2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b`
+All model files used by MorphCurrent now have measured SHA-256 (cache `outputs/model_hashes.json`). Benchmark renders (T011) started afterwards.

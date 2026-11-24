@@ -26,5 +26,5 @@ description: "Task list for F11 reproducible A6000 performance and model provena
 - [X] T009 Run on real MC-RUN-003 records; record in docs/PROGRESS.md, ledger; commit
 
 ## Blocked (owner approval)
-- [ ] T010 Wan checkpoint SHA-256 via `models-hash --confirm-io` (idle queue, ~37 GB disk read)
+- [X] T010 Wan checkpoint SHA-256 via `models-hash --confirm-io` (idle queue, ~37 GB disk read)
 - [ ] T011 Sampled benchmark matrix: cold vs warm 832×480, 640×368 variant
