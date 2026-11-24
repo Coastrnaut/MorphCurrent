@@ -315,6 +315,43 @@ def _brief_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _accuracy(args: argparse.Namespace) -> int:
+    """F33 technical-accuracy review: checklist, owner verdicts, text-free check, rejection impact, status."""
+    from . import accuracy as ac
+    from .schema import load_storyboard
+    root = Path(args.repo_root)
+    name = load_storyboard(args.storyboard).name
+    log = Path(args.log) if getattr(args, "log", None) else ac.default_log(name, root)
+    try:
+        if args.command == "accuracy-checklist":
+            out = {"storyboard": name, "anchors": ac.checklist(args.storyboard, args.bank, repo_root=root)}
+        elif args.command == "accuracy-negatives":
+            out = ac.text_free_check(ac.load_plan(args.storyboard, root))
+            print(json.dumps(out, indent=2, ensure_ascii=True))
+            return 0 if out["ok"] else 1
+        elif args.command == "accuracy-impact":
+            out = ac.impact_for(args.storyboard, args.reject, log=log, repo_root=root)
+        elif args.command == "accuracy-review":
+            sha = args.sha256
+            if args.run:
+                sha = ac._run_hashes(args.run).get(args.anchor)
+                if not sha:
+                    raise ac.AccuracyError(f"run {args.run} has no recorded image for {args.anchor}")
+            out = ac.record_verdict(log, ac.load_plan(args.storyboard, root), args.anchor, verdict=args.verdict,
+                                    image_sha256=sha, image=args.image, failed=args.fail, note=args.note,
+                                    reviewer=args.reviewer)
+            out["log"] = str(log)
+        else:
+            out = ac.status(args.storyboard, log, run_dir=args.run, repo_root=root)
+            print(json.dumps(out, indent=2, ensure_ascii=True))
+            return 0 if out["gate"] else 1
+    except ac.AccuracyError as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return 0
+
+
 def _film(args: argparse.Namespace) -> int:
     """F32 full-song film storyboard and dry-run report (offline; no GPU)."""
     from . import film as fm
@@ -1063,6 +1100,32 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    for name, help_text in (("accuracy-checklist", "Per-anchor accuracy checklist with concept context (F33)"),
+                            ("accuracy-review", "Record an owner verdict (accurate / reject / waive) for an anchor image"),
+                            ("accuracy-negatives", "Check every anchor/bridge prompt carries text/logo negatives"),
+                            ("accuracy-impact", "Stages a rejection invalidates (transitive edits, bridges, final)"),
+                            ("accuracy-status", "Accuracy sign-off status and gate for a storyboard/run")):
+        asub = subs.add_parser(name, help=help_text)
+        asub.add_argument("storyboard")
+        asub.add_argument("--repo-root", default=".")
+        if name in ("accuracy-review", "accuracy-impact", "accuracy-status"):
+            asub.add_argument("--log", default=None, help="Review log (default outputs/reviews/<name>.accuracy.jsonl)")
+        if name == "accuracy-checklist":
+            asub.add_argument("--bank", default="configs/concepts/engineering-film.yaml")
+        if name == "accuracy-review":
+            asub.add_argument("anchor")
+            asub.add_argument("--verdict", required=True, choices=["accurate", "reject", "waive"])
+            grp = asub.add_mutually_exclusive_group(required=True)
+            grp.add_argument("--sha256")
+            grp.add_argument("--image")
+            grp.add_argument("--run", help="Run folder whose recorded image hash to use")
+            asub.add_argument("--fail", action="append", default=[], help="Failed checklist item (repeatable)")
+            asub.add_argument("--note", default="")
+            asub.add_argument("--reviewer", default="owner")
+        if name == "accuracy-impact":
+            asub.add_argument("--reject", action="append", required=True)
+        if name == "accuracy-status":
+            asub.add_argument("--run", default=None)
     fst = subs.add_parser("film-storyboard", help="Write the full-song film storyboard from sync plan + concepts + acts (F32)")
     fst.add_argument("--plan", default="configs/film/sync-plan.json")
     fst.add_argument("--bank", default="configs/concepts/engineering-film.yaml")
@@ -1226,6 +1289,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command.startswith("accuracy-"):
+            return _accuracy(args)
         elif args.command in ("film-storyboard", "film-report"):
             return _film(args)
         elif args.command in ("concepts-check", "concepts-list"):

@@ -15,6 +15,7 @@ from pathlib import Path
 import yaml
 
 MIN_BRIDGE, MAX_BRIDGE = 33, 81
+TEXT_NEGATIVES = ("text", "letters", "labels", "logo", "watermark")  # same terms as accuracy.TEXT_NEGATIVES
 MASTER_SEED = 31415
 STYLE_PACK = "engineering-noir"
 DEFAULTS = {"plan": Path("configs/film/sync-plan.json"), "bank": Path("configs/concepts/engineering-film.yaml"),
@@ -81,8 +82,10 @@ def build_storyboard(sync_plan: dict, bank: dict, acts: dict, *, audio: str | No
             anchor["generation"] = "text_to_image"
         out_anchors.append(anchor)
         prev = anchor
+    # F33: bridges carry the text-free negatives too (anchors get them from the style pack)
     transitions = [{"from": entries[i]["id"], "to": entries[i + 1]["id"], "frames": b["frames"],
-                    "prompt": _bridge_prompt(entries[i], b.get("character") or [])}
+                    "prompt": _bridge_prompt(entries[i], b.get("character") or []),
+                    "choreography": {"negative": list(TEXT_NEGATIVES)}}
                    for i, b in enumerate(bridges)]
     data = {"schema_version": 1, "name": "engineering-film",
             "render": {"width": 832, "height": 480, "generation_fps": 16, "delivery_fps": 24,
