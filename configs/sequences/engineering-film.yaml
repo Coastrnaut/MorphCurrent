@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -1246,13 +1246,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: stacked-memory-towers
-  prompt: 'Replace the previous object completely with a processor package without a lid: a large square processor die in
-    the middle of a silicon base with four short towers of thin stacked memory dies standing beside it, the layers of each
-    tower visible. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame,
-    no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: towers, square; materials:
-    silicon, copper, solder bumps'
+  prompt: 'an open processor package without a lid: a large square processor die in the middle of a silicon base, with four
+    short towers of thin stacked memory dies standing beside it, the separate layers of each tower clearly visible; dominant
+    shapes: towers, square; materials: silicon, copper, solder bumps'
   chapter: scale
-  generation: reference_edit
+  generation: independent_t2i
   reference: pixel-shader-lattice
   style_override:
     palette:
@@ -1260,6 +1258,8 @@ anchors:
     - brushed steel
     - deep black
     lighting: cold blue rim light with subtle reflections
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
 - id: silicon-interposer
   prompt: 'Replace the stacked memory beside a processor completely with silicon interposer with micro-bumps: a thin silicon
     slab with a dense field of tiny solder bumps and fine wiring lines between chip sites. Remove every part of the previous
@@ -1275,12 +1275,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: accelerator-package-lid
-  prompt: 'Replace the previous object completely with a large square accelerator package with a polished metal lid on a green
-    substrate covered in small capacitors, the whole package with margins around it. Show the whole new object fully in frame
-    and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
-    grade and dark background. Dominant shapes: square, lid; materials: nickel-plated copper, organic substrate'
+  prompt: 'a large square accelerator package with a polished metal lid on a green substrate covered in small capacitors,
+    lying flat; dominant shapes: square, lid; materials: nickel-plated copper, organic substrate'
   chapter: scale
-  generation: reference_edit
+  generation: independent_t2i
   reference: silicon-interposer
   style_override:
     palette:
@@ -1288,6 +1286,8 @@ anchors:
     - brushed steel
     - deep black
     lighting: cold blue rim light with subtle reflections
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
 - id: accelerator-module-coldplate
   prompt: 'Replace the accelerator package with metal lid completely with accelerator module with liquid cold plate: a module
     board carrying a large chip under a copper cold plate with coolant tubes. Remove every part of the previous object and
@@ -1345,13 +1345,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: rack-backup-batteries
-  prompt: 'Replace the previous object completely with a steel rack of backup battery cells: shelves of identical rectangular
-    battery blocks joined by short copper cable links, small green status lights on each block, the whole rack front. Show
-    the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or
-    lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: rows of blocks, links; materials:
-    lithium cells, steel, copper'
+  prompt: 'a steel rack of backup battery cells: open shelves of identical rectangular grey battery blocks, each joined to
+    the next by a short copper link cable, a small green status light on each block, no servers; dominant shapes: rows of
+    blocks, links; materials: lithium cells, steel, copper'
   chapter: scale
-  generation: reference_edit
+  generation: independent_t2i
   reference: server-rack-front
   style_override:
     palette:
@@ -1359,6 +1357,7 @@ anchors:
     - brushed steel
     - deep black
     lighting: cold blue rim light with subtle reflections
+    composition: the whole rack front centered with dark margins, nothing cropped
 - id: hot-aisle-row
   prompt: 'Replace the rows of backup battery cells in a rack completely with aisle of server racks: a long corridor between
     two rows of racks under cable trays, cool blue lighting. Remove every part of the previous object and its setting that

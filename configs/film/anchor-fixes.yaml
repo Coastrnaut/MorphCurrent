@@ -760,3 +760,36 @@ fixes:
       shapes: long board, central square; materials: fibreglass, silicon, copper
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  # --- iteration 3d (pass 3 complete: #81-#96 judged) ---------------------------------------------------
+  # Pass: silicon-interposer, accelerator-module-coldplate, compute-tray, interconnect-switch-board,
+  # server-rack-front, hot-aisle-row, fibre-optic-bundle, liquid-cooling-manifold (fixed), cooling-towers-exterior,
+  # data-center-substation (fixed), wafer-scale-processor, neural-network-lattice, lightning-over-data-center.
+  - anchor: stacked-memory-towers
+    apply: fresh
+    iteration: 3
+    problem: "(it 2 and 3) a lidded package on the lattice background; still no memory towers (subject, carryover)"
+    prompt: >-
+      an open processor package without a lid: a large square processor die in the middle of a silicon base, with
+      four short towers of thin stacked memory dies standing beside it, the separate layers of each tower clearly
+      visible; dominant shapes: towers, square; materials: silicon, copper, solder bumps
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: accelerator-package-lid
+    apply: fresh
+    iteration: 3
+    problem: "(it 2 and 3) the lid overflows the frame (cropping)"
+    prompt: >-
+      a large square accelerator package with a polished metal lid on a green substrate covered in small capacitors,
+      lying flat; dominant shapes: square, lid; materials: nickel-plated copper, organic substrate
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: rack-backup-batteries
+    apply: fresh
+    iteration: 3
+    problem: "(it 2 and 3) another server rack; no battery cells (subject)"
+    prompt: >-
+      a steel rack of backup battery cells: open shelves of identical rectangular grey battery blocks, each joined
+      to the next by a short copper link cable, a small green status light on each block, no servers; dominant
+      shapes: rows of blocks, links; materials: lithium cells, steel, copper
+    style:
+      composition: "the whole rack front centered with dark margins, nothing cropped"

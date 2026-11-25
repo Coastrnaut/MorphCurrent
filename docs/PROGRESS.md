@@ -897,3 +897,7 @@ Pass 3, #31-#51 judged. **Pass (11):** telegraph-sounder, paper-tape-register, m
 ## Anchor review iteration 3c (2026-11-25, Claude review)
 
 Pass 3, #52-#80 judged. **Pass (16):** silicon-ingot, polished-wafer-stack, planar-transistor-die, discrete-component-board, logic-module-card, early-flat-pack-ic, dip-chip-in-socket, bond-wire-fan, resist-coated-wafer, patterned-wafer-grid, first-generation-cpu-die, ceramic-cpu-package, home-computer-motherboard, laptop-mainboard, many-core-die-tiles, pixel-shader-lattice (the stray Logic wire and the hexagonal base are gone). **Fix (8):** diffusion-furnace-boat (boat runs off the frame); photomask-reticle (repeats the bond-wire die), wafer-dicing-saw (no blade, 2nd time), ic-die-macro, memory-chip-array, cross-section-transistor-layers, multi-core-die (cropped, 2nd time), graphics-card-board (cropped, 2nd time) -> fresh keyframes with "whole object small in the frame with wide dark margins", because edits keep a tightly framed parent's framing. Suite 632 passed.
+
+## Anchor review iteration 3d (2026-11-25, Claude review)
+
+Pass 3 finished (`run-9a449a3bdd3dbe48`, anchors_complete). #81-#96 judged: 13 pass (incl. liquid-cooling-manifold and data-center-substation, fixed). Fresh keyframes for the three that failed twice: stacked-memory-towers (no towers), accelerator-package-lid (overflows the frame), rack-backup-batteries (server rack again). Pass 3 tally of the 96: roughly 63 pass, 33 queued for pass 4 (iterations 3a-3d). Pass 4 started.
