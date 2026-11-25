@@ -913,3 +913,7 @@ Pass 4, #39-#59 judged. **Pass (13):** glowing-vacuum-tube, tube-amplifier-chass
 ## Anchor review iteration 4c (2026-11-25, Claude review)
 
 Pass 4, #60-#86 judged. **Pass (18):** bond-wire-fan, photomask-reticle, resist-coated-wafer, wafer-dicing-saw (a real blade at last), memory-chip-array, cross-section-transistor-layers, ceramic-cpu-package, home-computer-motherboard, multi-core-die, laptop-mainboard, graphics-card-board (whole card with bracket), many-core-die-tiles, pixel-shader-lattice, stacked-memory-towers (towers at last), accelerator-package-lid, accelerator-module-coldplate, compute-tray, interconnect-switch-board. **Fix (4):** patterned-wafer-grid and silicon-interposer (cropped at the edges), ic-die-macro (a packaged chip, 3rd time; fresh bare die with a new seed), first-generation-cpu-die (printed words on the chip; fresh with a new seed). Suite green.
+
+## Anchor review iteration 4d (2026-11-25, Claude review)
+
+Pass 4 finished (`run-f117e2161edf4feb`, anchors_complete). #87-#96: 9 pass (rack-backup-batteries fixed); server-rack-front cropped at the bottom every pass -> whole-rack prompt. Standing after pass 4: 77 of 96 anchors pass; 19 queued for pass 5 (iterations 4a-4d). Pass 5 started.

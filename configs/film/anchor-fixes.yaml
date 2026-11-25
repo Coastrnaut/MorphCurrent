@@ -1021,3 +1021,16 @@ fixes:
       of tiny copper through-holes, lying flat, the whole plate inside the frame with dark space around it. Keep
       only the lighting, colour grade and dark background. Dominant shapes: square plate, dot grid; materials:
       silicon, copper
+  # --- iteration 4d (pass 4 complete: #87-#96 judged) ---------------------------------------------------
+  # Pass: rack-backup-batteries (fixed), hot-aisle-row, fibre-optic-bundle, liquid-cooling-manifold,
+  # cooling-towers-exterior, data-center-substation, wafer-scale-processor, neural-network-lattice,
+  # lightning-over-data-center.
+  - anchor: server-rack-front
+    apply: prompt
+    iteration: 4
+    problem: "the rack is cut off at the bottom in every pass (cropping)"
+    prompt: >-
+      Replace the previous object completely with one whole tall server rack seen from the front, its doors open,
+      rows of servers with small blue status lights and neatly bundled cables, the entire rack from its top to its
+      feet on the floor with dark space above and below it. Keep only the lighting, colour grade and dark background.
+      Dominant shapes: tall rectangle, rows; materials: steel, plastic, copper
