@@ -3,27 +3,33 @@
 # single-anchor job each, with the anchor's planned seed:
 #   A "instruction": reference edit from the same parent image with an explicit replace/remove instruction
 #   B "fresh": independent text-to-image keyframe with the anchor's planned prompt (breaks the edit chain here)
-# The owner picks per anchor (asked with choices). Nothing here changes the storyboard until a pick is applied.
+# `apply` records the owner's pick (fresh | instruction); `film-storyboard` applies it.
+# Owner decision 2026-11-24 (asked with choices): apply fresh keyframes to all four, automatically after the
+# running full-film render finishes; then the film is produced again (only Spark changes).
 version: 1
 fixes:
   - anchor: forked-lightning-bolt
+    apply: fresh
     problem: still the storm cloud on a pedestal from the parent; no lightning bolt
     instruction: >-
       Replace the whole scene with a single bright forked lightning bolt splitting into many thin branches
       against a black night sky. Remove the cloud, the pedestal and the glass column completely. Keep only
       the warm copper-amber colour grade and the dark background.
   - anchor: rubbed-amber-and-fur
+    apply: fresh
     problem: the two copper spheres and stands of the parent remain; no fur
     instruction: >-
       Remove both copper spheres and their stands completely. Show only a honey-coloured amber rod lying
       horizontally, lifting tiny fibres and dust toward it, with a small tuft of fur beside it, on a dark
       background with warm amber rim light.
   - anchor: aurora-curtain
+    apply: fresh
     problem: the parent's spheres, mast and corona ring stay in the foreground
     instruction: >-
       Remove the copper spheres, the mast and the glowing ring completely. Show only rippling green and
       violet aurora curtains folding across a polar night sky above a snowy plain, wide view, no objects.
   - anchor: charged-dust-cloud
+    apply: fresh
     problem: a fish head from the parent (electric eel) remains
     instruction: >-
       Remove the fish completely. Show only glittering dust motes drifting and clustering along curved

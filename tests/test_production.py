@@ -219,3 +219,26 @@ def test_cli_film_produce_dry_run(tmp_path, capsys):
                      "--dry-run"]) == 0
     assert json.loads(capsys.readouterr().out)["acts"] == ["spark"]
     assert cli.main(["film-produce", "nope", "--batch-dir", str(tmp_path / "b"), "--approvals", str(log)]) == 2
+
+
+
+def test_wait_for_previous_run(tmp_path):
+    """Owner 2026-11-24: start the fixed-anchor film run automatically after the current run frees the GPU."""
+    log = tmp_path / "prev.jsonl"
+    ticks = {"n": 0}
+
+    def sleep(_):
+        ticks["n"] += 1
+        with log.open("a", encoding="utf-8") as fh:  # the earlier run finishes one batch per poll
+            fh.write(json.dumps({"batch": f"b{ticks['n']}", "status": "complete"}) + "\n")
+
+    idle_answers = iter([False, True])  # queue still busy right after the last batch, then idle
+    out = pr.wait_for_previous(log, 2, poll_s=0, idle=lambda: next(idle_answers) if ticks["n"] >= 2 else False,
+                               sleep=sleep, now=lambda: float(ticks["n"]))
+    assert out["previous_batches"] >= 2 and not out["previous_failed"] and ticks["n"] >= 2
+    fail = tmp_path / "fail.jsonl"
+    fail.write_text(json.dumps({"status": "failed"}) + "\n", encoding="utf-8")
+    assert pr.wait_for_previous(fail, 12, poll_s=0, idle=lambda: True)["previous_failed"]
+    with pytest.raises(pr.ProductionError, match="still busy"):
+        pr.wait_for_previous(tmp_path / "none.jsonl", 3, poll_s=0, idle=lambda: True, sleep=lambda _: None,
+                             now=iter(range(100)).__next__, max_wait_s=5)

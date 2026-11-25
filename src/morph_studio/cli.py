@@ -648,7 +648,8 @@ def _film(args: argparse.Namespace) -> int:
     try:
         if args.command == "film-storyboard":
             data = fm.write_storyboard(args.plan, args.bank, args.acts, args.out, audio=args.audio,
-                                       language=args.language or None, look=args.look)
+                                       language=args.language or None, look=args.look,
+                                       fixes=args.fixes or None)
             out = {"out": args.out, "anchors": len(data["anchors"]), "bridges": len(data["transitions"]),
                    "acts": list(dict.fromkeys(a["chapter"] for a in data["anchors"])),
                    "text_to_image": sum(a["generation"] == "text_to_image" for a in data["anchors"])}
@@ -1436,6 +1437,9 @@ def main(argv: list[str] | None = None) -> int:
     fpr.add_argument("--batch-dir", default="outputs/production/batches-v2")
     fpr.add_argument("--approvals", default=None)
     fpr.add_argument("--dry-run", action="store_true", help="Write/list the batches without rendering")
+    fpr.add_argument("--after-log", default=None, help="Wait until this earlier film-produce log is complete first")
+    fpr.add_argument("--after-batches", type=int, default=None, help="Batch count of that earlier run")
+    fpr.add_argument("--log", default=None, help="Progress log for this run")
     fas = subs.add_parser("film-assemble", help="Join the film from owner-approved versions; full-song check (F40)")
     _film_common(fas)
     fas.add_argument("--preview", action="store_true", help="Use latest versions; output labelled PREVIEW")
@@ -1595,6 +1599,7 @@ def main(argv: list[str] | None = None) -> int:
     fst.add_argument("--language", default="configs/film/visual-language.yaml",
                      help="F34 visual language ('' for none)")
     fst.add_argument("--look", default=None, help="Look name (default: owner-selected, else default_look)")
+    fst.add_argument("--fixes", default="configs/film/anchor-fixes.yaml", help="Owner-chosen anchor fixes ('' for none)")
     frp = subs.add_parser("film-report", help="Dry-run film report: per-act frames, coverage, GPU-hour estimate")
     frp.add_argument("storyboard")
     frp.add_argument("--plan", default="configs/film/sync-plan.json")
@@ -1771,8 +1776,17 @@ def main(argv: list[str] | None = None) -> int:
             from . import production as pr
             acts = pr._film_order_acts(args.storyboard) if args.acts == "all" else [a.strip() for a in args.acts.split(",")]
             try:
+                waited = None
+                if args.after_log and not args.dry_run:
+                    if not args.after_batches:
+                        raise pr.ProductionError("--after-log needs --after-batches")
+                    print(f"waiting for the earlier run ({args.after_log}, {args.after_batches} batches) and an idle "
+                          "queue...", flush=True)
+                    waited = pr.wait_for_previous(args.after_log, args.after_batches)
+                    print(f"earlier run finished: {json.dumps(waited)}", flush=True)
                 out = pr.produce(args.storyboard, acts, args.batch_dir, approvals_log=args.approvals,
-                                 dry_run=args.dry_run)
+                                 dry_run=args.dry_run, log=args.log)
+                out["waited"] = waited
             except (pr.ProductionError, FileExistsError) as exc:
                 print(f"REFUSED: {exc}", file=sys.stderr)
                 return 2

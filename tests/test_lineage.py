@@ -53,7 +53,7 @@ def test_lineage_synthetic():
 def test_lineage_film():
     plan = compile_plan(load_storyboard(FILM), repo_root=REPO, storyboard_bytes=FILM.read_bytes())
     rep = ln.lineage(plan, limit=12)
-    assert rep["per_act_max"] == {"spark": 12, "power": 14, "signal": 14, "logic": 26, "scale": 25}
+    assert rep["per_act_max"] == {"spark": 4, "power": 14, "signal": 14, "logic": 26, "scale": 25}  # Spark fresh keyframes
     assert rep["max_depth"] == 26 and len(rep["over_limit"]) == 2 + 2 + 14 + 13  # F38 act boundaries
 
 

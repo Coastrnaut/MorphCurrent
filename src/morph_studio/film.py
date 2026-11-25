@@ -130,8 +130,34 @@ def build_storyboard(sync_plan: dict, bank: dict, acts: dict, *, audio: str | No
     return data, header
 
 
+def apply_anchor_fixes(data: dict, fixes: list[dict]) -> list[str]:
+    """Owner-chosen anchor repairs (configs/film/anchor-fixes.yaml, ``apply``): ``fresh`` renders the anchor as an
+    independent text-to-image keyframe (``reference`` stays as the continuity parent only); ``instruction``
+    replaces the edit prompt with the drafted remove/replace instruction. Returns the applied anchor ids."""
+    by_id = {a["id"]: a for a in data["anchors"]}
+    applied = []
+    for f in fixes:
+        how = f.get("apply")
+        if not how:
+            continue
+        a = by_id.get(f.get("anchor"))
+        if a is None:
+            raise FilmError(f"anchor fix names unknown anchor {f.get('anchor')!r}")
+        if how == "fresh":
+            a["generation"] = "independent_t2i"
+        elif how == "instruction":
+            if a.get("generation") != "reference_edit":
+                raise FilmError(f"{a['id']} is not a reference edit; an edit instruction does not apply")
+            a["prompt"] = " ".join(str(f["instruction"]).split())
+        else:
+            raise FilmError(f"anchor fix apply must be 'fresh' or 'instruction', not {how!r}")
+        applied.append(f"{a['id']}={how}")
+    return applied
+
+
 def write_storyboard(plan: str | Path, bank: str | Path, acts: str | Path, out: str | Path, *,
-                     audio: str | None = None, language: str | Path | None = None, look: str | None = None) -> dict:
+                     audio: str | None = None, language: str | Path | None = None, look: str | None = None,
+                     fixes: str | Path | None = None) -> dict:
     out = Path(out)
     if out.exists():
         raise FileExistsError(f"{out} exists; refusing to overwrite")
@@ -141,6 +167,12 @@ def write_storyboard(plan: str | Path, bank: str | Path, acts: str | Path, out: 
         from .look import load_language
         lang = load_language(language, [a["id"] for a in acts_data["acts"]])
     data, header = build_storyboard(_load(plan), _load(bank), acts_data, audio=audio, language=lang, look=look)
+    if fixes and Path(fixes).is_file():
+        applied = apply_anchor_fixes(data, _load(fixes).get("fixes") or [])
+        if applied:
+            header += f"# anchor fixes applied (configs/film/anchor-fixes.yaml): {', '.join(applied)}\n"
+    from .schema import Storyboard
+    Storyboard.model_validate(data)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(header + yaml.safe_dump(data, sort_keys=False, width=120), encoding="utf-8")
     return data

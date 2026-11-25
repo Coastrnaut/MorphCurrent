@@ -349,6 +349,38 @@ def _film_order_acts(storyboard: str | Path) -> list[str]:
     return acts
 
 
+def queue_idle(url: str = "http://127.0.0.1:8188") -> bool | None:
+    """Read-only ComfyUI queue check: True idle, False busy, None unreachable."""
+    import urllib.request
+    try:
+        with urllib.request.urlopen(f"{url}/queue", timeout=5) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except (OSError, ValueError):
+        return None
+    return not data.get("queue_running") and not data.get("queue_pending")
+
+
+def wait_for_previous(log: str | Path, expected: int, *, poll_s: float = 60.0, idle=queue_idle, sleep=None,
+                      now=None, max_wait_s: float | None = None) -> dict:
+    """Block until a previous `film-produce` run is over: its log has ``expected`` batch entries or a failed
+    entry, and the ComfyUI queue is idle. Never touches the running job."""
+    import time
+    sleep = sleep or time.sleep
+    now = now or time.monotonic
+    start = now()
+    while True:
+        lines = []
+        if Path(log).is_file():
+            lines = [json.loads(x) for x in Path(log).read_text(encoding="utf-8").splitlines() if x.strip()]
+        finished = len(lines) >= expected or any(e.get("status") == "failed" for e in lines)
+        if finished and idle() is True:
+            return {"previous_batches": len(lines), "previous_failed": any(e.get("status") == "failed" for e in lines),
+                    "waited_s": round(now() - start, 1)}
+        if max_wait_s is not None and now() - start > max_wait_s:
+            raise ProductionError(f"previous run still busy after {max_wait_s} s ({len(lines)}/{expected} batches)")
+        sleep(poll_s)
+
+
 def produce(storyboard: str | Path, acts: list[str], batch_dir: str | Path, *, approvals_log: str | Path | None = None,
             history: str | Path = DEFAULT_HISTORY, log: str | Path | None = None, runner=None,
             python: str | None = None, dry_run: bool = False) -> dict:

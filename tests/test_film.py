@@ -232,3 +232,23 @@ def test_act_start_anchor_override():
     for bad in ([0, None], [1, 4], [0, 0], [0, 10]):
         with pytest.raises(fm.FilmError):
             fm.act_starts([dict(i, start_anchor=s) for i, s in zip(items, bad)], 10)
+
+
+
+def test_anchor_fixes_applied(tmp_path):
+    """Owner 2026-11-24: fresh keyframes for the four weak Spark anchors."""
+    from morph_studio import film as fm
+    data = yaml.safe_load((REPO / "configs/sequences/engineering-film.yaml").read_text(encoding="utf-8"))
+    gens = {a["id"]: a["generation"] for a in data["anchors"]}
+    for k in ("forked-lightning-bolt", "rubbed-amber-and-fur", "aurora-curtain", "charged-dust-cloud"):
+        assert gens[k] == "independent_t2i"
+    assert gens["fulgurite-glass-tube"] == "reference_edit"
+    d = {"anchors": [{"id": "a", "generation": "text_to_image", "prompt": "x"},
+                     {"id": "b", "generation": "reference_edit", "reference": "a", "prompt": "y"}]}
+    assert fm.apply_anchor_fixes(d, [{"anchor": "b", "apply": "instruction", "instruction": "Show  only b."}]) == ["b=instruction"]
+    assert d["anchors"][1]["prompt"] == "Show only b."
+    for bad in ({"anchor": "zz", "apply": "fresh"}, {"anchor": "a", "apply": "instruction", "instruction": "x"},
+                {"anchor": "b", "apply": "maybe"}):
+        with pytest.raises(fm.FilmError):
+            fm.apply_anchor_fixes(d, [bad])
+    assert fm.apply_anchor_fixes(d, [{"anchor": "b", "instruction": "x"}]) == []  # no pick, no change

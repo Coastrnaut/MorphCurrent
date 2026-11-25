@@ -3,6 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
+# anchor fixes applied (configs/film/anchor-fixes.yaml): forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, aurora-curtain=fresh, charged-dust-cloud=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -35,7 +36,7 @@ anchors:
   prompt: 'forked lightning bolt: a bright branching discharge channel splitting into many forks against a night sky; dominant
     shapes: branching line, fork; materials: plasma, air'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: storm-cell-over-plain
   style_override:
     palette:
@@ -71,7 +72,7 @@ anchors:
   prompt: 'polished amber attracting small fibres: a honey-coloured amber rod lifting tiny fibres and dust after being rubbed
     with fur; dominant shapes: rod, fibres; materials: amber, fur'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: spark-between-spheres
   style_override:
     palette:
@@ -95,7 +96,7 @@ anchors:
   prompt: 'aurora curtain over snow: rippling green and violet light curtains folding across a polar night sky; dominant shapes:
     curtain, ribbon; materials: ionized gas'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: mast-tip-corona
   style_override:
     palette:
@@ -119,7 +120,7 @@ anchors:
   prompt: 'charged particles drifting in a beam of light: glittering dust motes drifting and clustering along invisible field
     lines in a sunbeam; dominant shapes: points, field lines; materials: dust, light'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: electric-eel-silhouette
   style_override:
     palette:
