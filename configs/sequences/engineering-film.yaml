@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt
 schema_version: 1
 name: engineering-film
 render:
@@ -546,10 +546,11 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: armoured-undersea-cable
-  prompt: 'Replace the paper-tape telegraph register completely with cross-section of armoured undersea cable: a thick cable
-    cut open: a copper core, gutta-percha insulation, tarred hemp and helical iron armour wires. Remove every part of the
-    previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
-    angle and dark background. Dominant shapes: concentric rings, helix; materials: copper, gutta-percha, iron'
+  prompt: 'Replace the previous object completely with a short length of thick armoured undersea cable lying horizontally,
+    its cut end showing a copper core, gutta-percha insulation, tarred hemp and a ring of helical iron armour wires. Show
+    the whole new object fully in frame and centered with space around it, nothing cropped, resting directly on the dark surface
+    with no base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark background.
+    Dominant shapes: cylinder, concentric rings; materials: copper, gutta-percha, hemp, iron'
   chapter: signal
   generation: reference_edit
   reference: paper-tape-register
@@ -560,10 +561,11 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: candlestick-telephone
-  prompt: 'Replace the previous object completely with an early upright candlestick desk telephone: a tall slim black column
-    on a round base with a cone-shaped mouthpiece on top and a separate cone earpiece hanging on a hook on the side, a straight
-    cloth-covered cord; no handset, no coiled cord. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: column, cone; materials: bakelite, nickel'
+  prompt: 'Replace the previous object completely with an early upright candlestick desk telephone, the whole telephone from
+    its round base to the cone mouthpiece on top, the separate cone earpiece hanging on its side hook. Show the whole new
+    object fully in frame and centered with space around it, nothing cropped, resting directly on the dark surface with no
+    base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
+    shapes: column, cone; materials: bakelite, nickel'
   chapter: signal
   generation: reference_edit
   reference: armoured-undersea-cable
@@ -588,10 +590,11 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: stepping-switch-bank
-  prompt: 'Replace the previous object completely with a steel rack of automatic electromechanical stepping switches: several
-    identical switches in a row, each with a wiper arm sweeping across a semicircular bank of brass contacts, coils and ratchets
-    visible. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: semicircles, arms, racks;
-    materials: steel, brass'
+  prompt: 'Replace the previous object completely with a small steel rack holding a row of four electromechanical stepping
+    switches, each with a wiper arm over a semicircular bank of brass contacts, the whole rack visible. Show the whole new
+    object fully in frame and centered with space around it, nothing cropped, resting directly on the dark surface with no
+    base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
+    shapes: semicircles, arms, racks; materials: steel, brass'
   chapter: signal
   generation: reference_edit
   reference: manual-switchboard
@@ -602,9 +605,9 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: variable-tuning-capacitor
-  prompt: 'an air variable tuning capacitor: two sets of interleaved semicircular aluminium plates on a brass shaft, one set
-    half rotated between the other, mounted in a small frame, whole object centered; dominant shapes: semicircular plates,
-    shaft; materials: aluminium, brass'
+  prompt: 'an air variable tuning capacitor: one set of semicircular aluminium plates on a brass shaft half rotated into and
+    meshed between a second fixed set of plates, in a small open metal frame, whole object centered; dominant shapes: semicircular
+    plates, shaft; materials: aluminium, brass'
   chapter: signal
   generation: independent_t2i
   reference: stepping-switch-bank
@@ -616,9 +619,8 @@ anchors:
     lighting: cool steel rim light with a soft phosphor glow
 - id: crystal-radio-set
   prompt: 'a 1920s crystal radio set on a small wooden board: a coil of enamelled copper wire wound on a cardboard tube, a
-    small dark grey galena crystal in a brass cup touched by a fine cat''s-whisker wire, and a single old black bakelite earpiece
-    receiver on a cord beside the board; no modern headphones; dominant shapes: coil, board; materials: wood, copper wire,
-    galena'
+    small dark grey galena crystal in a brass cup touched by a fine springy wire probe on a brass arm, and a single old black
+    bakelite earpiece receiver on a cord beside the board; dominant shapes: coil, board; materials: wood, copper wire, galena'
   chapter: signal
   generation: independent_t2i
   reference: variable-tuning-capacitor
@@ -642,6 +644,9 @@ anchors:
     - modern headphones
     - padded ear cushions
     - quartz crystal
+    - cat
+    - animal
+    - icon
 - id: glowing-vacuum-tube
   prompt: 'Replace the crystal radio with cat''s whisker detector completely with glowing vacuum tube: a glass envelope with
     an orange-glowing filament, a mesh grid and a metal plate, pins in a base. Remove every part of the previous object and
@@ -725,9 +730,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: magnetic-core-plane
-  prompt: 'Replace the previous object completely with a square magnetic core memory plane: a flat square frame strung with
-    a fine square grid of copper wires, a tiny dark ferrite ring threaded at every crossing, seen almost face-on. Show the
-    whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+  prompt: 'Replace the previous object completely with a square magnetic core memory plane seen almost face-on: a flat frame
+    strung with a fine square grid of thin copper wires with one diagonal sense wire, a tiny dark grey ferrite ring threaded
+    at every crossing; the rings do not glow. Show the whole new object fully in frame and centered with space around it,
+    nothing cropped, resting directly on the dark surface with no base, stand or plinth under it, no numbers or lettering.
     Keep only the lighting, colour grade and dark background. Dominant shapes: grid, rings, frame; materials: ferrite, copper
     wire'
   chapter: logic
@@ -754,10 +760,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: magnetic-drum-memory
-  prompt: 'Replace the stacked core memory module completely with magnetic drum memory: a large polished cylinder coated in
-    magnetic oxide spinning beneath a row of read/write heads. Remove every part of the previous object and its setting that
-    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    cylinder, row of heads; materials: steel, iron oxide'
+  prompt: 'Replace the previous object completely with a magnetic drum memory: one large polished metal cylinder on a horizontal
+    axle with a row of small read/write heads lined up along its length, the whole drum and both axle ends visible. Show the
+    whole new object fully in frame and centered with space around it, nothing cropped, resting directly on the dark surface
+    with no base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark background.
+    Dominant shapes: cylinder, row of heads; materials: steel, magnetic coating'
   chapter: logic
   generation: reference_edit
   reference: core-memory-stack
@@ -783,11 +790,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: point-contact-crystal
-  prompt: 'Replace the previous object completely with a point-contact semiconductor experiment: a small grey germanium slab
-    on a metal base with a clear plastic wedge pressing two fine gold-foil contacts down onto it close together. Show the
-    whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
-    Keep only the lighting, colour grade and dark background. Dominant shapes: wedge, slab, points; materials: germanium,
-    gold foil, plastic'
+  prompt: 'Replace the previous object completely with a point-contact semiconductor experiment: a small flat grey germanium
+    slab on a little metal block, a clear plastic wedge pressing two thin strips of gold foil down onto the slab close together.
+    Show the whole new object fully in frame and centered with space around it, nothing cropped, resting directly on the dark
+    surface with no base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark
+    background. Dominant shapes: wedge, slab, points; materials: germanium, gold foil, plastic'
   chapter: logic
   generation: reference_edit
   reference: reel-to-reel-tape-drive
@@ -798,10 +805,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: metal-can-transistor
-  prompt: 'Replace the point-contact semiconductor experiment completely with three-lead metal can transistor: a small cylindrical
-    metal can on three wire legs, a tab marking one lead. Remove every part of the previous object and its setting that does
-    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    small cylinder, three legs; materials: nickel, glass seal'
+  prompt: 'Replace the previous object completely with a single small metal-can transistor: a short shiny cylindrical can
+    with three thin wire leads spreading out from its bottom. Show the whole new object fully in frame and centered with space
+    around it, nothing cropped, resting directly on the dark surface with no base, stand or plinth under it, no numbers or
+    lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: cylinder, three leads; materials:
+    steel, glass, kovar'
   chapter: logic
   generation: reference_edit
   reference: point-contact-crystal
@@ -814,8 +822,9 @@ anchors:
 - id: transistor-radio-board
   prompt: 'Replace the previous object completely with a small hand-wired pocket transistor radio circuit board with a few
     transistors, a black ferrite rod antenna and a plain unmarked tuning knob. Show the whole new object fully in frame and
-    centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
-    grade and dark background. Dominant shapes: board, rod, dial; materials: phenolic board, ferrite, copper'
+    centered with space around it, nothing cropped, resting directly on the dark surface with no base, stand or plinth under
+    it, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: board, rod, dial;
+    materials: phenolic board, ferrite, copper'
   chapter: logic
   generation: reference_edit
   reference: metal-can-transistor

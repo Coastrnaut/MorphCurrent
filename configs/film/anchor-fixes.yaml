@@ -568,3 +568,111 @@ fixes:
       fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering, no
       water, no basin. Keep only the lighting, colour grade and dark background. Dominant shapes: lattice pylon,
       sagging lines; materials: steel, aluminium, porcelain
+  # --- iteration 3b (pass 3, #31-#51 judged) ------------------------------------------------------------
+  # Pass: telegraph-sounder, paper-tape-register, manual-switchboard, glowing-vacuum-tube, tube-amplifier-chassis,
+  # tube-flip-flop-panel, tube-computer-wall, mercury-delay-line, cathode-ray-storage-tube, core-memory-stack,
+  # reel-to-reel-tape-drive. Recurring: a hexagonal base carried down the Logic chain -> 'resting directly on the
+  # dark surface with no base, stand or plinth'.
+  - anchor: armoured-undersea-cable
+    apply: prompt
+    iteration: 3
+    problem: "the cable sits in a clamp on the register's green-gold plinth (carryover)"
+    prompt: >-
+      Replace the previous object completely with a short length of thick armoured undersea cable lying
+      horizontally, its cut end showing a copper core, gutta-percha insulation, tarred hemp and a ring of helical
+      iron armour wires. Show the whole new object fully in frame and centered with space around it, nothing
+      cropped, resting directly on the dark surface with no base, stand or plinth under it, no numbers or lettering.
+      Keep only the lighting, colour grade and dark background. Dominant shapes: cylinder, concentric rings;
+      materials: copper, gutta-percha, hemp, iron
+  - anchor: candlestick-telephone
+    apply: prompt
+    iteration: 3
+    problem: "the mouthpiece at the top is cropped off (cropping)"
+    prompt: >-
+      Replace the previous object completely with an early upright candlestick desk telephone, the whole telephone
+      from its round base to the cone mouthpiece on top, the separate cone earpiece hanging on its side hook. Show
+      the whole new object fully in frame and centered with space around it, nothing cropped, resting directly on
+      the dark surface with no base, stand or plinth under it, no numbers or lettering. Keep only the lighting,
+      colour grade and dark background. Dominant shapes: column, cone; materials: bakelite, nickel
+  - anchor: stepping-switch-bank
+    apply: prompt
+    iteration: 3
+    problem: "a cropped close-up of wiper arms (cropping)"
+    prompt: >-
+      Replace the previous object completely with a small steel rack holding a row of four electromechanical
+      stepping switches, each with a wiper arm over a semicircular bank of brass contacts, the whole rack visible.
+      Show the whole new object fully in frame and centered with space around it, nothing cropped, resting directly
+      on the dark surface with no base, stand or plinth under it, no numbers or lettering. Keep only the lighting,
+      colour grade and dark background. Dominant shapes: semicircles, arms, racks; materials: steel, brass
+  - anchor: variable-tuning-capacitor
+    apply: fresh
+    iteration: 3
+    problem: "two separate plate stacks facing each other instead of meshed plates (subject)"
+    prompt: >-
+      an air variable tuning capacitor: one set of semicircular aluminium plates on a brass shaft half rotated into
+      and meshed between a second fixed set of plates, in a small open metal frame, whole object centered; dominant
+      shapes: semicircular plates, shaft; materials: aluminium, brass
+  - anchor: crystal-radio-set
+    apply: fresh
+    iteration: 3
+    problem: "a tiny cat's head drawn on the probe wire (the phrase cat's-whisker taken literally)"
+    prompt: >-
+      a 1920s crystal radio set on a small wooden board: a coil of enamelled copper wire wound on a cardboard tube,
+      a small dark grey galena crystal in a brass cup touched by a fine springy wire probe on a brass arm, and a
+      single old black bakelite earpiece receiver on a cord beside the board; dominant shapes: coil, board;
+      materials: wood, copper wire, galena
+    style:
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "modern headphones", "padded ear cushions", "quartz crystal", "cat", "animal", "icon"]
+  - anchor: magnetic-core-plane
+    apply: prompt
+    iteration: 3
+    problem: "glowing green squares instead of tiny ferrite rings (subject)"
+    prompt: >-
+      Replace the previous object completely with a square magnetic core memory plane seen almost face-on: a flat
+      frame strung with a fine square grid of thin copper wires with one diagonal sense wire, a tiny dark grey
+      ferrite ring threaded at every crossing; the rings do not glow. Show the whole new object fully in frame and
+      centered with space around it, nothing cropped, resting directly on the dark surface with no base, stand or
+      plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
+      shapes: grid, rings, frame; materials: ferrite, copper wire
+  - anchor: magnetic-drum-memory
+    apply: prompt
+    iteration: 3
+    problem: "the drum is cropped at the left (cropping)"
+    prompt: >-
+      Replace the previous object completely with a magnetic drum memory: one large polished metal cylinder on a
+      horizontal axle with a row of small read/write heads lined up along its length, the whole drum and both axle
+      ends visible. Show the whole new object fully in frame and centered with space around it, nothing cropped,
+      resting directly on the dark surface with no base, stand or plinth under it, no numbers or lettering. Keep
+      only the lighting, colour grade and dark background. Dominant shapes: cylinder, row of heads; materials:
+      steel, magnetic coating
+  - anchor: point-contact-crystal
+    apply: prompt
+    iteration: 3
+    problem: "a gold nugget in a wedge on a big carried-over base; no germanium slab (subject, carryover)"
+    prompt: >-
+      Replace the previous object completely with a point-contact semiconductor experiment: a small flat grey
+      germanium slab on a little metal block, a clear plastic wedge pressing two thin strips of gold foil down onto
+      the slab close together. Show the whole new object fully in frame and centered with space around it, nothing
+      cropped, resting directly on the dark surface with no base, stand or plinth under it, no numbers or lettering.
+      Keep only the lighting, colour grade and dark background. Dominant shapes: wedge, slab, points; materials:
+      germanium, gold foil, plastic
+  - anchor: metal-can-transistor
+    apply: prompt
+    iteration: 3
+    problem: "a stray metal tab on top, cropped, on the carried-over hexagonal base (carryover, cropping)"
+    prompt: >-
+      Replace the previous object completely with a single small metal-can transistor: a short shiny cylindrical can
+      with three thin wire leads spreading out from its bottom. Show the whole new object fully in frame and
+      centered with space around it, nothing cropped, resting directly on the dark surface with no base, stand or
+      plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
+      shapes: cylinder, three leads; materials: steel, glass, kovar
+  - anchor: transistor-radio-board
+    apply: prompt
+    iteration: 3
+    problem: "the board stands on the carried-over hexagonal base (carryover)"
+    prompt: >-
+      Replace the previous object completely with a small hand-wired pocket transistor radio circuit board with a
+      few transistors, a black ferrite rod antenna and a plain unmarked tuning knob. Show the whole new object fully
+      in frame and centered with space around it, nothing cropped, resting directly on the dark surface with no
+      base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark
+      background. Dominant shapes: board, rod, dial; materials: phenolic board, ferrite, copper
