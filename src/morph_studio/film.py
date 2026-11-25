@@ -156,6 +156,10 @@ def apply_anchor_fixes(data: dict, fixes: list[dict]) -> list[str]:
             raise FilmError(f"anchor fix names unknown anchor {f.get('anchor')!r}")
         if f.get("prompt"):  # Claude-drafted revised prompt (with fresh, prompt, or alone)
             a["prompt"] = " ".join(str(f["prompt"]).split())
+        if f.get("seed") is not None:  # a detail that survives several prompt fixes is tied to the seed
+            if not isinstance(f["seed"], int) or isinstance(f["seed"], bool) or f["seed"] < 0:
+                raise FilmError(f"{a['id']}: seed must be a non-negative integer")
+            a["seed"] = f["seed"]
         if f.get("style"):  # per-anchor style-pack overrides (e.g. a natural scene instead of a studio artifact)
             if not isinstance(f["style"], dict):
                 raise FilmError(f"{a['id']}: style override must be a mapping")
@@ -167,12 +171,15 @@ def apply_anchor_fixes(data: dict, fixes: list[dict]) -> list[str]:
         elif how == "prompt":
             if not f.get("prompt"):
                 raise FilmError(f"{a['id']}: apply 'prompt' needs a prompt")
+        elif how == "adjust":  # keep the method and prompt; change only the seed and/or style
+            if f.get("seed") is None and not f.get("style"):
+                raise FilmError(f"{a['id']}: apply 'adjust' needs a seed or a style")
         elif how == "instruction":
             if a.get("generation") != "reference_edit":
                 raise FilmError(f"{a['id']} is not a reference edit; an edit instruction does not apply")
             a["prompt"] = " ".join(str(f["instruction"]).split())
         else:
-            raise FilmError(f"anchor fix apply must be 'fresh', 'prompt' or 'instruction', not {how!r}")
+            raise FilmError(f"anchor fix apply must be 'fresh', 'prompt', 'adjust' or 'instruction', not {how!r}")
         applied.append(f"{a['id']}={how}")
     return applied
 

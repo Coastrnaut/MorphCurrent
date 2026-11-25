@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -27,6 +27,58 @@ anchors:
     shapes: broad flat cloud top, wide column of rain; materials: water vapour, ice'
   chapter: spark
   generation: text_to_image
+  style_override:
+    palette:
+    - polished copper
+    - hot amber
+    - deep black
+    lighting: warm amber rim light with a faint electric glow
+    description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
+      no man-made objects, no pedestal, no stand, no frame, no studio props
+    composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the
+      colour of the light, never as objects
+    lens: wide-angle landscape lens, deep focus
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - pedestal
+    - plinth
+    - stand
+    - display case
+    - frame
+    - anvil
+    - man-made objects
+    - aquarium
+    - glass tank
+    - pottery
+    - vase
+    - container
+    - box
+    - glass
+    - metal object
+    - copper object
+    - cylinder
+    - platform
+    - cube
+    - crate
+    - building
+  seed: 271828
+- id: forked-lightning-bolt
+  prompt: 'a single bright forked lightning bolt splitting into many thin branching channels from the clouds down to the bare
+    open ground of an empty plain against a black night sky, nothing at the strike point; dominant shapes: branching line,
+    fork; materials: plasma, air'
+  chapter: spark
+  generation: independent_t2i
+  reference: storm-cell-over-plain
   style_override:
     palette:
     - polished copper
@@ -68,26 +120,6 @@ anchors:
     - copper object
     - cylinder
     - platform
-- id: forked-lightning-bolt
-  prompt: 'a single bright forked lightning bolt splitting into many thin branching channels from the clouds down to the bare
-    open ground of an empty plain against a black night sky, nothing at the strike point; dominant shapes: branching line,
-    fork; materials: plasma, air'
-  chapter: spark
-  generation: independent_t2i
-  reference: storm-cell-over-plain
-  style_override:
-    palette:
-    - polished copper
-    - hot amber
-    - deep black
-    lighting: warm amber rim light with a faint electric glow
-    description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
-      no man-made objects, no pedestal, no stand, no frame, no studio props
-    composition: phenomenon centered and filling the frame, wide view, nothing cropped
-    materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the
-      colour of the light, never as objects
-    lens: wide-angle landscape lens, deep focus
-    negative: *id001
 - id: fulgurite-glass-tube
   prompt: 'Replace the forked lightning bolt completely with fulgurite: lightning-fused sand tube: a hollow, rough, root-like
     tube of glassy fused sand with a crusted exterior. Remove every part of the previous object and its setting that does
@@ -117,9 +149,9 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: rubbed-amber-and-fur
-  prompt: 'a single honey-coloured polished amber rod held diagonally, a small tuft of brown fur touching its middle, tiny
-    fibres and dust specks jumping up toward the rod; nothing attached to the ends of the rod, no spheres, no metal; dominant
-    shapes: rod, fibres; materials: amber, fur'
+  prompt: 'a single bare honey-coloured polished amber rod, both ends plain rounded amber, held diagonally, a small tuft of
+    brown fur touching its middle, tiny fibres and dust specks jumping toward the rod; dominant shapes: rod, fibres; materials:
+    amber, fur'
   chapter: spark
   generation: independent_t2i
   reference: spark-between-spheres
@@ -145,6 +177,9 @@ anchors:
     - metal end caps
     - knobs
     - handle
+    - copper
+    - metal
+  seed: 314159
 - id: mast-tip-corona
   prompt: 'the top of a tall wooden ship''s mast at night in a storm, its pointed tip crowned by a pale blue-violet corona
     glow with fine discharge streamers; dominant shapes: spike, halo; materials: wood, ionized air'
@@ -214,8 +249,8 @@ anchors:
     - frame
     - man-made objects
 - id: charged-dust-cloud
-  prompt: 'glittering dust motes floating and drifting in soft swirls inside a single diagonal sunbeam crossing an empty dark
-    room with bare walls, no lightning, no sparks, no furniture; dominant shapes: points, swirls; materials: dust, light'
+  prompt: 'glittering dust motes floating in soft swirls inside one diagonal sunbeam that crosses an empty dark room with
+    bare walls; the light is calm and still; dominant shapes: points, swirls; materials: dust, light'
   chapter: spark
   generation: independent_t2i
   reference: electric-eel-silhouette
@@ -231,7 +266,43 @@ anchors:
     materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the
       colour of the light, never as objects
     lens: wide-angle landscape lens, deep focus
-    negative: *id001
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - pedestal
+    - plinth
+    - stand
+    - display case
+    - frame
+    - anvil
+    - man-made objects
+    - aquarium
+    - glass tank
+    - pottery
+    - vase
+    - container
+    - box
+    - glass
+    - metal object
+    - copper object
+    - cylinder
+    - platform
+    - lightning
+    - electric arc
+    - spark
+    - bolt
+    - tripod
+    - lamp
+    - light stand
+  seed: 161803
 - id: glass-leyden-jar
   prompt: 'Replace the charged particles drifting in a beam of light completely with glass storage jar coated in metal foil:
     a thick glass jar wrapped inside and out with tin foil, a brass rod and chain rising from a wooden stopper. Remove every
@@ -450,11 +521,10 @@ anchors:
     composition: the stator ring centered, whole and upright, hall visible around it
     lens: 24mm wide-angle lens, deep focus
 - id: laminated-transformer-core
-  prompt: 'Replace the previous object completely with a laminated iron transformer core: stacked thin grey steel sheets forming
-    a rectangular core with two copper windings, standing on a plain dark floor. Show the whole new object fully in frame
-    and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering, no water, no basin. Keep
-    only the lighting, colour grade and dark background. Dominant shapes: rectangle, stacked sheets, coils; materials: silicon
-    steel, copper'
+  prompt: 'Replace the previous object completely with a laminated iron transformer core: a rectangular frame of stacked thin
+    grey steel sheets, with one large copper coil wound around each of its two vertical legs, standing upright. Show the whole
+    new object fully in frame and centered, nothing cropped, no numbers or lettering. Keep only the lighting, colour grade
+    and dark background. Dominant shapes: rectangle, stacked sheets, coils; materials: silicon steel, copper'
   chapter: power
   generation: reference_edit
   reference: generator-stator-hall
@@ -480,12 +550,11 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: lattice-transmission-tower
-  prompt: 'Replace the previous object completely with one whole steel lattice transmission tower from its feet on a hillside
-    to its top, arms carrying long sagging conductors on insulator strings. Show the whole new object fully in frame and centered,
-    nothing cropped, no wires or rods crossing the frame, no numbers or lettering, no water, no basin. Keep only the lighting,
-    colour grade and dark background. Dominant shapes: lattice pylon, sagging lines; materials: steel, aluminium, porcelain'
+  prompt: 'one steel lattice transmission tower standing on a dark hillside at night, seen whole from its feet to its top,
+    its arms carrying long sagging conductors on insulator strings that run off to both sides; dominant shapes: lattice pylon,
+    sagging lines; materials: steel, aluminium, porcelain'
   chapter: power
-  generation: reference_edit
+  generation: independent_t2i
   reference: finned-substation-transformer
   style_override:
     palette:
@@ -493,6 +562,9 @@ anchors:
     - brushed steel
     - deep black
     lighting: hard copper-toned rim light
+    description: Cinematic wide night photograph of a steel transmission tower on a hillside, photorealistic, crisp detail
+    composition: the whole tower from its feet to its top in the frame with sky above it, centered, nothing cropped
+    lens: 35mm lens, deep focus
 - id: telegraph-pole-line
   prompt: 'telegraph pole line along a railway: wooden poles with glass insulators carrying bare wires beside a railway track
     into the distance; dominant shapes: poles, parallel wires; materials: wood, glass, iron wire'
@@ -561,13 +633,11 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: candlestick-telephone
-  prompt: 'Replace the previous object completely with an early upright candlestick desk telephone, the whole telephone from
-    its round base to the cone mouthpiece on top, the separate cone earpiece hanging on its side hook. Show the whole new
-    object fully in frame and centered with space around it, nothing cropped, resting directly on the dark surface with no
-    base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
-    shapes: column, cone; materials: bakelite, nickel'
+  prompt: 'an early 1910s candlestick telephone: a tall thin straight black upright column on a round weighted base, a cone-shaped
+    mouthpiece fixed to the very top of the column, and a separate small cone-shaped earpiece on a cord hanging from a hook
+    on the side of the column; dominant shapes: column, cone; materials: bakelite, nickel'
   chapter: signal
-  generation: reference_edit
+  generation: independent_t2i
   reference: armoured-undersea-cable
   style_override:
     palette:
@@ -575,6 +645,25 @@ anchors:
     - phosphor green
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - handset
+    - cradle
+    - receiver on a cradle
+    - rotary dial
+    - coiled cord
+  seed: 112358
 - id: manual-switchboard
   prompt: 'Replace the upright desk telephone completely with manual telephone switchboard: a wooden switchboard panel of
     brass jacks and patch cords with indicator drops. Remove every part of the previous object and its setting that does not
@@ -605,9 +694,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: variable-tuning-capacitor
-  prompt: 'an air variable tuning capacitor: one set of semicircular aluminium plates on a brass shaft half rotated into and
-    meshed between a second fixed set of plates, in a small open metal frame, whole object centered; dominant shapes: semicircular
-    plates, shaft; materials: aluminium, brass'
+  prompt: 'an air variable tuning capacitor seen from the side: a fixed comb of thin half-moon aluminium plates, and a second
+    comb of half-moon plates on a brass shaft turned halfway into it so that the two combs interleave like fingers, every
+    second plate belonging to the moving set, in a small open metal frame; dominant shapes: interleaved half-moon plates,
+    shaft; materials: aluminium, brass'
   chapter: signal
   generation: independent_t2i
   reference: stepping-switch-bank
@@ -617,6 +707,9 @@ anchors:
     - phosphor green
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+  seed: 141421
 - id: crystal-radio-set
   prompt: 'a 1920s crystal radio set on a small wooden board: a coil of enamelled copper wire wound on a cardboard tube, a
     small dark grey galena crystal in a brass cup touched by a fine springy wire probe on a brass arm, and a single old black

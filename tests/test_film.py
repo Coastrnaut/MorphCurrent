@@ -271,3 +271,22 @@ def test_fresh_refused_on_act_root():
     d = {"anchors": [{"id": "a", "generation": "text_to_image", "prompt": "x"}]}
     with pytest.raises(fm.FilmError, match="apply: prompt"):
         fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "fresh"}])
+
+
+def test_anchor_fix_seed():
+    from morph_studio import film as fm
+    d = {"anchors": [{"id": "a", "generation": "text_to_image", "prompt": "x"}]}
+    assert fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "prompt", "prompt": "y", "seed": 4242}]) == ["a=prompt"]
+    assert d["anchors"][0]["seed"] == 4242
+    for bad in (-1, "7", True):
+        with pytest.raises(fm.FilmError, match="seed"):
+            fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "prompt", "prompt": "y", "seed": bad}])
+
+
+def test_anchor_fix_adjust():
+    from morph_studio import film as fm
+    d = {"anchors": [{"id": "a", "generation": "text_to_image", "prompt": "x"}]}
+    assert fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "adjust", "seed": 9}]) == ["a=adjust"]
+    assert d["anchors"][0] == {"id": "a", "generation": "text_to_image", "prompt": "x", "seed": 9}
+    with pytest.raises(fm.FilmError, match="adjust"):
+        fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "adjust"}])
