@@ -183,3 +183,39 @@ def test_cli(tmp_path, capsys):
     runs.mkdir()
     assert cli.main(["history-ingest", "--runs-root", str(runs), "--history", str(hist)]) == 0
     capsys.readouterr().out.encode("ascii")
+
+
+def test_produce_runs_batches_in_order(tmp_path):
+    """Owner 2026-11-24: automate rendering of every batch; one job at a time, stop at the first failure."""
+    log = tmp_path / "appr.jsonl"
+    for act in ("spark", "power"):
+        pr.approve(log, FILM, act, "test", owner="owner")
+    with pytest.raises(pr.ProductionError, match="unknown act"):
+        pr.produce(FILM, ["finale"], tmp_path / "b", approvals_log=log, history=history(tmp_path))
+    dry = pr.produce(FILM, ["power", "spark"], tmp_path / "b", approvals_log=log, history=history(tmp_path),
+                     dry_run=True)
+    assert dry["acts"] == ["spark", "power"]  # film order regardless of input order
+    assert all(Path(b).is_file() for b in dry["batches"]) and dry["ran"] == []
+    calls, codes = [], iter([0, 7, 5, 0, 0])
+
+    def runner(args):
+        calls.append(args)
+        return next(codes)
+
+    out = pr.produce(FILM, ["spark", "power"], tmp_path / "b", approvals_log=log, history=history(tmp_path),
+                     log=tmp_path / "produce.jsonl", runner=runner, python="py")
+    assert len(calls) == 3 and calls[0][1:4] == ["-m", "morph_studio.cli", "render"] and calls[0][-1] == "--confirm-gpu"
+    assert [e["status"] for e in out["ran"]] == ["complete", "awaiting_review", "failed"]
+    assert out["stopped"]["exit"] == 5 and "re-run" in out["next"]
+    assert len((tmp_path / "produce.jsonl").read_text(encoding="utf-8").splitlines()) == 3
+    with pytest.raises(pr.ProductionError, match="approved"):
+        pr.produce(FILM, ["logic"], tmp_path / "b", approvals_log=log, history=history(tmp_path), dry_run=True)
+
+
+def test_cli_film_produce_dry_run(tmp_path, capsys):
+    log = tmp_path / "appr.jsonl"
+    pr.approve(log, FILM, "spark", "test", owner="owner")
+    assert cli.main(["film-produce", "spark", "--batch-dir", str(tmp_path / "b"), "--approvals", str(log),
+                     "--dry-run"]) == 0
+    assert json.loads(capsys.readouterr().out)["acts"] == ["spark"]
+    assert cli.main(["film-produce", "nope", "--batch-dir", str(tmp_path / "b"), "--approvals", str(log)]) == 2

@@ -333,3 +333,69 @@ def status(plan: dict, runs_root: str | Path, history: list[dict]) -> dict:
             "remaining_seconds": round(remaining_s, 1), "eta_hours": round(remaining_s / 3600, 2),
             "ratios": ratios, "duplicates": duplicates,
             "ok": not duplicates and not any(r["flag"] for r in ratios)}
+
+
+# ---------------------------------------------------------------------------------------- produce
+
+RENDER_OK = {0: "complete", 7: "awaiting_review"}  # 7: rendered, waiting for review decisions (F39)
+
+
+def _film_order_acts(storyboard: str | Path) -> list[str]:
+    from .schema import load_storyboard
+    acts: list[str] = []
+    for a in load_storyboard(storyboard).anchors:
+        if a.chapter and a.chapter not in acts:
+            acts.append(a.chapter)
+    return acts
+
+
+def produce(storyboard: str | Path, acts: list[str], batch_dir: str | Path, *, approvals_log: str | Path | None = None,
+            history: str | Path = DEFAULT_HISTORY, log: str | Path | None = None, runner=None,
+            python: str | None = None, dry_run: bool = False) -> dict:
+    """Render every batch of the given acts in film order, one at a time, stopping at the first failure.
+
+    Missing batch storyboards are written first (approved acts only, F36). Each batch is rendered with
+    ``render <batch> --confirm-gpu`` in a child process (the render keeps its own idle-queue and one-job
+    rules); exit 0 or 7 (rendered, awaiting review) continues, anything else stops. Re-running resumes:
+    finished stages are cache hits. Progress is appended to a JSONL log.
+    """
+    import subprocess
+    import sys
+    from .schema import load_storyboard
+    sb_path = Path(storyboard)
+    name = load_storyboard(sb_path).name
+    order = _film_order_acts(sb_path)
+    unknown = [a for a in acts if a not in order]
+    if unknown:
+        raise ProductionError(f"unknown act(s) {unknown}; film acts are {order}")
+    acts = [a for a in order if a in acts]  # always film order
+    approvals_log = Path(approvals_log) if approvals_log else default_approvals(name)
+    out_dir = Path(batch_dir)
+    log = Path(log) if log else Path("outputs/production") / f"{name}.produce.jsonl"
+    batches: list[Path] = []
+    for act in acts:
+        existing = sorted(out_dir.glob(f"{act}-b*.yaml"))
+        if not existing:
+            existing = [Path(f) for f in write_batches(sb_path, act, out_dir, approvals_log=approvals_log,
+                                                         history=history)]
+        batches.extend(existing)
+    if dry_run:
+        return {"acts": acts, "batches": [str(b) for b in batches], "ran": [], "stopped": None, "dry_run": True}
+    run = runner or (lambda args: subprocess.run(args, shell=False, check=False).returncode)
+    exe = python or sys.executable
+    ran, stopped = [], None
+    log.parent.mkdir(parents=True, exist_ok=True)
+    for b in batches:
+        started = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        code = run([exe, "-m", "morph_studio.cli", "render", str(b), "--confirm-gpu"])
+        entry = {"t": started, "batch": str(b), "exit": code, "status": RENDER_OK.get(code, "failed"),
+                 "ended": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+        with log.open("a", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(entry) + "\n")
+        ran.append(entry)
+        if code not in RENDER_OK:
+            stopped = entry
+            break
+    return {"acts": acts, "batches": [str(b) for b in batches], "ran": ran, "stopped": stopped, "log": str(log),
+            "next": "film-review-status, then film-act-sheet <act> and review" if not stopped else
+            f"batch {stopped['batch']} exited {stopped['exit']}; fix and re-run (finished stages are cached)"}

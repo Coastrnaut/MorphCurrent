@@ -834,3 +834,14 @@ HEAD `9688be6` on `main` (pushed); suite 611 passed. Done offline with full Spec
 **Evidence.** Real film: `film-assemble` refuses with 95 blockers (every bridge missing before the pilot) in 0.45 s. Real bindings: `anchor_t2i` `912d39f3…`, `anchor_edit` `2a127143…`, `wan22_flf2v` `22a68e21…` all match their workflows' graph hashes; 10 models, all with recorded weight hashes; 4 catalogue licences still "NOT RECORDED" (owner to verify) → provenance incomplete by design until recorded. F36 estimate for the current plan 48,313.6 GPU s. `film-gates`: 1 of 10 film-track gates resolved (F38); the rest await rendering/owner review. Synthetic end-to-end (tests): 3 approved 33-frame bridges → 97-frame master (= planned), seams checked against anchor stills, delivery of `video-only-1080p`, provenance with 7 stages and measured 980 GPU s. Tests: `tests/test_film_delivery.py` 11 (converge pass 1 added preview delivery and the film-deliver failure exit; pass 2 clean); full suite 622 passed.
 
 **Owner gate (T016).** Render and approve all acts (P1 pilot running → P2 act → P3 batches), assemble with the licensed track, deliver ≥ 2 formats, record model licences, fresh-root replay of one act, then the owner approves the film (asked with choices).
+
+## Automating the 95 assembly blockers (2026-11-24)
+
+The owner asked to "automate the 95 blockers using your best judgement". The 95 blockers are the film's 95 bridges, none rendered yet; they clear only by rendering (GPU) and an approval decision per bridge (F39). Automated as far as allowed:
+
+- **`film-produce <acts|all>`** (`production.produce`): writes any missing batch storyboards for approved acts (F36) and renders them in film order with `render <batch> --confirm-gpu` in a child process, one job at a time; exit 0 or 7 (rendered, awaiting review) continues, anything else stops with a JSONL progress log (`outputs/production/<film>.produce.jsonl`); re-running resumes from cache. Claude-launched GPU runs are refused by this environment's permission check, so the owner starts it once.
+- All 12 batch storyboards now exist under `outputs/production/batches-v2/` (Spark 2, Power 2, Signal 2, Logic 3, Scale 3), covering all 96 anchors and 95 bridges.
+- After each act renders, Claude builds `film-act-sheet <act>`, inspects it, and asks the owner with choices to bulk-approve the unflagged bridges (`film-review-approve-act`) and to reject or keep flagged ones; rejections go through `film-rerender-queue --write` and `film-produce` again. When all 95 are approved, `film-assemble` clears.
+- Order kept per CLAUDE.md: P1 pilot/P2 act = `film-produce spark` (after the running `spark-b01` pilot finishes), review, then P3 `film-produce power,signal,logic,scale`.
+
+Tests: 2 new in `tests/test_production.py` (fake runner: film order, stop on failure, log; CLI dry run).

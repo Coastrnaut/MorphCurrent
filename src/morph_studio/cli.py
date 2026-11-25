@@ -1424,6 +1424,12 @@ def main(argv: list[str] | None = None) -> int:
     fcm.add_argument("--a", default=None, help="Version hash prefix (default: second-to-last)")
     fcm.add_argument("--b", default=None, help="Version hash prefix (default: last)")
     fcm.add_argument("--out", default=None)
+    fpr = subs.add_parser("film-produce", help="Render every batch of the given acts in order, one GPU job at a time")
+    fpr.add_argument("acts", help="Comma-separated acts, or 'all'")
+    fpr.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
+    fpr.add_argument("--batch-dir", default="outputs/production/batches-v2")
+    fpr.add_argument("--approvals", default=None)
+    fpr.add_argument("--dry-run", action="store_true", help="Write/list the batches without rendering")
     fas = subs.add_parser("film-assemble", help="Join the film from owner-approved versions; full-song check (F40)")
     _film_common(fas)
     fas.add_argument("--preview", action="store_true", help="Use latest versions; output labelled PREVIEW")
@@ -1742,6 +1748,17 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command == "film-produce":
+            from . import production as pr
+            acts = pr._film_order_acts(args.storyboard) if args.acts == "all" else [a.strip() for a in args.acts.split(",")]
+            try:
+                out = pr.produce(args.storyboard, acts, args.batch_dir, approvals_log=args.approvals,
+                                 dry_run=args.dry_run)
+            except (pr.ProductionError, FileExistsError) as exc:
+                print(f"REFUSED: {exc}", file=sys.stderr)
+                return 2
+            print(json.dumps(out, indent=2, ensure_ascii=True))
+            return 1 if out["stopped"] else 0
         elif args.command in ("film-assemble", "film-deliver", "film-provenance", "film-gates"):
             return _film_delivery(args)
         elif args.command.startswith("film-review") or args.command in ("film-rerender-queue", "film-act-sheet",
