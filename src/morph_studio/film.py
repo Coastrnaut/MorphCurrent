@@ -145,6 +145,10 @@ def apply_anchor_fixes(data: dict, fixes: list[dict]) -> list[str]:
             raise FilmError(f"anchor fix names unknown anchor {f.get('anchor')!r}")
         if f.get("prompt"):  # Claude-drafted revised prompt (with fresh, prompt, or alone)
             a["prompt"] = " ".join(str(f["prompt"]).split())
+        if f.get("style"):  # per-anchor style-pack overrides (e.g. a natural scene instead of a studio artifact)
+            if not isinstance(f["style"], dict):
+                raise FilmError(f"{a['id']}: style override must be a mapping")
+            a["style_override"] = {**(a.get("style_override") or {}), **f["style"]}
         if how == "fresh":
             a["generation"] = "independent_t2i"
         elif how == "prompt":

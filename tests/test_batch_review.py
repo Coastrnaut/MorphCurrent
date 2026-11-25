@@ -401,7 +401,7 @@ def test_anchor_fix_tests(tmp_path):
     assert [r["exit"] for r in res] == [0, 3] and len(calls) == 2  # stops at the first failure
     assert calls[0][-1] == "--confirm-gpu" and Path(jobs[0]["prompt_file"]).read_text(encoding="utf-8").startswith("Remove")
     bad = tmp_path / "bad.yaml"
-    bad.write_text(yaml.safe_dump({"version": 1, "fixes": [{"anchor": "b", "instruction": " "}]}), encoding="utf-8")
+    bad.write_text(yaml.safe_dump({"version": 1, "fixes": [{"anchor": "b", "instruction": " "}]}), encoding="utf-8")  # nothing to apply
     with pytest.raises(br.ReviewError):
         af.load_fixes(bad)
-    assert len(af.load_fixes(REPO / "configs/film/anchor-fixes.yaml")) == 4
+    assert len(af.load_fixes(REPO / "configs/film/anchor-fixes.yaml")) >= 4

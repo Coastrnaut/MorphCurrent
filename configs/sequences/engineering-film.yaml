@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, aurora-curtain=fresh, charged-dust-cloud=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -22,8 +22,9 @@ audio:
   synchronization: none
 anchors:
 - id: storm-cell-over-plain
-  prompt: 'towering thunderstorm cell over a dark plain: an anvil-topped cumulonimbus cloud lit from within by flickering
-    charge, rain curtains below; dominant shapes: anvil, column; materials: water vapour, ice'
+  prompt: 'towering anvil-topped cumulonimbus thunderstorm cell floating high above a dark flat plain at night, lit from within
+    by flickering lightning, grey rain curtains falling to the ground below; dominant shapes: anvil, column; materials: water
+    vapour, ice'
   chapter: spark
   generation: text_to_image
   style_override:
@@ -32,9 +33,12 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
+    description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
+      no man-made objects, no pedestal, no stand, no frame, no studio props
+    composition: phenomenon centered and filling the frame, wide view, nothing cropped
 - id: forked-lightning-bolt
-  prompt: 'forked lightning bolt: a bright branching discharge channel splitting into many forks against a night sky; dominant
-    shapes: branching line, fork; materials: plasma, air'
+  prompt: 'a single bright forked lightning bolt splitting into many thin branching channels from the top of the frame down
+    to the horizon against a black night sky; dominant shapes: branching line, fork; materials: plasma, air'
   chapter: spark
   generation: independent_t2i
   reference: storm-cell-over-plain
@@ -44,6 +48,9 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
+    description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
+      no man-made objects, no pedestal, no stand, no frame, no studio props
+    composition: phenomenon centered and filling the frame, wide view, nothing cropped
 - id: fulgurite-glass-tube
   prompt: 'fulgurite: lightning-fused sand tube: a hollow, rough, root-like tube of glassy fused sand with a crusted exterior;
     dominant shapes: hollow tube, roots; materials: fused silica, sand'
@@ -81,10 +88,10 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: mast-tip-corona
-  prompt: 'corona glow on a ship''s mast tip: a pale blue-violet corona glow crowning the top of a wooden mast in a storm;
-    dominant shapes: spike, halo; materials: wood, ionized air'
+  prompt: 'the top of a tall wooden ship''s mast at night in a storm, its pointed tip crowned by a pale blue-violet corona
+    glow with fine discharge streamers; dominant shapes: spike, halo; materials: wood, ionized air'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: rubbed-amber-and-fur
   style_override:
     palette:
@@ -92,9 +99,12 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
+    description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
+      no man-made objects, no pedestal, no stand, no frame, no studio props
+    composition: phenomenon centered and filling the frame, wide view, nothing cropped
 - id: aurora-curtain
-  prompt: 'aurora curtain over snow: rippling green and violet light curtains folding across a polar night sky; dominant shapes:
-    curtain, ribbon; materials: ionized gas'
+  prompt: 'rippling green and violet aurora curtains folding across a polar night sky above a snowy plain, wide landscape
+    view; dominant shapes: curtain, ribbon; materials: ionized gas'
   chapter: spark
   generation: independent_t2i
   reference: mast-tip-corona
@@ -104,11 +114,14 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
+    description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
+      no man-made objects, no pedestal, no stand, no frame, no studio props
+    composition: phenomenon centered and filling the frame, wide view, nothing cropped
 - id: electric-eel-silhouette
-  prompt: 'electric fish in dark water: a long dark eel-like fish with faint stacked electrocyte bands glowing along its body;
-    dominant shapes: elongated body, stacked bands; materials: water, living tissue'
+  prompt: 'a long dark eel-like electric fish swimming through dark murky water, faint stacked electrocyte bands glowing softly
+    along its whole body, side view; dominant shapes: elongated body, stacked bands; materials: water, living tissue'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: aurora-curtain
   style_override:
     palette:
@@ -116,9 +129,12 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
+    description: Cinematic underwater photograph of a living animal in dark water, photorealistic, crisp detail, no man-made
+      objects, no frame, no aquarium glass
+    composition: whole animal in frame, centered, side view, nothing cropped
 - id: charged-dust-cloud
-  prompt: 'charged particles drifting in a beam of light: glittering dust motes drifting and clustering along invisible field
-    lines in a sunbeam; dominant shapes: points, field lines; materials: dust, light'
+  prompt: 'glittering dust motes drifting and clustering along curved invisible field lines inside a diagonal sunbeam crossing
+    a dark room; dominant shapes: points, field lines; materials: dust, light'
   chapter: spark
   generation: independent_t2i
   reference: electric-eel-silhouette
@@ -128,6 +144,9 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
+    description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
+      no man-made objects, no pedestal, no stand, no frame, no studio props
+    composition: phenomenon centered and filling the frame, wide view, nothing cropped
 - id: glass-leyden-jar
   prompt: 'glass storage jar coated in metal foil: a thick glass jar wrapped inside and out with tin foil, a brass rod and
     chain rising from a wooden stopper; dominant shapes: cylinder, rod; materials: glass, tin foil, brass'
@@ -165,10 +184,11 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: crown-of-cups
-  prompt: 'crown of cups battery: a ring of glass cups filled with brine, each bridged to the next by bent zinc-copper strips;
-    dominant shapes: ring, arches; materials: glass, zinc, copper, brine'
+  prompt: 'crown of cups battery: a ring of eight small glass cups filled with brine standing in a circle, each cup bridged
+    to the next by an arched strip of zinc joined to copper; dominant shapes: ring, arches; materials: glass, zinc, copper,
+    brine'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: voltaic-pile-column
   style_override:
     palette:
@@ -212,10 +232,11 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: rolled-paper-capacitor
-  prompt: 'rolled foil and paper capacitor: two long strips of metal foil and waxed paper rolled tightly into a cylinder with
-    wire leads; dominant shapes: spiral, cylinder; materials: aluminium foil, waxed paper'
+  prompt: 'a single rolled foil and paper capacitor: two long strips of metal foil and waxed paper rolled tightly into a cylinder,
+    partly unrolled to show the spiral layers, two thin wire leads at the ends; dominant shapes: spiral, cylinder; materials:
+    aluminium foil, waxed paper'
   chapter: power
-  generation: reference_edit
+  generation: independent_t2i
   reference: lead-acid-accumulator
   style_override:
     palette:
@@ -224,10 +245,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: glass-plate-condenser-stack
-  prompt: 'stack of glass plates with foil: a block of square glass plates interleaved with foil sheets clamped in a wooden
-    frame; dominant shapes: stacked plates, block; materials: glass, foil, wood'
+  prompt: 'a block of square glass plates interleaved with thin foil sheets, stacked and clamped in a simple wooden frame
+    with brass screws; dominant shapes: stacked plates, block; materials: glass, foil, wood'
   chapter: power
-  generation: reference_edit
+  generation: independent_t2i
   reference: rolled-paper-capacitor
   style_override:
     palette:

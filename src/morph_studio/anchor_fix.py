@@ -25,8 +25,8 @@ def load_fixes(path: str | Path = DEFAULT_FIXES) -> list[dict]:
         raise ReviewError("anchor fixes need version: 1")
     fixes = data.get("fixes") or []
     for f in fixes:
-        if not f.get("anchor") or not str(f.get("instruction") or "").strip():
-            raise ReviewError(f"each fix needs an anchor and an instruction: {f!r}")
+        if not f.get("anchor") or not any(str(f.get(k) or "").strip() for k in ("instruction", "prompt", "apply")):
+            raise ReviewError(f"each fix needs an anchor and an instruction, prompt or apply: {f!r}")
     return fixes
 
 
@@ -47,7 +47,7 @@ def plan_tests(storyboard: str | Path, fixes: list[dict], out_dir: str | Path, *
                   "--negative", t["negative_prompt"] or ""]
         parent = current.get(f"anchor:{t.get('reference')}")
         parent_img = parent["versions"][-1]["media"] if parent and parent["versions"] else None
-        if t.get("method") == "reference_edit":
+        if t.get("method") == "reference_edit" and str(f.get("instruction") or "").strip():
             if not parent_img or not Path(parent_img).is_file():
                 raise ReviewError(f"parent image of {f['anchor']} ({t.get('reference')}) is not rendered yet")
             jobs.append({"anchor": f["anchor"], "variant": "A-instruction", "prompt": f["instruction"].strip(),
