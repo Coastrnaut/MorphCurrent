@@ -252,3 +252,15 @@ def test_anchor_fixes_applied(tmp_path):
         with pytest.raises(fm.FilmError):
             fm.apply_anchor_fixes(d, [bad])
     assert fm.apply_anchor_fixes(d, [{"anchor": "b", "instruction": "x"}]) == []  # no pick, no change
+
+
+def test_anchor_fix_prompt_kind():
+    from morph_studio import film as fm
+    d = {"anchors": [{"id": "a", "generation": "text_to_image", "prompt": "x"},
+                     {"id": "b", "generation": "reference_edit", "reference": "a", "prompt": "y"}]}
+    assert fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "prompt", "prompt": "new  a"},
+                                     {"anchor": "b", "apply": "fresh", "prompt": "fresh b"}]) == ["a=prompt", "b=fresh"]
+    assert d["anchors"][0]["prompt"] == "new a" and d["anchors"][1] == {
+        "id": "b", "generation": "independent_t2i", "reference": "a", "prompt": "fresh b"}
+    with pytest.raises(fm.FilmError, match="needs a prompt"):
+        fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "prompt"}])

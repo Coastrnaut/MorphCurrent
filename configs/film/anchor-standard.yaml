@@ -1,0 +1,19 @@
+# Pass standard for film anchors (owner instruction 2026-11-24: Claude judges and iterates the anchors
+# with best judgement until every one passes these high standards). Every check must pass.
+version: 1
+reviewer: Claude (automated visual review per owner instruction 2026-11-24)
+checks:
+  subject: The named subject is immediately recognisable and matches the concept-bank description (shapes, materials).
+  carryover: No leftover objects or shapes from the parent anchor that the subject does not call for.
+  single_subject: One clear, centred hero subject, readable at thumbnail size; no clutter or duplicate copies.
+  artefacts: No text, letters, logos or watermarks; no ghost copies, smeared or melted geometry, broken anatomy.
+  plausibility: Physically and historically plausible for its era (stylisation allowed; no wrong mechanisms).
+  look: Fits the act's palette and lighting from the visual language; dark background; consistent with neighbours.
+  morphability: Framing and scale leave room for a physical morph to the next anchor (subject not cropped, similar scale).
+verdicts:
+  pass: all checks pass
+  fix: one or more checks fail; a fix is recorded in configs/film/anchor-fixes.yaml and the anchor is re-rendered
+fixes:
+  instruction: re-edit from the parent with an explicit remove/replace instruction (keeps the edit chain)
+  fresh: independent text-to-image keyframe from the planned prompt (restarts the chain at this anchor)
+  prompt: a revised prompt (Claude-drafted) used with the anchor's method

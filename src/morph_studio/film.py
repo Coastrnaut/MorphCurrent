@@ -143,14 +143,19 @@ def apply_anchor_fixes(data: dict, fixes: list[dict]) -> list[str]:
         a = by_id.get(f.get("anchor"))
         if a is None:
             raise FilmError(f"anchor fix names unknown anchor {f.get('anchor')!r}")
+        if f.get("prompt"):  # Claude-drafted revised prompt (with fresh, prompt, or alone)
+            a["prompt"] = " ".join(str(f["prompt"]).split())
         if how == "fresh":
             a["generation"] = "independent_t2i"
+        elif how == "prompt":
+            if not f.get("prompt"):
+                raise FilmError(f"{a['id']}: apply 'prompt' needs a prompt")
         elif how == "instruction":
             if a.get("generation") != "reference_edit":
                 raise FilmError(f"{a['id']} is not a reference edit; an edit instruction does not apply")
             a["prompt"] = " ".join(str(f["instruction"]).split())
         else:
-            raise FilmError(f"anchor fix apply must be 'fresh' or 'instruction', not {how!r}")
+            raise FilmError(f"anchor fix apply must be 'fresh', 'prompt' or 'instruction', not {how!r}")
         applied.append(f"{a['id']}={how}")
     return applied
 
