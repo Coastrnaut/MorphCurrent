@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -1127,12 +1127,11 @@ anchors:
     - surface-mount chip
   seed: 20250115
 - id: early-flat-pack-ic
-  prompt: 'Replace the previous object completely with an early flat-pack integrated circuit: a tiny flat rectangular ceramic
-    package with a gold lid and flat ribbon leads sticking out on two sides. Show the whole new object fully in frame and
-    centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
-    grade and dark background. Dominant shapes: flat rectangle, ribbon leads; materials: ceramic, gold, kovar'
+  prompt: 'an early 1960s flat-pack integrated circuit: a very thin flat rectangular ceramic package with a plain gold lid,
+    lying flat, with thin flat gold ribbon leads sticking straight out sideways from both long edges like tiny ribbons, the
+    leads lying flat on the surface; dominant shapes: flat rectangle, ribbon leads; materials: ceramic, gold, kovar'
   chapter: logic
-  generation: reference_edit
+  generation: independent_t2i
   reference: logic-module-card
   style_override:
     palette:
@@ -1140,6 +1139,25 @@ anchors:
     - silicon blue
     - deep black
     lighting: crisp cool rim light
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - pins pointing down
+    - dual in-line
+    - thick package
+    - markings
+    - printed text
+  seed: 20250120
 - id: dip-chip-in-socket
   prompt: 'one 1970s black dual in-line package chip, its top blank, with two rows of straight silver through-hole pins pointing
     straight down into a matching black dual in-line socket that is soldered to a small green circuit board; dominant shapes:
@@ -1350,13 +1368,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: home-computer-motherboard
-  prompt: 'Replace the previous object completely with an early 1980s home computer motherboard: a green board with one large
-    processor chip, rows of black through-hole memory chips in sockets, a keyboard connector and expansion sockets. Show the
-    whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
-    Keep only the lighting, colour grade and dark background. Dominant shapes: board, rows of chips; materials: fibreglass,
-    epoxy, copper'
+  prompt: 'an early 1980s home computer motherboard: a green circuit board with one large processor chip in a socket, neat
+    rows of identical black through-hole DIP memory chips, a few other DIP chips, a keyboard ribbon connector and an edge
+    connector, all through-hole parts; dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper'
   chapter: logic
-  generation: reference_edit
+  generation: independent_t2i
   reference: ceramic-cpu-package
   style_override:
     palette:
@@ -1364,6 +1380,24 @@ anchors:
     - silicon blue
     - deep black
     lighting: crisp cool rim light
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - PCI slot
+    - surface-mount
+    - modern motherboard
+    - heatsink
+  seed: 20250121
 - id: memory-module-stick
   prompt: 'memory module stick: a slim green board with a row of black memory chips and a gold edge connector; dominant shapes:
     slim bar, chips, edge fingers; materials: fibreglass, epoxy, gold'
@@ -1418,12 +1452,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: hard-disk-platter
-  prompt: 'Replace the open desktop tower completely with open hard disk drive: a mirror-like spinning platter with a slender
-    actuator arm and read head hovering above it. Remove every part of the previous object and its setting that does not belong
-    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: disc, arm;
+  prompt: 'an opened hard disk drive lying flat: a mirror-polished platter on its spindle, the read arm with its head resting
+    over the platter, the whole rectangular drive body visible with space around it; dominant shapes: disc, arm, rectangle;
     materials: aluminium, glass, steel'
   chapter: scale
-  generation: reference_edit
+  generation: independent_t2i
   reference: desktop-tower-open
   style_override:
     palette:
@@ -1431,6 +1464,9 @@ anchors:
     - brushed steel
     - deep black
     lighting: cold blue rim light with subtle reflections
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+  seed: 20250122
 - id: multi-core-die
   prompt: 'a multi-core processor die seen from directly above: one rectangular silicon die divided into several identical
     core tiles arranged around a shared cache block in the middle; dominant shapes: tiles, central block; materials: silicon,
@@ -1577,12 +1613,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: interconnect-switch-board
-  prompt: 'Replace the server compute tray completely with high-speed interconnect switch: a board dense with cable ports
-    and a switch chip, bundles of fibre cables plugged in. Remove every part of the previous object and its setting that does
-    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    port rows, cable bundles; materials: copper, fibre optic, steel'
+  prompt: 'a network switch circuit board seen at an angle: a large switch chip in the middle with orange cables fanning out
+    to two rows of network ports along the front edge, the whole board visible with space around it; dominant shapes: board,
+    port rows, fanning cables; materials: fibreglass, copper, plastic'
   chapter: scale
-  generation: reference_edit
+  generation: independent_t2i
   reference: compute-tray
   style_override:
     palette:
@@ -1590,6 +1625,9 @@ anchors:
     - brushed steel
     - deep black
     lighting: cold blue rim light with subtle reflections
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+  seed: 20250123
 - id: server-rack-front
   prompt: 'Replace the previous object completely with one whole tall server rack seen from the front, its doors open, rows
     of servers with small blue status lights and neatly bundled cables, the entire rack from its top to its feet on the floor
@@ -1647,13 +1685,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: liquid-cooling-manifold
-  prompt: 'Replace the previous object completely with a liquid cooling manifold on the back of a server rack: straight vertical
-    colour-coded blue and red pipes with rows of quick-connect fittings and clear sections showing coolant. Show the whole
-    new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
-    Keep only the lighting, colour grade and dark background. Dominant shapes: pipes, manifold; materials: copper, stainless
-    steel, coolant'
+  prompt: 'a short liquid cooling manifold unit: a rectangular block of straight vertical colour-coded blue and red pipes
+    with rows of quick-connect fittings and clear sections showing coolant, the whole unit from top to bottom with space around
+    it; dominant shapes: pipes, manifold; materials: copper, stainless steel, coolant'
   chapter: scale
-  generation: reference_edit
+  generation: independent_t2i
   reference: fibre-optic-bundle
   style_override:
     palette:
@@ -1661,6 +1697,9 @@ anchors:
     - brushed steel
     - deep black
     lighting: cold blue rim light with subtle reflections
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+  seed: 20250124
 - id: cooling-towers-exterior
   prompt: 'Replace the liquid cooling manifold completely with cooling units on a data-center roof: rows of large fans and
     cooling units on a flat roof, vapour drifting into the sky. Remove every part of the previous object and its setting that

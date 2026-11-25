@@ -1172,3 +1172,67 @@ fixes:
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
       negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "two chips", "markings", "printed numbers", "gull-wing leads", "surface-mount"]
+  # --- iteration 7r (owner-requested recheck of all 96 final anchors, 2026-11-25) --------------------------
+  # 91 pass on recheck. Minor notes that do not fail the standard: spark-between-spheres stands run off the bottom
+  # edge (the spheres are whole); two battery jars are solid copper; voltaic-pile discs read copper/cloth.
+  # Fail on recheck (5): early-flat-pack-ic and home-computer-motherboard (subject/era), hard-disk-platter,
+  # interconnect-switch-board and liquid-cooling-manifold (cropped).
+  - anchor: early-flat-pack-ic
+    apply: fresh
+    iteration: 7
+    problem: "(recheck) a thick ceramic package with pins pointing down, i.e. a DIP like #59, with faint marking on the lid (subject, text)"
+    seed: 20250120
+    prompt: >-
+      an early 1960s flat-pack integrated circuit: a very thin flat rectangular ceramic package with a plain gold
+      lid, lying flat, with thin flat gold ribbon leads sticking straight out sideways from both long edges like
+      tiny ribbons, the leads lying flat on the surface; dominant shapes: flat rectangle, ribbon leads; materials:
+      ceramic, gold, kovar
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "pins pointing down", "dual in-line", "thick package", "markings", "printed text"]
+  - anchor: home-computer-motherboard
+    apply: fresh
+    iteration: 7
+    problem: "(recheck) modern slots and surface-mount chips, not an early-1980s board (plausibility, era)"
+    seed: 20250121
+    prompt: >-
+      an early 1980s home computer motherboard: a green circuit board with one large processor chip in a socket,
+      neat rows of identical black through-hole DIP memory chips, a few other DIP chips, a keyboard ribbon connector
+      and an edge connector, all through-hole parts; dominant shapes: board, rows of chips; materials: fibreglass,
+      epoxy, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "PCI slot", "surface-mount", "modern motherboard", "heatsink"]
+  - anchor: hard-disk-platter
+    apply: fresh
+    iteration: 7
+    problem: "(recheck) the drive runs off the left and bottom edges (cropping)"
+    seed: 20250122
+    prompt: >-
+      an opened hard disk drive lying flat: a mirror-polished platter on its spindle, the read arm with its head
+      resting over the platter, the whole rectangular drive body visible with space around it; dominant shapes:
+      disc, arm, rectangle; materials: aluminium, glass, steel
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: interconnect-switch-board
+    apply: fresh
+    iteration: 7
+    problem: "(recheck) the board runs off both sides of the frame (cropping)"
+    seed: 20250123
+    prompt: >-
+      a network switch circuit board seen at an angle: a large switch chip in the middle with orange cables fanning
+      out to two rows of network ports along the front edge, the whole board visible with space around it; dominant
+      shapes: board, port rows, fanning cables; materials: fibreglass, copper, plastic
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: liquid-cooling-manifold
+    apply: fresh
+    iteration: 7
+    problem: "(recheck) the pipes run off the bottom of the frame (cropping)"
+    seed: 20250124
+    prompt: >-
+      a short liquid cooling manifold unit: a rectangular block of straight vertical colour-coded blue and red pipes
+      with rows of quick-connect fittings and clear sections showing coolant, the whole unit from top to bottom with
+      space around it; dominant shapes: pipes, manifold; materials: copper, stainless steel, coolant
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
