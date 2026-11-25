@@ -145,3 +145,92 @@ fixes:
       hand-cranked friction generator: a large glass globe on a horizontal axle turned by a brass crank, a
       leather pad rubbing the globe and a metal comb collecting charge, all on a plain dark wooden base;
       dominant shapes: sphere, axle, crank; materials: glass, leather, brass
+  # --- iteration 2b (#20-#43 judged; replace instructions removed the carryover) ---------------------------
+  # Pass: brass-telegraph-key, armoured-undersea-cable, manual-switchboard, glowing-vacuum-tube,
+  # tube-amplifier-chassis, tube-flip-flop-panel, mercury-delay-line; Power steam-engine-flywheel and
+  # belt-driven-dynamo read well but re-render (the friction machine root changes) and are judged again.
+  # Power notes for the next pass: disc dynamo and transformer core cropped; coil generator kept a copper slab.
+  - anchor: water-turbine-runner
+    apply: prompt
+    iteration: 2
+    problem: two identical runners side by side (duplicate copy)
+    prompt: >-
+      Replace the previous object completely with one single bronze water turbine runner: a ring of curved
+      buckets around a hub, water spraying across it inside a round concrete pit; exactly one runner, whole and
+      centered. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: radial
+      blades, ring; materials: bronze, water, concrete
+  - anchor: generator-stator-hall
+    apply: prompt
+    iteration: 2
+    problem: a cog-like wheel standing in the turbine's water basin; no stator, no hall (subject, carryover)
+    prompt: >-
+      Replace the previous object and the water basin completely with a giant generator stator: a huge circular
+      steel stator ring lined with hundreds of copper bars, standing in a vast dim turbine hall with an overhead
+      crane girder, seen whole from the front. Keep only the lighting and colour grade. Dominant shapes: ring,
+      radial bars; materials: copper, steel
+  - anchor: telegraph-sounder
+    apply: prompt
+    iteration: 2
+    problem: two coils only; the brass armature lever and its stop are missing (subject)
+    prompt: >-
+      Replace the previous object completely with a telegraph sounder on a small wooden base: a pair of upright
+      copper-wound electromagnet coils with a horizontal brass armature lever pivoted above them, the lever's
+      free end resting against an adjustable brass stop. Keep only the lighting, colour grade, camera angle and
+      dark background. Dominant shapes: paired coils, bar; materials: copper wire, brass, iron
+  - anchor: paper-tape-register
+    apply: prompt
+    iteration: 2
+    problem: two reels with glowing tape; no clockwork or embossing stylus (subject)
+    prompt: >-
+      Replace the previous object completely with a paper-tape telegraph register: a brass clockwork mechanism
+      with visible gears pulling a narrow white paper strip from a reel under a small embossing stylus driven by
+      an electromagnet coil. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+      shapes: strip, gears; materials: paper, brass
+  - anchor: candlestick-telephone
+    apply: prompt
+    iteration: 2
+    problem: a later handset phone with a coiled cord, not an upright candlestick telephone (plausibility)
+    prompt: >-
+      Replace the previous object completely with an early upright candlestick desk telephone: a tall slim black
+      column on a round base with a cone-shaped mouthpiece on top and a separate cone earpiece hanging on a hook
+      on the side, a straight cloth-covered cord; no handset, no coiled cord. Keep only the lighting, colour
+      grade, camera angle and dark background. Dominant shapes: column, cone; materials: bakelite, nickel
+  - anchor: stepping-switch-bank
+    apply: prompt
+    iteration: 2
+    problem: a field of glowing green blobs and bars; no recognisable stepping switches (subject, artefacts)
+    prompt: >-
+      Replace the previous object completely with a steel rack of automatic electromechanical stepping switches:
+      several identical switches in a row, each with a wiper arm sweeping across a semicircular bank of brass
+      contacts, coils and ratchets visible. Keep only the lighting, colour grade, camera angle and dark
+      background. Dominant shapes: semicircles, arms, racks; materials: steel, brass
+  - anchor: variable-tuning-capacitor
+    apply: fresh
+    iteration: 2
+    problem: a shaft with plates in front of the previous green blob field, cropped (carryover, cropping)
+    prompt: >-
+      an air variable tuning capacitor: two sets of interleaved semicircular aluminium plates on a brass shaft,
+      one set half rotated between the other, mounted in a small frame, whole object centered; dominant shapes:
+      semicircular plates, shaft; materials: aluminium, brass
+  - anchor: crystal-radio-set
+    apply: fresh
+    iteration: 2
+    problem: (it 1 and 2) modern padded headphones; the crystal is a quartz point, not galena (plausibility)
+    prompt: >-
+      a 1920s crystal radio set on a small wooden board: a coil of enamelled copper wire wound on a cardboard
+      tube, a small dark grey galena crystal in a brass cup touched by a fine cat's-whisker wire, and a single
+      old black bakelite earpiece receiver on a cord beside the board; no modern headphones; dominant shapes:
+      coil, board; materials: wood, copper wire, galena
+    style:
+      negative: [text, letters, labels, logo, watermark, brand names, people, hands, cluttered background,
+                 cropped subject, modern headphones, padded ear cushions, quartz crystal]
+  - anchor: tube-computer-wall
+    apply: prompt
+    iteration: 2
+    problem: modern server racks with LEDs, not a 1940s vacuum-tube computer (plausibility)
+    prompt: >-
+      Replace the previous object completely with a 1940s room-sized vacuum tube computer: a long wall of tall
+      grey steel cabinets with open fronts packed with rows of thousands of small glowing vacuum tubes, plugboard
+      panels and thick cables looping between cabinets; no LEDs, no modern server racks. Keep only the lighting,
+      colour grade, camera angle and dark background. Dominant shapes: wall, grid of bulbs, cables; materials:
+      steel, glass, copper

@@ -132,7 +132,13 @@ def test_film_rejection_stays_in_act(film_plan):
     chapter = {a.id: a.chapter for a in sb.anchors}
     signal = [a.id for a in sb.anchors if a.chapter == "signal"]
     imp = ac.impact(film_plan, [signal[2]])
-    assert imp["invalidated_anchors"] == signal[2:]
+    gen = {a.id: a.generation for a in sb.anchors}
+    expected = [signal[2]]
+    for a in signal[3:]:  # the edit chain ends at the next fresh keyframe (anchor fixes, 2026-11-24)
+        if gen[a] != "reference_edit":
+            break
+        expected.append(a)
+    assert imp["invalidated_anchors"] == expected
     for stage in imp["invalidated_bridges"]:
         a, b = stage.split(":", 1)[1].split("->")
         assert chapter[a] == "signal" or chapter[b] == "signal"

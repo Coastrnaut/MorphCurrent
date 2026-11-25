@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt
 schema_version: 1
 name: engineering-film
 render:
@@ -386,10 +386,9 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: water-turbine-runner
-  prompt: 'Replace the steam engine with flywheel driving a generator completely with water turbine runner: a bronze turbine
-    runner with curved buckets, water spraying across it in a concrete pit. Remove every part of the previous object and its
-    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: radial blades, ring; materials: bronze, water, concrete'
+  prompt: 'Replace the previous object completely with one single bronze water turbine runner: a ring of curved buckets around
+    a hub, water spraying across it inside a round concrete pit; exactly one runner, whole and centered. Keep only the lighting,
+    colour grade, camera angle and dark background. Dominant shapes: radial blades, ring; materials: bronze, water, concrete'
   chapter: power
   generation: reference_edit
   reference: steam-engine-flywheel
@@ -400,10 +399,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: generator-stator-hall
-  prompt: 'Replace the water turbine runner completely with giant generator stator: a circular stator ring lined with copper
-    bars in a vast turbine hall, a crane overhead. Remove every part of the previous object and its setting that does not
-    belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: ring,
-    radial bars; materials: copper, steel'
+  prompt: 'Replace the previous object and the water basin completely with a giant generator stator: a huge circular steel
+    stator ring lined with hundreds of copper bars, standing in a vast dim turbine hall with an overhead crane girder, seen
+    whole from the front. Keep only the lighting and colour grade. Dominant shapes: ring, radial bars; materials: copper,
+    steel'
   chapter: power
   generation: reference_edit
   reference: water-turbine-runner
@@ -481,10 +480,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: telegraph-sounder
-  prompt: 'Replace the brass telegraph key completely with telegraph sounder: a pair of upright electromagnet coils pulling
-    a brass armature that clicks against a stop. Remove every part of the previous object and its setting that does not belong
-    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: paired coils,
-    bar; materials: copper wire, brass, iron'
+  prompt: 'Replace the previous object completely with a telegraph sounder on a small wooden base: a pair of upright copper-wound
+    electromagnet coils with a horizontal brass armature lever pivoted above them, the lever''s free end resting against an
+    adjustable brass stop. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: paired
+    coils, bar; materials: copper wire, brass, iron'
   chapter: signal
   generation: reference_edit
   reference: brass-telegraph-key
@@ -495,10 +494,9 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: paper-tape-register
-  prompt: 'Replace the telegraph sounder completely with paper-tape telegraph register: a clockwork mechanism pulling a narrow
-    paper strip under an embossing stylus driven by a coil. Remove every part of the previous object and its setting that
-    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    strip, gears; materials: paper, brass'
+  prompt: 'Replace the previous object completely with a paper-tape telegraph register: a brass clockwork mechanism with visible
+    gears pulling a narrow white paper strip from a reel under a small embossing stylus driven by an electromagnet coil. Keep
+    only the lighting, colour grade, camera angle and dark background. Dominant shapes: strip, gears; materials: paper, brass'
   chapter: signal
   generation: reference_edit
   reference: telegraph-sounder
@@ -523,9 +521,9 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: candlestick-telephone
-  prompt: 'Replace the cross-section of armoured undersea cable completely with upright desk telephone: a tall black upright
-    telephone with a mouthpiece on top and a separate earpiece on a hook. Remove every part of the previous object and its
-    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+  prompt: 'Replace the previous object completely with an early upright candlestick desk telephone: a tall slim black column
+    on a round base with a cone-shaped mouthpiece on top and a separate cone earpiece hanging on a hook on the side, a straight
+    cloth-covered cord; no handset, no coiled cord. Keep only the lighting, colour grade, camera angle and dark background.
     Dominant shapes: column, cone; materials: bakelite, nickel'
   chapter: signal
   generation: reference_edit
@@ -551,10 +549,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: stepping-switch-bank
-  prompt: 'Replace the manual telephone switchboard completely with automatic stepping switch bank: racks of electromechanical
-    stepping switches with wiper arms sweeping across semicircular contact banks. Remove every part of the previous object
-    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: semicircles, arms, racks; materials: steel, brass'
+  prompt: 'Replace the previous object completely with a steel rack of automatic electromechanical stepping switches: several
+    identical switches in a row, each with a wiper arm sweeping across a semicircular bank of brass contacts, coils and ratchets
+    visible. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: semicircles, arms, racks;
+    materials: steel, brass'
   chapter: signal
   generation: reference_edit
   reference: manual-switchboard
@@ -565,12 +563,11 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: variable-tuning-capacitor
-  prompt: 'Replace the automatic stepping switch bank completely with air variable tuning capacitor: interleaved semicircular
-    aluminium plates on a shaft, one set rotating between the other. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
-    shapes: semicircular plates, shaft; materials: aluminium, brass'
+  prompt: 'an air variable tuning capacitor: two sets of interleaved semicircular aluminium plates on a brass shaft, one set
+    half rotated between the other, mounted in a small frame, whole object centered; dominant shapes: semicircular plates,
+    shaft; materials: aluminium, brass'
   chapter: signal
-  generation: reference_edit
+  generation: independent_t2i
   reference: stepping-switch-bank
   style_override:
     palette:
@@ -579,12 +576,12 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: crystal-radio-set
-  prompt: 'Replace the previous object completely with a 1920s crystal radio set: a small wooden board holding a coil of enamelled
-    wire wound on a cardboard tube, a galena crystal in a brass cup touched by a fine cat''s-whisker wire probe, and a pair
-    of early headphones with round black bakelite earpieces on a thin steel headband. Keep only the lighting, colour grade,
-    camera angle and dark background. Dominant shapes: coil, board; materials: wood, copper wire, galena'
+  prompt: 'a 1920s crystal radio set on a small wooden board: a coil of enamelled copper wire wound on a cardboard tube, a
+    small dark grey galena crystal in a brass cup touched by a fine cat''s-whisker wire, and a single old black bakelite earpiece
+    receiver on a cord beside the board; no modern headphones; dominant shapes: coil, board; materials: wood, copper wire,
+    galena'
   chapter: signal
-  generation: reference_edit
+  generation: independent_t2i
   reference: variable-tuning-capacitor
   style_override:
     palette:
@@ -592,6 +589,20 @@ anchors:
     - phosphor green
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - modern headphones
+    - padded ear cushions
+    - quartz crystal
 - id: glowing-vacuum-tube
   prompt: 'Replace the crystal radio with cat''s whisker detector completely with glowing vacuum tube: a glass envelope with
     an orange-glowing filament, a mesh grid and a metal plate, pins in a base. Remove every part of the previous object and
@@ -635,10 +646,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: tube-computer-wall
-  prompt: 'Replace the plug-in tube logic module completely with room-sized tube computer wall: a long wall of cabinets packed
-    with thousands of glowing tubes, cables looping between panels. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
-    shapes: wall, grid of bulbs, cables; materials: steel, glass, copper'
+  prompt: 'Replace the previous object completely with a 1940s room-sized vacuum tube computer: a long wall of tall grey steel
+    cabinets with open fronts packed with rows of thousands of small glowing vacuum tubes, plugboard panels and thick cables
+    looping between cabinets; no LEDs, no modern server racks. Keep only the lighting, colour grade, camera angle and dark
+    background. Dominant shapes: wall, grid of bulbs, cables; materials: steel, glass, copper'
   chapter: signal
   generation: reference_edit
   reference: tube-flip-flop-panel

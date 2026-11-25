@@ -90,7 +90,7 @@ def apply_look(storyboard: dict, look: dict) -> dict:
 def look_check(plan: dict, storyboard, language: dict, look: str | None = None) -> dict:
     name, spec, how = choose(language, look)
     chapter = {a.id: a.chapter for a in storyboard.anchors}
-    setting_override = {a.id: bool(set(a.style_override or {}) & {"description", "composition"})
+    setting_override = {a.id: bool(set(a.style_override or {}) & {"description", "composition", "negative"})
                         for a in storyboard.anchors}
     mismatches, stages, style_by_act = [], 0, {}
     for task_id in plan["order"]:
