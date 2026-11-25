@@ -917,3 +917,7 @@ Pass 4, #60-#86 judged. **Pass (18):** bond-wire-fan, photomask-reticle, resist-
 ## Anchor review iteration 4d (2026-11-25, Claude review)
 
 Pass 4 finished (`run-f117e2161edf4feb`, anchors_complete). #87-#96: 9 pass (rack-backup-batteries fixed); server-rack-front cropped at the bottom every pass -> whole-rack prompt. Standing after pass 4: 77 of 96 anchors pass; 19 queued for pass 5 (iterations 4a-4d). Pass 5 started.
+
+## Anchor review iteration 5a (2026-11-25, Claude review)
+
+Pass 5 finished (`run-b5d34e1a331fdb9a`, anchors_complete): 36 re-rendered anchors judged, **28 pass** (storm without the box, amber rod, candlestick telephone, tube computer, mercury delay line, point-contact transistor, three-legged metal can, CPU die in its ceramic cavity, whole tower, whole rack, and the descendants). **Fix (8, fresh with new seeds):** charged-dust-cloud (faint tripod; close view of the beam only), variable-tuning-capacitor (plates still not interleaved), magnetic-core-plane and core-memory-stack (one oversized ring), discrete-component-board and logic-module-card (modern surface-mount chip; 1960s discrete parts only), dip-chip-in-socket (printed markings), silicon-interposer (cropped). Standing: 88 of 96 pass, 8 queued for pass 6. Suite green.

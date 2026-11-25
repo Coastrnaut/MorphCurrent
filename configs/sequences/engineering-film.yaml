@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -249,8 +249,8 @@ anchors:
     - frame
     - man-made objects
 - id: charged-dust-cloud
-  prompt: 'glittering dust motes floating in soft swirls inside one diagonal sunbeam that crosses an empty dark room with
-    bare walls; the light is calm and still; dominant shapes: points, swirls; materials: dust, light'
+  prompt: 'a close view inside one diagonal sunbeam: glittering dust motes floating and drifting in soft swirls, filling the
+    frame against darkness; no walls, floor or corners visible; dominant shapes: points, swirls; materials: dust, light'
   chapter: spark
   generation: independent_t2i
   reference: electric-eel-silhouette
@@ -262,7 +262,7 @@ anchors:
     lighting: warm amber rim light with a faint electric glow
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
-    composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    composition: the sunbeam and its dust filling the frame, close view, no room visible
     materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the
       colour of the light, never as objects
     lens: wide-angle landscape lens, deep focus
@@ -302,7 +302,9 @@ anchors:
     - tripod
     - lamp
     - light stand
-  seed: 161803
+    - room
+    - wall
+  seed: 20250110
 - id: glass-leyden-jar
   prompt: 'Replace the charged particles drifting in a beam of light completely with glass storage jar coated in metal foil:
     a thick glass jar wrapped inside and out with tin foil, a brass rod and chain rising from a wooden stopper. Remove every
@@ -694,10 +696,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: variable-tuning-capacitor
-  prompt: 'an air variable tuning capacitor seen from the side: a fixed comb of thin half-moon aluminium plates, and a second
-    comb of half-moon plates on a brass shaft turned halfway into it so that the two combs interleave like fingers, every
-    second plate belonging to the moving set, in a small open metal frame; dominant shapes: interleaved half-moon plates,
-    shaft; materials: aluminium, brass'
+  prompt: 'a vintage radio variable capacitor seen from above at an angle: a brass frame holding a row of fixed half-moon
+    aluminium plates, and on a central shaft a second row of half-moon plates swung halfway in between them, so each moving
+    plate sits in the gap between two fixed plates; dominant shapes: interleaved half-moon plates, shaft; materials: aluminium,
+    brass'
   chapter: signal
   generation: independent_t2i
   reference: stepping-switch-bank
@@ -709,7 +711,7 @@ anchors:
     lighting: cool steel rim light with a soft phosphor glow
     composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
       nothing cropped
-  seed: 141421
+  seed: 20250111
 - id: crystal-radio-set
   prompt: 'a 1920s crystal radio set on a small wooden board: a coil of enamelled copper wire wound on a cardboard tube, a
     small dark grey galena crystal in a brass cup touched by a fine springy wire probe on a brass arm, and a single old black
@@ -856,8 +858,8 @@ anchors:
     lighting: crisp cool rim light
 - id: magnetic-core-plane
   prompt: 'a square magnetic core memory plane seen almost face-on: a flat metal frame strung with a fine square grid of thin
-    copper wires, a tiny dark grey ferrite ring threaded at every crossing so that the grid is studded with hundreds of small
-    dark rings, one diagonal sense wire; nothing glows; dominant shapes: grid, rings, frame; materials: ferrite, copper wire'
+    copper wires, hundreds of identical tiny dark ferrite rings, all the same small size, one threaded at every crossing,
+    evenly spread over the whole grid; nothing glows; dominant shapes: grid, rings, frame; materials: ferrite, copper wire'
   chapter: logic
   generation: independent_t2i
   reference: cathode-ray-storage-tube
@@ -882,13 +884,15 @@ anchors:
     - cropped subject
     - glowing
     - LED
-    - light panel
-    - squares of light
-  seed: 20250103
+    - large ring
+    - big ring in the middle
+    - washer
+  seed: 20250112
 - id: core-memory-stack
-  prompt: 'a magnetic core memory stack: several flat square core planes, each a fine wire grid studded with tiny dark ferrite
-    rings, stacked one above another with small gaps in a metal frame with wiring along the sides; nothing glows; dominant
-    shapes: stacked planes, frame; materials: ferrite, copper wire, steel'
+  prompt: 'a magnetic core memory stack: several flat square core planes, each a fine wire grid evenly studded with hundreds
+    of identical tiny dark ferrite rings, stacked one above another with small gaps in a metal frame with wiring along the
+    sides; nothing on top of the stack; nothing glows; dominant shapes: stacked planes, frame; materials: ferrite, copper
+    wire, steel'
   chapter: logic
   generation: independent_t2i
   reference: magnetic-core-plane
@@ -913,9 +917,10 @@ anchors:
     - cropped subject
     - glowing
     - LED
-    - light panel
-    - squares of light
-  seed: 20250104
+    - large ring
+    - big ring
+    - washer
+  seed: 20250113
 - id: magnetic-drum-memory
   prompt: 'Replace the previous object completely with a magnetic drum memory: one large polished metal cylinder on a horizontal
     axle with a row of small read/write heads lined up along its length, the whole drum and both axle ends visible. Show the
@@ -1075,12 +1080,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: discrete-component-board
-  prompt: 'Replace the previous object completely with a green circuit board with rows of small transistors, striped resistors
-    and capacitors soldered to copper traces. Show the whole new object fully in frame and centered, nothing cropped, no wires
-    or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
-    shapes: rows, traces; materials: fibreglass, copper, solder'
+  prompt: 'a 1960s green circuit board populated only with discrete parts: rows of small black transistors in metal cans,
+    striped through-hole resistors and small capacitors soldered to copper traces; no integrated circuits; dominant shapes:
+    rows, traces; materials: fibreglass, copper, solder'
   chapter: logic
-  generation: reference_edit
+  generation: independent_t2i
   reference: planar-transistor-die
   style_override:
     palette:
@@ -1088,14 +1092,30 @@ anchors:
     - silicon blue
     - deep black
     lighting: crisp cool rim light
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - integrated circuit
+    - microchip
+    - QFP chip
+    - surface-mount chip
+  seed: 20250114
 - id: logic-module-card
-  prompt: 'Replace the previous object completely with a small plug-in logic card: a green circuit card with a few transistors
-    and resistors and a row of gold-plated edge-connector fingers along its bottom edge, standing upright. Show the whole
-    new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
-    Keep only the lighting, colour grade and dark background. Dominant shapes: card, edge fingers; materials: fibreglass,
-    gold, copper'
+  prompt: 'a 1960s plug-in logic card: a small green circuit card with a few metal-can transistors, striped resistors and
+    diodes, and a row of gold-plated edge-connector fingers along its bottom edge, standing upright; no integrated circuits;
+    dominant shapes: card, edge fingers; materials: fibreglass, gold, copper'
   chapter: logic
-  generation: reference_edit
+  generation: independent_t2i
   reference: discrete-component-board
   style_override:
     palette:
@@ -1103,6 +1123,24 @@ anchors:
     - silicon blue
     - deep black
     lighting: crisp cool rim light
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - integrated circuit
+    - microchip
+    - QFP chip
+    - surface-mount chip
+  seed: 20250115
 - id: early-flat-pack-ic
   prompt: 'Replace the previous object completely with an early flat-pack integrated circuit: a tiny flat rectangular ceramic
     package with a gold lid and flat ribbon leads sticking out on two sides. Show the whole new object fully in frame and
@@ -1118,8 +1156,9 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: dip-chip-in-socket
-  prompt: 'one single black dual in-line integrated circuit chip with two rows of silver pins, seated in one socket on a small
-    green circuit board; exactly one chip; dominant shapes: rectangle, two pin rows; materials: epoxy, tin-plated copper'
+  prompt: 'one single plain black dual in-line integrated circuit chip with two rows of silver pins, its top completely blank
+    and unmarked, seated in one socket on a small green circuit board; dominant shapes: rectangle, two pin rows; materials:
+    epoxy, tin-plated copper'
   chapter: logic
   generation: independent_t2i
   reference: early-flat-pack-ic
@@ -1143,8 +1182,10 @@ anchors:
     - cluttered background
     - cropped subject
     - two chips
-    - multiple chips
-  seed: 20250107
+    - markings
+    - printed numbers
+    - part number
+  seed: 20250116
 - id: bond-wire-fan
   prompt: 'Replace the dual in-line chip in a socket completely with gold bond wires fanning from a die: a magnified silicon
     die with fine gold wires arching out to a ring of lead fingers. Remove every part of the previous object and its setting
@@ -1493,11 +1534,10 @@ anchors:
     composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
       nothing cropped
 - id: silicon-interposer
-  prompt: 'Replace the previous object completely with a thin square silicon interposer plate with a dense regular grid of
-    tiny copper through-holes, lying flat, the whole plate inside the frame with dark space around it. Keep only the lighting,
-    colour grade and dark background. Dominant shapes: square plate, dot grid; materials: silicon, copper'
+  prompt: 'a thin square silicon interposer plate with a dense regular grid of tiny copper through-holes, lying flat; dominant
+    shapes: square plate, dot grid; materials: silicon, copper'
   chapter: scale
-  generation: reference_edit
+  generation: independent_t2i
   reference: stacked-memory-towers
   style_override:
     palette:
@@ -1505,6 +1545,9 @@ anchors:
     - brushed steel
     - deep black
     lighting: cold blue rim light with subtle reflections
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+  seed: 20250117
 - id: accelerator-package-lid
   prompt: 'a large square accelerator package with a polished metal lid on a green substrate covered in small capacitors,
     lying flat; dominant shapes: square, lid; materials: nickel-plated copper, organic substrate'

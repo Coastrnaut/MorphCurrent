@@ -1034,3 +1034,109 @@ fixes:
       rows of servers with small blue status lights and neatly bundled cables, the entire rack from its top to its
       feet on the floor with dark space above and below it. Keep only the lighting, colour grade and dark background.
       Dominant shapes: tall rectangle, rows; materials: steel, plastic, copper
+  # --- iteration 5a (pass 5 complete: 36 re-rendered anchors judged) -------------------------------------
+  # Pass (28): storm-cell-over-plain, rubbed-amber-and-fur, glass-leyden-jar, laminated-transformer-core,
+  # finned-substation-transformer, lattice-transmission-tower, candlestick-telephone, manual-switchboard,
+  # stepping-switch-bank, tube-computer-wall, mercury-delay-line, magnetic-drum-memory, reel-to-reel-tape-drive,
+  # point-contact-crystal, metal-can-transistor, transistor-radio-board, silicon-ingot, polished-wafer-stack,
+  # diffusion-furnace-boat, planar-transistor-die, early-flat-pack-ic, bond-wire-fan, patterned-wafer-grid,
+  # ic-die-macro, first-generation-cpu-die, ceramic-cpu-package, home-computer-motherboard, server-rack-front.
+  - anchor: charged-dust-cloud
+    apply: fresh
+    iteration: 5
+    problem: "(it 5) a faint tripod light stand at the left edge (single subject)"
+    seed: 20250110
+    prompt: >-
+      a close view inside one diagonal sunbeam: glittering dust motes floating and drifting in soft swirls, filling
+      the frame against darkness; no walls, floor or corners visible; dominant shapes: points, swirls; materials:
+      dust, light
+    style:
+      description: "Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail, no man-made objects, no pedestal, no stand, no frame, no studio props"
+      materials: "only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the colour of the light, never as objects"
+      lens: "wide-angle landscape lens, deep focus"
+      composition: "the sunbeam and its dust filling the frame, close view, no room visible"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "pedestal", "plinth", "stand", "display case", "frame", "anvil", "man-made objects", "aquarium", "glass tank", "pottery", "vase", "container", "box", "glass", "metal object", "copper object", "cylinder", "platform", "lightning", "electric arc", "spark", "bolt", "tripod", "lamp", "light stand", "room", "wall"]
+  - anchor: variable-tuning-capacitor
+    apply: fresh
+    iteration: 5
+    problem: "(it 3-5) the plates never interleave (subject)"
+    seed: 20250111
+    prompt: >-
+      a vintage radio variable capacitor seen from above at an angle: a brass frame holding a row of fixed half-moon
+      aluminium plates, and on a central shaft a second row of half-moon plates swung halfway in between them, so
+      each moving plate sits in the gap between two fixed plates; dominant shapes: interleaved half-moon plates,
+      shaft; materials: aluminium, brass
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: magnetic-core-plane
+    apply: fresh
+    iteration: 5
+    problem: "(it 5) one oversized ring in the middle of the plane (subject)"
+    seed: 20250112
+    prompt: >-
+      a square magnetic core memory plane seen almost face-on: a flat metal frame strung with a fine square grid of
+      thin copper wires, hundreds of identical tiny dark ferrite rings, all the same small size, one threaded at
+      every crossing, evenly spread over the whole grid; nothing glows; dominant shapes: grid, rings, frame;
+      materials: ferrite, copper wire
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "glowing", "LED", "large ring", "big ring in the middle", "washer"]
+  - anchor: core-memory-stack
+    apply: fresh
+    iteration: 5
+    problem: "(it 5) a large ring lying on top of the stack (subject)"
+    seed: 20250113
+    prompt: >-
+      a magnetic core memory stack: several flat square core planes, each a fine wire grid evenly studded with
+      hundreds of identical tiny dark ferrite rings, stacked one above another with small gaps in a metal frame with
+      wiring along the sides; nothing on top of the stack; nothing glows; dominant shapes: stacked planes, frame;
+      materials: ferrite, copper wire, steel
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "glowing", "LED", "large ring", "big ring", "washer"]
+  - anchor: discrete-component-board
+    apply: fresh
+    iteration: 5
+    problem: "a modern surface-mount chip in the centre (plausibility, era)"
+    seed: 20250114
+    prompt: >-
+      a 1960s green circuit board populated only with discrete parts: rows of small black transistors in metal cans,
+      striped through-hole resistors and small capacitors soldered to copper traces; no integrated circuits;
+      dominant shapes: rows, traces; materials: fibreglass, copper, solder
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "integrated circuit", "microchip", "QFP chip", "surface-mount chip"]
+  - anchor: logic-module-card
+    apply: fresh
+    iteration: 5
+    problem: "a modern surface-mount chip on the card (plausibility, era)"
+    seed: 20250115
+    prompt: >-
+      a 1960s plug-in logic card: a small green circuit card with a few metal-can transistors, striped resistors and
+      diodes, and a row of gold-plated edge-connector fingers along its bottom edge, standing upright; no integrated
+      circuits; dominant shapes: card, edge fingers; materials: fibreglass, gold, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "integrated circuit", "microchip", "QFP chip", "surface-mount chip"]
+  - anchor: dip-chip-in-socket
+    apply: fresh
+    iteration: 5
+    problem: "printed markings on the chip (artefacts: text)"
+    seed: 20250116
+    prompt: >-
+      one single plain black dual in-line integrated circuit chip with two rows of silver pins, its top completely
+      blank and unmarked, seated in one socket on a small green circuit board; dominant shapes: rectangle, two pin
+      rows; materials: epoxy, tin-plated copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "two chips", "markings", "printed numbers", "part number"]
+  - anchor: silicon-interposer
+    apply: fresh
+    iteration: 5
+    problem: "(it 4 and 5) the plate runs off the frame (cropping)"
+    seed: 20250117
+    prompt: >-
+      a thin square silicon interposer plate with a dense regular grid of tiny copper through-holes, lying flat;
+      dominant shapes: square plate, dot grid; materials: silicon, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
