@@ -264,3 +264,10 @@ def test_anchor_fix_prompt_kind():
         "id": "b", "generation": "independent_t2i", "reference": "a", "prompt": "fresh b"}
     with pytest.raises(fm.FilmError, match="needs a prompt"):
         fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "prompt"}])
+
+
+def test_fresh_refused_on_act_root():
+    from morph_studio import film as fm
+    d = {"anchors": [{"id": "a", "generation": "text_to_image", "prompt": "x"}]}
+    with pytest.raises(fm.FilmError, match="apply: prompt"):
+        fm.apply_anchor_fixes(d, [{"anchor": "a", "apply": "fresh"}])

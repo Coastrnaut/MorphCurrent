@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt
 schema_version: 1
 name: engineering-film
 render:
@@ -674,8 +674,9 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: cathode-ray-storage-tube
-  prompt: 'cathode-ray storage tube: a round glass tube face showing a grid of glowing dots, wired to a deflection yoke; dominant
-    shapes: circle, dot grid; materials: glass, phosphor'
+  prompt: 'a cathode-ray storage tube for early computer memory: a long glass vacuum tube with a narrow neck flaring into
+    a round flat face, the face glowing with a neat square grid of green dots, held in a simple metal clamp, side three-quarter
+    view, whole tube in frame; dominant shapes: funnel, round screen, dot grid; materials: glass, phosphor, steel'
   chapter: logic
   generation: text_to_image
   style_override:
@@ -685,10 +686,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: magnetic-core-plane
-  prompt: 'Replace the cathode-ray storage tube completely with magnetic core memory plane: a square frame strung with fine
-    wires, tiny ferrite rings threaded at every crossing. Remove every part of the previous object and its setting that does
-    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    grid, rings, frame; materials: ferrite, copper wire'
+  prompt: 'Replace the previous object completely with a square magnetic core memory plane: a flat square frame strung with
+    a fine square grid of copper wires, a tiny dark ferrite ring threaded at every crossing, seen almost face-on. Show the
+    whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+    Keep only the lighting, colour grade and dark background. Dominant shapes: grid, rings, frame; materials: ferrite, copper
+    wire'
   chapter: logic
   generation: reference_edit
   reference: cathode-ray-storage-tube
@@ -727,10 +729,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: reel-to-reel-tape-drive
-  prompt: 'Replace the magnetic drum memory completely with reel-to-reel tape drive cabinet: a tall cabinet with two large
-    tape reels, vacuum columns holding tape loops, and a control panel. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
-    shapes: two circles, loops, cabinet; materials: steel, plastic, magnetic tape'
+  prompt: 'Replace the previous object completely with a tall reel-to-reel computer tape drive cabinet with two large tape
+    reels, vacuum columns holding tape loops below them and a small control panel, the whole cabinet from top to floor. Show
+    the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or
+    lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: two circles, loops, cabinet; materials:
+    steel, plastic, magnetic tape'
   chapter: logic
   generation: reference_edit
   reference: magnetic-drum-memory
@@ -741,10 +744,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: point-contact-crystal
-  prompt: 'Replace the reel-to-reel tape drive cabinet completely with point-contact semiconductor experiment: a small germanium
-    slab on a metal base with two fine gold-foil contacts pressed close together by a plastic wedge. Remove every part of
-    the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
-    angle and dark background. Dominant shapes: wedge, slab, points; materials: germanium, gold foil, plastic'
+  prompt: 'Replace the previous object completely with a point-contact semiconductor experiment: a small grey germanium slab
+    on a metal base with a clear plastic wedge pressing two fine gold-foil contacts down onto it close together. Show the
+    whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+    Keep only the lighting, colour grade and dark background. Dominant shapes: wedge, slab, points; materials: germanium,
+    gold foil, plastic'
   chapter: logic
   generation: reference_edit
   reference: reel-to-reel-tape-drive
@@ -769,10 +773,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: transistor-radio-board
-  prompt: 'Replace the three-lead metal can transistor completely with pocket transistor radio circuit board: a small hand-wired
-    board with a few transistors, a ferrite rod antenna and a tuning dial. Remove every part of the previous object and its
-    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: board, rod, dial; materials: phenolic board, ferrite, copper'
+  prompt: 'Replace the previous object completely with a small hand-wired pocket transistor radio circuit board with a few
+    transistors, a black ferrite rod antenna and a plain unmarked tuning knob. Show the whole new object fully in frame and
+    centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
+    grade and dark background. Dominant shapes: board, rod, dial; materials: phenolic board, ferrite, copper'
   chapter: logic
   generation: reference_edit
   reference: metal-can-transistor
@@ -783,10 +787,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: silicon-ingot
-  prompt: 'Replace the pocket transistor radio circuit board completely with single-crystal silicon ingot: a long grey metallic
-    cylindrical crystal with a tapered end, pulled from a melt. Remove every part of the previous object and its setting that
-    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    long cylinder, taper; materials: silicon'
+  prompt: 'Replace the previous object completely with a single-crystal silicon ingot: one long thick grey metallic cylinder
+    lying horizontally, with a tapered cone at one end, the whole ingot in frame. Show the whole new object fully in frame
+    and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
+    grade and dark background. Dominant shapes: long cylinder, taper; materials: silicon'
   chapter: logic
   generation: reference_edit
   reference: transistor-radio-board
@@ -825,10 +829,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: planar-transistor-die
-  prompt: 'Replace the quartz boat in a diffusion furnace completely with magnified planar transistor die: a tiny square silicon
-    die seen under a microscope with concentric oxide windows and two bond wires. Remove every part of the previous object
-    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: square, concentric rings, wires; materials: silicon, silicon dioxide, gold wire'
+  prompt: 'Replace the previous object completely with a magnified planar transistor die: a tiny square silicon die with concentric
+    oxide windows and two thin gold bond wires attached at its pads. Show the whole new object fully in frame and centered,
+    nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and
+    dark background. Dominant shapes: square, concentric rings, wires; materials: silicon, silicon dioxide, gold wire'
   chapter: logic
   generation: reference_edit
   reference: diffusion-furnace-boat
@@ -839,10 +843,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: discrete-component-board
-  prompt: 'Replace the magnified planar transistor die completely with board of discrete transistors and resistors: a green
-    circuit board with rows of small transistors, striped resistors and capacitors soldered to copper traces. Remove every
-    part of the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade,
-    camera angle and dark background. Dominant shapes: rows, traces; materials: fibreglass, copper, solder'
+  prompt: 'Replace the previous object completely with a green circuit board with rows of small transistors, striped resistors
+    and capacitors soldered to copper traces. Show the whole new object fully in frame and centered, nothing cropped, no wires
+    or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
+    shapes: rows, traces; materials: fibreglass, copper, solder'
   chapter: logic
   generation: reference_edit
   reference: planar-transistor-die
@@ -853,10 +857,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: logic-module-card
-  prompt: 'Replace the board of discrete transistors and resistors completely with plug-in logic card: a small card with a
-    few transistors and a gold-plated edge connector, slotted into a backplane. Remove every part of the previous object and
-    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: card, edge fingers; materials: fibreglass, gold, copper'
+  prompt: 'Replace the previous object completely with a small plug-in logic card: a green circuit card with a few transistors
+    and resistors and a row of gold-plated edge-connector fingers along its bottom edge, standing upright. Show the whole
+    new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+    Keep only the lighting, colour grade and dark background. Dominant shapes: card, edge fingers; materials: fibreglass,
+    gold, copper'
   chapter: logic
   generation: reference_edit
   reference: discrete-component-board
@@ -867,10 +872,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: early-flat-pack-ic
-  prompt: 'Replace the plug-in logic card completely with early flat-pack integrated circuit: a tiny flat rectangular package
-    with ribbon leads on two sides, gold lid. Remove every part of the previous object and its setting that does not belong
-    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: flat rectangle,
-    ribbon leads; materials: ceramic, gold, kovar'
+  prompt: 'Replace the previous object completely with an early flat-pack integrated circuit: a tiny flat rectangular ceramic
+    package with a gold lid and flat ribbon leads sticking out on two sides. Show the whole new object fully in frame and
+    centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
+    grade and dark background. Dominant shapes: flat rectangle, ribbon leads; materials: ceramic, gold, kovar'
   chapter: logic
   generation: reference_edit
   reference: logic-module-card
@@ -881,9 +886,9 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: dip-chip-in-socket
-  prompt: 'Replace the early flat-pack integrated circuit completely with dual in-line chip in a socket: a black rectangular
-    package with two rows of silver pins seated in a socket on a board. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+  prompt: 'Replace the previous object completely with one black dual in-line chip with two rows of silver pins seated in
+    a single socket on a small green board. Show the whole new object fully in frame and centered, nothing cropped, no wires
+    or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
     shapes: rectangle, two pin rows; materials: epoxy, tin-plated copper'
   chapter: logic
   generation: reference_edit
@@ -909,10 +914,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: photomask-reticle
-  prompt: 'Replace the gold bond wires fanning from a die completely with chrome photomask on glass: a square quartz plate
-    with a dense chrome circuit pattern, held under yellow cleanroom light. Remove every part of the previous object and its
-    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: square plate, fine pattern; materials: quartz, chrome'
+  prompt: 'Replace the previous object completely with a square quartz photomask plate covered with a dense fine chrome circuit
+    pattern, lit by soft yellow cleanroom light. Show the whole new object fully in frame and centered, nothing cropped, no
+    wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
+    shapes: square plate, fine pattern; materials: quartz, chrome'
   chapter: logic
   generation: reference_edit
   reference: bond-wire-fan
@@ -951,10 +956,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: wafer-dicing-saw
-  prompt: 'Replace the patterned wafer with a grid of dies completely with wafer being diced into chips: a thin diamond blade
-    spinning through a wafer on sticky film, coolant spraying, cut lines forming a grid. Remove every part of the previous
-    object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and
-    dark background. Dominant shapes: disc, grid lines, blade; materials: silicon, diamond, water'
+  prompt: 'Replace the previous object completely with a silicon wafer on sticky film being diced: a thin spinning diamond
+    saw blade cutting a straight line through it, coolant spraying, a grid of finished cut lines on the wafer. Show the whole
+    new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+    Keep only the lighting, colour grade and dark background. Dominant shapes: disc, grid lines, blade; materials: silicon,
+    diamond, water'
   chapter: logic
   generation: reference_edit
   reference: patterned-wafer-grid
@@ -965,10 +971,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: ic-die-macro
-  prompt: 'Replace the wafer being diced into chips completely with integrated circuit die under magnification: a rectangular
-    die with distinct blocks of logic, memory arrays and bond pads around the edge. Remove every part of the previous object
-    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: rectangle, blocks, pad ring; materials: silicon, aluminium, copper'
+  prompt: 'Replace the previous object completely with a rectangular integrated circuit die under magnification, seen from
+    above: distinct blocks of logic and memory arrays with a ring of bond pads around the edge. Show the whole new object
+    fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only
+    the lighting, colour grade and dark background. Dominant shapes: rectangle, blocks, pad ring; materials: silicon, aluminium,
+    copper'
   chapter: logic
   generation: reference_edit
   reference: wafer-dicing-saw
@@ -979,10 +986,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: memory-chip-array
-  prompt: 'Replace the integrated circuit die under magnification completely with memory chip cell array: a die dominated
-    by a vast regular checkerboard of memory cells with row and column decoders along the edges. Remove every part of the
-    previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
-    angle and dark background. Dominant shapes: checkerboard, edges; materials: silicon, polysilicon'
+  prompt: 'Replace the previous object completely with a memory chip die seen from above: a vast regular checkerboard of memory
+    cells with row and column decoder strips along its edges. Show the whole new object fully in frame and centered, nothing
+    cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background.
+    Dominant shapes: checkerboard, edges; materials: silicon, polysilicon'
   chapter: logic
   generation: reference_edit
   reference: ic-die-macro
@@ -993,10 +1000,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: cross-section-transistor-layers
-  prompt: 'Replace the memory chip cell array completely with cross-section of chip wiring layers: a cutaway showing transistor
-    gates at the bottom and many stacked copper wiring levels above, like a city. Remove every part of the previous object
-    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: stacked layers, vias; materials: silicon, copper, dielectric'
+  prompt: 'Replace the previous object completely with a cutaway cross-section of a chip: tiny transistor gates along the
+    bottom and many stacked copper wiring levels connected by vertical vias above them, like a city skyline. Show the whole
+    new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+    Keep only the lighting, colour grade and dark background. Dominant shapes: stacked layers, vias; materials: silicon, copper,
+    dielectric'
   chapter: logic
   generation: reference_edit
   reference: memory-chip-array
@@ -1035,10 +1043,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: home-computer-motherboard
-  prompt: 'Replace the long ceramic processor package completely with early home computer motherboard: a green board with
-    a processor, rows of memory chips, a keyboard connector and sockets. Remove every part of the previous object and its
-    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper'
+  prompt: 'Replace the previous object completely with an early 1980s home computer motherboard: a green board with one large
+    processor chip, rows of black through-hole memory chips in sockets, a keyboard connector and expansion sockets. Show the
+    whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+    Keep only the lighting, colour grade and dark background. Dominant shapes: board, rows of chips; materials: fibreglass,
+    epoxy, copper'
   chapter: logic
   generation: reference_edit
   reference: ceramic-cpu-package

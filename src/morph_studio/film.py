@@ -161,6 +161,8 @@ def apply_anchor_fixes(data: dict, fixes: list[dict]) -> list[str]:
                 raise FilmError(f"{a['id']}: style override must be a mapping")
             a["style_override"] = {**(a.get("style_override") or {}), **f["style"]}
         if how == "fresh":
+            if a.get("generation") == "text_to_image":
+                raise FilmError(f"{a['id']} already opens its act with text-to-image; use apply: prompt")
             a["generation"] = "independent_t2i"
         elif how == "prompt":
             if not f.get("prompt"):

@@ -234,3 +234,175 @@ fixes:
       panels and thick cables looping between cabinets; no LEDs, no modern server racks. Keep only the lighting,
       colour grade, camera angle and dark background. Dominant shapes: wall, grid of bulbs, cables; materials:
       steel, glass, copper
+  # --- iteration 2d (#44-#72 judged) ------------------------------------------------------------------
+  # Pass: core-memory-stack, magnetic-drum-memory, metal-can-transistor, polished-wafer-stack,
+  # diffusion-furnace-boat, bond-wire-fan, resist-coated-wafer, patterned-wafer-grid, first-generation-cpu-die,
+  # ceramic-cpu-package, memory-module-stick, pin-grid-processor.
+  # Systemic: the Logic root (storage tube) had a horizontal wire that repeats through #55-#59; close-up chip
+  # anchors crop their subject. Edit fixes below ask for the whole object, no wires across the frame, no text.
+  - anchor: cathode-ray-storage-tube
+    apply: prompt
+    iteration: 2
+    problem: "a glass sphere with a dot grid and a horizontal wire through it, not a CRT; its wire runs down the Logic chain (subject, carryover source)"
+    prompt: >-
+      a cathode-ray storage tube for early computer memory: a long glass vacuum tube with a narrow neck flaring into
+      a round flat face, the face glowing with a neat square grid of green dots, held in a simple metal clamp, side
+      three-quarter view, whole tube in frame; dominant shapes: funnel, round screen, dot grid; materials: glass,
+      phosphor, steel
+  - anchor: magnetic-core-plane
+    apply: prompt
+    iteration: 2
+    problem: "wires form an X pattern instead of a square grid of rings (subject)"
+    prompt: >-
+      Replace the previous object completely with a square magnetic core memory plane: a flat square frame strung
+      with a fine square grid of copper wires, a tiny dark ferrite ring threaded at every crossing, seen almost
+      face-on. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the
+      frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
+      grid, rings, frame; materials: ferrite, copper wire
+  - anchor: reel-to-reel-tape-drive
+    apply: prompt
+    iteration: 2
+    problem: "the cabinet is cropped at the bottom (morphability)"
+    prompt: >-
+      Replace the previous object completely with a tall reel-to-reel computer tape drive cabinet with two large
+      tape reels, vacuum columns holding tape loops below them and a small control panel, the whole cabinet from top
+      to floor. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing
+      the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
+      two circles, loops, cabinet; materials: steel, plastic, magnetic tape
+  - anchor: point-contact-crystal
+    apply: prompt
+    iteration: 2
+    problem: "a green slab with foil on a round base; the gold contacts and plastic wedge are missing (subject)"
+    prompt: >-
+      Replace the previous object completely with a point-contact semiconductor experiment: a small grey germanium
+      slab on a metal base with a clear plastic wedge pressing two fine gold-foil contacts down onto it close
+      together. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing
+      the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
+      wedge, slab, points; materials: germanium, gold foil, plastic
+  - anchor: transistor-radio-board
+    apply: prompt
+    iteration: 2
+    problem: "the tuning dial shows printed numbers and the board has printed labels (artefacts: text)"
+    prompt: >-
+      Replace the previous object completely with a small hand-wired pocket transistor radio circuit board with a
+      few transistors, a black ferrite rod antenna and a plain unmarked tuning knob. Show the whole new object fully
+      in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep
+      only the lighting, colour grade and dark background. Dominant shapes: board, rod, dial; materials: phenolic
+      board, ferrite, copper
+  - anchor: silicon-ingot
+    apply: prompt
+    iteration: 2
+    problem: "a thin pencil-like crystal cropped at the top, not a cylindrical ingot (subject, cropping)"
+    prompt: >-
+      Replace the previous object completely with a single-crystal silicon ingot: one long thick grey metallic
+      cylinder lying horizontally, with a tapered cone at one end, the whole ingot in frame. Show the whole new
+      object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or
+      lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: long cylinder, taper;
+      materials: silicon
+  - anchor: planar-transistor-die
+    apply: prompt
+    iteration: 2
+    problem: "a stray horizontal wire crosses the die (carryover)"
+    prompt: >-
+      Replace the previous object completely with a magnified planar transistor die: a tiny square silicon die with
+      concentric oxide windows and two thin gold bond wires attached at its pads. Show the whole new object fully in
+      frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only
+      the lighting, colour grade and dark background. Dominant shapes: square, concentric rings, wires; materials:
+      silicon, silicon dioxide, gold wire
+  - anchor: discrete-component-board
+    apply: prompt
+    iteration: 2
+    problem: "a stray horizontal wire crosses the board (carryover)"
+    prompt: >-
+      Replace the previous object completely with a green circuit board with rows of small transistors, striped
+      resistors and capacitors soldered to copper traces. Show the whole new object fully in frame and centered,
+      nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
+      grade and dark background. Dominant shapes: rows, traces; materials: fibreglass, copper, solder
+  - anchor: logic-module-card
+    apply: prompt
+    iteration: 2
+    problem: "a translucent block with a wire through it; no card or edge connector (subject)"
+    prompt: >-
+      Replace the previous object completely with a small plug-in logic card: a green circuit card with a few
+      transistors and resistors and a row of gold-plated edge-connector fingers along its bottom edge, standing
+      upright. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the
+      frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
+      card, edge fingers; materials: fibreglass, gold, copper
+  - anchor: early-flat-pack-ic
+    apply: prompt
+    iteration: 2
+    problem: "a stray horizontal wire crosses the package (carryover)"
+    prompt: >-
+      Replace the previous object completely with an early flat-pack integrated circuit: a tiny flat rectangular
+      ceramic package with a gold lid and flat ribbon leads sticking out on two sides. Show the whole new object
+      fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+      Keep only the lighting, colour grade and dark background. Dominant shapes: flat rectangle, ribbon leads;
+      materials: ceramic, gold, kovar
+  - anchor: dip-chip-in-socket
+    apply: prompt
+    iteration: 2
+    problem: "two chips and a stray rod across the board (single subject, carryover)"
+    prompt: >-
+      Replace the previous object completely with one black dual in-line chip with two rows of silver pins seated in
+      a single socket on a small green board. Show the whole new object fully in frame and centered, nothing
+      cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade
+      and dark background. Dominant shapes: rectangle, two pin rows; materials: epoxy, tin-plated copper
+  - anchor: photomask-reticle
+    apply: prompt
+    iteration: 2
+    problem: "a chip inside a round frame, heavily cropped; no square quartz plate (subject, cropping)"
+    prompt: >-
+      Replace the previous object completely with a square quartz photomask plate covered with a dense fine chrome
+      circuit pattern, lit by soft yellow cleanroom light. Show the whole new object fully in frame and centered,
+      nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
+      grade and dark background. Dominant shapes: square plate, fine pattern; materials: quartz, chrome
+  - anchor: wafer-dicing-saw
+    apply: prompt
+    iteration: 2
+    problem: "a water jet on a wafer; no saw blade (subject)"
+    prompt: >-
+      Replace the previous object completely with a silicon wafer on sticky film being diced: a thin spinning
+      diamond saw blade cutting a straight line through it, coolant spraying, a grid of finished cut lines on the
+      wafer. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the
+      frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
+      disc, grid lines, blade; materials: silicon, diamond, water
+  - anchor: ic-die-macro
+    apply: prompt
+    iteration: 2
+    problem: "a package seen at an angle and cropped, not a die macro (subject, cropping)"
+    prompt: >-
+      Replace the previous object completely with a rectangular integrated circuit die under magnification, seen
+      from above: distinct blocks of logic and memory arrays with a ring of bond pads around the edge. Show the
+      whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers
+      or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: rectangle, blocks,
+      pad ring; materials: silicon, aluminium, copper
+  - anchor: memory-chip-array
+    apply: prompt
+    iteration: 2
+    problem: "cropped at an angle; edges and decoders not visible (cropping)"
+    prompt: >-
+      Replace the previous object completely with a memory chip die seen from above: a vast regular checkerboard of
+      memory cells with row and column decoder strips along its edges. Show the whole new object fully in frame and
+      centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the
+      lighting, colour grade and dark background. Dominant shapes: checkerboard, edges; materials: silicon,
+      polysilicon
+  - anchor: cross-section-transistor-layers
+    apply: prompt
+    iteration: 2
+    problem: "a cropped stack of copper sheets; no gates or vias (subject, cropping)"
+    prompt: >-
+      Replace the previous object completely with a cutaway cross-section of a chip: tiny transistor gates along the
+      bottom and many stacked copper wiring levels connected by vertical vias above them, like a city skyline. Show
+      the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no
+      numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: stacked
+      layers, vias; materials: silicon, copper, dielectric
+  - anchor: home-computer-motherboard
+    apply: prompt
+    iteration: 2
+    problem: "looks like a modern surface-mount board (plausibility)"
+    prompt: >-
+      Replace the previous object completely with an early 1980s home computer motherboard: a green board with one
+      large processor chip, rows of black through-hole memory chips in sockets, a keyboard connector and expansion
+      sockets. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the
+      frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
+      board, rows of chips; materials: fibreglass, epoxy, copper
