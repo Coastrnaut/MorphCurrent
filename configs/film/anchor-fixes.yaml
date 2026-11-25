@@ -9,6 +9,9 @@ natural_scene: &natural
     Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
     no man-made objects, no pedestal, no stand, no frame, no studio props
   composition: phenomenon centered and filling the frame, wide view, nothing cropped
+  negative: [text, letters, labels, logo, watermark, brand names, people, hands, cluttered background, cropped subject,
+             pedestal, plinth, stand, display case, frame, anvil, man-made objects, aquarium, glass tank, pottery,
+             vase, container, box]
 fixes:
   # --- iteration 0 (Spark batch-1 contact sheet): reference edits that kept the parent ------------------
   # --- iteration 1 (anchors-only pass 1, 18 anchors judged; 9 fail) ---------------------------------------
@@ -17,23 +20,27 @@ fixes:
     iteration: 1
     problem: the cloud sits on a copper and glass pedestal like a museum piece (plausibility, single subject)
     prompt: >-
-      towering anvil-topped cumulonimbus thunderstorm cell floating high above a dark flat plain at night, lit
-      from within by flickering lightning, grey rain curtains falling to the ground below; dominant shapes:
-      anvil, column; materials: water vapour, ice
+      a towering flat-topped cumulonimbus thunderstorm cloud spreading out high above an empty dark grassy plain
+      at night, lit from within by flickering lightning, grey rain curtains falling onto the bare ground; nothing
+      on the ground; dominant shapes: mushroom-shaped cloud top, column; materials: water vapour, ice
     style: *natural
   - anchor: forked-lightning-bolt
     apply: fresh
     iteration: 1
     problem: a copper fork-shaped object on a ceramic stand sits in front of the lightning (single subject)
     prompt: >-
-      a single bright forked lightning bolt splitting into many thin branching channels from the top of the
-      frame down to the horizon against a black night sky; dominant shapes: branching line, fork; materials:
+      a single bright forked lightning bolt splitting into many thin branching channels from the clouds down to
+      the bare open ground of an empty plain against a black night sky, nothing at the strike point; dominant shapes: branching line, fork; materials:
       plasma, air
     style: *natural
   - anchor: rubbed-amber-and-fur
     apply: fresh
-    iteration: 0
-    problem: (iteration 0) parent spheres remained; iteration 1 passes
+    iteration: 2
+    problem: (it 0) parent spheres remained; (it 2) the fresh render put copper spheres on both ends (subject)
+    prompt: >-
+      a single honey-coloured polished amber rod held diagonally, a small tuft of brown fur touching its middle,
+      tiny fibres and dust specks jumping up toward the rod; nothing attached to the ends of the rod, no spheres,
+      no metal; dominant shapes: rod, fibres; materials: amber, fur
   - anchor: mast-tip-corona
     apply: fresh
     iteration: 1
@@ -41,14 +48,18 @@ fixes:
     prompt: >-
       the top of a tall wooden ship's mast at night in a storm, its pointed tip crowned by a pale blue-violet
       corona glow with fine discharge streamers; dominant shapes: spike, halo; materials: wood, ionized air
-    style: *natural
+    style:  # iteration 1 natural style kept verbatim: passed in iteration 2 (a mast is man-made)
+      description: >-
+        Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
+        no man-made objects, no pedestal, no stand, no frame, no studio props
+      composition: phenomenon centered and filling the frame, wide view, nothing cropped
   - anchor: aurora-curtain
     apply: fresh
     iteration: 1
     problem: the aurora is shown inside a copper frame with a copper cup in the snow (single subject)
     prompt: >-
-      rippling green and violet aurora curtains folding across a polar night sky above a snowy plain, wide
-      landscape view; dominant shapes: curtain, ribbon; materials: ionized gas
+      rippling green and violet aurora curtains folding across a polar night sky above an empty untouched snowy
+      plain, wide landscape view, nothing standing on the snow; dominant shapes: curtain, ribbon; materials: ionized gas
     style: *natural
   - anchor: electric-eel-silhouette
     apply: fresh
@@ -63,13 +74,15 @@ fixes:
         Cinematic underwater photograph of a living animal in dark water, photorealistic, crisp detail,
         no man-made objects, no frame, no aquarium glass
       composition: whole animal in frame, centered, side view, nothing cropped
+      negative: [text, letters, labels, logo, watermark, people, hands, cropped subject, aquarium, glass tank,
+                 tank edge, pottery, pot, vase, frame, man-made objects]
   - anchor: charged-dust-cloud
     apply: fresh
     iteration: 1
     problem: the dust streams out of a copper and glass nozzle (single subject)
     prompt: >-
-      glittering dust motes drifting and clustering along curved invisible field lines inside a diagonal
-      sunbeam crossing a dark room; dominant shapes: points, field lines; materials: dust, light
+      glittering dust motes drifting and clustering along gently curved invisible field lines inside a single
+      diagonal sunbeam crossing an empty dark room, no lightning, no sparks, no furniture; dominant shapes: points, field lines; materials: dust, light
     style: *natural
   - anchor: crown-of-cups
     apply: fresh
@@ -109,3 +122,26 @@ fixes:
       wire probe, and a pair of early headphones with round black bakelite earpieces on a thin steel headband.
       Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: coil, board;
       materials: wood, copper wire, galena
+  # --- iteration 2 (new pass with replace-instruction edits; #1-#19 judged) -------------------------------
+  # Pass: fulgurite-glass-tube, spark-between-spheres, mast-tip-corona, glass-leyden-jar, voltaic-pile-column,
+  # crown-of-cups, carbon-zinc-dry-cell, lead-acid-accumulator, rolled-paper-capacitor, glass-plate-condenser-stack
+  # (porous-pot-wet-cell unchanged, passed in iteration 1).
+  # Fail: storm (literal anvil on a glass block), lightning (glass/copper stand at the strike), aurora (copper
+  # cylinder on the snow), eel (aquarium glass and a pot), dust (pots and a stray lightning streak) -> natural
+  # negative list + wording; amber (spheres on the rod ends) -> prompt; battery and friction machine below.
+  - anchor: battery-of-jars
+    apply: fresh
+    iteration: 2
+    problem: jars hidden inside a wooden box wall behind many rods; not readable at thumbnail size (single subject)
+    prompt: >-
+      a battery of four large foil-coated Leyden jars standing in a row in a shallow open wooden tray, their brass
+      rods joined along the top by one brass bar, every jar fully visible from the front; dominant shapes: row of
+      cylinders, bar; materials: glass, tin foil, brass, wood
+  - anchor: friction-machine-globe
+    apply: fresh
+    iteration: 2
+    problem: the copper plates and brass screws of the condenser stack remain as its base (carryover)
+    prompt: >-
+      hand-cranked friction generator: a large glass globe on a horizontal axle turned by a brass crank, a
+      leather pad rubbing the globe and a metal comb collecting charge, all on a plain dark wooden base;
+      dominant shapes: sphere, axle, crank; materials: glass, leather, brass

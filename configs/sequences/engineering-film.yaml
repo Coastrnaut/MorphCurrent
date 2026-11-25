@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -22,9 +22,9 @@ audio:
   synchronization: none
 anchors:
 - id: storm-cell-over-plain
-  prompt: 'towering anvil-topped cumulonimbus thunderstorm cell floating high above a dark flat plain at night, lit from within
-    by flickering lightning, grey rain curtains falling to the ground below; dominant shapes: anvil, column; materials: water
-    vapour, ice'
+  prompt: 'a towering flat-topped cumulonimbus thunderstorm cloud spreading out high above an empty dark grassy plain at night,
+    lit from within by flickering lightning, grey rain curtains falling onto the bare ground; nothing on the ground; dominant
+    shapes: mushroom-shaped cloud top, column; materials: water vapour, ice'
   chapter: spark
   generation: text_to_image
   style_override:
@@ -36,9 +36,34 @@ anchors:
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    negative: &id001
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - pedestal
+    - plinth
+    - stand
+    - display case
+    - frame
+    - anvil
+    - man-made objects
+    - aquarium
+    - glass tank
+    - pottery
+    - vase
+    - container
+    - box
 - id: forked-lightning-bolt
-  prompt: 'a single bright forked lightning bolt splitting into many thin branching channels from the top of the frame down
-    to the horizon against a black night sky; dominant shapes: branching line, fork; materials: plasma, air'
+  prompt: 'a single bright forked lightning bolt splitting into many thin branching channels from the clouds down to the bare
+    open ground of an empty plain against a black night sky, nothing at the strike point; dominant shapes: branching line,
+    fork; materials: plasma, air'
   chapter: spark
   generation: independent_t2i
   reference: storm-cell-over-plain
@@ -51,6 +76,7 @@ anchors:
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    negative: *id001
 - id: fulgurite-glass-tube
   prompt: 'Replace the forked lightning bolt completely with fulgurite: lightning-fused sand tube: a hollow, rough, root-like
     tube of glassy fused sand with a crusted exterior. Remove every part of the previous object and its setting that does
@@ -80,9 +106,8 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: rubbed-amber-and-fur
-  prompt: 'Replace the spark jumping between two brass spheres completely with polished amber attracting small fibres: a honey-coloured
-    amber rod lifting tiny fibres and dust after being rubbed with fur. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+  prompt: 'a single honey-coloured polished amber rod held diagonally, a small tuft of brown fur touching its middle, tiny
+    fibres and dust specks jumping up toward the rod; nothing attached to the ends of the rod, no spheres, no metal; dominant
     shapes: rod, fibres; materials: amber, fur'
   chapter: spark
   generation: independent_t2i
@@ -109,8 +134,8 @@ anchors:
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
 - id: aurora-curtain
-  prompt: 'rippling green and violet aurora curtains folding across a polar night sky above a snowy plain, wide landscape
-    view; dominant shapes: curtain, ribbon; materials: ionized gas'
+  prompt: 'rippling green and violet aurora curtains folding across a polar night sky above an empty untouched snowy plain,
+    wide landscape view, nothing standing on the snow; dominant shapes: curtain, ribbon; materials: ionized gas'
   chapter: spark
   generation: independent_t2i
   reference: mast-tip-corona
@@ -123,6 +148,7 @@ anchors:
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    negative: *id001
 - id: electric-eel-silhouette
   prompt: 'a long dark eel-like electric fish swimming through dark murky water, faint stacked electrocyte bands glowing softly
     along its whole body, side view; dominant shapes: elongated body, stacked bands; materials: water, living tissue'
@@ -138,9 +164,27 @@ anchors:
     description: Cinematic underwater photograph of a living animal in dark water, photorealistic, crisp detail, no man-made
       objects, no frame, no aquarium glass
     composition: whole animal in frame, centered, side view, nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - people
+    - hands
+    - cropped subject
+    - aquarium
+    - glass tank
+    - tank edge
+    - pottery
+    - pot
+    - vase
+    - frame
+    - man-made objects
 - id: charged-dust-cloud
-  prompt: 'glittering dust motes drifting and clustering along curved invisible field lines inside a diagonal sunbeam crossing
-    a dark room; dominant shapes: points, field lines; materials: dust, light'
+  prompt: 'glittering dust motes drifting and clustering along gently curved invisible field lines inside a single diagonal
+    sunbeam crossing an empty dark room, no lightning, no sparks, no furniture; dominant shapes: points, field lines; materials:
+    dust, light'
   chapter: spark
   generation: independent_t2i
   reference: electric-eel-silhouette
@@ -153,6 +197,7 @@ anchors:
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    negative: *id001
 - id: glass-leyden-jar
   prompt: 'Replace the charged particles drifting in a beam of light completely with glass storage jar coated in metal foil:
     a thick glass jar wrapped inside and out with tin foil, a brass rod and chain rising from a wooden stopper. Remove every
@@ -168,12 +213,11 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: battery-of-jars
-  prompt: 'Replace the glass storage jar coated in metal foil completely with wooden rack of linked foil jars: a row of foil-lined
-    glass jars in a wooden tray, their rods joined by a brass bar. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
-    shapes: row of cylinders, bar; materials: glass, foil, wood'
+  prompt: 'a battery of four large foil-coated Leyden jars standing in a row in a shallow open wooden tray, their brass rods
+    joined along the top by one brass bar, every jar fully visible from the front; dominant shapes: row of cylinders, bar;
+    materials: glass, tin foil, brass, wood'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: glass-leyden-jar
   style_override:
     palette:
@@ -273,12 +317,11 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: friction-machine-globe
-  prompt: 'Replace the stack of glass plates with foil completely with hand-cranked friction generator: a glass globe on an
-    axle spun by a crank, rubbing against a leather pad, a metal comb collecting charge. Remove every part of the previous
-    object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and
-    dark background. Dominant shapes: sphere, axle, crank; materials: glass, leather, brass'
+  prompt: 'hand-cranked friction generator: a large glass globe on a horizontal axle turned by a brass crank, a leather pad
+    rubbing the globe and a metal comb collecting charge, all on a plain dark wooden base; dominant shapes: sphere, axle,
+    crank; materials: glass, leather, brass'
   chapter: power
-  generation: reference_edit
+  generation: independent_t2i
   reference: glass-plate-condenser-stack
   style_override:
     palette:
