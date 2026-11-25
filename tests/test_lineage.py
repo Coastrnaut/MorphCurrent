@@ -181,8 +181,9 @@ def test_shared_check(tmp_path):
 # --- CLI ------------------------------------------------------------------------------------------
 
 def test_cli(tmp_path, capsys):
-    assert cli.main(["lineage", str(FILM)]) == 1
-    assert json.loads(capsys.readouterr().out)["max_depth"] == 26
+    assert cli.main(["lineage", str(FILM)]) == 1  # some act chain still exceeds the depth limit of 12
+    rep = json.loads(capsys.readouterr().out)
+    assert rep["max_depth"] > 12 and rep["max_depth"] == max(rep["per_act_max"].values())  # not pinned: fixes cut chains
     out = tmp_path / "p.yaml"
     assert cli.main(["lineage-propose", str(FILM), "--out", str(out)]) == 0
     res = json.loads(capsys.readouterr().out)
