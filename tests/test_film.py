@@ -221,3 +221,14 @@ def test_cli(tmp_path, capsys):
     text = capsys.readouterr().out
     text.encode("ascii")
     assert json.loads(text)["totals"]["anchors"] == 96
+
+
+def test_act_start_anchor_override():
+    """F38: owner-approved act boundaries via start_anchor (all acts or none)."""
+    from morph_studio import film as fm
+    items = [{"id": "a", "eras": ["x"]}, {"id": "b", "eras": ["y"]}]
+    assert fm.act_starts(items, 10) is None
+    assert fm.act_starts([dict(items[0], start_anchor=0), dict(items[1], start_anchor=4)], 10) == [(0, "a"), (4, "b")]
+    for bad in ([0, None], [1, 4], [0, 0], [0, 10]):
+        with pytest.raises(fm.FilmError):
+            fm.act_starts([dict(i, start_anchor=s) for i, s in zip(items, bad)], 10)

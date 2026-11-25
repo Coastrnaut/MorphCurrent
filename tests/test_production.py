@@ -107,7 +107,7 @@ def test_batches_caps(tmp_path, film_plan):
             assert len(batch["stages"]) <= 10
             assert batch["seconds"] <= 3600 or batch["oversized"]
     spark_last = b["acts"][0]["batches"][-1]
-    assert spark_last["early_stages"] == ["anchor:friction-machine-globe"]  # next act's first anchor
+    assert spark_last["early_stages"] == ["anchor:porous-pot-wet-cell"]  # next act's first anchor
     assert spark_last["eta_s"] == pytest.approx(spark_last["seconds"] + 19.0 + 60.0, abs=0.2)
     tiny = pr.budget(film_plan, hist, max_batch_s=100)
     assert any(batch["oversized"] for a in tiny["acts"] for batch in a["batches"])

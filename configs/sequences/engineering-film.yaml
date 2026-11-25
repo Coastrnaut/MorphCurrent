@@ -178,68 +178,68 @@ anchors:
 - id: porous-pot-wet-cell
   prompt: 'two-fluid wet cell: a glazed ceramic jar with a porous inner pot, a copper cylinder and a zinc rod, blue solution
     visible; dominant shapes: nested cylinders; materials: ceramic, copper, zinc, copper sulfate'
-  chapter: spark
-  generation: reference_edit
-  reference: crown-of-cups
+  chapter: power
+  generation: text_to_image
   style_override:
     palette:
     - polished copper
-    - hot amber
+    - brushed steel
     - deep black
-    lighting: warm amber rim light with a faint electric glow
+    lighting: hard copper-toned rim light
 - id: carbon-zinc-dry-cell
   prompt: 'cutaway dry cell: a cylindrical zinc can cut open to show a central carbon rod surrounded by dark paste; dominant
     shapes: cylinder, central rod; materials: zinc, carbon, paste'
-  chapter: spark
+  chapter: power
   generation: reference_edit
   reference: porous-pot-wet-cell
   style_override:
     palette:
     - polished copper
-    - hot amber
+    - brushed steel
     - deep black
-    lighting: warm amber rim light with a faint electric glow
+    lighting: hard copper-toned rim light
 - id: lead-acid-accumulator
   prompt: 'glass-cased lead-acid accumulator: a clear glass case holding grey lead plates in sulfuric acid, terminals on top;
     dominant shapes: parallel plates, box; materials: lead, glass, acid'
-  chapter: spark
+  chapter: power
   generation: reference_edit
   reference: carbon-zinc-dry-cell
   style_override:
     palette:
     - polished copper
-    - hot amber
+    - brushed steel
     - deep black
-    lighting: warm amber rim light with a faint electric glow
+    lighting: hard copper-toned rim light
 - id: rolled-paper-capacitor
   prompt: 'rolled foil and paper capacitor: two long strips of metal foil and waxed paper rolled tightly into a cylinder with
     wire leads; dominant shapes: spiral, cylinder; materials: aluminium foil, waxed paper'
-  chapter: spark
+  chapter: power
   generation: reference_edit
   reference: lead-acid-accumulator
   style_override:
     palette:
     - polished copper
-    - hot amber
+    - brushed steel
     - deep black
-    lighting: warm amber rim light with a faint electric glow
+    lighting: hard copper-toned rim light
 - id: glass-plate-condenser-stack
   prompt: 'stack of glass plates with foil: a block of square glass plates interleaved with foil sheets clamped in a wooden
     frame; dominant shapes: stacked plates, block; materials: glass, foil, wood'
-  chapter: spark
+  chapter: power
   generation: reference_edit
   reference: rolled-paper-capacitor
   style_override:
     palette:
     - polished copper
-    - hot amber
+    - brushed steel
     - deep black
-    lighting: warm amber rim light with a faint electric glow
+    lighting: hard copper-toned rim light
 - id: friction-machine-globe
   prompt: 'hand-cranked friction generator: a glass globe on an axle spun by a crank, rubbing against a leather pad, a metal
     comb collecting charge; dominant shapes: sphere, axle, crank; materials: glass, leather, brass'
   chapter: power
-  generation: text_to_image
+  generation: reference_edit
+  reference: glass-plate-condenser-stack
   style_override:
     palette:
     - polished copper
@@ -477,68 +477,68 @@ anchors:
 - id: glowing-vacuum-tube
   prompt: 'glowing vacuum tube: a glass envelope with an orange-glowing filament, a mesh grid and a metal plate, pins in a
     base; dominant shapes: bulb, cylinder, mesh; materials: glass, tungsten, nickel'
-  chapter: logic
-  generation: text_to_image
+  chapter: signal
+  generation: reference_edit
+  reference: crystal-radio-set
   style_override:
     palette:
+    - brushed steel
     - phosphor green
-    - silicon blue
     - deep black
-    lighting: crisp cool rim light
+    lighting: cool steel rim light with a soft phosphor glow
 - id: tube-amplifier-chassis
   prompt: 'tube chassis with transformers: a steel chassis with a row of glowing tubes, a transformer block and wiring underneath;
     dominant shapes: row of bulbs, box; materials: steel, glass, copper'
-  chapter: logic
+  chapter: signal
   generation: reference_edit
   reference: glowing-vacuum-tube
   style_override:
     palette:
+    - brushed steel
     - phosphor green
-    - silicon blue
     - deep black
-    lighting: crisp cool rim light
+    lighting: cool steel rim light with a soft phosphor glow
 - id: tube-flip-flop-panel
   prompt: 'plug-in tube logic module: a small panel with two glowing tubes, resistors and capacitors, forming one bistable
     switching unit; dominant shapes: pair of bulbs, panel; materials: glass, phenolic board, copper'
-  chapter: logic
+  chapter: signal
   generation: reference_edit
   reference: tube-amplifier-chassis
   style_override:
     palette:
+    - brushed steel
     - phosphor green
-    - silicon blue
     - deep black
-    lighting: crisp cool rim light
+    lighting: cool steel rim light with a soft phosphor glow
 - id: tube-computer-wall
   prompt: 'room-sized tube computer wall: a long wall of cabinets packed with thousands of glowing tubes, cables looping between
     panels; dominant shapes: wall, grid of bulbs, cables; materials: steel, glass, copper'
-  chapter: logic
+  chapter: signal
   generation: reference_edit
   reference: tube-flip-flop-panel
   style_override:
     palette:
+    - brushed steel
     - phosphor green
-    - silicon blue
     - deep black
-    lighting: crisp cool rim light
+    lighting: cool steel rim light with a soft phosphor glow
 - id: mercury-delay-line
   prompt: 'mercury delay-line memory: long steel tubes filled with mercury, quartz transducers at each end, in a temperature-controlled
     box; dominant shapes: long tubes, box; materials: steel, mercury, quartz'
-  chapter: logic
+  chapter: signal
   generation: reference_edit
   reference: tube-computer-wall
   style_override:
     palette:
+    - brushed steel
     - phosphor green
-    - silicon blue
     - deep black
-    lighting: crisp cool rim light
+    lighting: cool steel rim light with a soft phosphor glow
 - id: cathode-ray-storage-tube
   prompt: 'cathode-ray storage tube: a round glass tube face showing a grid of glowing dots, wired to a deflection yoke; dominant
     shapes: circle, dot grid; materials: glass, phosphor'
   chapter: logic
-  generation: reference_edit
-  reference: mercury-delay-line
+  generation: text_to_image
   style_override:
     palette:
     - phosphor green
@@ -824,44 +824,44 @@ anchors:
 - id: first-generation-cpu-die
   prompt: 'early single-chip processor die: a small die with hand-drawn-looking logic blocks: registers, an arithmetic unit
     and a control area; dominant shapes: rectangle, blocks; materials: silicon, aluminium'
-  chapter: scale
-  generation: text_to_image
+  chapter: logic
+  generation: reference_edit
+  reference: cross-section-transistor-layers
   style_override:
     palette:
+    - phosphor green
     - silicon blue
-    - brushed steel
     - deep black
-    lighting: cold blue rim light with subtle reflections
+    lighting: crisp cool rim light
 - id: ceramic-cpu-package
   prompt: 'long ceramic processor package: a long white ceramic package with a gold lid and two rows of gold pins; dominant
     shapes: long rectangle, pin rows; materials: ceramic, gold'
-  chapter: scale
+  chapter: logic
   generation: reference_edit
   reference: first-generation-cpu-die
   style_override:
     palette:
+    - phosphor green
     - silicon blue
-    - brushed steel
     - deep black
-    lighting: cold blue rim light with subtle reflections
+    lighting: crisp cool rim light
 - id: home-computer-motherboard
   prompt: 'early home computer motherboard: a green board with a processor, rows of memory chips, a keyboard connector and
     sockets; dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper'
-  chapter: scale
+  chapter: logic
   generation: reference_edit
   reference: ceramic-cpu-package
   style_override:
     palette:
+    - phosphor green
     - silicon blue
-    - brushed steel
     - deep black
-    lighting: cold blue rim light with subtle reflections
+    lighting: crisp cool rim light
 - id: memory-module-stick
   prompt: 'memory module stick: a slim green board with a row of black memory chips and a gold edge connector; dominant shapes:
     slim bar, chips, edge fingers; materials: fibreglass, epoxy, gold'
   chapter: scale
-  generation: reference_edit
-  reference: home-computer-motherboard
+  generation: text_to_image
   style_override:
     palette:
     - silicon blue
@@ -1350,7 +1350,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: slow_push
+    camera: static
 - from: carbon-zinc-dry-cell
   to: lead-acid-accumulator
   frames: 65
@@ -1363,7 +1363,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: slow_push
+    camera: static
 - from: lead-acid-accumulator
   to: rolled-paper-capacitor
   frames: 65
@@ -1376,7 +1376,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: slow_push
+    camera: static
 - from: rolled-paper-capacitor
   to: glass-plate-condenser-stack
   frames: 61
@@ -1389,7 +1389,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: slow_push
+    camera: static
 - from: glass-plate-condenser-stack
   to: friction-machine-globe
   frames: 65
@@ -1402,7 +1402,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: slow_push
+    camera: static
 - from: friction-machine-globe
   to: copper-disc-dynamo
   frames: 65
@@ -1675,7 +1675,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: static
+    camera: slow_push
 - from: tube-amplifier-chassis
   to: tube-flip-flop-panel
   frames: 69
@@ -1688,7 +1688,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: static
+    camera: slow_push
 - from: tube-flip-flop-panel
   to: tube-computer-wall
   frames: 49
@@ -1701,7 +1701,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: static
+    camera: slow_push
 - from: tube-computer-wall
   to: mercury-delay-line
   frames: 69
@@ -1714,7 +1714,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: static
+    camera: slow_push
 - from: mercury-delay-line
   to: cathode-ray-storage-tube
   frames: 65
@@ -1727,7 +1727,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: static
+    camera: slow_push
 - from: cathode-ray-storage-tube
   to: magnetic-core-plane
   frames: 81
@@ -2052,7 +2052,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: slow_pull
+    camera: static
 - from: ceramic-cpu-package
   to: home-computer-motherboard
   frames: 73
@@ -2065,7 +2065,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: slow_pull
+    camera: static
 - from: home-computer-motherboard
   to: memory-module-stick
   frames: 69
@@ -2078,7 +2078,7 @@ transitions:
     - labels
     - logo
     - watermark
-    camera: slow_pull
+    camera: static
 - from: memory-module-stick
   to: pin-grid-processor
   frames: 81

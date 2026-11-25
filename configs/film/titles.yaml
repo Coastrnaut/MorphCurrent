@@ -1,7 +1,8 @@
 # F38 titles for the engineering film: a finishing layer drawn onto a copy of the joined movie (or animatic).
 # Text is the owner's; it is never placed in generation prompts. Sizes and positions are fractions of frame
-# height (y = vertical centre of the text). Act titles start at each act's first anchor; empty act text means
-# "use the act title from configs/film/acts.yaml".
+# height (y = vertical centre of the text). `text_vertical` (optional, may contain line breaks) is used by
+# `--vertical` renders that must also fit the 9:16 centre crop. Act titles start at each act's first anchor;
+# empty act text means "use the act title from configs/film/acts.yaml".
 version: 1
 font: C:/Windows/Fonts/arial.ttf
 defaults:
@@ -9,6 +10,8 @@ defaults:
   color: white
 opening:
   text: From Lightning to Silicon
+  # owner decision 2026-11-24: two lines in the 9:16-safe (--vertical) copy
+  text_vertical: "From Lightning\nto Silicon"
   start_s: 0
   duration_s: 5
   size: 0.10

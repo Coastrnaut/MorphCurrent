@@ -149,7 +149,7 @@ def test_resolve_film_default_act_titles():
     acts = [o for o in r["overlays"] if o["kind"] == "act"]
     assert [o["text"] for o in acts] == ["Spark", "Power", "Signal", "Logic", "Scale"]
     assert acts[0]["start_s"] == 5.0  # deferred after the opening card
-    assert [o["start_s"] for o in acts[1:]] == [69.0, 105.25, 143.25, 254.5]
+    assert [o["start_s"] for o in acts[1:]] == [48.25, 105.25, 162.75, 266.5]  # F38 owner-approved boundaries
     assert r["overlays"][-1]["end_s"] == round(5741 / 16, 3)
 
 
@@ -271,15 +271,32 @@ def test_act_boundaries_film():
     before = (sha(FILM), sha(PLAN))
     rep = tt.act_boundaries(FILM, PLAN)
     rows = {r["anchor"]: r for r in rep["boundaries"]}
-    assert list(rows) == [18, 28, 38, 67]
+    # owner applied the proposals 18->13, 38->43, 67->70 (2026-11-24): three acts now open on section starts
+    assert list(rows) == [13, 28, 43, 70]
     assert [rows[k]["act"] for k in rows] == ["power", "signal", "logic", "scale"]
+    assert all(rows[k]["offset"] == 0 and rows[k]["event"] == "section" for k in (13, 43, 70))
+    assert rows[28]["section_anchor"] is None and rows[28]["proposal"] is None
+    assert rep["proposals"] == 0
+    assert (sha(FILM), sha(PLAN)) == before
+
+
+def test_act_boundaries_proposals(tmp_path):
+    # the pre-decision film layout (era grouping) produced the three proposals
+    from morph_studio import film
+    acts = yaml.safe_load(ACTS.read_text(encoding="utf-8"))
+    for a in acts["acts"]:
+        a.pop("start_anchor", None)
+    ap = tmp_path / "acts.yaml"
+    ap.write_text(yaml.safe_dump(acts), encoding="utf-8")
+    sb = film.write_storyboard(PLAN, REPO / "configs/concepts/engineering-film.yaml", ap, tmp_path / "f.yaml")
+    rep = tt.act_boundaries(sb if isinstance(sb, Path) else tmp_path / "f.yaml", PLAN)
+    rows = {r["anchor"]: r for r in rep["boundaries"]}
+    assert list(rows) == [18, 28, 38, 67]
     assert (rows[18]["section_anchor"], rows[18]["offset"]) == (13, -5)
     assert (rows[38]["section_anchor"], rows[38]["offset"]) == (43, 5)
     assert (rows[67]["section_anchor"], rows[67]["offset"]) == (70, 3)
-    assert rows[28]["section_anchor"] is None and rows[28]["proposal"] is None
     assert rep["proposals"] == 3 and "anchor 13" in rows[18]["proposal"]
-    assert (sha(FILM), sha(PLAN)) == before
-    assert tt.act_boundaries(FILM, PLAN, window=2)["proposals"] == 0
+    assert tt.act_boundaries(tmp_path / "f.yaml", PLAN, window=2)["proposals"] == 0
 
 
 def test_act_boundaries_mismatch(tmp_path):
@@ -303,7 +320,7 @@ def test_cli_check_and_boundaries(tmp_path, capsys):
     assert json.loads(out)["safe_area"]["ok"]
     assert cli.main(["titles-check", "--vertical"]) == 0
     lines = capsys.readouterr().out.strip().splitlines()
-    assert len(lines) == 8 and lines[0].startswith("opening") and "From Lightning to Silicon" in lines[0]
+    assert len(lines) == 8 and lines[0].startswith("opening") and "From Lightning / to Silicon" in lines[0]
     assert lines[-1].startswith("warning: act-spark")
     bad = defn(opening={"text": "x" * 90, "start_s": 0, "duration_s": 2, "size": 0.1, "y": 0.45})
     assert cli.main(["titles-check", "--titles", str(write_defn(tmp_path, bad)), "--vertical"]) == 1
@@ -314,9 +331,9 @@ def test_cli_check_and_boundaries(tmp_path, capsys):
     assert cli.main(["act-boundaries"]) == 0
     text = capsys.readouterr().out
     text.encode("ascii")
-    assert len(text.strip().splitlines()) == 4 and "anchor 13" in text
+    assert len(text.strip().splitlines()) == 4 and text.count("on the section start") == 3
     assert cli.main(["act-boundaries", "--json"]) == 0
-    assert json.loads(capsys.readouterr().out)["proposals"] == 3
+    assert json.loads(capsys.readouterr().out)["proposals"] == 0
     assert cli.main(["act-boundaries", "--storyboard", str(mini(tmp_path / "m"))]) == 2
 
 
@@ -331,3 +348,34 @@ def test_cli_render(tmp_path, capsys):
     rec = json.loads(capsys.readouterr().out)
     assert rec["ok"] and out.is_file()
     assert cli.main(["titles-render", str(src), str(out), "--titles", str(titles), "--storyboard", str(sb)]) == 2
+
+
+@needs_font
+def test_vertical_two_line_text(tmp_path):
+    """Owner decision 2026-11-24: the opening uses two lines in the 9:16-safe copy."""
+    d = tt.load_titles(TITLES)
+    assert d["opening"]["text_vertical"] == "From Lightning\nto Silicon"
+    wide = tt.resolve(d, FILM)
+    tall = tt.resolve(d, FILM, vertical=True)
+    assert wide["overlays"][0]["text"] == "From Lightning to Silicon"
+    assert tall["overlays"][0]["text"] == "From Lightning\nto Silicon"
+    v = tt.safe_check(tall["overlays"], 832, 480, vertical=True)
+    assert v["ok"] and v["sizes"]["opening"] == 32  # longest line (14 chars) sets the width
+    rec = tt.build_recipe(tall, 832, 480, 16, FONT, v["sizes"])
+    first = rec["filter"].split(",drawtext")[0]
+    assert "text_align=C" in first and "line_spacing=6" in first
+    assert "text_align" not in tt.build_recipe(wide, 832, 480, 16, FONT, v["sizes"])["filter"]
+    bad = copy.deepcopy(d)
+    bad["opening"]["text_vertical"] = " "
+    with pytest.raises(tt.TitlesError, match="text_vertical"):
+        tt.load_titles(write_defn(tmp_path, bad))
+
+
+@needs_ffmpeg
+@needs_font
+def test_render_two_lines(tmp_path):
+    sb = mini(tmp_path)
+    d = defn()
+    d["opening"]["text_vertical"] = "Two\nLines"
+    rec = tt.render(movie(tmp_path), tmp_path / "v.mp4", d, sb, vertical=True)
+    assert rec["overlays"][0]["text"] == "Two\nLines" and rec["probe_out"]["frame_count"] == 104

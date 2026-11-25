@@ -47,6 +47,21 @@ def load_acts(acts: dict, eras: list[str]) -> list[dict]:
     return items
 
 
+def act_starts(items: list[dict], n_anchors: int) -> list[tuple[int, str]] | None:
+    """F38 owner-approved act boundaries: optional ``start_anchor`` per act overrides era grouping.
+
+    Either no act sets it (era grouping) or every act does: the first at 0, strictly increasing, < n_anchors.
+    """
+    given = [a.get("start_anchor") for a in items]
+    if all(g is None for g in given):
+        return None
+    if any(g is None for g in given):
+        raise FilmError("either every act sets start_anchor or none does")
+    if given[0] != 0 or any(b <= a for a, b in zip(given, given[1:])) or given[-1] >= n_anchors:
+        raise FilmError(f"act start_anchor values must start at 0 and increase below {n_anchors}: {given}")
+    return [(int(g), a["id"]) for g, a in zip(given, items)]
+
+
 def _anchor_prompt(e: dict) -> str:
     return (f"{e['subject']}: {e['description']}; dominant shapes: {', '.join(e['shapes'])}; "
             f"materials: {', '.join(e['materials'])}")
@@ -72,10 +87,12 @@ def build_storyboard(sync_plan: dict, bank: dict, acts: dict, *, audio: str | No
             raise FilmError(f"bridge {i} is {frames} frames; the film needs 33-81-frame 4n+1 bridges")
         if i and b.get("from_frame") is not None and b["from_frame"] != bridges[i - 1].get("to_frame"):
             raise FilmError(f"bridge {i} does not start where bridge {i - 1} ends")
-    era_act = {era: a["id"] for a in load_acts(acts, bank["eras"]) for era in a["eras"]}
+    act_items = load_acts(acts, bank["eras"])
+    era_act = {era: a["id"] for a in act_items for era in a["eras"]}
+    starts = act_starts(act_items, len(entries))
     out_anchors, prev = [], None
-    for e in entries:
-        act = era_act[e["era"]]
+    for idx, e in enumerate(entries):
+        act = era_act[e["era"]] if starts is None else next(a for s, a in reversed(starts) if s <= idx)
         anchor = {"id": e["id"], "prompt": _anchor_prompt(e), "chapter": act}
         if prev is not None and prev["chapter"] == act:
             anchor.update(generation="reference_edit", reference=prev["id"])

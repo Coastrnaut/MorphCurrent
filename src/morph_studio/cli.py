@@ -369,7 +369,7 @@ def _titles(args: argparse.Namespace) -> int:
     try:
         if args.command == "titles-check":
             d = tt.load_titles(args.titles)
-            res = tt.resolve(d, args.storyboard)
+            res = tt.resolve(d, args.storyboard, vertical=args.vertical)
             from .schema import load_storyboard
             r = load_storyboard(args.storyboard).render
             safe = tt.safe_check(res["overlays"], r.width, r.height, vertical=args.vertical)
@@ -380,7 +380,7 @@ def _titles(args: argparse.Namespace) -> int:
                 flagged = {r["id"] for r in safe["rows"] if r["flagged"]}
                 for o in res["overlays"]:
                     print(f"{o['id']:<12} {o['start_s']:8.2f}-{o['end_s']:8.2f} s  size {safe['sizes'][o['id']]:>3} px  "
-                          f"{'FLAGGED' if o['id'] in flagged else 'ok':<7}  {o['text']}".encode("ascii", "replace").decode("ascii"))
+                          f"{'FLAGGED' if o['id'] in flagged else 'ok':<7}  {o['text'].replace(chr(10), ' / ')}".encode("ascii", "replace").decode("ascii"))
                 for w in res["warnings"]:
                     print(f"warning: {w}".encode("ascii", "replace").decode("ascii"))
                 return code
@@ -394,7 +394,7 @@ def _titles(args: argparse.Namespace) -> int:
                     print(f"act {r['act']:<10} anchor {r['anchor']:>3} ({r['t']:8.2f} s) event {r['event'] or '-':<12} "
                           f"section {'-' if r['section_anchor'] is None else r['section_anchor']:>3} "
                           f"offset {'-' if r['offset'] is None else format(r['offset'], '+d'):>3}  "
-                          f"{r['proposal'] or 'no section start within the window'}")
+                          f"{r['proposal'] or ('on the section start' if r['offset'] == 0 else 'no section start within the window')}")
                 return 0
             code = 0
     except (tt.TitlesError, FileExistsError) as exc:

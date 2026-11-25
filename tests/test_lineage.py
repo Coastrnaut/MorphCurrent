@@ -53,8 +53,8 @@ def test_lineage_synthetic():
 def test_lineage_film():
     plan = compile_plan(load_storyboard(FILM), repo_root=REPO, storyboard_bytes=FILM.read_bytes())
     rep = ln.lineage(plan, limit=12)
-    assert rep["per_act_max"] == {"spark": 17, "power": 9, "signal": 9, "logic": 28, "scale": 28}
-    assert rep["max_depth"] == 28 and len(rep["over_limit"]) == 5 + 16 + 16
+    assert rep["per_act_max"] == {"spark": 12, "power": 14, "signal": 14, "logic": 26, "scale": 25}
+    assert rep["max_depth"] == 26 and len(rep["over_limit"]) == 2 + 2 + 14 + 13  # F38 act boundaries
 
 
 # --- US2 ------------------------------------------------------------------------------------------
@@ -177,7 +177,7 @@ def test_shared_check(tmp_path):
 
 def test_cli(tmp_path, capsys):
     assert cli.main(["lineage", str(FILM)]) == 1
-    assert json.loads(capsys.readouterr().out)["max_depth"] == 28
+    assert json.loads(capsys.readouterr().out)["max_depth"] == 26
     out = tmp_path / "p.yaml"
     assert cli.main(["lineage-propose", str(FILM), "--out", str(out)]) == 0
     res = json.loads(capsys.readouterr().out)

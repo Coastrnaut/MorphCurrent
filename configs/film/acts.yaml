@@ -1,19 +1,28 @@
 # F32 act structure for the full-song engineering film: the ten concept-bank eras grouped into five acts.
 # Each act opens with a fresh text-to-image anchor and continues with reference edits (limits lineage drift).
+# start_anchor (F38, owner decision 2026-11-24): act boundaries moved onto music section starts proposed by
+# `act-boundaries` - Power 18 -> 13 (48.25 s), Logic 38 -> 43 (162.75 s), Scale 67 -> 70 (266.5 s); Signal stays
+# at 28 (no section start within +/-6 anchors). Eras remain the thematic grouping; subjects near a boundary
+# open the neighbouring act.
 version: 1
 acts:
   - id: spark
+    start_anchor: 0
     title: Spark
     eras: [natural electricity, early storage]
   - id: power
+    start_anchor: 13
     title: Power
     eras: [generation and grid]
   - id: signal
+    start_anchor: 28
     title: Signal
     eras: [signals and communication]
   - id: logic
+    start_anchor: 43
     title: Logic
     eras: [vacuum-tube computing, solid state, integrated circuits]
   - id: scale
+    start_anchor: 70
     title: Scale
     eras: [microprocessors, parallel and GPU compute, data centers and AI hardware]

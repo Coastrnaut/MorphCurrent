@@ -22,6 +22,7 @@ RECIPE_VERSION = 1
 CHAR_WIDTH = 0.55      # average advance of Arial as a fraction of the font size
 TITLE_SAFE = 0.90      # central fraction of the frame that is title-safe
 MIN_SIZE = 0.035       # smallest size (fraction of frame height) when shrinking
+LINE_GAP = 1.2         # line pitch as a multiple of the font size for multi-line blocks
 ENCODER = ["-c:v", "libx264", "-crf", "18", "-preset", "medium", "-pix_fmt", "yuv420p", "-c:a", "copy"]
 DEFAULT_ACTS = Path("configs/film/acts.yaml")
 
@@ -35,6 +36,8 @@ class TitlesError(ValueError):
 def _check_block(where: str, block: dict, *, need_text: bool = True, fade: float = 0.5) -> None:
     if need_text and not str(block.get("text") or "").strip():
         raise TitlesError(f"{where}: text must not be empty")
+    if "text_vertical" in block and not str(block.get("text_vertical") or "").strip():
+        raise TitlesError(f"{where}: text_vertical must not be empty")
     dur = block.get("duration_s")
     if not isinstance(dur, (int, float)) or dur <= 0:
         raise TitlesError(f"{where}: duration_s must be > 0")
@@ -100,8 +103,12 @@ def _act_titles(acts_path: str | Path | None) -> dict:
 
 
 def resolve(titles: dict, storyboard, *, duration_s: float | None = None,
-            acts_path: str | Path | None = None) -> dict:
-    """Overlays with resolved start/end seconds, covered anchors, and warnings (deferred, clipped, overlap)."""
+            acts_path: str | Path | None = None, vertical: bool = False) -> dict:
+    """Overlays with resolved start/end seconds, covered anchors, and warnings (deferred, clipped, overlap).
+
+    With ``vertical`` a block's optional ``text_vertical`` (may contain line breaks) replaces its text so one
+    copy serves 16:9 and the 9:16 crop.
+    """
     sb = _storyboard(storyboard)
     fps = float(sb.render.generation_fps)
     anchors = anchor_times(sb)
@@ -113,7 +120,10 @@ def resolve(titles: dict, storyboard, *, duration_s: float | None = None,
     warnings: list[str] = []
 
     def add(oid, kind, block, start, text=None):
-        overlays.append({"id": oid, "kind": kind, "text": str(text if text is not None else block["text"]).strip(),
+        if text is None:
+            text = block["text_vertical"] if vertical and block.get("text_vertical") else block["text"]
+        lines = [ln.strip() for ln in str(text).strip().splitlines() if ln.strip()]
+        overlays.append({"id": oid, "kind": kind, "text": "\n".join(lines),
                          "start_s": round(float(start), 3),
                          "end_s": round(float(start) + float(block["duration_s"]), 3),
                          "fade_s": fade, "size": float(block["size"]), "y": float(block["y"]), "notes": []})
@@ -184,7 +194,8 @@ def safe_check(overlays: list[dict], width: int, height: int, *, vertical: bool 
     floor_px = min_size * height
     for ov in overlays:
         size_px = ov["size"] * height
-        chars = max(1, len(ov["text"]))
+        lines = ov["text"].split("\n")
+        chars = max(1, max(len(ln) for ln in lines))
         used = size_px
         flagged_any = False
         for name, limit in areas:
@@ -201,7 +212,8 @@ def safe_check(overlays: list[dict], width: int, height: int, *, vertical: bool 
             rows.append({"id": ov["id"], "area": name, "fits": fits, "size_px": round(size_px, 1),
                          "size_used_px": round(size_area, 1), "width_px": round(width_px, 1),
                          "limit_px": round(limit, 1), "flagged": flagged})
-        top, bottom = ov["y"] * height - used / 2, ov["y"] * height + used / 2
+        block_h = used * (1 + LINE_GAP * (len(lines) - 1)) if len(lines) > 1 else used
+        top, bottom = ov["y"] * height - block_h / 2, ov["y"] * height + block_h / 2
         margin = (1 - TITLE_SAFE) / 2 * height
         if top < margin - 1e-6 or bottom > height - margin + 1e-6:
             rows.append({"id": ov["id"], "area": "vertical", "fits": False, "size_px": round(size_px, 1),
@@ -235,8 +247,10 @@ def build_filter(overlays: list[dict], sizes: dict, height: int, color: str = "w
     for n, ov in enumerate(overlays):
         s, e = ov["start_s"], ov["end_s"]
         y = round(ov["y"] * height)
+        size = sizes[ov["id"]]
+        multi = (f":text_align=C:line_spacing={round(size * (LINE_GAP - 1))}" if "\n" in ov["text"] else "")
         parts.append(
-            f"drawtext=fontfile=font.ttf:textfile=t{n:02d}.txt:expansion=none:fontsize={sizes[ov['id']]}"
+            f"drawtext=fontfile=font.ttf:textfile=t{n:02d}.txt:expansion=none:fontsize={size}{multi}"
             f":fontcolor={color}:borderw=2:bordercolor=black@0.6:x=(w-text_w)/2:y={y}-text_h/2"
             f":alpha='{_alpha(s, e, ov['fade_s'])}':enable='between(t,{s:.3f},{e:.3f})'")
     return ",".join(parts) if parts else "null"
@@ -294,7 +308,7 @@ def render(movie: str | Path, out: str | Path, titles: str | Path | dict, storyb
         raise TitlesError("ffmpeg not found on PATH")
     probe_in = probe_video(movie)
     duration = probe_in["duration_s"] or (probe_in["frame_count"] / probe_in["fps"])
-    resolved = resolve(defn, storyboard, duration_s=duration, acts_path=acts_path)
+    resolved = resolve(defn, storyboard, duration_s=duration, acts_path=acts_path, vertical=vertical)
     safe = safe_check(resolved["overlays"], probe_in["width"], probe_in["height"], vertical=vertical)
     color = str((defn.get("defaults") or {}).get("color", "white"))
     rec = build_recipe(resolved, probe_in["width"], probe_in["height"], probe_in["fps"], font, safe["sizes"], color)

@@ -56,3 +56,8 @@ MVP = US1 (resolve + render). Then US2 safe areas, US3 boundary report, CLI and 
 
 - [X] T016 Apply lower-third defaults (size 0.05, y 0.88) when omitted in src/morph_studio/titles.py `load_titles`, with a test, per data-model.md (partial)
 - [X] T017 Make `titles-check` print a one-line-per-overlay ASCII summary unless `--json` is given in src/morph_studio/cli.py, with a test, per contracts/cli.md (partial)
+
+## Phase 8: Owner decisions (2026-11-24)
+
+- [X] T018 Apply the act-boundary proposals chosen by the owner (Power 18→13, Logic 38→43, Scale 67→70): `start_anchor` per act in configs/film/acts.yaml, `film.act_starts` in src/morph_studio/film.py, regenerate configs/sequences/engineering-film.yaml, tests updated
+- [X] T019 Two-line opening for the 9:16-safe copy chosen by the owner: optional `text_vertical` with line breaks (centred `text_align=C`, longest line sets the width) in src/morph_studio/titles.py and configs/film/titles.yaml, with tests
