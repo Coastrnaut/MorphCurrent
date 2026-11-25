@@ -360,6 +360,27 @@ def queue_idle(url: str = "http://127.0.0.1:8188") -> bool | None:
     return not data.get("queue_running") and not data.get("queue_pending")
 
 
+def wait_queue_quiet(minutes: float, *, poll_s: float = 30.0, idle=queue_idle, sleep=None, now=None,
+                     max_wait_s: float | None = None) -> float:
+    """Block until the ComfyUI queue has been idle for ``minutes`` without a break (read-only polling).
+    Short gaps between another run's jobs never count, so a stopped run is detected safely."""
+    import time
+    sleep = sleep or time.sleep
+    now = now or time.monotonic
+    start = now()
+    quiet_since = None
+    while True:
+        if idle() is True:
+            quiet_since = quiet_since if quiet_since is not None else now()
+            if now() - quiet_since >= minutes * 60:
+                return round(now() - start, 1)
+        else:
+            quiet_since = None
+        if max_wait_s is not None and now() - start > max_wait_s:
+            raise ProductionError(f"queue not quiet for {minutes} min within {max_wait_s} s")
+        sleep(poll_s)
+
+
 def wait_for_previous(log: str | Path, expected: int, *, poll_s: float = 60.0, idle=queue_idle, sleep=None,
                       now=None, max_wait_s: float | None = None) -> dict:
     """Block until a previous `film-produce` run is over: its log has ``expected`` batch entries or a failed

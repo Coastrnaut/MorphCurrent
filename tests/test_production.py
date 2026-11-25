@@ -242,3 +242,19 @@ def test_wait_for_previous_run(tmp_path):
     with pytest.raises(pr.ProductionError, match="still busy"):
         pr.wait_for_previous(tmp_path / "none.jsonl", 3, poll_s=0, idle=lambda: True, sleep=lambda _: None,
                              now=iter(range(100)).__next__, max_wait_s=5)
+
+
+
+def test_wait_queue_quiet_ignores_short_gaps():
+    """Owner 2026-11-24: after the owner stops a run, start the anchor render only once the queue is truly idle."""
+    clock = {"t": 0.0}
+    pattern = [False, True, False, True, True, True, True, True, True, True]  # a 1-poll gap does not count
+    answers = iter(pattern + [True] * 50)
+
+    def sleep(s):
+        clock["t"] += s
+
+    waited = pr.wait_queue_quiet(2, poll_s=30, idle=lambda: next(answers), sleep=sleep, now=lambda: clock["t"])
+    assert waited >= 2 * 60 + 90  # quiet only counted from the third True after the last busy poll
+    with pytest.raises(pr.ProductionError, match="not quiet"):
+        pr.wait_queue_quiet(1, poll_s=30, idle=lambda: False, sleep=sleep, now=lambda: clock["t"], max_wait_s=60)

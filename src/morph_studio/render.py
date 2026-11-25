@@ -75,7 +75,7 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
                sample_vram: bool = False, poll_seconds: float = 2,
                probe: Callable[[Path], dict] = probe_video, max_jobs: int | None = None,
                max_gpu_s: float | None = None, min_free_gb: float = 2.0,
-               disk_usage: Callable | None = None) -> dict:
+               disk_usage: Callable | None = None, anchors_only: bool = False) -> dict:
     root = Path(repo_root)
     plan = build_plan(storyboard_path, profiles, root)
     if plan["blocked"]:  # preflight: nothing contacted, nothing written
@@ -111,7 +111,8 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
         budget.on_check = lock.heartbeat
     try:
         result = _stages(manifest, plan, storyboard, specs, req, client_factory, root, runs_root,
-                         confirm_gpu, allow_busy_queue, sample_vram, poll_seconds, probe, budget)
+                         confirm_gpu, allow_busy_queue, sample_vram, poll_seconds, probe, budget,
+                         anchors_only=anchors_only)
     finally:
         if lock:
             lock.release()
@@ -123,7 +124,7 @@ def run_render(storyboard_path: str | Path, client_factory: Callable[[], ComfyCl
 
 
 def _stages(manifest, plan, storyboard, specs, req, client_factory, root, runs_root, confirm_gpu,
-            allow_busy_queue, sample_vram, poll_seconds, probe, budget):
+            allow_busy_queue, sample_vram, poll_seconds, probe, budget, anchors_only=False):
     with client_factory() as client:
         sampler = VramSampler() if sample_vram and confirm_gpu else None
         if sampler:
@@ -145,6 +146,16 @@ def _stages(manifest, plan, storyboard, specs, req, client_factory, root, runs_r
             if not chain.complete:
                 state = "validated" if not confirm_gpu else "blocked"
                 return _finish(manifest, state, blocked=chain.blocked)
+            if anchors_only:  # anchor review before any bridge: the same jobs are cache hits in the full run
+                anchor_paths = [anchor_image_path(chain.jobs[s.id]) for s in specs]
+                try:
+                    sheet = manifest.dir / "anchors_contact_sheet.png"
+                    if not sheet.exists():
+                        contact_sheet(anchor_paths, sheet)
+                    manifest.record("contact_sheet", str(sheet))
+                except ProbeUnavailable as exc:
+                    manifest.record("contact_sheet", f"skipped: {exc}")
+                return _finish(manifest, "anchors_complete", anchors=len(chain.jobs))
             bridges = run_bridge_stage(plan, chain.jobs, client=client, runs_root=runs_root,
                                        repo_root=root, submit=confirm_gpu,
                                        allow_busy_queue=allow_busy_queue, poll_seconds=poll_seconds,

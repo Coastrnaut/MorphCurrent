@@ -118,3 +118,18 @@ def test_cli_status_is_read_only(image_repo, capsys):
     result = run_render(small_storyboard(image_repo), fake.client, **kw(image_repo))
     assert cli.main(["render", "--status", result["run_dir"]]) == 0
     assert json.loads(capsys.readouterr().out)["status"] == "validated"
+
+
+def test_anchors_only_then_full_render_reuses_anchors(image_repo):
+    """Owner 2026-11-24: render and review every film anchor before any bridge; the full run reuses them."""
+    fake = FakeComfy()
+    fake.real_video = True
+    sb = small_storyboard(image_repo)
+    first = run_render(sb, fake.client, confirm_gpu=True, anchors_only=True, **kw(image_repo))
+    assert first["status"] == "anchors_complete" and fake.prompt_posts == 3  # 3 anchors, no bridges
+    status = render_status(Path(first["run_dir"]))
+    assert all(v["state"] == "verified" for k, v in status["stages"].items() if k.startswith("anchor:"))
+    assert all(v["state"] != "verified" for k, v in status["stages"].items() if k.startswith("bridge:"))
+    full = run_render(sb, fake.client, confirm_gpu=True, **kw(image_repo))
+    assert full["status"] == "awaiting_review" and fake.prompt_posts == 5  # only the 2 bridges were new
+    assert cli.RENDER_EXIT["anchors_complete"] == 0

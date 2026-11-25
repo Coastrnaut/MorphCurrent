@@ -144,6 +144,11 @@ def _render(args: argparse.Namespace) -> int:
         raise ValueError("render needs STORYBOARD (or --status RUN_DIR)")
     profiles = {k: v for k, v in (("text_to_image", args.t2i_profile), ("reference_edit", args.edit_profile),
                                   ("wan_flf2v", args.bridge_profile)) if v}
+    if getattr(args, "wait_idle", None) and args.confirm_gpu and not args.dry_run:
+        from .production import wait_queue_quiet
+        print(f"waiting until the ComfyUI queue has been idle for {args.wait_idle} min...", file=sys.stderr, flush=True)
+        waited = wait_queue_quiet(args.wait_idle)
+        print(f"queue quiet (waited {waited} s); starting", file=sys.stderr, flush=True)
     if args.dry_run:
         report = dry_run(args.storyboard, profiles)
         print(json.dumps(report, indent=2, ensure_ascii=False))
@@ -152,7 +157,8 @@ def _render(args: argparse.Namespace) -> int:
                         profiles=profiles, confirm_gpu=args.confirm_gpu,
                         accept_heuristics=args.accept_heuristics,
                         allow_busy_queue=args.allow_busy_queue, sample_vram=args.sample_vram,
-                        max_jobs=args.max_jobs, max_gpu_s=args.max_gpu_s, min_free_gb=args.min_free_gb)
+                        max_jobs=args.max_jobs, max_gpu_s=args.max_gpu_s, min_free_gb=args.min_free_gb,
+                        anchors_only=getattr(args, "anchors_only", False))
     print(json.dumps(result, indent=2, ensure_ascii=False))
     if result["status"] == "awaiting_review":
         print("REVIEW: inspect the clips/contact sheet, then `morphcurrent review RUN_DIR TASK approved` "
@@ -163,7 +169,7 @@ def _render(args: argparse.Namespace) -> int:
     return RENDER_EXIT.get(result["status"], 5)
 
 
-RENDER_EXIT = {"complete": 0, "validated": 0, "blocked": 6, "awaiting_review": 7,
+RENDER_EXIT = {"complete": 0, "validated": 0, "anchors_complete": 0, "blocked": 6, "awaiting_review": 7,
                "rerender_needed": 7, "paused_budget": 8, "blocked_disk": 9}
 
 
@@ -1193,6 +1199,8 @@ def main(argv: list[str] | None = None) -> int:
     render.add_argument("--dry-run", action="store_true", help="Plan only: no network, no writes")
     render.add_argument("--status", metavar="RUN_DIR", help="Read-only run summary")
     render.add_argument("--confirm-gpu", action="store_true", help="Allow this run's GPU jobs")
+    render.add_argument("--wait-idle", type=float, default=None, metavar="MIN", help="First wait until the queue has been idle MIN minutes in a row")
+    render.add_argument("--anchors-only", action="store_true", help="Render only the anchor chain (review all anchors before any bridge)")
     render.add_argument("--accept-heuristics", action="store_true",
                         help="Join without human review when QA heuristics raise no flags")
     render.add_argument("--allow-busy-queue", action="store_true")
