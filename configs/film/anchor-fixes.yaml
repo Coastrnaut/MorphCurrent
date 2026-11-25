@@ -676,3 +676,87 @@ fixes:
       in frame and centered with space around it, nothing cropped, resting directly on the dark surface with no
       base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark
       background. Dominant shapes: board, rod, dial; materials: phenolic board, ferrite, copper
+  # --- iteration 3c (pass 3, #52-#80 judged) ------------------------------------------------------------
+  # Pass: silicon-ingot, polished-wafer-stack, planar-transistor-die, discrete-component-board, logic-module-card,
+  # early-flat-pack-ic, dip-chip-in-socket, bond-wire-fan, resist-coated-wafer, patterned-wafer-grid,
+  # first-generation-cpu-die, ceramic-cpu-package, home-computer-motherboard, laptop-mainboard,
+  # many-core-die-tiles, pixel-shader-lattice. Repeat failures on close-up chip anchors: edits keep the parent's
+  # tight framing -> fresh keyframes with a 'whole object small in the frame with wide margins' composition.
+  - anchor: diffusion-furnace-boat
+    apply: prompt
+    iteration: 3
+    problem: "the quartz boat runs off both sides of the frame (cropping)"
+    prompt: >-
+      Replace the previous object completely with a short quartz boat holding a row of upright silicon wafers
+      glowing orange inside the open mouth of a tube furnace, the whole boat and both of its ends visible with space
+      around it. Keep only the lighting, colour grade and dark background. Dominant shapes: row of discs, tube;
+      materials: quartz, silicon
+  - anchor: photomask-reticle
+    apply: fresh
+    iteration: 3
+    problem: "repeats the bond-wire fan die instead of a quartz photomask plate (carryover, subject)"
+    prompt: >-
+      a square quartz photomask plate covered with a dense fine chrome circuit pattern, lying flat and lit by soft
+      yellow cleanroom light; dominant shapes: square plate, fine pattern; materials: quartz, chrome
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: wafer-dicing-saw
+    apply: fresh
+    iteration: 3
+    problem: "(it 2 and 3) a water jet on a wafer; still no saw blade (subject)"
+    prompt: >-
+      a silicon wafer on sticky film in a dicing machine: a thin round diamond saw blade standing on its edge,
+      spinning and cutting a straight line through the wafer, a fine coolant spray, a grid of finished cut lines on
+      the wafer; dominant shapes: disc, grid lines, blade; materials: silicon, diamond, water
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: ic-die-macro
+    apply: fresh
+    iteration: 3
+    problem: "a chip package lying on a wafer instead of a die macro (subject)"
+    prompt: >-
+      a single rectangular integrated circuit die seen from directly above under magnification: distinct blocks of
+      logic and memory arrays and a ring of square bond pads around the edge, on a dark background; dominant shapes:
+      rectangle, blocks, pad ring; materials: silicon, aluminium, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: memory-chip-array
+    apply: fresh
+    iteration: 3
+    problem: "a cropped wafer grid instead of one memory die (subject, cropping)"
+    prompt: >-
+      a single memory chip die seen from directly above: a vast regular checkerboard of memory cells filling most of
+      the die, with thin row and column decoder strips along its edges; dominant shapes: checkerboard, edges;
+      materials: silicon, polysilicon
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: cross-section-transistor-layers
+    apply: fresh
+    iteration: 3
+    problem: "plain copper sheets on a package; no transistor gates or vias (subject)"
+    prompt: >-
+      a cutaway cross-section block of a chip: a row of tiny transistor gates on silicon at the bottom and many
+      stacked copper wiring levels above them, joined by vertical vias, like a miniature city skyline; dominant
+      shapes: stacked layers, vias; materials: silicon, copper, dielectric
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: multi-core-die
+    apply: fresh
+    iteration: 3
+    problem: "(it 2 and 3) a cropped close-up of a package corner (cropping)"
+    prompt: >-
+      a multi-core processor die seen from directly above: one rectangular silicon die divided into several
+      identical core tiles arranged around a shared cache block in the middle; dominant shapes: tiles, central
+      block; materials: silicon, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  - anchor: graphics-card-board
+    apply: fresh
+    iteration: 3
+    problem: "(it 2 and 3) a cropped close-up of one chip; the long card never appears (subject, cropping)"
+    prompt: >-
+      a whole graphics card with its board exposed: one long rectangular circuit board with a large square processor
+      in the centre surrounded by memory chips and rows of power components and a metal bracket at one end; dominant
+      shapes: long board, central square; materials: fibreglass, silicon, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
