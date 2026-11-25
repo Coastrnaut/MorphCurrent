@@ -971,3 +971,53 @@ fixes:
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
       negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "two chips", "multiple chips"]
+  # --- iteration 4c (pass 4, #60-#86 judged) ------------------------------------------------------------
+  # Pass: bond-wire-fan, photomask-reticle (fixed), resist-coated-wafer, wafer-dicing-saw (fixed: a real blade),
+  # memory-chip-array (fixed), cross-section-transistor-layers (fixed), ceramic-cpu-package,
+  # home-computer-motherboard, multi-core-die (fixed), laptop-mainboard, graphics-card-board (fixed),
+  # many-core-die-tiles, pixel-shader-lattice, stacked-memory-towers (fixed), accelerator-package-lid (fixed),
+  # accelerator-module-coldplate, compute-tray, interconnect-switch-board.
+  - anchor: patterned-wafer-grid
+    apply: prompt
+    iteration: 4
+    problem: "the wafer runs off the left edge of the frame (cropping)"
+    prompt: >-
+      Replace the previous object completely with one whole round silicon wafer covered in a neat grid of identical
+      patterned chips with an iridescent sheen, lying flat, the entire circle of the wafer inside the frame with
+      dark space around it. Keep only the lighting, colour grade and dark background. Dominant shapes: disc, grid;
+      materials: silicon
+  - anchor: ic-die-macro
+    apply: fresh
+    iteration: 4
+    problem: "(it 2-4) a packaged chip instead of a bare die under magnification (subject)"
+    seed: 20250108
+    prompt: >-
+      a bare rectangular silicon integrated circuit die with no package, seen from directly above under a
+      microscope: its surface divided into distinct rectangular blocks of logic and shimmering memory arrays, with a
+      ring of tiny square bond pads all around the edge; dominant shapes: rectangle, blocks, pad ring; materials:
+      silicon, aluminium, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "package", "pins", "circuit board", "socket"]
+  - anchor: first-generation-cpu-die
+    apply: fresh
+    iteration: 4
+    problem: "printed words on the chip (artefacts: text); a card instead of a die"
+    seed: 20250109
+    prompt: >-
+      an early 1970s microprocessor: a small bare silicon die with a few thousand transistors visible as fine
+      rectilinear patterns, mounted in the open cavity of a white ceramic package with thin gold bond wires to its
+      pins, seen from above at a slight angle; no lettering anywhere; dominant shapes: small square die, cavity,
+      wires; materials: silicon, ceramic, gold
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "printed text", "words", "card", "circuit board"]
+  - anchor: silicon-interposer
+    apply: prompt
+    iteration: 4
+    problem: "the plate runs off the frame on both sides (cropping)"
+    prompt: >-
+      Replace the previous object completely with a thin square silicon interposer plate with a dense regular grid
+      of tiny copper through-holes, lying flat, the whole plate inside the frame with dark space around it. Keep
+      only the lighting, colour grade and dark background. Dominant shapes: square plate, dot grid; materials:
+      silicon, copper
