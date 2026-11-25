@@ -224,3 +224,19 @@ def test_cli(tmp_path, capsys):
     capsys.readouterr()
     assert cli.main(["look-check", str(tmp_path / "f.yaml"), "--look", "steel-accent"]) == 0
     capsys.readouterr().out.encode("ascii")
+
+
+def test_setting_override_keeps_look(tmp_path):
+    """Anchor review 2026-11-24: natural-scene anchors override description/composition, not palette/lighting."""
+    import yaml as _yaml
+    from morph_studio import look as lk
+    from morph_studio.accuracy import load_plan
+    from morph_studio.schema import load_storyboard
+    film = REPO / "configs/sequences/engineering-film.yaml"
+    data = _yaml.safe_load(film.read_text(encoding="utf-8"))
+    natural = [a["id"] for a in data["anchors"] if "description" in (a.get("style_override") or {})]
+    assert "aurora-curtain" in natural and "storm-cell-over-plain" in natural
+    language = lk.load_language(REPO / "configs/film/visual-language.yaml",
+                                ["spark", "power", "signal", "logic", "scale"])
+    rep = lk.look_check(load_plan(film, REPO), load_storyboard(film), language)
+    assert rep["ok"], rep["mismatches"][:3]

@@ -62,6 +62,15 @@ def act_starts(items: list[dict], n_anchors: int) -> list[tuple[int, str]] | Non
     return [(int(g), a["id"]) for g, a in zip(given, items)]
 
 
+def _edit_prompt(e: dict, parent: dict) -> str:
+    """Instruction-form prompt for a reference edit (anchor review 2026-11-24): Qwen Image Edit follows
+    instructions, and a plain description of the new subject made it keep the parent's object and layout."""
+    return (f"Replace the {parent['subject']} completely with {e['subject']}: {e['description']}. Remove every part "
+            f"of the previous object and its setting that does not belong to the new subject. Keep only the lighting, "
+            f"colour grade, camera angle and dark background. Dominant shapes: {', '.join(e['shapes'])}; materials: "
+            f"{', '.join(e['materials'])}")
+
+
 def _anchor_prompt(e: dict) -> str:
     return (f"{e['subject']}: {e['description']}; dominant shapes: {', '.join(e['shapes'])}; "
             f"materials: {', '.join(e['materials'])}")
@@ -96,6 +105,8 @@ def build_storyboard(sync_plan: dict, bank: dict, acts: dict, *, audio: str | No
         anchor = {"id": e["id"], "prompt": _anchor_prompt(e), "chapter": act}
         if prev is not None and prev["chapter"] == act:
             anchor.update(generation="reference_edit", reference=prev["id"])
+            if acts.get("edit_prompts") == "instruction":
+                anchor["prompt"] = _edit_prompt(e, entries[idx - 1])
         else:
             anchor["generation"] = "text_to_image"
         out_anchors.append(anchor)

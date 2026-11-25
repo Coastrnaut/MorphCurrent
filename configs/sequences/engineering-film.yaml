@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt
 schema_version: 1
 name: engineering-film
 render:
@@ -52,8 +52,10 @@ anchors:
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
 - id: fulgurite-glass-tube
-  prompt: 'fulgurite: lightning-fused sand tube: a hollow, rough, root-like tube of glassy fused sand with a crusted exterior;
-    dominant shapes: hollow tube, roots; materials: fused silica, sand'
+  prompt: 'Replace the forked lightning bolt completely with fulgurite: lightning-fused sand tube: a hollow, rough, root-like
+    tube of glassy fused sand with a crusted exterior. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    hollow tube, roots; materials: fused silica, sand'
   chapter: spark
   generation: reference_edit
   reference: forked-lightning-bolt
@@ -64,8 +66,10 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: spark-between-spheres
-  prompt: 'spark jumping between two brass spheres: two polished metal spheres on insulating posts with a thin violet spark
-    bridging the gap; dominant shapes: sphere, gap; materials: brass, glass'
+  prompt: 'Replace the fulgurite: lightning-fused sand tube completely with spark jumping between two brass spheres: two polished
+    metal spheres on insulating posts with a thin violet spark bridging the gap. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: sphere, gap; materials: brass, glass'
   chapter: spark
   generation: reference_edit
   reference: fulgurite-glass-tube
@@ -76,8 +80,10 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: rubbed-amber-and-fur
-  prompt: 'polished amber attracting small fibres: a honey-coloured amber rod lifting tiny fibres and dust after being rubbed
-    with fur; dominant shapes: rod, fibres; materials: amber, fur'
+  prompt: 'Replace the spark jumping between two brass spheres completely with polished amber attracting small fibres: a honey-coloured
+    amber rod lifting tiny fibres and dust after being rubbed with fur. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: rod, fibres; materials: amber, fur'
   chapter: spark
   generation: independent_t2i
   reference: spark-between-spheres
@@ -148,8 +154,10 @@ anchors:
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
 - id: glass-leyden-jar
-  prompt: 'glass storage jar coated in metal foil: a thick glass jar wrapped inside and out with tin foil, a brass rod and
-    chain rising from a wooden stopper; dominant shapes: cylinder, rod; materials: glass, tin foil, brass'
+  prompt: 'Replace the charged particles drifting in a beam of light completely with glass storage jar coated in metal foil:
+    a thick glass jar wrapped inside and out with tin foil, a brass rod and chain rising from a wooden stopper. Remove every
+    part of the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade,
+    camera angle and dark background. Dominant shapes: cylinder, rod; materials: glass, tin foil, brass'
   chapter: spark
   generation: reference_edit
   reference: charged-dust-cloud
@@ -160,8 +168,10 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: battery-of-jars
-  prompt: 'wooden rack of linked foil jars: a row of foil-lined glass jars in a wooden tray, their rods joined by a brass
-    bar; dominant shapes: row of cylinders, bar; materials: glass, foil, wood'
+  prompt: 'Replace the glass storage jar coated in metal foil completely with wooden rack of linked foil jars: a row of foil-lined
+    glass jars in a wooden tray, their rods joined by a brass bar. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: row of cylinders, bar; materials: glass, foil, wood'
   chapter: spark
   generation: reference_edit
   reference: glass-leyden-jar
@@ -172,8 +182,10 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: voltaic-pile-column
-  prompt: 'voltaic pile of stacked discs: a vertical column of alternating zinc and copper discs separated by brine-soaked
-    cloth, held by glass rods; dominant shapes: stacked discs, column; materials: zinc, copper, cloth'
+  prompt: 'Replace the wooden rack of linked foil jars completely with voltaic pile of stacked discs: a vertical column of
+    alternating zinc and copper discs separated by brine-soaked cloth, held by glass rods. Remove every part of the previous
+    object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and
+    dark background. Dominant shapes: stacked discs, column; materials: zinc, copper, cloth'
   chapter: spark
   generation: reference_edit
   reference: battery-of-jars
@@ -208,8 +220,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: carbon-zinc-dry-cell
-  prompt: 'cutaway dry cell: a cylindrical zinc can cut open to show a central carbon rod surrounded by dark paste; dominant
-    shapes: cylinder, central rod; materials: zinc, carbon, paste'
+  prompt: 'Replace the two-fluid wet cell completely with cutaway dry cell: a cylindrical zinc can cut open to show a central
+    carbon rod surrounded by dark paste. Remove every part of the previous object and its setting that does not belong to
+    the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: cylinder, central
+    rod; materials: zinc, carbon, paste'
   chapter: power
   generation: reference_edit
   reference: porous-pot-wet-cell
@@ -220,8 +234,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: lead-acid-accumulator
-  prompt: 'glass-cased lead-acid accumulator: a clear glass case holding grey lead plates in sulfuric acid, terminals on top;
-    dominant shapes: parallel plates, box; materials: lead, glass, acid'
+  prompt: 'Replace the cutaway dry cell completely with glass-cased lead-acid accumulator: a clear glass case holding grey
+    lead plates in sulfuric acid, terminals on top. Remove every part of the previous object and its setting that does not
+    belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: parallel
+    plates, box; materials: lead, glass, acid'
   chapter: power
   generation: reference_edit
   reference: carbon-zinc-dry-cell
@@ -257,8 +273,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: friction-machine-globe
-  prompt: 'hand-cranked friction generator: a glass globe on an axle spun by a crank, rubbing against a leather pad, a metal
-    comb collecting charge; dominant shapes: sphere, axle, crank; materials: glass, leather, brass'
+  prompt: 'Replace the stack of glass plates with foil completely with hand-cranked friction generator: a glass globe on an
+    axle spun by a crank, rubbing against a leather pad, a metal comb collecting charge. Remove every part of the previous
+    object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and
+    dark background. Dominant shapes: sphere, axle, crank; materials: glass, leather, brass'
   chapter: power
   generation: reference_edit
   reference: glass-plate-condenser-stack
@@ -269,8 +287,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: copper-disc-dynamo
-  prompt: 'copper disc spinning between magnet poles: a copper disc on a horizontal axle turning between the poles of a horseshoe
-    magnet, brushes at rim and axle; dominant shapes: disc, horseshoe; materials: copper, iron'
+  prompt: 'Replace the hand-cranked friction generator completely with copper disc spinning between magnet poles: a copper
+    disc on a horizontal axle turning between the poles of a horseshoe magnet, brushes at rim and axle. Remove every part
+    of the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade,
+    camera angle and dark background. Dominant shapes: disc, horseshoe; materials: copper, iron'
   chapter: power
   generation: reference_edit
   reference: friction-machine-globe
@@ -281,8 +301,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: hand-cranked-coil-generator
-  prompt: 'hand-cranked coil generator: a wooden base with a crank driving a coil-wound armature inside a stack of horseshoe
-    magnets; dominant shapes: coil, horseshoes, crank; materials: copper wire, iron, wood'
+  prompt: 'Replace the copper disc spinning between magnet poles completely with hand-cranked coil generator: a wooden base
+    with a crank driving a coil-wound armature inside a stack of horseshoe magnets. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: coil, horseshoes, crank; materials: copper wire, iron, wood'
   chapter: power
   generation: reference_edit
   reference: copper-disc-dynamo
@@ -293,8 +315,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: belt-driven-dynamo
-  prompt: 'belt-driven dynamo: a heavy cast-iron dynamo with a ring armature and commutator, a leather belt to a pulley; dominant
-    shapes: ring, pulley, belt; materials: cast iron, copper, leather'
+  prompt: 'Replace the hand-cranked coil generator completely with belt-driven dynamo: a heavy cast-iron dynamo with a ring
+    armature and commutator, a leather belt to a pulley. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    ring, pulley, belt; materials: cast iron, copper, leather'
   chapter: power
   generation: reference_edit
   reference: hand-cranked-coil-generator
@@ -305,8 +329,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: steam-engine-flywheel
-  prompt: 'steam engine with flywheel driving a generator: a large spoked flywheel and brass flyball governor beside a riveted
-    boiler, steam venting; dominant shapes: wheel, spokes, spheres; materials: cast iron, brass, steam'
+  prompt: 'Replace the belt-driven dynamo completely with steam engine with flywheel driving a generator: a large spoked flywheel
+    and brass flyball governor beside a riveted boiler, steam venting. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: wheel, spokes, spheres; materials: cast iron, brass, steam'
   chapter: power
   generation: reference_edit
   reference: belt-driven-dynamo
@@ -317,8 +343,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: water-turbine-runner
-  prompt: 'water turbine runner: a bronze turbine runner with curved buckets, water spraying across it in a concrete pit;
-    dominant shapes: radial blades, ring; materials: bronze, water, concrete'
+  prompt: 'Replace the steam engine with flywheel driving a generator completely with water turbine runner: a bronze turbine
+    runner with curved buckets, water spraying across it in a concrete pit. Remove every part of the previous object and its
+    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: radial blades, ring; materials: bronze, water, concrete'
   chapter: power
   generation: reference_edit
   reference: steam-engine-flywheel
@@ -329,8 +357,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: generator-stator-hall
-  prompt: 'giant generator stator: a circular stator ring lined with copper bars in a vast turbine hall, a crane overhead;
-    dominant shapes: ring, radial bars; materials: copper, steel'
+  prompt: 'Replace the water turbine runner completely with giant generator stator: a circular stator ring lined with copper
+    bars in a vast turbine hall, a crane overhead. Remove every part of the previous object and its setting that does not
+    belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: ring,
+    radial bars; materials: copper, steel'
   chapter: power
   generation: reference_edit
   reference: water-turbine-runner
@@ -341,8 +371,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: laminated-transformer-core
-  prompt: 'laminated iron transformer core: stacked thin grain-oriented steel sheets forming a rectangular core with two copper
-    windings; dominant shapes: rectangle, stacked sheets, coils; materials: silicon steel, copper'
+  prompt: 'Replace the giant generator stator completely with laminated iron transformer core: stacked thin grain-oriented
+    steel sheets forming a rectangular core with two copper windings. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: rectangle, stacked sheets, coils; materials: silicon steel, copper'
   chapter: power
   generation: reference_edit
   reference: generator-stator-hall
@@ -353,8 +385,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: finned-substation-transformer
-  prompt: 'finned substation transformer: a grey oil-filled tank with radiator fins and tall ribbed porcelain bushings on
-    top; dominant shapes: box, fins, ribbed cones; materials: steel, porcelain, oil'
+  prompt: 'Replace the laminated iron transformer core completely with finned substation transformer: a grey oil-filled tank
+    with radiator fins and tall ribbed porcelain bushings on top. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: box, fins, ribbed cones; materials: steel, porcelain, oil'
   chapter: power
   generation: reference_edit
   reference: laminated-transformer-core
@@ -365,9 +399,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: lattice-transmission-tower
-  prompt: 'lattice transmission tower with high-voltage lines: a steel lattice pylon with arms carrying long sagging conductors
-    and insulator strings across hills; dominant shapes: lattice, catenary lines; materials: galvanized steel, aluminium,
-    glass'
+  prompt: 'Replace the finned substation transformer completely with lattice transmission tower with high-voltage lines: a
+    steel lattice pylon with arms carrying long sagging conductors and insulator strings across hills. Remove every part of
+    the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
+    angle and dark background. Dominant shapes: lattice, catenary lines; materials: galvanized steel, aluminium, glass'
   chapter: power
   generation: reference_edit
   reference: finned-substation-transformer
@@ -389,8 +424,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: brass-telegraph-key
-  prompt: 'brass telegraph key: a brass lever key with a black knob on a wooden base, contact points and a spring; dominant
-    shapes: lever, knob; materials: brass, wood'
+  prompt: 'Replace the telegraph pole line along a railway completely with brass telegraph key: a brass lever key with a black
+    knob on a wooden base, contact points and a spring. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    lever, knob; materials: brass, wood'
   chapter: signal
   generation: reference_edit
   reference: telegraph-pole-line
@@ -401,8 +438,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: telegraph-sounder
-  prompt: 'telegraph sounder: a pair of upright electromagnet coils pulling a brass armature that clicks against a stop; dominant
-    shapes: paired coils, bar; materials: copper wire, brass, iron'
+  prompt: 'Replace the brass telegraph key completely with telegraph sounder: a pair of upright electromagnet coils pulling
+    a brass armature that clicks against a stop. Remove every part of the previous object and its setting that does not belong
+    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: paired coils,
+    bar; materials: copper wire, brass, iron'
   chapter: signal
   generation: reference_edit
   reference: brass-telegraph-key
@@ -413,8 +452,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: paper-tape-register
-  prompt: 'paper-tape telegraph register: a clockwork mechanism pulling a narrow paper strip under an embossing stylus driven
-    by a coil; dominant shapes: strip, gears; materials: paper, brass'
+  prompt: 'Replace the telegraph sounder completely with paper-tape telegraph register: a clockwork mechanism pulling a narrow
+    paper strip under an embossing stylus driven by a coil. Remove every part of the previous object and its setting that
+    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    strip, gears; materials: paper, brass'
   chapter: signal
   generation: reference_edit
   reference: telegraph-sounder
@@ -425,8 +466,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: armoured-undersea-cable
-  prompt: 'cross-section of armoured undersea cable: a thick cable cut open: a copper core, gutta-percha insulation, tarred
-    hemp and helical iron armour wires; dominant shapes: concentric rings, helix; materials: copper, gutta-percha, iron'
+  prompt: 'Replace the paper-tape telegraph register completely with cross-section of armoured undersea cable: a thick cable
+    cut open: a copper core, gutta-percha insulation, tarred hemp and helical iron armour wires. Remove every part of the
+    previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
+    angle and dark background. Dominant shapes: concentric rings, helix; materials: copper, gutta-percha, iron'
   chapter: signal
   generation: reference_edit
   reference: paper-tape-register
@@ -437,8 +480,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: candlestick-telephone
-  prompt: 'upright desk telephone: a tall black upright telephone with a mouthpiece on top and a separate earpiece on a hook;
-    dominant shapes: column, cone; materials: bakelite, nickel'
+  prompt: 'Replace the cross-section of armoured undersea cable completely with upright desk telephone: a tall black upright
+    telephone with a mouthpiece on top and a separate earpiece on a hook. Remove every part of the previous object and its
+    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: column, cone; materials: bakelite, nickel'
   chapter: signal
   generation: reference_edit
   reference: armoured-undersea-cable
@@ -449,8 +494,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: manual-switchboard
-  prompt: 'manual telephone switchboard: a wooden switchboard panel of brass jacks and patch cords with indicator drops; dominant
-    shapes: grid of jacks, cords; materials: wood, brass, cloth cords'
+  prompt: 'Replace the upright desk telephone completely with manual telephone switchboard: a wooden switchboard panel of
+    brass jacks and patch cords with indicator drops. Remove every part of the previous object and its setting that does not
+    belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: grid
+    of jacks, cords; materials: wood, brass, cloth cords'
   chapter: signal
   generation: reference_edit
   reference: candlestick-telephone
@@ -461,8 +508,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: stepping-switch-bank
-  prompt: 'automatic stepping switch bank: racks of electromechanical stepping switches with wiper arms sweeping across semicircular
-    contact banks; dominant shapes: semicircles, arms, racks; materials: steel, brass'
+  prompt: 'Replace the manual telephone switchboard completely with automatic stepping switch bank: racks of electromechanical
+    stepping switches with wiper arms sweeping across semicircular contact banks. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: semicircles, arms, racks; materials: steel, brass'
   chapter: signal
   generation: reference_edit
   reference: manual-switchboard
@@ -473,8 +522,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: variable-tuning-capacitor
-  prompt: 'air variable tuning capacitor: interleaved semicircular aluminium plates on a shaft, one set rotating between the
-    other; dominant shapes: semicircular plates, shaft; materials: aluminium, brass'
+  prompt: 'Replace the automatic stepping switch bank completely with air variable tuning capacitor: interleaved semicircular
+    aluminium plates on a shaft, one set rotating between the other. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: semicircular plates, shaft; materials: aluminium, brass'
   chapter: signal
   generation: reference_edit
   reference: stepping-switch-bank
@@ -485,8 +536,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: crystal-radio-set
-  prompt: 'crystal radio with cat''s whisker detector: a wooden board with a coil wound on a cardboard tube, a galena crystal
-    and a fine wire probe, headphones; dominant shapes: coil, crystal, wire; materials: copper wire, galena, wood'
+  prompt: 'Replace the previous object completely with a 1920s crystal radio set: a small wooden board holding a coil of enamelled
+    wire wound on a cardboard tube, a galena crystal in a brass cup touched by a fine cat''s-whisker wire probe, and a pair
+    of early headphones with round black bakelite earpieces on a thin steel headband. Keep only the lighting, colour grade,
+    camera angle and dark background. Dominant shapes: coil, board; materials: wood, copper wire, galena'
   chapter: signal
   generation: reference_edit
   reference: variable-tuning-capacitor
@@ -497,8 +550,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: glowing-vacuum-tube
-  prompt: 'glowing vacuum tube: a glass envelope with an orange-glowing filament, a mesh grid and a metal plate, pins in a
-    base; dominant shapes: bulb, cylinder, mesh; materials: glass, tungsten, nickel'
+  prompt: 'Replace the crystal radio with cat''s whisker detector completely with glowing vacuum tube: a glass envelope with
+    an orange-glowing filament, a mesh grid and a metal plate, pins in a base. Remove every part of the previous object and
+    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: bulb, cylinder, mesh; materials: glass, tungsten, nickel'
   chapter: signal
   generation: reference_edit
   reference: crystal-radio-set
@@ -509,8 +564,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: tube-amplifier-chassis
-  prompt: 'tube chassis with transformers: a steel chassis with a row of glowing tubes, a transformer block and wiring underneath;
-    dominant shapes: row of bulbs, box; materials: steel, glass, copper'
+  prompt: 'Replace the glowing vacuum tube completely with tube chassis with transformers: a steel chassis with a row of glowing
+    tubes, a transformer block and wiring underneath. Remove every part of the previous object and its setting that does not
+    belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: row
+    of bulbs, box; materials: steel, glass, copper'
   chapter: signal
   generation: reference_edit
   reference: glowing-vacuum-tube
@@ -521,8 +578,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: tube-flip-flop-panel
-  prompt: 'plug-in tube logic module: a small panel with two glowing tubes, resistors and capacitors, forming one bistable
-    switching unit; dominant shapes: pair of bulbs, panel; materials: glass, phenolic board, copper'
+  prompt: 'Replace the tube chassis with transformers completely with plug-in tube logic module: a small panel with two glowing
+    tubes, resistors and capacitors, forming one bistable switching unit. Remove every part of the previous object and its
+    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: pair of bulbs, panel; materials: glass, phenolic board, copper'
   chapter: signal
   generation: reference_edit
   reference: tube-amplifier-chassis
@@ -533,8 +592,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: tube-computer-wall
-  prompt: 'room-sized tube computer wall: a long wall of cabinets packed with thousands of glowing tubes, cables looping between
-    panels; dominant shapes: wall, grid of bulbs, cables; materials: steel, glass, copper'
+  prompt: 'Replace the plug-in tube logic module completely with room-sized tube computer wall: a long wall of cabinets packed
+    with thousands of glowing tubes, cables looping between panels. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: wall, grid of bulbs, cables; materials: steel, glass, copper'
   chapter: signal
   generation: reference_edit
   reference: tube-flip-flop-panel
@@ -545,8 +606,10 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: mercury-delay-line
-  prompt: 'mercury delay-line memory: long steel tubes filled with mercury, quartz transducers at each end, in a temperature-controlled
-    box; dominant shapes: long tubes, box; materials: steel, mercury, quartz'
+  prompt: 'Replace the room-sized tube computer wall completely with mercury delay-line memory: long steel tubes filled with
+    mercury, quartz transducers at each end, in a temperature-controlled box. Remove every part of the previous object and
+    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: long tubes, box; materials: steel, mercury, quartz'
   chapter: signal
   generation: reference_edit
   reference: tube-computer-wall
@@ -568,8 +631,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: magnetic-core-plane
-  prompt: 'magnetic core memory plane: a square frame strung with fine wires, tiny ferrite rings threaded at every crossing;
-    dominant shapes: grid, rings, frame; materials: ferrite, copper wire'
+  prompt: 'Replace the cathode-ray storage tube completely with magnetic core memory plane: a square frame strung with fine
+    wires, tiny ferrite rings threaded at every crossing. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    grid, rings, frame; materials: ferrite, copper wire'
   chapter: logic
   generation: reference_edit
   reference: cathode-ray-storage-tube
@@ -580,8 +645,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: core-memory-stack
-  prompt: 'stacked core memory module: many core planes stacked in a metal frame with ribbon wiring along the sides; dominant
-    shapes: cube, stacked planes; materials: ferrite, steel, copper'
+  prompt: 'Replace the magnetic core memory plane completely with stacked core memory module: many core planes stacked in
+    a metal frame with ribbon wiring along the sides. Remove every part of the previous object and its setting that does not
+    belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: cube,
+    stacked planes; materials: ferrite, steel, copper'
   chapter: logic
   generation: reference_edit
   reference: magnetic-core-plane
@@ -592,8 +659,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: magnetic-drum-memory
-  prompt: 'magnetic drum memory: a large polished cylinder coated in magnetic oxide spinning beneath a row of read/write heads;
-    dominant shapes: cylinder, row of heads; materials: steel, iron oxide'
+  prompt: 'Replace the stacked core memory module completely with magnetic drum memory: a large polished cylinder coated in
+    magnetic oxide spinning beneath a row of read/write heads. Remove every part of the previous object and its setting that
+    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    cylinder, row of heads; materials: steel, iron oxide'
   chapter: logic
   generation: reference_edit
   reference: core-memory-stack
@@ -604,8 +673,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: reel-to-reel-tape-drive
-  prompt: 'reel-to-reel tape drive cabinet: a tall cabinet with two large tape reels, vacuum columns holding tape loops, and
-    a control panel; dominant shapes: two circles, loops, cabinet; materials: steel, plastic, magnetic tape'
+  prompt: 'Replace the magnetic drum memory completely with reel-to-reel tape drive cabinet: a tall cabinet with two large
+    tape reels, vacuum columns holding tape loops, and a control panel. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: two circles, loops, cabinet; materials: steel, plastic, magnetic tape'
   chapter: logic
   generation: reference_edit
   reference: magnetic-drum-memory
@@ -616,8 +687,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: point-contact-crystal
-  prompt: 'point-contact semiconductor experiment: a small germanium slab on a metal base with two fine gold-foil contacts
-    pressed close together by a plastic wedge; dominant shapes: wedge, slab, points; materials: germanium, gold foil, plastic'
+  prompt: 'Replace the reel-to-reel tape drive cabinet completely with point-contact semiconductor experiment: a small germanium
+    slab on a metal base with two fine gold-foil contacts pressed close together by a plastic wedge. Remove every part of
+    the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
+    angle and dark background. Dominant shapes: wedge, slab, points; materials: germanium, gold foil, plastic'
   chapter: logic
   generation: reference_edit
   reference: reel-to-reel-tape-drive
@@ -628,8 +701,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: metal-can-transistor
-  prompt: 'three-lead metal can transistor: a small cylindrical metal can on three wire legs, a tab marking one lead; dominant
-    shapes: small cylinder, three legs; materials: nickel, glass seal'
+  prompt: 'Replace the point-contact semiconductor experiment completely with three-lead metal can transistor: a small cylindrical
+    metal can on three wire legs, a tab marking one lead. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    small cylinder, three legs; materials: nickel, glass seal'
   chapter: logic
   generation: reference_edit
   reference: point-contact-crystal
@@ -640,8 +715,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: transistor-radio-board
-  prompt: 'pocket transistor radio circuit board: a small hand-wired board with a few transistors, a ferrite rod antenna and
-    a tuning dial; dominant shapes: board, rod, dial; materials: phenolic board, ferrite, copper'
+  prompt: 'Replace the three-lead metal can transistor completely with pocket transistor radio circuit board: a small hand-wired
+    board with a few transistors, a ferrite rod antenna and a tuning dial. Remove every part of the previous object and its
+    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: board, rod, dial; materials: phenolic board, ferrite, copper'
   chapter: logic
   generation: reference_edit
   reference: metal-can-transistor
@@ -652,8 +729,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: silicon-ingot
-  prompt: 'single-crystal silicon ingot: a long grey metallic cylindrical crystal with a tapered end, pulled from a melt;
-    dominant shapes: long cylinder, taper; materials: silicon'
+  prompt: 'Replace the pocket transistor radio circuit board completely with single-crystal silicon ingot: a long grey metallic
+    cylindrical crystal with a tapered end, pulled from a melt. Remove every part of the previous object and its setting that
+    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    long cylinder, taper; materials: silicon'
   chapter: logic
   generation: reference_edit
   reference: transistor-radio-board
@@ -664,8 +743,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: polished-wafer-stack
-  prompt: 'stack of polished wafers: thin round mirror-polished silicon discs fanned out in a slotted carrier; dominant shapes:
-    discs, fan; materials: silicon, plastic carrier'
+  prompt: 'Replace the single-crystal silicon ingot completely with stack of polished wafers: thin round mirror-polished silicon
+    discs fanned out in a slotted carrier. Remove every part of the previous object and its setting that does not belong to
+    the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: discs, fan;
+    materials: silicon, plastic carrier'
   chapter: logic
   generation: reference_edit
   reference: silicon-ingot
@@ -676,8 +757,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: diffusion-furnace-boat
-  prompt: 'quartz boat in a diffusion furnace: a row of wafers standing in a quartz boat sliding into a glowing orange furnace
-    tube; dominant shapes: row of discs, tube; materials: quartz, silicon'
+  prompt: 'Replace the stack of polished wafers completely with quartz boat in a diffusion furnace: a row of wafers standing
+    in a quartz boat sliding into a glowing orange furnace tube. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: row of discs, tube; materials: quartz, silicon'
   chapter: logic
   generation: reference_edit
   reference: polished-wafer-stack
@@ -688,8 +771,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: planar-transistor-die
-  prompt: 'magnified planar transistor die: a tiny square silicon die seen under a microscope with concentric oxide windows
-    and two bond wires; dominant shapes: square, concentric rings, wires; materials: silicon, silicon dioxide, gold wire'
+  prompt: 'Replace the quartz boat in a diffusion furnace completely with magnified planar transistor die: a tiny square silicon
+    die seen under a microscope with concentric oxide windows and two bond wires. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: square, concentric rings, wires; materials: silicon, silicon dioxide, gold wire'
   chapter: logic
   generation: reference_edit
   reference: diffusion-furnace-boat
@@ -700,8 +785,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: discrete-component-board
-  prompt: 'board of discrete transistors and resistors: a green circuit board with rows of small transistors, striped resistors
-    and capacitors soldered to copper traces; dominant shapes: rows, traces; materials: fibreglass, copper, solder'
+  prompt: 'Replace the magnified planar transistor die completely with board of discrete transistors and resistors: a green
+    circuit board with rows of small transistors, striped resistors and capacitors soldered to copper traces. Remove every
+    part of the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade,
+    camera angle and dark background. Dominant shapes: rows, traces; materials: fibreglass, copper, solder'
   chapter: logic
   generation: reference_edit
   reference: planar-transistor-die
@@ -712,8 +799,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: logic-module-card
-  prompt: 'plug-in logic card: a small card with a few transistors and a gold-plated edge connector, slotted into a backplane;
-    dominant shapes: card, edge fingers; materials: fibreglass, gold, copper'
+  prompt: 'Replace the board of discrete transistors and resistors completely with plug-in logic card: a small card with a
+    few transistors and a gold-plated edge connector, slotted into a backplane. Remove every part of the previous object and
+    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: card, edge fingers; materials: fibreglass, gold, copper'
   chapter: logic
   generation: reference_edit
   reference: discrete-component-board
@@ -724,8 +813,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: early-flat-pack-ic
-  prompt: 'early flat-pack integrated circuit: a tiny flat rectangular package with ribbon leads on two sides, gold lid; dominant
-    shapes: flat rectangle, ribbon leads; materials: ceramic, gold, kovar'
+  prompt: 'Replace the plug-in logic card completely with early flat-pack integrated circuit: a tiny flat rectangular package
+    with ribbon leads on two sides, gold lid. Remove every part of the previous object and its setting that does not belong
+    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: flat rectangle,
+    ribbon leads; materials: ceramic, gold, kovar'
   chapter: logic
   generation: reference_edit
   reference: logic-module-card
@@ -736,8 +827,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: dip-chip-in-socket
-  prompt: 'dual in-line chip in a socket: a black rectangular package with two rows of silver pins seated in a socket on a
-    board; dominant shapes: rectangle, two pin rows; materials: epoxy, tin-plated copper'
+  prompt: 'Replace the early flat-pack integrated circuit completely with dual in-line chip in a socket: a black rectangular
+    package with two rows of silver pins seated in a socket on a board. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: rectangle, two pin rows; materials: epoxy, tin-plated copper'
   chapter: logic
   generation: reference_edit
   reference: early-flat-pack-ic
@@ -748,8 +841,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: bond-wire-fan
-  prompt: 'gold bond wires fanning from a die: a magnified silicon die with fine gold wires arching out to a ring of lead
-    fingers; dominant shapes: fan of arcs, square; materials: gold wire, silicon, copper'
+  prompt: 'Replace the dual in-line chip in a socket completely with gold bond wires fanning from a die: a magnified silicon
+    die with fine gold wires arching out to a ring of lead fingers. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: fan of arcs, square; materials: gold wire, silicon, copper'
   chapter: logic
   generation: reference_edit
   reference: dip-chip-in-socket
@@ -760,8 +855,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: photomask-reticle
-  prompt: 'chrome photomask on glass: a square quartz plate with a dense chrome circuit pattern, held under yellow cleanroom
-    light; dominant shapes: square plate, fine pattern; materials: quartz, chrome'
+  prompt: 'Replace the gold bond wires fanning from a die completely with chrome photomask on glass: a square quartz plate
+    with a dense chrome circuit pattern, held under yellow cleanroom light. Remove every part of the previous object and its
+    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: square plate, fine pattern; materials: quartz, chrome'
   chapter: logic
   generation: reference_edit
   reference: bond-wire-fan
@@ -772,8 +869,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: resist-coated-wafer
-  prompt: 'wafer being coated with photoresist: a wafer spinning on a chuck as a thin amber film spreads to its edges; dominant
-    shapes: disc, spiral film; materials: silicon, photoresist'
+  prompt: 'Replace the chrome photomask on glass completely with wafer being coated with photoresist: a wafer spinning on
+    a chuck as a thin amber film spreads to its edges. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    disc, spiral film; materials: silicon, photoresist'
   chapter: logic
   generation: reference_edit
   reference: photomask-reticle
@@ -784,8 +883,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: patterned-wafer-grid
-  prompt: 'patterned wafer with a grid of dies: a round wafer covered edge to edge in a rainbow-sheened grid of rectangular
-    dies; dominant shapes: disc, grid; materials: silicon, metal films'
+  prompt: 'Replace the wafer being coated with photoresist completely with patterned wafer with a grid of dies: a round wafer
+    covered edge to edge in a rainbow-sheened grid of rectangular dies. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: disc, grid; materials: silicon, metal films'
   chapter: logic
   generation: reference_edit
   reference: resist-coated-wafer
@@ -796,8 +897,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: wafer-dicing-saw
-  prompt: 'wafer being diced into chips: a thin diamond blade spinning through a wafer on sticky film, coolant spraying, cut
-    lines forming a grid; dominant shapes: disc, grid lines, blade; materials: silicon, diamond, water'
+  prompt: 'Replace the patterned wafer with a grid of dies completely with wafer being diced into chips: a thin diamond blade
+    spinning through a wafer on sticky film, coolant spraying, cut lines forming a grid. Remove every part of the previous
+    object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and
+    dark background. Dominant shapes: disc, grid lines, blade; materials: silicon, diamond, water'
   chapter: logic
   generation: reference_edit
   reference: patterned-wafer-grid
@@ -808,8 +911,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: ic-die-macro
-  prompt: 'integrated circuit die under magnification: a rectangular die with distinct blocks of logic, memory arrays and
-    bond pads around the edge; dominant shapes: rectangle, blocks, pad ring; materials: silicon, aluminium, copper'
+  prompt: 'Replace the wafer being diced into chips completely with integrated circuit die under magnification: a rectangular
+    die with distinct blocks of logic, memory arrays and bond pads around the edge. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: rectangle, blocks, pad ring; materials: silicon, aluminium, copper'
   chapter: logic
   generation: reference_edit
   reference: wafer-dicing-saw
@@ -820,8 +925,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: memory-chip-array
-  prompt: 'memory chip cell array: a die dominated by a vast regular checkerboard of memory cells with row and column decoders
-    along the edges; dominant shapes: checkerboard, edges; materials: silicon, polysilicon'
+  prompt: 'Replace the integrated circuit die under magnification completely with memory chip cell array: a die dominated
+    by a vast regular checkerboard of memory cells with row and column decoders along the edges. Remove every part of the
+    previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
+    angle and dark background. Dominant shapes: checkerboard, edges; materials: silicon, polysilicon'
   chapter: logic
   generation: reference_edit
   reference: ic-die-macro
@@ -832,8 +939,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: cross-section-transistor-layers
-  prompt: 'cross-section of chip wiring layers: a cutaway showing transistor gates at the bottom and many stacked copper wiring
-    levels above, like a city; dominant shapes: stacked layers, vias; materials: silicon, copper, dielectric'
+  prompt: 'Replace the memory chip cell array completely with cross-section of chip wiring layers: a cutaway showing transistor
+    gates at the bottom and many stacked copper wiring levels above, like a city. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: stacked layers, vias; materials: silicon, copper, dielectric'
   chapter: logic
   generation: reference_edit
   reference: memory-chip-array
@@ -844,8 +953,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: first-generation-cpu-die
-  prompt: 'early single-chip processor die: a small die with hand-drawn-looking logic blocks: registers, an arithmetic unit
-    and a control area; dominant shapes: rectangle, blocks; materials: silicon, aluminium'
+  prompt: 'Replace the cross-section of chip wiring layers completely with early single-chip processor die: a small die with
+    hand-drawn-looking logic blocks: registers, an arithmetic unit and a control area. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: rectangle, blocks; materials: silicon, aluminium'
   chapter: logic
   generation: reference_edit
   reference: cross-section-transistor-layers
@@ -856,8 +967,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: ceramic-cpu-package
-  prompt: 'long ceramic processor package: a long white ceramic package with a gold lid and two rows of gold pins; dominant
-    shapes: long rectangle, pin rows; materials: ceramic, gold'
+  prompt: 'Replace the early single-chip processor die completely with long ceramic processor package: a long white ceramic
+    package with a gold lid and two rows of gold pins. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    long rectangle, pin rows; materials: ceramic, gold'
   chapter: logic
   generation: reference_edit
   reference: first-generation-cpu-die
@@ -868,8 +981,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: home-computer-motherboard
-  prompt: 'early home computer motherboard: a green board with a processor, rows of memory chips, a keyboard connector and
-    sockets; dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper'
+  prompt: 'Replace the long ceramic processor package completely with early home computer motherboard: a green board with
+    a processor, rows of memory chips, a keyboard connector and sockets. Remove every part of the previous object and its
+    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper'
   chapter: logic
   generation: reference_edit
   reference: ceramic-cpu-package
@@ -891,8 +1006,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: pin-grid-processor
-  prompt: 'square pin-grid processor: a square processor package with a grid of hundreds of gold pins on its underside, a
-    metal heat spreader on top; dominant shapes: square, pin grid; materials: ceramic, gold, nickel-plated copper'
+  prompt: 'Replace the memory module stick completely with square pin-grid processor: a square processor package with a grid
+    of hundreds of gold pins on its underside, a metal heat spreader on top. Remove every part of the previous object and
+    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: square, pin grid; materials: ceramic, gold, nickel-plated copper'
   chapter: scale
   generation: reference_edit
   reference: memory-module-stick
@@ -903,8 +1020,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: finned-heatsink-fan
-  prompt: 'finned heatsink with fan: a block of thin aluminium fins with a copper base and a spinning fan on top; dominant
-    shapes: fins, circle; materials: aluminium, copper'
+  prompt: 'Replace the square pin-grid processor completely with finned heatsink with fan: a block of thin aluminium fins
+    with a copper base and a spinning fan on top. Remove every part of the previous object and its setting that does not belong
+    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: fins, circle;
+    materials: aluminium, copper'
   chapter: scale
   generation: reference_edit
   reference: pin-grid-processor
@@ -915,8 +1034,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: desktop-tower-open
-  prompt: 'open desktop tower: a side-opened computer case showing a motherboard, cards, cables and drive bays; dominant shapes:
-    box, cards, cables; materials: steel, fibreglass, plastic'
+  prompt: 'Replace the finned heatsink with fan completely with open desktop tower: a side-opened computer case showing a
+    motherboard, cards, cables and drive bays. Remove every part of the previous object and its setting that does not belong
+    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: box, cards,
+    cables; materials: steel, fibreglass, plastic'
   chapter: scale
   generation: reference_edit
   reference: finned-heatsink-fan
@@ -927,8 +1048,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: hard-disk-platter
-  prompt: 'open hard disk drive: a mirror-like spinning platter with a slender actuator arm and read head hovering above it;
-    dominant shapes: disc, arm; materials: aluminium, glass, steel'
+  prompt: 'Replace the open desktop tower completely with open hard disk drive: a mirror-like spinning platter with a slender
+    actuator arm and read head hovering above it. Remove every part of the previous object and its setting that does not belong
+    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: disc, arm;
+    materials: aluminium, glass, steel'
   chapter: scale
   generation: reference_edit
   reference: desktop-tower-open
@@ -939,8 +1062,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: multi-core-die
-  prompt: 'multi-core processor die: a die divided into several identical core tiles around a shared cache block; dominant
-    shapes: tiles, central block; materials: silicon, copper'
+  prompt: 'Replace the open hard disk drive completely with multi-core processor die: a die divided into several identical
+    core tiles around a shared cache block. Remove every part of the previous object and its setting that does not belong
+    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: tiles, central
+    block; materials: silicon, copper'
   chapter: scale
   generation: reference_edit
   reference: hard-disk-platter
@@ -951,8 +1076,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: laptop-mainboard
-  prompt: 'compact laptop mainboard: a dense irregular board with a processor under a copper heat pipe, tiny surface-mount
-    parts everywhere; dominant shapes: irregular board, heat pipe; materials: fibreglass, copper, solder'
+  prompt: 'Replace the multi-core processor die completely with compact laptop mainboard: a dense irregular board with a processor
+    under a copper heat pipe, tiny surface-mount parts everywhere. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: irregular board, heat pipe; materials: fibreglass, copper, solder'
   chapter: scale
   generation: reference_edit
   reference: multi-core-die
@@ -963,8 +1090,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: graphics-card-board
-  prompt: 'graphics card with exposed board: a long circuit board with a large central processor surrounded by memory chips
-    and power components; dominant shapes: long board, central square; materials: fibreglass, silicon, copper'
+  prompt: 'Replace the compact laptop mainboard completely with graphics card with exposed board: a long circuit board with
+    a large central processor surrounded by memory chips and power components. Remove every part of the previous object and
+    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: long board, central square; materials: fibreglass, silicon, copper'
   chapter: scale
   generation: reference_edit
   reference: laptop-mainboard
@@ -975,8 +1104,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: many-core-die-tiles
-  prompt: 'many-core accelerator die: a large die covered in hundreds of identical tiny compute tiles in a strict grid, wide
-    memory interfaces at the edges; dominant shapes: dense grid, edge bands; materials: silicon, copper'
+  prompt: 'Replace the graphics card with exposed board completely with many-core accelerator die: a large die covered in
+    hundreds of identical tiny compute tiles in a strict grid, wide memory interfaces at the edges. Remove every part of the
+    previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
+    angle and dark background. Dominant shapes: dense grid, edge bands; materials: silicon, copper'
   chapter: scale
   generation: reference_edit
   reference: graphics-card-board
@@ -987,8 +1118,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: pixel-shader-lattice
-  prompt: 'lattice of glowing compute lanes: an abstract lattice of thousands of parallel lanes lighting up in synchronized
-    waves; dominant shapes: lattice, waves; materials: light, silicon'
+  prompt: 'Replace the many-core accelerator die completely with lattice of glowing compute lanes: an abstract lattice of
+    thousands of parallel lanes lighting up in synchronized waves. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: lattice, waves; materials: light, silicon'
   chapter: scale
   generation: reference_edit
   reference: many-core-die-tiles
@@ -999,8 +1132,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: stacked-memory-towers
-  prompt: 'stacked memory beside a processor: short towers of thinned memory dies stacked on top of each other beside a large
-    processor on a silicon base; dominant shapes: towers, square; materials: silicon, copper, solder bumps'
+  prompt: 'Replace the lattice of glowing compute lanes completely with stacked memory beside a processor: short towers of
+    thinned memory dies stacked on top of each other beside a large processor on a silicon base. Remove every part of the
+    previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
+    angle and dark background. Dominant shapes: towers, square; materials: silicon, copper, solder bumps'
   chapter: scale
   generation: reference_edit
   reference: pixel-shader-lattice
@@ -1011,8 +1146,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: silicon-interposer
-  prompt: 'silicon interposer with micro-bumps: a thin silicon slab with a dense field of tiny solder bumps and fine wiring
-    lines between chip sites; dominant shapes: slab, dot field, lines; materials: silicon, solder, copper'
+  prompt: 'Replace the stacked memory beside a processor completely with silicon interposer with micro-bumps: a thin silicon
+    slab with a dense field of tiny solder bumps and fine wiring lines between chip sites. Remove every part of the previous
+    object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and
+    dark background. Dominant shapes: slab, dot field, lines; materials: silicon, solder, copper'
   chapter: scale
   generation: reference_edit
   reference: stacked-memory-towers
@@ -1023,8 +1160,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: accelerator-package-lid
-  prompt: 'accelerator package with metal lid: a large square package with a polished metal lid on a green substrate covered
-    in capacitors; dominant shapes: square, lid; materials: nickel-plated copper, organic substrate'
+  prompt: 'Replace the silicon interposer with micro-bumps completely with accelerator package with metal lid: a large square
+    package with a polished metal lid on a green substrate covered in capacitors. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: square, lid; materials: nickel-plated copper, organic substrate'
   chapter: scale
   generation: reference_edit
   reference: silicon-interposer
@@ -1035,8 +1174,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: accelerator-module-coldplate
-  prompt: 'accelerator module with liquid cold plate: a module board carrying a large chip under a copper cold plate with
-    coolant tubes; dominant shapes: board, plate, tubes; materials: copper, fibreglass, coolant'
+  prompt: 'Replace the accelerator package with metal lid completely with accelerator module with liquid cold plate: a module
+    board carrying a large chip under a copper cold plate with coolant tubes. Remove every part of the previous object and
+    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: board, plate, tubes; materials: copper, fibreglass, coolant'
   chapter: scale
   generation: reference_edit
   reference: accelerator-package-lid
@@ -1047,7 +1188,9 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: compute-tray
-  prompt: 'server compute tray: a shallow metal tray holding several accelerator modules, fans and cable connectors; dominant
+  prompt: 'Replace the accelerator module with liquid cold plate completely with server compute tray: a shallow metal tray
+    holding several accelerator modules, fans and cable connectors. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
     shapes: shallow box, rows; materials: steel, copper, plastic'
   chapter: scale
   generation: reference_edit
@@ -1059,8 +1202,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: interconnect-switch-board
-  prompt: 'high-speed interconnect switch: a board dense with cable ports and a switch chip, bundles of fibre cables plugged
-    in; dominant shapes: port rows, cable bundles; materials: copper, fibre optic, steel'
+  prompt: 'Replace the server compute tray completely with high-speed interconnect switch: a board dense with cable ports
+    and a switch chip, bundles of fibre cables plugged in. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    port rows, cable bundles; materials: copper, fibre optic, steel'
   chapter: scale
   generation: reference_edit
   reference: compute-tray
@@ -1071,8 +1216,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: server-rack-front
-  prompt: 'tall server rack: a black rack filled top to bottom with server trays, blinking status lights and neat cabling;
-    dominant shapes: tall box, horizontal slots; materials: steel, plastic'
+  prompt: 'Replace the high-speed interconnect switch completely with tall server rack: a black rack filled top to bottom
+    with server trays, blinking status lights and neat cabling. Remove every part of the previous object and its setting that
+    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    tall box, horizontal slots; materials: steel, plastic'
   chapter: scale
   generation: reference_edit
   reference: interconnect-switch-board
@@ -1083,8 +1230,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: rack-backup-batteries
-  prompt: 'rows of backup battery cells in a rack: shelves of identical rectangular battery cells with cable links and status
-    lights, echoing the early jar batteries; dominant shapes: rows of blocks, links; materials: lithium cells, steel, copper'
+  prompt: 'Replace the tall server rack completely with rows of backup battery cells in a rack: shelves of identical rectangular
+    battery cells with cable links and status lights, echoing the early jar batteries. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: rows of blocks, links; materials: lithium cells, steel, copper'
   chapter: scale
   generation: reference_edit
   reference: server-rack-front
@@ -1095,8 +1244,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: hot-aisle-row
-  prompt: 'aisle of server racks: a long corridor between two rows of racks under cable trays, cool blue lighting; dominant
-    shapes: corridor, repeating boxes; materials: steel, glass'
+  prompt: 'Replace the rows of backup battery cells in a rack completely with aisle of server racks: a long corridor between
+    two rows of racks under cable trays, cool blue lighting. Remove every part of the previous object and its setting that
+    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    corridor, repeating boxes; materials: steel, glass'
   chapter: scale
   generation: reference_edit
   reference: rack-backup-batteries
@@ -1107,8 +1258,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: fibre-optic-bundle
-  prompt: 'glowing fibre-optic bundle: a thick bundle of glass fibres with light emerging from the cut ends like tiny stars;
-    dominant shapes: bundle, points of light; materials: glass, light'
+  prompt: 'Replace the aisle of server racks completely with glowing fibre-optic bundle: a thick bundle of glass fibres with
+    light emerging from the cut ends like tiny stars. Remove every part of the previous object and its setting that does not
+    belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: bundle,
+    points of light; materials: glass, light'
   chapter: scale
   generation: reference_edit
   reference: hot-aisle-row
@@ -1119,8 +1272,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: liquid-cooling-manifold
-  prompt: 'liquid cooling manifold: colour-coded pipes and quick-connect fittings running along the back of racks, coolant
-    visible in clear sections; dominant shapes: pipes, manifold; materials: copper, stainless steel, coolant'
+  prompt: 'Replace the glowing fibre-optic bundle completely with liquid cooling manifold: colour-coded pipes and quick-connect
+    fittings running along the back of racks, coolant visible in clear sections. Remove every part of the previous object
+    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
+    Dominant shapes: pipes, manifold; materials: copper, stainless steel, coolant'
   chapter: scale
   generation: reference_edit
   reference: fibre-optic-bundle
@@ -1131,8 +1286,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: cooling-towers-exterior
-  prompt: 'cooling units on a data-center roof: rows of large fans and cooling units on a flat roof, vapour drifting into
-    the sky; dominant shapes: circles, rows; materials: steel, water vapour'
+  prompt: 'Replace the liquid cooling manifold completely with cooling units on a data-center roof: rows of large fans and
+    cooling units on a flat roof, vapour drifting into the sky. Remove every part of the previous object and its setting that
+    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    circles, rows; materials: steel, water vapour'
   chapter: scale
   generation: reference_edit
   reference: liquid-cooling-manifold
@@ -1143,8 +1300,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: data-center-substation
-  prompt: 'data-center substation yard: transformers, switchgear and busbars in a fenced yard beside a windowless hall; dominant
-    shapes: boxes, busbars; materials: steel, copper, porcelain'
+  prompt: 'Replace the cooling units on a data-center roof completely with data-center substation yard: transformers, switchgear
+    and busbars in a fenced yard beside a windowless hall. Remove every part of the previous object and its setting that does
+    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    boxes, busbars; materials: steel, copper, porcelain'
   chapter: scale
   generation: reference_edit
   reference: cooling-towers-exterior
@@ -1155,8 +1314,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: wafer-scale-processor
-  prompt: 'wafer-sized processor: an entire round wafer patterned as one enormous processor, a grid of linked compute regions;
-    dominant shapes: disc, grid; materials: silicon, copper'
+  prompt: 'Replace the data-center substation yard completely with wafer-sized processor: an entire round wafer patterned
+    as one enormous processor, a grid of linked compute regions. Remove every part of the previous object and its setting
+    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
+    shapes: disc, grid; materials: silicon, copper'
   chapter: scale
   generation: reference_edit
   reference: data-center-substation
@@ -1167,8 +1328,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: neural-network-lattice
-  prompt: 'abstract neural network lattice: glowing nodes in layers connected by thin luminous threads, signals pulsing through
-    them; dominant shapes: nodes, layers, threads; materials: light'
+  prompt: 'Replace the wafer-sized processor completely with abstract neural network lattice: glowing nodes in layers connected
+    by thin luminous threads, signals pulsing through them. Remove every part of the previous object and its setting that
+    does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
+    nodes, layers, threads; materials: light'
   chapter: scale
   generation: reference_edit
   reference: wafer-scale-processor
@@ -1179,8 +1342,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: lightning-over-data-center
-  prompt: 'lightning over a data-center campus at night: a branching lightning bolt over a glowing campus of windowless halls,
-    closing the circle of the film; dominant shapes: branching line, low halls; materials: plasma, concrete, light'
+  prompt: 'Replace the abstract neural network lattice completely with lightning over a data-center campus at night: a branching
+    lightning bolt over a glowing campus of windowless halls, closing the circle of the film. Remove every part of the previous
+    object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and
+    dark background. Dominant shapes: branching line, low halls; materials: plasma, concrete, light'
   chapter: scale
   generation: reference_edit
   reference: neural-network-lattice

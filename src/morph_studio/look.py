@@ -90,6 +90,8 @@ def apply_look(storyboard: dict, look: dict) -> dict:
 def look_check(plan: dict, storyboard, language: dict, look: str | None = None) -> dict:
     name, spec, how = choose(language, look)
     chapter = {a.id: a.chapter for a in storyboard.anchors}
+    setting_override = {a.id: bool(set(a.style_override or {}) & {"description", "composition"})
+                        for a in storyboard.anchors}
     mismatches, stages, style_by_act = [], 0, {}
     for task_id in plan["order"]:
         task = plan["tasks"][task_id]
@@ -105,10 +107,13 @@ def look_check(plan: dict, storyboard, language: dict, look: str | None = None) 
                     mismatches.append({"stage": task_id, "problem": f"palette colour {colour!r} missing"})
             if _norm(act["lighting"]) not in prompt:
                 mismatches.append({"stage": task_id, "problem": "act lighting missing"})
-            sha = task.get("style_sha256")
-            prev = style_by_act.setdefault(chapter[task["anchor"]], sha)
-            if prev != sha:
-                mismatches.append({"stage": task_id, "problem": "style identity differs within the act"})
+            # anchors with a documented setting override (natural scene, underwater: anchor review 2026-11-24)
+            # keep the act's palette and lighting (checked above) but may differ in description/composition
+            if not setting_override.get(task["anchor"]):
+                sha = task.get("style_sha256")
+                prev = style_by_act.setdefault(chapter[task["anchor"]], sha)
+                if prev != sha:
+                    mismatches.append({"stage": task_id, "problem": "style identity differs within the act"})
         elif task["kind"] == "bridge":
             stages += 1
             act = spec["acts"].get(chapter.get(task["from"]))

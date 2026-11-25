@@ -94,3 +94,18 @@ fixes:
     prompt: >-
       a block of square glass plates interleaved with thin foil sheets, stacked and clamped in a simple wooden
       frame with brass screws; dominant shapes: stacked plates, block; materials: glass, foil, wood
+  # --- iteration 1b (anchors #19-#39 judged): systemic + specific ----------------------------------------
+  # Systemic: Power (#20-#28) and Signal (#30-#38) edit chains kept the parent object for 8-10 anchors in a
+  # row (stator ring with water for the transformers and tower; telegraph key for sounder, register, cable,
+  # telephone). Fix: acts.yaml `edit_prompts: instruction` (every reference edit becomes a replace instruction).
+  # Pass in this group: friction-machine-globe, water-turbine-runner, telegraph-pole-line, glowing-vacuum-tube.
+  - anchor: crystal-radio-set
+    apply: prompt
+    iteration: 1
+    problem: modern padded headphones (anachronism); otherwise coil and crystal read (plausibility)
+    prompt: >-
+      Replace the previous object completely with a 1920s crystal radio set: a small wooden board holding a coil
+      of enamelled wire wound on a cardboard tube, a galena crystal in a brass cup touched by a fine cat's-whisker
+      wire probe, and a pair of early headphones with round black bakelite earpieces on a thin steel headband.
+      Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: coil, board;
+      materials: wood, copper wire, galena

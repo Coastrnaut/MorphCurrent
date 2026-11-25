@@ -5,6 +5,10 @@
 # at 28 (no section start within +/-6 anchors). Eras remain the thematic grouping; subjects near a boundary
 # open the neighbouring act.
 version: 1
+# Anchor review 2026-11-24 (Claude, per owner instruction): reference edits are written as replace instructions
+# ("Replace the <parent> completely with <subject>: ... Keep only the lighting, colour grade ..."); plain
+# descriptions made Qwen Image Edit keep the parent's object (Power/Signal chains drifted for 10+ anchors).
+edit_prompts: instruction
 acts:
   - id: spark
     start_anchor: 0
