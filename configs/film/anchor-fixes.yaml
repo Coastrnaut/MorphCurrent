@@ -881,3 +881,93 @@ fixes:
       interleaved half-moon plates, shaft; materials: aluminium, brass
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  # --- iteration 4b (pass 4, #39-#59 judged) ------------------------------------------------------------
+  # Pass: glowing-vacuum-tube, tube-amplifier-chassis, tube-flip-flop-panel, magnetic-drum-memory,
+  # reel-to-reel-tape-drive, transistor-radio-board, silicon-ingot, polished-wafer-stack, diffusion-furnace-boat,
+  # planar-transistor-die, discrete-component-board, logic-module-card, early-flat-pack-ic.
+  - anchor: tube-computer-wall
+    apply: fresh
+    iteration: 4
+    problem: "(it 4) drifted back to modern server racks with small LEDs (plausibility)"
+    seed: 20250101
+    prompt: >-
+      a 1940s room-sized vacuum tube computer: a long wall of tall grey steel cabinets with open fronts, each packed
+      with rows of hundreds of small glass vacuum tubes glowing warm orange, plugboard panels and thick black cables
+      looping between the cabinets; dominant shapes: wall, grid of glowing bulbs, cables; materials: steel, glass,
+      copper
+    style:
+      composition: "the whole wall of cabinets in frame, centered, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "LED", "server rack", "modern computer", "green lights"]
+  - anchor: mercury-delay-line
+    apply: fresh
+    iteration: 4
+    problem: "(it 4) a tube-computer cabinet instead of the mercury delay line (subject, carryover)"
+    seed: 20250102
+    prompt: >-
+      a mercury delay line memory: a row of five long horizontal steel tubes filled with mercury, each capped at
+      both ends with small quartz crystal transducers and wires, mounted side by side in an open steel frame;
+      dominant shapes: long parallel tubes, end caps; materials: steel, mercury, quartz
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "cabinet", "vacuum tubes", "server rack"]
+  - anchor: magnetic-core-plane
+    apply: fresh
+    iteration: 4
+    problem: "(it 3 and 4) glowing green squares instead of tiny dark ferrite rings (subject)"
+    seed: 20250103
+    prompt: >-
+      a square magnetic core memory plane seen almost face-on: a flat metal frame strung with a fine square grid of
+      thin copper wires, a tiny dark grey ferrite ring threaded at every crossing so that the grid is studded with
+      hundreds of small dark rings, one diagonal sense wire; nothing glows; dominant shapes: grid, rings, frame;
+      materials: ferrite, copper wire
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "glowing", "LED", "light panel", "squares of light"]
+  - anchor: core-memory-stack
+    apply: fresh
+    iteration: 4
+    problem: "(it 4) a cropped grid of glowing blue squares (cropping, subject)"
+    seed: 20250104
+    prompt: >-
+      a magnetic core memory stack: several flat square core planes, each a fine wire grid studded with tiny dark
+      ferrite rings, stacked one above another with small gaps in a metal frame with wiring along the sides; nothing
+      glows; dominant shapes: stacked planes, frame; materials: ferrite, copper wire, steel
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "glowing", "LED", "light panel", "squares of light"]
+  - anchor: point-contact-crystal
+    apply: fresh
+    iteration: 4
+    problem: "(it 2-4) never readable: gold blobs in a block; no crystal and contacts (subject)"
+    seed: 20250105
+    prompt: >-
+      the first point-contact transistor: a small grey germanium crystal block on a metal base, with a clear
+      triangular plastic wedge pressing a thin strip of gold foil down onto the crystal, the foil split at the tip
+      into two contacts almost touching, two thin wires leading away; dominant shapes: wedge, block, points;
+      materials: germanium, gold foil, plastic
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "gold nugget", "jewellery"]
+  - anchor: metal-can-transistor
+    apply: fresh
+    iteration: 4
+    problem: "(it 4) the can has seven legs (plausibility)"
+    seed: 20250106
+    prompt: >-
+      a single small metal-can transistor: a short shiny cylindrical metal can with exactly three thin wire leads
+      spreading out from its bottom; dominant shapes: cylinder, three leads; materials: steel, glass, kovar
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "many legs", "six legs", "spider"]
+  - anchor: dip-chip-in-socket
+    apply: fresh
+    iteration: 4
+    problem: "(it 2-4) two chips on the board (single subject)"
+    seed: 20250107
+    prompt: >-
+      one single black dual in-line integrated circuit chip with two rows of silver pins, seated in one socket on a
+      small green circuit board; exactly one chip; dominant shapes: rectangle, two pin rows; materials: epoxy,
+      tin-plated copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "two chips", "multiple chips"]

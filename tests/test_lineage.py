@@ -128,12 +128,14 @@ def test_drift_unreliable_mask(tmp_path):
 
 def test_proposals_film(tmp_path):
     plan = compile_plan(load_storyboard(FILM), repo_root=REPO, storyboard_bytes=FILM.read_bytes())
-    rep = ln.propose(plan, limit=12)
+    # anchor fixes (2026-11-25) keep every act within the limit of 12; a tighter limit still exercises proposals
+    limit = max(2, ln.lineage(plan, limit=12)["max_depth"] - 3)
+    rep = ln.propose(plan, limit=limit)
     sb = load_storyboard(FILM)
     first = {a.id for i, a in enumerate(sb.anchors) if i == 0 or a.chapter != sb.anchors[i - 1].chapter}
     chosen = [p["anchor"] for p in rep["proposals"]]
     assert chosen and not set(chosen) & first
-    assert rep["max_depth_after"] <= 12
+    assert rep["max_depth_after"] <= limit
     assert all(p["reasons"] == ["depth"] and p["invalidated_anchors"][0] == p["anchor"] for p in rep["proposals"])
     before = FILM.read_bytes()
     out = tmp_path / "film.reanchored.yaml"
@@ -181,13 +183,18 @@ def test_shared_check(tmp_path):
 # --- CLI ------------------------------------------------------------------------------------------
 
 def test_cli(tmp_path, capsys):
-    assert cli.main(["lineage", str(FILM)]) == 1  # some act chain still exceeds the depth limit of 12
+    code = cli.main(["lineage", str(FILM)])
     rep = json.loads(capsys.readouterr().out)
-    assert rep["max_depth"] > 12 and rep["max_depth"] == max(rep["per_act_max"].values())  # not pinned: fixes cut chains
+    assert rep["max_depth"] == max(rep["per_act_max"].values())  # not pinned: anchor fixes cut chains
+    assert code == (1 if rep["max_depth"] > 12 else 0)
     out = tmp_path / "p.yaml"
     assert cli.main(["lineage-propose", str(FILM), "--out", str(out)]) == 0
     res = json.loads(capsys.readouterr().out)
-    assert res["out"] == str(out) and res["max_depth_after"] <= 12
+    assert res["max_depth_after"] <= 12
+    if not res["proposals"]:  # every act already within the limit: nothing to adopt, nothing written
+        assert "out" not in res and not out.exists()
+        return
+    assert res["out"] == str(out)
     assert cli.main(["lineage", str(out)]) == 0
     capsys.readouterr()
     assert cli.main(["lineage-propose", str(FILM), "--out", str(out)]) == 2
