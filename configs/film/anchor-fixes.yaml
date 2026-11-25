@@ -1140,3 +1140,35 @@ fixes:
       dominant shapes: square plate, dot grid; materials: silicon, copper
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  # --- iteration 6a (pass 6 complete: 13 re-rendered anchors judged) -------------------------------------
+  # Pass (11): glass-leyden-jar, variable-tuning-capacitor (accepted as a two-gang air capacitor with its plates
+  # fully meshed, a real form; the half-meshed view never rendered in four tries), magnetic-core-plane,
+  # core-memory-stack, magnetic-drum-memory, reel-to-reel-tape-drive, discrete-component-board, logic-module-card,
+  # early-flat-pack-ic, bond-wire-fan, silicon-interposer.
+  - anchor: charged-dust-cloud
+    apply: fresh
+    iteration: 6
+    problem: "(it 2-6) a lightning streak in every room/sunbeam framing: the act's 'faint electric glow' lighting draws arcs in a room"
+    seed: 20250118
+    prompt: >-
+      a macro photograph of a drifting cloud of tiny glittering dust particles floating against pure darkness, the
+      particles clustering into soft curving strands as if pulled by an invisible field, lit by a single soft warm
+      beam; no room, no walls, no floor; dominant shapes: points, curving strands; materials: dust, light
+    style:
+      description: "Cinematic macro photograph of floating dust particles against a black background, photorealistic, crisp detail"
+      composition: "the particle cloud centered and filling the middle of the frame, black all around"
+      materials: "only tiny dust particles and light"
+      lens: "100mm macro lens, shallow depth of field"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "lightning", "electric arc", "spark", "bolt", "zigzag", "tripod", "lamp", "room", "wall", "floor", "door", "window", "snow"]
+  - anchor: dip-chip-in-socket
+    apply: fresh
+    iteration: 6
+    problem: "(it 6) surface-mount gull-wing legs instead of straight through-hole pins (plausibility)"
+    seed: 20250119
+    prompt: >-
+      one 1970s black dual in-line package chip, its top blank, with two rows of straight silver through-hole pins
+      pointing straight down into a matching black dual in-line socket that is soldered to a small green circuit
+      board; dominant shapes: rectangle, two pin rows, socket; materials: epoxy, tin-plated copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "two chips", "markings", "printed numbers", "gull-wing leads", "surface-mount"]
