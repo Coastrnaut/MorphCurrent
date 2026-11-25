@@ -845,3 +845,7 @@ The owner asked to "automate the 95 blockers using your best judgement". The 95 
 - Order kept per CLAUDE.md: P1 pilot/P2 act = `film-produce spark` (after the running `spark-b01` pilot finishes), review, then P3 `film-produce power,signal,logic,scale`.
 
 Tests: 2 new in `tests/test_production.py` (fake runner: film order, stop on failure, log; CLI dry run).
+
+## Owner decision: render all acts at once (2026-11-24)
+
+Asked with choices ("Spark first" recommended vs "All acts at once"), the owner chose **All acts at once**. This overrides the P1 pilot -> P2 reviewed act -> P3 batches order for the film (owner decision). Recorded fresh `prod-approve` entries for power, signal, logic and scale (note: render all acts with the moved act boundaries). Owner command after the running `spark-b01` pilot finishes: `.venv\Scripts\python.exe -m morph_studio.cli film-produce all` (12 batches in film order, est. ~13.4 GPU h, resumable; stops on the first failed batch). Review then proceeds act by act with `film-act-sheet` and choices.
