@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt
 schema_version: 1
 name: engineering-film
 render:
@@ -24,7 +24,7 @@ anchors:
 - id: storm-cell-over-plain
   prompt: 'a towering flat-topped cumulonimbus thunderstorm cloud spreading out high above an empty dark grassy plain at night,
     lit from within by flickering lightning, grey rain curtains falling onto the bare ground; nothing on the ground; dominant
-    shapes: mushroom-shaped cloud top, column; materials: water vapour, ice'
+    shapes: broad flat cloud top, wide column of rain; materials: water vapour, ice'
   chapter: spark
   generation: text_to_image
   style_override:
@@ -36,6 +36,9 @@ anchors:
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the
+      colour of the light, never as objects
+    lens: wide-angle landscape lens, deep focus
     negative: &id001
     - text
     - letters
@@ -60,6 +63,11 @@ anchors:
     - vase
     - container
     - box
+    - glass
+    - metal object
+    - copper object
+    - cylinder
+    - platform
 - id: forked-lightning-bolt
   prompt: 'a single bright forked lightning bolt splitting into many thin branching channels from the clouds down to the bare
     open ground of an empty plain against a black night sky, nothing at the strike point; dominant shapes: branching line,
@@ -76,6 +84,9 @@ anchors:
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the
+      colour of the light, never as objects
+    lens: wide-angle landscape lens, deep focus
     negative: *id001
 - id: fulgurite-glass-tube
   prompt: 'Replace the forked lightning bolt completely with fulgurite: lightning-fused sand tube: a hollow, rough, root-like
@@ -118,6 +129,22 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - spheres
+    - balls
+    - metal end caps
+    - knobs
+    - handle
 - id: mast-tip-corona
   prompt: 'the top of a tall wooden ship''s mast at night in a storm, its pointed tip crowned by a pale blue-violet corona
     glow with fine discharge streamers; dominant shapes: spike, halo; materials: wood, ionized air'
@@ -148,6 +175,9 @@ anchors:
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the
+      colour of the light, never as objects
+    lens: wide-angle landscape lens, deep focus
     negative: *id001
 - id: electric-eel-silhouette
   prompt: 'a long dark eel-like electric fish swimming through dark murky water, faint stacked electrocyte bands glowing softly
@@ -164,6 +194,8 @@ anchors:
     description: Cinematic underwater photograph of a living animal in dark water, photorealistic, crisp detail, no man-made
       objects, no frame, no aquarium glass
     composition: whole animal in frame, centered, side view, nothing cropped
+    materials: living animal in open murky river water, mud and weeds; no glass anywhere
+    lens: 50mm underwater lens, natural depth of field
     negative:
     - text
     - letters
@@ -182,9 +214,8 @@ anchors:
     - frame
     - man-made objects
 - id: charged-dust-cloud
-  prompt: 'glittering dust motes drifting and clustering along gently curved invisible field lines inside a single diagonal
-    sunbeam crossing an empty dark room, no lightning, no sparks, no furniture; dominant shapes: points, field lines; materials:
-    dust, light'
+  prompt: 'glittering dust motes floating and drifting in soft swirls inside a single diagonal sunbeam crossing an empty dark
+    room with bare walls, no lightning, no sparks, no furniture; dominant shapes: points, swirls; materials: dust, light'
   chapter: spark
   generation: independent_t2i
   reference: electric-eel-silhouette
@@ -197,6 +228,9 @@ anchors:
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
       no man-made objects, no pedestal, no stand, no frame, no studio props
     composition: phenomenon centered and filling the frame, wide view, nothing cropped
+    materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only as the
+      colour of the light, never as objects
+    lens: wide-angle landscape lens, deep focus
     negative: *id001
 - id: glass-leyden-jar
   prompt: 'Replace the charged particles drifting in a beam of light completely with glass storage jar coated in metal foil:
@@ -226,10 +260,11 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
 - id: voltaic-pile-column
-  prompt: 'Replace the wooden rack of linked foil jars completely with voltaic pile of stacked discs: a vertical column of
-    alternating zinc and copper discs separated by brine-soaked cloth, held by glass rods. Remove every part of the previous
-    object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and
-    dark background. Dominant shapes: stacked discs, column; materials: zinc, copper, cloth'
+  prompt: 'Replace the previous object completely with a voltaic pile: a short upright column of alternating copper and zinc
+    discs separated by brine-soaked cloth, held between three glass rods on a small wooden base, with a wire terminal at the
+    top. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers
+    or lettering, no water, no basin. Keep only the lighting, colour grade and dark background. Dominant shapes: stacked discs,
+    column; materials: copper, zinc, cloth, glass'
   chapter: spark
   generation: reference_edit
   reference: battery-of-jars
@@ -399,12 +434,11 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: generator-stator-hall
-  prompt: 'Replace the previous object and the water basin completely with a giant generator stator: a huge circular steel
-    stator ring lined with hundreds of copper bars, standing in a vast dim turbine hall with an overhead crane girder, seen
-    whole from the front. Keep only the lighting and colour grade. Dominant shapes: ring, radial bars; materials: copper,
-    steel'
+  prompt: 'a giant generator stator: a huge circular steel stator ring lined with hundreds of copper bars, standing upright
+    on the concrete floor of a vast dim turbine hall with an overhead crane girder, seen whole from the front; dominant shapes:
+    ring, radial bars; materials: copper, steel'
   chapter: power
-  generation: reference_edit
+  generation: independent_t2i
   reference: water-turbine-runner
   style_override:
     palette:
@@ -412,11 +446,15 @@ anchors:
     - brushed steel
     - deep black
     lighting: hard copper-toned rim light
+    description: Cinematic wide photograph inside a vast dim industrial power-station hall, photorealistic, crisp detail
+    composition: the stator ring centered, whole and upright, hall visible around it
+    lens: 24mm wide-angle lens, deep focus
 - id: laminated-transformer-core
-  prompt: 'Replace the giant generator stator completely with laminated iron transformer core: stacked thin grain-oriented
-    steel sheets forming a rectangular core with two copper windings. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
-    shapes: rectangle, stacked sheets, coils; materials: silicon steel, copper'
+  prompt: 'Replace the previous object completely with a laminated iron transformer core: stacked thin grey steel sheets forming
+    a rectangular core with two copper windings, standing on a plain dark floor. Show the whole new object fully in frame
+    and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering, no water, no basin. Keep
+    only the lighting, colour grade and dark background. Dominant shapes: rectangle, stacked sheets, coils; materials: silicon
+    steel, copper'
   chapter: power
   generation: reference_edit
   reference: generator-stator-hall
@@ -427,10 +465,11 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: finned-substation-transformer
-  prompt: 'Replace the laminated iron transformer core completely with finned substation transformer: a grey oil-filled tank
-    with radiator fins and tall ribbed porcelain bushings on top. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
-    shapes: box, fins, ribbed cones; materials: steel, porcelain, oil'
+  prompt: 'Replace the previous object completely with a finned substation transformer: a grey steel tank with rows of cooling
+    fins on its sides and porcelain bushings with copper terminals on top, standing on a concrete pad. Show the whole new
+    object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering, no
+    water, no basin. Keep only the lighting, colour grade and dark background. Dominant shapes: box, fins, bushings; materials:
+    steel, porcelain, copper'
   chapter: power
   generation: reference_edit
   reference: laminated-transformer-core
@@ -441,10 +480,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: lattice-transmission-tower
-  prompt: 'Replace the finned substation transformer completely with lattice transmission tower with high-voltage lines: a
-    steel lattice pylon with arms carrying long sagging conductors and insulator strings across hills. Remove every part of
-    the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
-    angle and dark background. Dominant shapes: lattice, catenary lines; materials: galvanized steel, aluminium, glass'
+  prompt: 'Replace the previous object completely with one whole steel lattice transmission tower from its feet on a hillside
+    to its top, arms carrying long sagging conductors on insulator strings. Show the whole new object fully in frame and centered,
+    nothing cropped, no wires or rods crossing the frame, no numbers or lettering, no water, no basin. Keep only the lighting,
+    colour grade and dark background. Dominant shapes: lattice pylon, sagging lines; materials: steel, aluminium, porcelain'
   chapter: power
   generation: reference_edit
   reference: finned-substation-transformer

@@ -9,9 +9,12 @@ natural_scene: &natural
     Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
     no man-made objects, no pedestal, no stand, no frame, no studio props
   composition: phenomenon centered and filling the frame, wide view, nothing cropped
+  materials: only natural elements such as cloud, rain, air, snow, water and light; copper and amber appear only
+    as the colour of the light, never as objects
+  lens: wide-angle landscape lens, deep focus
   negative: [text, letters, labels, logo, watermark, brand names, people, hands, cluttered background, cropped subject,
              pedestal, plinth, stand, display case, frame, anvil, man-made objects, aquarium, glass tank, pottery,
-             vase, container, box]
+             vase, container, box, glass, metal object, copper object, cylinder, platform]
 fixes:
   # --- iteration 0 (Spark batch-1 contact sheet): reference edits that kept the parent ------------------
   # --- iteration 1 (anchors-only pass 1, 18 anchors judged; 9 fail) ---------------------------------------
@@ -22,7 +25,7 @@ fixes:
     prompt: >-
       a towering flat-topped cumulonimbus thunderstorm cloud spreading out high above an empty dark grassy plain
       at night, lit from within by flickering lightning, grey rain curtains falling onto the bare ground; nothing
-      on the ground; dominant shapes: mushroom-shaped cloud top, column; materials: water vapour, ice
+      on the ground; dominant shapes: broad flat cloud top, wide column of rain; materials: water vapour, ice
     style: *natural
   - anchor: forked-lightning-bolt
     apply: fresh
@@ -41,6 +44,9 @@ fixes:
       a single honey-coloured polished amber rod held diagonally, a small tuft of brown fur touching its middle,
       tiny fibres and dust specks jumping up toward the rod; nothing attached to the ends of the rod, no spheres,
       no metal; dominant shapes: rod, fibres; materials: amber, fur
+    style:
+      negative: [text, letters, labels, logo, watermark, brand names, people, hands, cluttered background,
+                 cropped subject, spheres, balls, metal end caps, knobs, handle]
   - anchor: mast-tip-corona
     apply: fresh
     iteration: 1
@@ -74,6 +80,8 @@ fixes:
         Cinematic underwater photograph of a living animal in dark water, photorealistic, crisp detail,
         no man-made objects, no frame, no aquarium glass
       composition: whole animal in frame, centered, side view, nothing cropped
+      materials: living animal in open murky river water, mud and weeds; no glass anywhere
+      lens: 50mm underwater lens, natural depth of field
       negative: [text, letters, labels, logo, watermark, people, hands, cropped subject, aquarium, glass tank,
                  tank edge, pottery, pot, vase, frame, man-made objects]
   - anchor: charged-dust-cloud
@@ -81,8 +89,9 @@ fixes:
     iteration: 1
     problem: the dust streams out of a copper and glass nozzle (single subject)
     prompt: >-
-      glittering dust motes drifting and clustering along gently curved invisible field lines inside a single
-      diagonal sunbeam crossing an empty dark room, no lightning, no sparks, no furniture; dominant shapes: points, field lines; materials: dust, light
+      glittering dust motes floating and drifting in soft swirls inside a single diagonal sunbeam crossing an empty
+      dark room with bare walls, no lightning, no sparks, no furniture; dominant shapes: points, swirls; materials:
+      dust, light
     style: *natural
   - anchor: crown-of-cups
     apply: fresh
@@ -501,3 +510,61 @@ fixes:
       whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers
       or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: boxes, busbars;
       materials: steel, copper, porcelain
+  # --- iteration 3a (pass 3, #1-#28 judged) -------------------------------------------------------------
+  # Pass: fulgurite-glass-tube, spark-between-spheres, glass-leyden-jar, battery-of-jars, friction-machine-globe,
+  # copper-disc-dynamo, hand-cranked-coil-generator, belt-driven-dynamo, steam-engine-flywheel, water-turbine-runner.
+  # Root cause found for the natural-scene props: the style pack still injected 'materials: metal, glass and ceramic
+  # surfaces' and 'lens: 100mm macro' (and 'polished copper' in the palette) -> natural style overrides materials
+  # and lens and says copper/amber are colours of the light only. Storm/lightning/aurora/eel/dust/amber re-render.
+  - anchor: voltaic-pile-column
+    apply: prompt
+    iteration: 3
+    problem: "the top of the column and its terminal are cropped (cropping)"
+    prompt: >-
+      Replace the previous object completely with a voltaic pile: a short upright column of alternating copper and
+      zinc discs separated by brine-soaked cloth, held between three glass rods on a small wooden base, with a wire
+      terminal at the top. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods
+      crossing the frame, no numbers or lettering, no water, no basin. Keep only the lighting, colour grade and dark
+      background. Dominant shapes: stacked discs, column; materials: copper, zinc, cloth, glass
+  - anchor: generator-stator-hall
+    apply: fresh
+    iteration: 3
+    problem: "(it 2 and 3) still a cog-like ring standing in the turbine's water basin (subject, carryover)"
+    prompt: >-
+      a giant generator stator: a huge circular steel stator ring lined with hundreds of copper bars, standing
+      upright on the concrete floor of a vast dim turbine hall with an overhead crane girder, seen whole from the
+      front; dominant shapes: ring, radial bars; materials: copper, steel
+    style:
+      description: "Cinematic wide photograph inside a vast dim industrial power-station hall, photorealistic, crisp detail"
+      composition: "the stator ring centered, whole and upright, hall visible around it"
+      lens: "24mm wide-angle lens, deep focus"
+  - anchor: laminated-transformer-core
+    apply: prompt
+    iteration: 3
+    problem: "water spray and a round basin carried over from the stator (carryover)"
+    prompt: >-
+      Replace the previous object completely with a laminated iron transformer core: stacked thin grey steel sheets
+      forming a rectangular core with two copper windings, standing on a plain dark floor. Show the whole new object
+      fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering, no
+      water, no basin. Keep only the lighting, colour grade and dark background. Dominant shapes: rectangle, stacked
+      sheets, coils; materials: silicon steel, copper
+  - anchor: finned-substation-transformer
+    apply: prompt
+    iteration: 3
+    problem: "water spray and a round basin carried over (carryover)"
+    prompt: >-
+      Replace the previous object completely with a finned substation transformer: a grey steel tank with rows of
+      cooling fins on its sides and porcelain bushings with copper terminals on top, standing on a concrete pad.
+      Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame,
+      no numbers or lettering, no water, no basin. Keep only the lighting, colour grade and dark background.
+      Dominant shapes: box, fins, bushings; materials: steel, porcelain, copper
+  - anchor: lattice-transmission-tower
+    apply: prompt
+    iteration: 3
+    problem: "the tower's legs are cropped at the bottom (cropping)"
+    prompt: >-
+      Replace the previous object completely with one whole steel lattice transmission tower from its feet on a
+      hillside to its top, arms carrying long sagging conductors on insulator strings. Show the whole new object
+      fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering, no
+      water, no basin. Keep only the lighting, colour grade and dark background. Dominant shapes: lattice pylon,
+      sagging lines; materials: steel, aluminium, porcelain
