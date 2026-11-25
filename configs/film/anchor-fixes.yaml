@@ -406,3 +406,98 @@ fixes:
       sockets. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the
       frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
       board, rows of chips; materials: fibreglass, epoxy, copper
+  # --- iteration 2f (#73-#96 judged) ------------------------------------------------------------------
+  # Pass: finned-heatsink-fan, desktop-tower-open, hard-disk-platter, many-core-die-tiles, silicon-interposer,
+  # accelerator-module-coldplate, compute-tray, interconnect-switch-board, server-rack-front, hot-aisle-row,
+  # fibre-optic-bundle, cooling-towers-exterior, wafer-scale-processor, neural-network-lattice,
+  # lightning-over-data-center.
+  - anchor: multi-core-die
+    apply: prompt
+    iteration: 2
+    problem: "close-up of a package corner, cropped; core tiles and shared cache not readable (cropping)"
+    prompt: >-
+      Replace the previous object completely with a multi-core processor die seen from above: one rectangular
+      silicon die divided into several identical core tiles arranged around a shared cache block in the middle. Show
+      the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no
+      numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: tiles,
+      central block; materials: silicon, copper
+  - anchor: laptop-mainboard
+    apply: prompt
+    iteration: 2
+    problem: "cropped board with a coiled copper spring instead of a flat heat pipe (subject, cropping)"
+    prompt: >-
+      Replace the previous object completely with a compact laptop mainboard: a dense irregularly shaped circuit
+      board covered in tiny surface-mount parts, the processor covered by one flat copper heat pipe running to the
+      board edge. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing
+      the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
+      irregular board, heat pipe; materials: fibreglass, copper, solder
+  - anchor: graphics-card-board
+    apply: prompt
+    iteration: 2
+    problem: "a cropped close-up of one chip; the long card is not visible (subject, cropping)"
+    prompt: >-
+      Replace the previous object completely with a whole graphics card with its board exposed: one long rectangular
+      circuit board with a large square processor in the centre surrounded by memory chips and rows of power
+      components, seen at a slight angle. Show the whole new object fully in frame and centered, nothing cropped, no
+      wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and dark
+      background. Dominant shapes: long board, central square; materials: fibreglass, silicon, copper
+  - anchor: pixel-shader-lattice
+    apply: prompt
+    iteration: 2
+    problem: "a cropped mesh on a chip substrate; no lanes or waves (subject, cropping)"
+    prompt: >-
+      Replace the previous object completely with an abstract lattice of thousands of thin parallel glowing compute
+      lanes floating in darkness, bright synchronized waves of light rippling across them. Show the whole new object
+      fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+      Keep only the lighting, colour grade and dark background. Dominant shapes: lattice, waves; materials: light,
+      silicon
+  - anchor: stacked-memory-towers
+    apply: prompt
+    iteration: 2
+    problem: "a lidded chip package with leads; no stacked memory towers (subject)"
+    prompt: >-
+      Replace the previous object completely with a processor package without a lid: a large square processor die in
+      the middle of a silicon base with four short towers of thin stacked memory dies standing beside it, the layers
+      of each tower visible. Show the whole new object fully in frame and centered, nothing cropped, no wires or
+      rods crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background.
+      Dominant shapes: towers, square; materials: silicon, copper, solder bumps
+  - anchor: accelerator-package-lid
+    apply: prompt
+    iteration: 2
+    problem: "the lid fills and overflows the frame (cropping)"
+    prompt: >-
+      Replace the previous object completely with a large square accelerator package with a polished metal lid on a
+      green substrate covered in small capacitors, the whole package with margins around it. Show the whole new
+      object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or
+      lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: square, lid; materials:
+      nickel-plated copper, organic substrate
+  - anchor: rack-backup-batteries
+    apply: prompt
+    iteration: 2
+    problem: "another close-up of server modules; no battery cells (subject)"
+    prompt: >-
+      Replace the previous object completely with a steel rack of backup battery cells: shelves of identical
+      rectangular battery blocks joined by short copper cable links, small green status lights on each block, the
+      whole rack front. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods
+      crossing the frame, no numbers or lettering. Keep only the lighting, colour grade and dark background.
+      Dominant shapes: rows of blocks, links; materials: lithium cells, steel, copper
+  - anchor: liquid-cooling-manifold
+    apply: prompt
+    iteration: 2
+    problem: "a twisted bundle of rainbow hoses carried over from the fibre bundle (carryover, subject)"
+    prompt: >-
+      Replace the previous object completely with a liquid cooling manifold on the back of a server rack: straight
+      vertical colour-coded blue and red pipes with rows of quick-connect fittings and clear sections showing
+      coolant. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the
+      frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes:
+      pipes, manifold; materials: copper, stainless steel, coolant
+  - anchor: data-center-substation
+    apply: prompt
+    iteration: 2
+    problem: "steam plumes carried over from the cooling towers (carryover)"
+    prompt: >-
+      Replace the previous object completely with a data-center substation yard at night: transformers, switchgear
+      and busbars inside a fenced yard beside a long windowless hall, clear air with no steam or smoke. Show the
+      whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers
+      or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: boxes, busbars;
+      materials: steel, copper, porcelain

@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt
 schema_version: 1
 name: engineering-film
 render:
@@ -1125,10 +1125,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: multi-core-die
-  prompt: 'Replace the open hard disk drive completely with multi-core processor die: a die divided into several identical
-    core tiles around a shared cache block. Remove every part of the previous object and its setting that does not belong
-    to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: tiles, central
-    block; materials: silicon, copper'
+  prompt: 'Replace the previous object completely with a multi-core processor die seen from above: one rectangular silicon
+    die divided into several identical core tiles arranged around a shared cache block in the middle. Show the whole new object
+    fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only
+    the lighting, colour grade and dark background. Dominant shapes: tiles, central block; materials: silicon, copper'
   chapter: scale
   generation: reference_edit
   reference: hard-disk-platter
@@ -1139,10 +1139,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: laptop-mainboard
-  prompt: 'Replace the multi-core processor die completely with compact laptop mainboard: a dense irregular board with a processor
-    under a copper heat pipe, tiny surface-mount parts everywhere. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
-    shapes: irregular board, heat pipe; materials: fibreglass, copper, solder'
+  prompt: 'Replace the previous object completely with a compact laptop mainboard: a dense irregularly shaped circuit board
+    covered in tiny surface-mount parts, the processor covered by one flat copper heat pipe running to the board edge. Show
+    the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or
+    lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: irregular board, heat pipe; materials:
+    fibreglass, copper, solder'
   chapter: scale
   generation: reference_edit
   reference: multi-core-die
@@ -1153,10 +1154,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: graphics-card-board
-  prompt: 'Replace the compact laptop mainboard completely with graphics card with exposed board: a long circuit board with
-    a large central processor surrounded by memory chips and power components. Remove every part of the previous object and
-    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: long board, central square; materials: fibreglass, silicon, copper'
+  prompt: 'Replace the previous object completely with a whole graphics card with its board exposed: one long rectangular
+    circuit board with a large square processor in the centre surrounded by memory chips and rows of power components, seen
+    at a slight angle. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the
+    frame, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: long board,
+    central square; materials: fibreglass, silicon, copper'
   chapter: scale
   generation: reference_edit
   reference: laptop-mainboard
@@ -1181,10 +1183,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: pixel-shader-lattice
-  prompt: 'Replace the many-core accelerator die completely with lattice of glowing compute lanes: an abstract lattice of
-    thousands of parallel lanes lighting up in synchronized waves. Remove every part of the previous object and its setting
-    that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant
-    shapes: lattice, waves; materials: light, silicon'
+  prompt: 'Replace the previous object completely with an abstract lattice of thousands of thin parallel glowing compute lanes
+    floating in darkness, bright synchronized waves of light rippling across them. Show the whole new object fully in frame
+    and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
+    grade and dark background. Dominant shapes: lattice, waves; materials: light, silicon'
   chapter: scale
   generation: reference_edit
   reference: many-core-die-tiles
@@ -1195,10 +1197,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: stacked-memory-towers
-  prompt: 'Replace the lattice of glowing compute lanes completely with stacked memory beside a processor: short towers of
-    thinned memory dies stacked on top of each other beside a large processor on a silicon base. Remove every part of the
-    previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera
-    angle and dark background. Dominant shapes: towers, square; materials: silicon, copper, solder bumps'
+  prompt: 'Replace the previous object completely with a processor package without a lid: a large square processor die in
+    the middle of a silicon base with four short towers of thin stacked memory dies standing beside it, the layers of each
+    tower visible. Show the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame,
+    no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: towers, square; materials:
+    silicon, copper, solder bumps'
   chapter: scale
   generation: reference_edit
   reference: pixel-shader-lattice
@@ -1223,10 +1226,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: accelerator-package-lid
-  prompt: 'Replace the silicon interposer with micro-bumps completely with accelerator package with metal lid: a large square
-    package with a polished metal lid on a green substrate covered in capacitors. Remove every part of the previous object
-    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: square, lid; materials: nickel-plated copper, organic substrate'
+  prompt: 'Replace the previous object completely with a large square accelerator package with a polished metal lid on a green
+    substrate covered in small capacitors, the whole package with margins around it. Show the whole new object fully in frame
+    and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only the lighting, colour
+    grade and dark background. Dominant shapes: square, lid; materials: nickel-plated copper, organic substrate'
   chapter: scale
   generation: reference_edit
   reference: silicon-interposer
@@ -1293,10 +1296,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: rack-backup-batteries
-  prompt: 'Replace the tall server rack completely with rows of backup battery cells in a rack: shelves of identical rectangular
-    battery cells with cable links and status lights, echoing the early jar batteries. Remove every part of the previous object
-    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: rows of blocks, links; materials: lithium cells, steel, copper'
+  prompt: 'Replace the previous object completely with a steel rack of backup battery cells: shelves of identical rectangular
+    battery blocks joined by short copper cable links, small green status lights on each block, the whole rack front. Show
+    the whole new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or
+    lettering. Keep only the lighting, colour grade and dark background. Dominant shapes: rows of blocks, links; materials:
+    lithium cells, steel, copper'
   chapter: scale
   generation: reference_edit
   reference: server-rack-front
@@ -1335,10 +1339,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: liquid-cooling-manifold
-  prompt: 'Replace the glowing fibre-optic bundle completely with liquid cooling manifold: colour-coded pipes and quick-connect
-    fittings running along the back of racks, coolant visible in clear sections. Remove every part of the previous object
-    and its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: pipes, manifold; materials: copper, stainless steel, coolant'
+  prompt: 'Replace the previous object completely with a liquid cooling manifold on the back of a server rack: straight vertical
+    colour-coded blue and red pipes with rows of quick-connect fittings and clear sections showing coolant. Show the whole
+    new object fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering.
+    Keep only the lighting, colour grade and dark background. Dominant shapes: pipes, manifold; materials: copper, stainless
+    steel, coolant'
   chapter: scale
   generation: reference_edit
   reference: fibre-optic-bundle
@@ -1363,10 +1368,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: data-center-substation
-  prompt: 'Replace the cooling units on a data-center roof completely with data-center substation yard: transformers, switchgear
-    and busbars in a fenced yard beside a windowless hall. Remove every part of the previous object and its setting that does
-    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    boxes, busbars; materials: steel, copper, porcelain'
+  prompt: 'Replace the previous object completely with a data-center substation yard at night: transformers, switchgear and
+    busbars inside a fenced yard beside a long windowless hall, clear air with no steam or smoke. Show the whole new object
+    fully in frame and centered, nothing cropped, no wires or rods crossing the frame, no numbers or lettering. Keep only
+    the lighting, colour grade and dark background. Dominant shapes: boxes, busbars; materials: steel, copper, porcelain'
   chapter: scale
   generation: reference_edit
   reference: cooling-towers-exterior
