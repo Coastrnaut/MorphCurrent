@@ -1424,6 +1424,12 @@ def main(argv: list[str] | None = None) -> int:
     fcm.add_argument("--a", default=None, help="Version hash prefix (default: second-to-last)")
     fcm.add_argument("--b", default=None, help="Version hash prefix (default: last)")
     fcm.add_argument("--out", default=None)
+    fat = subs.add_parser("film-anchor-test", help="Plan/run A/B repair tests for weak film anchors (single-anchor jobs)")
+    fat.add_argument("--fixes", default="configs/film/anchor-fixes.yaml")
+    fat.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
+    fat.add_argument("--runs-root", default="outputs/runs")
+    fat.add_argument("--out-dir", default="outputs/film-fixes")
+    fat.add_argument("--run", action="store_true", help="Render the tests on the local GPU (idle queue, one at a time)")
     fpr = subs.add_parser("film-produce", help="Render every batch of the given acts in order, one GPU job at a time")
     fpr.add_argument("acts", help="Comma-separated acts, or 'all'")
     fpr.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
@@ -1748,6 +1754,19 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command == "film-anchor-test":
+            from . import anchor_fix as af
+            try:
+                jobs = af.plan_tests(args.storyboard, af.load_fixes(args.fixes), args.out_dir, runs_root=args.runs_root)
+            except af.ReviewError as exc:
+                print(f"REFUSED: {exc}", file=sys.stderr)
+                return 2
+            if not args.run:
+                print(af.main_summary(jobs))
+                return 0
+            results = af.run_tests(jobs, runs_root=args.runs_root)
+            print(json.dumps(results, indent=2))
+            return 0 if results and all(r["exit"] == 0 for r in results) and len(results) == len(jobs) else 1
         elif args.command == "film-produce":
             from . import production as pr
             acts = pr._film_order_acts(args.storyboard) if args.acts == "all" else [a.strip() for a in args.acts.split(",")]

@@ -1,0 +1,30 @@
+# Claude-drafted fixes for film anchors whose reference edit kept too much of the parent image
+# (found on the Spark batch-1 contact sheet, 2026-11-24). Each fix is tested two ways on the GPU, one
+# single-anchor job each, with the anchor's planned seed:
+#   A "instruction": reference edit from the same parent image with an explicit replace/remove instruction
+#   B "fresh": independent text-to-image keyframe with the anchor's planned prompt (breaks the edit chain here)
+# The owner picks per anchor (asked with choices). Nothing here changes the storyboard until a pick is applied.
+version: 1
+fixes:
+  - anchor: forked-lightning-bolt
+    problem: still the storm cloud on a pedestal from the parent; no lightning bolt
+    instruction: >-
+      Replace the whole scene with a single bright forked lightning bolt splitting into many thin branches
+      against a black night sky. Remove the cloud, the pedestal and the glass column completely. Keep only
+      the warm copper-amber colour grade and the dark background.
+  - anchor: rubbed-amber-and-fur
+    problem: the two copper spheres and stands of the parent remain; no fur
+    instruction: >-
+      Remove both copper spheres and their stands completely. Show only a honey-coloured amber rod lying
+      horizontally, lifting tiny fibres and dust toward it, with a small tuft of fur beside it, on a dark
+      background with warm amber rim light.
+  - anchor: aurora-curtain
+    problem: the parent's spheres, mast and corona ring stay in the foreground
+    instruction: >-
+      Remove the copper spheres, the mast and the glowing ring completely. Show only rippling green and
+      violet aurora curtains folding across a polar night sky above a snowy plain, wide view, no objects.
+  - anchor: charged-dust-cloud
+    problem: a fish head from the parent (electric eel) remains
+    instruction: >-
+      Remove the fish completely. Show only glittering dust motes drifting and clustering along curved
+      invisible field lines inside a diagonal beam of warm light on a dark background.

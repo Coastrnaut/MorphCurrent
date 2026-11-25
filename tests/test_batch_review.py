@@ -373,3 +373,35 @@ def test_review_ui_film_options(monkeypatch, tmp_path):
     with pytest.raises(Stop):
         cli.main(["review-ui", "--film", "configs/sequences/engineering-film.yaml", "--film-log", "x.jsonl"])
     assert seen["film_storyboard"] == "configs/sequences/engineering-film.yaml" and seen["film_log"] == "x.jsonl"
+
+
+
+def test_anchor_fix_tests(tmp_path):
+    """Owner 2026-11-24: A/B repair tests for weak anchors (instruction edit vs fresh keyframe), one job each."""
+    from morph_studio import anchor_fix as af
+    sb = storyboard(tmp_path)
+    fixes = tmp_path / "fixes.yaml"
+    fixes.write_text(yaml.safe_dump({"version": 1, "fixes": [
+        {"anchor": "b", "instruction": "Remove the old subject. Show only b."},
+        {"anchor": "d", "instruction": "Show only d."}]}), encoding="utf-8")
+    with pytest.raises(br.ReviewError, match="not rendered"):
+        af.plan_tests(sb, af.load_fixes(fixes), tmp_path / "fx", runs_root=tmp_path / "runs", repo_root=REPO)
+    runs = Runs(tmp_path / "runs")
+    runs.run({A("a"): {}}, "2026-11-24T10:00:00+00:00")
+    jobs = af.plan_tests(sb, af.load_fixes(fixes), tmp_path / "fx", runs_root=tmp_path / "runs", repo_root=REPO)
+    assert [(j["anchor"], j["variant"]) for j in jobs] == [("b", "A-instruction"), ("b", "B-fresh"), ("d", "B-fresh")]
+    a_job = jobs[0]["args"]
+    assert a_job[:2] == ["--method", "reference_edit"] and a_job[3].endswith("a.png")
+    assert jobs[1]["args"][:2] == ["--method", "independent_t2i"]
+    seeds = {j["args"][j["args"].index("--seed") + 1] for j in jobs[:2]}
+    assert len(seeds) == 1  # same planned seed for both variants
+    calls, codes = [], iter([0, 3])
+    res = af.run_tests(jobs, runner=lambda args: (calls.append(args), next(codes))[1], python="py",
+                       runs_root=str(tmp_path / "runs"))
+    assert [r["exit"] for r in res] == [0, 3] and len(calls) == 2  # stops at the first failure
+    assert calls[0][-1] == "--confirm-gpu" and Path(jobs[0]["prompt_file"]).read_text(encoding="utf-8").startswith("Remove")
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(yaml.safe_dump({"version": 1, "fixes": [{"anchor": "b", "instruction": " "}]}), encoding="utf-8")
+    with pytest.raises(br.ReviewError):
+        af.load_fixes(bad)
+    assert len(af.load_fixes(REPO / "configs/film/anchor-fixes.yaml")) == 4
