@@ -466,6 +466,44 @@ def _film_review(args: argparse.Namespace) -> int:
     return code
 
 
+def _film_delivery(args: argparse.Namespace) -> int:
+    """F40 film assembly from approved versions, delivery, provenance and gate matrix (offline)."""
+    from . import film_delivery as fd
+    from .stitcher import SeamError
+    try:
+        if args.command == "film-gates":
+            out = fd.gates(args.ledger, args.accepted)
+            if not args.json:
+                for r in out["rows"]:
+                    state = "ok" if r["evidenced"] else ("ACCEPTED" if r["accepted"] else "OPEN")
+                    note = r["accepted"]["blocker"] if r["accepted"] else (r["gate"] or "")
+                    print(f"{r['feature']}  {state:<8}  {r['status'][:40]:<40}  {note}"
+                          .encode("ascii", "replace").decode("ascii"))
+                print(f"{out['resolved']} of {out['total']} film-track gates resolved")
+                return 0 if out["ok"] else 1
+            print(json.dumps(out, indent=2, ensure_ascii=True))
+            return 0 if out["ok"] else 1
+        if args.command == "film-assemble":
+            out = fd.assemble(args.storyboard, args.runs_root, args.log, args.out, preview=args.preview,
+                              audio=args.audio, audio_licensed=args.audio_licensed, offset=args.offset)
+            code = 0
+        elif args.command == "film-deliver":
+            out = fd.deliver_master(args.master, args.out_dir, args.preset or None, audio=args.audio,
+                                    audio_licensed=args.audio_licensed)
+            code = 1 if out["errors"] else 0
+        else:
+            out = fd.provenance(args.assembly)
+            if args.out:
+                Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+                Path(args.out).write_text(json.dumps(out, indent=2, ensure_ascii=True), encoding="utf-8")
+            code = 0 if out["complete"] else 1
+    except (fd.ReviewError, FileExistsError, SeamError) as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True, default=str))
+    return code
+
+
 def _production(args: argparse.Namespace) -> int:
     """F36 production budget, approvals, batch storyboards and status (offline; renders stay owner-run)."""
     from . import production as pr
@@ -1386,6 +1424,26 @@ def main(argv: list[str] | None = None) -> int:
     fcm.add_argument("--a", default=None, help="Version hash prefix (default: second-to-last)")
     fcm.add_argument("--b", default=None, help="Version hash prefix (default: last)")
     fcm.add_argument("--out", default=None)
+    fas = subs.add_parser("film-assemble", help="Join the film from owner-approved versions; full-song check (F40)")
+    _film_common(fas)
+    fas.add_argument("--preview", action="store_true", help="Use latest versions; output labelled PREVIEW")
+    fas.add_argument("--audio", default=None)
+    fas.add_argument("--audio-licensed", action="store_true")
+    fas.add_argument("--offset", type=float, default=0.0)
+    fas.add_argument("--out", default=None)
+    fdl = subs.add_parser("film-deliver", help="Run delivery presets on the film master")
+    fdl.add_argument("master")
+    fdl.add_argument("--preset", action="append", default=None)
+    fdl.add_argument("--out-dir", default=None)
+    fdl.add_argument("--audio", default=None)
+    fdl.add_argument("--audio-licensed", action="store_true")
+    fpv = subs.add_parser("film-provenance", help="Provenance report for an assembled film")
+    fpv.add_argument("assembly")
+    fpv.add_argument("--out", default=None)
+    fgt = subs.add_parser("film-gates", help="F31-F40 gate matrix with owner-accepted blockers")
+    fgt.add_argument("--ledger", default="docs/SPECKIT_FEATURE_LEDGER.md")
+    fgt.add_argument("--accepted", default="configs/film/accepted-blockers.yaml")
+    fgt.add_argument("--json", action="store_true")
     tcp = subs.add_parser("titles-check", help="Resolve film titles and check 16:9 / 9:16 safe areas (F38)")
     tcp.add_argument("--titles", default="configs/film/titles.yaml")
     tcp.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
@@ -1684,6 +1742,8 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command in ("film-assemble", "film-deliver", "film-provenance", "film-gates"):
+            return _film_delivery(args)
         elif args.command.startswith("film-review") or args.command in ("film-rerender-queue", "film-act-sheet",
                                                                           "film-compare"):
             return _film_review(args)

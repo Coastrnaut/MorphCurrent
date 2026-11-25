@@ -1,0 +1,5 @@
+# F40 owner-accepted blockers: a film-track gate (F31-F40) the owner explicitly accepts as open at delivery.
+# Each entry is an owner decision: {feature: F3x, blocker: "...", owner: name, date: YYYY-MM-DD}.
+# Empty until the owner accepts one (asked with choices; never added on the owner's behalf).
+version: 1
+accepted: []
