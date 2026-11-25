@@ -810,3 +810,13 @@ The owner asked to automate everything that needs their input. Writing a rule in
 4. **Approvals** — via choices from now on.
 
 Suite: 598 passed. Next by number: **F39** (batch review and iteration), then F40.
+
+## F39 — Batch review and iteration for the film's bridges (2026-11-24)
+
+**Spec Kit (full skill workflow).** `create_new_feature.py --json --number 39 --short-name batch-review-iteration` → `specs/039-batch-review-iteration`; specify (16/16), clarify (film log + import of per-run reviews, QA score weights, version definition, default reviewer, cost model), plan (+ research, data model, CLI contract, quickstart), tasks (16 + owner T017), analyze (0 critical/high; SC-004 test folded into T005), implement, converge.
+
+**Built.** `src/morph_studio/batch_review.py`: `film_state` (all run manifests, stages matched by id, versions by media hash in manifest order, QA score from `qa.SEVERITY`, per-run `review.json` imported, stale decisions, per-act totals, film order anchor k → bridge k→k+1), `record` (append-only, pinned version, note ≤ 500, reviewer required), `approve_act`, `review_order`, `rerender_queue` (rejections + `conditioned_on_parent` descendants + adjacent bridges, `production.stage_cost` estimates), `write_rerender` (contiguous segment from the act start; `derived_seed(master, "<task>:rerender:<n>")` only for queued stages), `act_sheet` (first/middle/last frame rows), `compare` (hstack of two versions). `qa.SEVERITY` shared. Review UI: `/film/<act>`, `/film.js` (A/R/N), `/filmmedia/...`, `POST /film/review` (CSRF). CLI: `film-review-status`, `film-review`, `film-review-approve-act`, `film-rerender-queue`, `film-act-sheet`, `film-compare`, `review-ui --film/--film-log`.
+
+**Evidence.** Real film with the current runs folder: 191 stages (96 anchors, 95 bridges; Spark 13/13, Power 15/15, Signal 15/15, Logic 27/27, Scale 26/25), all missing before the pilot, built in 0.44 s. In-memory rerender estimates on the real plan (nothing written to the film log): rejecting `anchor:fulgurite-glass-tube` (Spark's 3rd anchor) queues 23 stages (11 anchors + 12 bridges) ≈ 5,931.6 GPU s (13 ESTIMATED, 2 INTERPOLATED, 8 EXTRAPOLATED); rejecting `bridge:mast-tip-corona->aurora-curtain` queues only itself ≈ 331.4 s. Tests: `tests/test_batch_review.py` 13 (synthetic two-act runs with reference-edit chains, FFmpeg sheet/compare, live loopback act page; converge pass 1 added unreadable-clip handling and the review-ui --film wiring test, pass 2 clean); full suite 611 passed.
+
+**Owner gate (T017).** After `spark-b01`/`b02` render, Claude prepares `film-act-sheet spark` and the act page, then asks the owner with choices.

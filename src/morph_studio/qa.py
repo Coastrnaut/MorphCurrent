@@ -22,6 +22,7 @@ CUT_RATIO, CUT_MIN = 6.0, 20.0
 FREEZE_DIFF, FREEZE_RUN = 0.5, 6
 FLARE_JUMP = 40.0
 ENDPOINT_MAX = 25.0
+SEVERITY = {"hard_cut": 3, "endpoint_mismatch": 3, "flare": 2, "freeze": 1}  # clip-screen flag weights
 
 
 def decode_gray_frames(path: str | Path, *, ffmpeg: str | None = None, timeout: float = 300) -> list[bytes]:
@@ -75,10 +76,9 @@ def analyze_frames(frames: list[bytes], start_ref: bytes | None = None,
             endpoints[name] = round(diff, 2)
             if diff > ENDPOINT_MAX:
                 flags.append({"type": "endpoint_mismatch", "end": name, "diff": round(diff, 2)})
-    severity = {"hard_cut": 3, "endpoint_mismatch": 3, "flare": 2, "freeze": 1}
     return {"method": "heuristic", "frames": len(frames), "median_diff": round(median, 3),
             "max_diff": round(max(diffs), 3), "endpoint_diff": endpoints, "flags": flags,
-            "score": sum(severity[f["type"]] for f in flags),
+            "score": sum(SEVERITY[f["type"]] for f in flags),
             "status": "flagged" if flags else "no_flags",
             "note": "heuristic screen only; human review decides creative acceptance"}
 

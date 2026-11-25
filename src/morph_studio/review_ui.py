@@ -263,8 +263,68 @@ def apply_review(runs_root: str | Path, run_name: str, task: str, decision: str,
     return record_review(Path(runs_root) / run_name / "review.json", task, decision, note[:500])
 
 
+FILM_JS = """(function(){var i=0,rows=[].slice.call(document.querySelectorAll('.stage'));
+function mark(){rows.forEach(function(r,k){r.className=k===i?'stage cur':'stage';});
+if(rows[i]){rows[i].scrollIntoView({block:'nearest'});}}
+document.addEventListener('keydown',function(ev){var t=ev.target.tagName;if(t==='TEXTAREA'||t==='INPUT'||!rows.length){return;}
+var k=ev.key.toLowerCase();if(k==='n'){i=Math.min(i+1,rows.length-1);mark();}
+else if(k==='a'||k==='r'){rows[i].querySelector('form.'+(k==='a'?'approve':'reject')).submit();}});mark();})();
+"""
+
+
+def film_view(storyboard: str | Path, runs_root: str | Path, log: str | Path | None, act: str,
+              repo_root: str | Path = ".") -> dict:
+    """F39 act review page data: stages of one act in review order, media allowlisted inside the runs root."""
+    from .batch_review import film_state, review_order
+    state = film_state(storyboard, runs_root, log, repo_root=repo_root)
+    if act not in state["acts"]:
+        raise UiError(f"no act {act!r} in {state['film']}")
+    root = Path(runs_root)
+    media: dict[str, Path] = {}
+    items = []
+    for st in review_order(state, act):
+        path = Path(st["versions"][-1]["media"]) if st["versions"][-1]["media"] else None
+        token = None
+        if path is not None and path.is_file() and _inside(root, path):
+            token = _token(path)
+            media[token] = path.resolve()
+        items.append({"stage": st["stage"], "kind": st["kind"], "qa_flags": st["qa_flags"], "score": st["score"],
+                      "stale": st["stale"], "versions": len(st["versions"]), "media": token})
+    return {"film": state["film"], "act": act, "acts": state["acts"][act], "items": items, "media": media}
+
+
+def render_film_page(view: dict, csrf: str, message: str = "") -> str:
+    a = view["acts"]
+    rows = []
+    for it in view["items"]:
+        media = ""
+        if it["media"]:
+            src = f"/filmmedia/{e(view['act'])}/{it['media']}"
+            media = (f"<video controls loop muted preload=metadata src='{src}' width=416></video>"
+                     if it["kind"] == "bridge" else f"<img alt='anchor' src='{src}' width=416>")
+        flags = ", ".join(describe_flag(f) for f in it["qa_flags"]) or "no QA flags"
+        forms = "".join(
+            f"<form method=post action='/film/review' class='{cls}' style='display:inline'>"
+            f"<input type=hidden name=csrf value='{e(csrf)}'><input type=hidden name=act value='{e(view['act'])}'>"
+            f"<input type=hidden name=stage value='{e(it['stage'])}'><input type=hidden name=decision value='{dec}'>"
+            f"<button>{label}</button></form> "
+            for cls, dec, label in (("approve", "approved", "Approve (A)"), ("reject", "rejected", "Reject (R)")))
+        stale = " - decision is stale (new version)" if it["stale"] else ""
+        rows.append(f"<div class='stage'><h3>{e(it['stage'])}</h3><p>{e(flags)}{stale}; versions: "
+                    f"{it['versions']}</p>{media}<p>{forms}</p></div>")
+    body = (f"<h1>{e(view['film'])} - act {e(view['act'])}</h1>"
+            + (f"<p class=msg>{e(message)}</p>" if message else "")
+            + f"<p>{a['verified']} of {a['anchors'] + a['bridges']} stages rendered; {a['approved']} approved, "
+              f"{a['rejected']} rejected, {a['flagged']} flagged. Keys: A approve, R reject, N next. "
+              f"Flagged and worst-scoring clips come first.</p>"
+            + ("".join(rows) or "<p>Nothing left to review in this act.</p>")
+            + "<style>.cur{outline:3px solid #c80}</style><script src='/film.js'></script>")
+    return _page(f"Act review - {view['act']}", body)
+
+
 def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, repo_root: str | Path = ".",
-                 csrf: str | None = None):
+                 csrf: str | None = None, film_storyboard: str | Path | None = None,
+                 film_log: str | Path | None = None):
     root = Path(runs_root)
     boards = list(storyboards or [])
     token = csrf or secrets.token_urlsafe(24)
@@ -318,6 +378,17 @@ def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, re
                     return self._send(200, render_plan_page(plan_summary(boards[int(i)], repo_root)).encode("utf-8"))
                 if parts[0] == "media" and len(parts) == 3:
                     return self._media(parts[1], parts[2])
+                if film_storyboard and parts == ["film.js"]:
+                    return self._send(200, FILM_JS.encode("utf-8"), "text/javascript; charset=utf-8")
+                if film_storyboard and parts[0] == "film" and len(parts) == 2:
+                    msg = parse_qs(url.query).get("msg", [""])[0][:200]
+                    view = film_view(film_storyboard, root, film_log, parts[1], repo_root)
+                    return self._send(200, render_film_page(view, self.csrf_token, msg).encode("utf-8"))
+                if film_storyboard and parts[0] == "filmmedia" and len(parts) == 3:
+                    path = film_view(film_storyboard, root, film_log, parts[1], repo_root)["media"].get(parts[2])
+                    if path is None:
+                        return self._error(HTTPStatus.NOT_FOUND, "media not available")
+                    return self._send_file(path)
             except UiError as exc:
                 return self._error(HTTPStatus.NOT_FOUND, str(exc))
             except (ValueError, OSError) as exc:
@@ -328,6 +399,9 @@ def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, re
             path = run_view(root, run)["media"].get(media_token)
             if path is None:
                 return self._error(HTTPStatus.NOT_FOUND, "media not available")
+            return self._send_file(path)
+
+        def _send_file(self, path: Path) -> None:
             size = path.stat().st_size
             ctype = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
             start, end, status = 0, size - 1, 200
@@ -366,6 +440,8 @@ def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, re
             if origin and urlsplit(origin).hostname not in LOOPBACK_HOSTS:
                 return self._error(HTTPStatus.FORBIDDEN, "cross-origin request refused")
             parts = [p for p in urlsplit(self.path).path.split("/") if p]
+            if film_storyboard and parts == ["film", "review"]:
+                return self._film_review(raw, length)
             if len(parts) != 3 or parts[0] != "run" or parts[2] != "review":
                 return self._error(HTTPStatus.NOT_FOUND, "not found")
             if length > 10_000:
@@ -383,15 +459,38 @@ def make_handler(runs_root: str | Path, storyboards: list[str] | None = None, re
                         "command to continue.")
             self._send(303, b"", "text/plain", {"Location": f"/run/{parts[1]}?msg={msg}"})
 
+        def _film_review(self, raw: bytes, length: int) -> None:
+            if length > 10_000:
+                self.close_connection = True
+                return self._error(HTTPStatus.REQUEST_ENTITY_TOO_LARGE, "form too large")
+            form = {k: v[0] for k, v in parse_qs(raw.decode("utf-8", "replace")).items()}
+            if not secrets.compare_digest(form.get("csrf", ""), self.csrf_token):
+                return self._error(HTTPStatus.FORBIDDEN, "missing or invalid form token")
+            from urllib.parse import quote
+            from .batch_review import ReviewError, film_state, record
+            act = form.get("act", "")
+            try:
+                state = film_state(film_storyboard, root, film_log, repo_root=repo_root)
+                if act not in state["acts"]:
+                    raise ReviewError(f"no act {act!r}")
+                record(state, form.get("stage", ""), form.get("decision", ""), form.get("note", ""),
+                       form.get("reviewer", "owner") or "owner")
+            except ReviewError as exc:
+                return self._error(HTTPStatus.BAD_REQUEST, str(exc))
+            msg = quote(f"Recorded {form.get('decision')} for {form.get('stage')}.")
+            self._send(303, b"", "text/plain", {"Location": f"/film/{quote(act)}?msg={msg}"})
+
     return Handler
 
 
 def make_server(runs_root: str | Path, *, host: str = "127.0.0.1", port: int = 8765,
-                storyboards: list[str] | None = None, repo_root: str | Path = ".") -> ThreadingHTTPServer:
+                storyboards: list[str] | None = None, repo_root: str | Path = ".",
+                film_storyboard: str | Path | None = None, film_log: str | Path | None = None) -> ThreadingHTTPServer:
     if host not in LOOPBACK_HOSTS:
         raise UiError(f"review-ui binds only to loopback ({', '.join(sorted(LOOPBACK_HOSTS))}), not {host!r}")
     cls = _Server6 if host == "::1" else _Server
-    return cls((host, port), make_handler(runs_root, storyboards, repo_root))
+    return cls((host, port), make_handler(runs_root, storyboards, repo_root, film_storyboard=film_storyboard,
+                                          film_log=film_log))
 
 
 def default_storyboards(repo_root: str | Path = ".") -> list[str]:

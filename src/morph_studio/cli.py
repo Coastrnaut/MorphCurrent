@@ -404,6 +404,68 @@ def _titles(args: argparse.Namespace) -> int:
     return code
 
 
+def _film_review(args: argparse.Namespace) -> int:
+    """F39 batch review of the film across all batch runs (offline)."""
+    from . import batch_review as br
+    try:
+        state = br.film_state(args.storyboard, args.runs_root, args.log)
+        code = 0
+        if args.command == "film-review-status":
+            stages = [s for s in state["stages"] if args.act is None or s["act"] == args.act]
+            if args.act is not None and args.act not in state["acts"]:
+                raise br.ReviewError(f"no act {args.act!r}")
+            attention = any(s["stale"] or (s["decision"] and s["decision"]["decision"] == "rejected")
+                            for s in stages)
+            code = 1 if attention else 0
+            if not args.json:
+                for act, a in state["acts"].items():
+                    if args.act in (None, act):
+                        print(f"act {act:<8} {a['anchors']:>3} anchors {a['bridges']:>3} bridges  verified "
+                              f"{a['verified']:>3}  missing {a['missing']:>3}  approved {a['approved']:>3}  "
+                              f"rejected {a['rejected']:>3}  stale {a['stale']:>3}  flagged {a['flagged']:>3}")
+                todo = br.review_order(state, args.act)
+                print(f"{len(todo)} stage(s) to review (flagged and worst first):")
+                for s in todo:
+                    flags = ",".join(f.get("type", "?") for f in s["qa_flags"]) or "-"
+                    print(f"  {s['stage']}  score {s['score']}  flags {flags}  versions {len(s['versions'])}"
+                          f"{'  STALE' if s['stale'] else ''}")
+                return code
+            out = br.public(state)
+            if args.act is not None:
+                out["stages"] = stages
+        elif args.command == "film-review":
+            out = br.record(state, args.stage, args.decision, args.note, args.reviewer)
+        elif args.command == "film-review-approve-act":
+            out = br.approve_act(state, args.act, args.reviewer)
+        elif args.command == "film-rerender-queue":
+            out = br.rerender_queue(state)
+            if args.write:
+                out["written"] = str(br.write_rerender(state, out, args.write))
+            if not args.json and not args.write:
+                for r in out["stages"]:
+                    print(f"{r['stage']}  {r['reason']}  est {r['est_s']} s ({r['label']})")
+                print(f"{len(out['stages'])} stage(s), est. {out['total_s']} GPU s")
+                return 0
+        elif args.command == "film-act-sheet":
+            target = Path(args.out) if args.out else Path("outputs/reviews") / f"{state['film']}-{args.act}-sheet.png"
+            try:
+                out = br.act_sheet(state, args.act, target)
+            except br.ReviewError as exc:
+                if "no rendered bridge" in str(exc):
+                    print(f"NOTHING TO SHOW: {exc}", file=sys.stderr)
+                    return 1
+                raise
+        else:
+            name = args.stage.split(":", 1)[-1].replace("->", "_to_")
+            target = Path(args.out) if args.out else Path("outputs/reviews") / f"{state['film']}-{name}-compare.mp4"
+            out = br.compare(state, args.stage, target, args.a, args.b)
+    except (br.ReviewError, FileExistsError) as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(out, indent=2, ensure_ascii=True))
+    return code
+
+
 def _production(args: argparse.Namespace) -> int:
     """F36 production budget, approvals, batch storyboards and status (offline; renders stay owner-run)."""
     from . import production as pr
@@ -884,7 +946,8 @@ def _review_ui(args: argparse.Namespace) -> int:
     boards = default_storyboards(args.repo_root) + [s for s in args.storyboard or []]
     try:
         server = make_server(args.runs_root, host=args.host, port=args.port, storyboards=boards,
-                             repo_root=args.repo_root)
+                             repo_root=args.repo_root, film_storyboard=getattr(args, "film", None),
+                             film_log=getattr(args, "film_log", None))
     except UiError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -1291,6 +1354,38 @@ def main(argv: list[str] | None = None) -> int:
     ac = subs.add_parser("acceptance", help="F01-F20/F30/F40 acceptance matrix from the ledger")
     ac.add_argument("--all", action="store_true", help="All forty features")
     ac.add_argument("--through", type=int, choices=[20, 30, 40], default=None)
+    def _film_common(sp):
+        sp.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
+        sp.add_argument("--runs-root", default="outputs/runs")
+        sp.add_argument("--log", default=None, help="Film review log (default outputs/reviews/<film>.batch-review.jsonl)")
+    frs = subs.add_parser("film-review-status", help="Film review state across all batch runs (F39)")
+    _film_common(frs)
+    frs.add_argument("--act", default=None)
+    frs.add_argument("--json", action="store_true")
+    frv = subs.add_parser("film-review", help="Record approve/reject/pending for one film stage")
+    _film_common(frv)
+    frv.add_argument("stage")
+    frv.add_argument("decision", choices=["approved", "rejected", "pending"])
+    frv.add_argument("--note", default="")
+    frv.add_argument("--reviewer", default="owner")
+    fra = subs.add_parser("film-review-approve-act", help="Approve every rendered, unflagged, undecided bridge of an act")
+    _film_common(fra)
+    fra.add_argument("act")
+    fra.add_argument("--reviewer", default="owner")
+    frq = subs.add_parser("film-rerender-queue", help="Stages to rerender after rejections, with a GPU estimate")
+    _film_common(frq)
+    frq.add_argument("--write", default=None, help="Write a rerender storyboard here")
+    frq.add_argument("--json", action="store_true")
+    fsh = subs.add_parser("film-act-sheet", help="Act contact sheet: first/middle/last frame per rendered bridge")
+    _film_common(fsh)
+    fsh.add_argument("act")
+    fsh.add_argument("--out", default=None)
+    fcm = subs.add_parser("film-compare", help="Side-by-side clip of two versions of one bridge")
+    _film_common(fcm)
+    fcm.add_argument("stage")
+    fcm.add_argument("--a", default=None, help="Version hash prefix (default: second-to-last)")
+    fcm.add_argument("--b", default=None, help="Version hash prefix (default: last)")
+    fcm.add_argument("--out", default=None)
     tcp = subs.add_parser("titles-check", help="Resolve film titles and check 16:9 / 9:16 safe areas (F38)")
     tcp.add_argument("--titles", default="configs/film/titles.yaml")
     tcp.add_argument("--storyboard", default="configs/sequences/engineering-film.yaml")
@@ -1482,6 +1577,8 @@ def main(argv: list[str] | None = None) -> int:
     rui.add_argument("--port", type=int, default=8765)
     rui.add_argument("--storyboard", action="append", help="Extra storyboard for the plan view")
     rui.add_argument("--repo-root", default=".")
+    rui.add_argument("--film", default=None, help="Film storyboard for the keyboard act review pages (/film/<act>)")
+    rui.add_argument("--film-log", default=None)
     dag = subs.add_parser("dag", help="Compile a storyboard into the anchor/bridge/final task DAG (offline)")
     dag.add_argument("storyboard")
     dag.add_argument("--t2i-profile")
@@ -1587,6 +1684,9 @@ def main(argv: list[str] | None = None) -> int:
             return _brief_plan(args)
         elif args.command == "finish":
             return _finish(args)
+        elif args.command.startswith("film-review") or args.command in ("film-rerender-queue", "film-act-sheet",
+                                                                          "film-compare"):
+            return _film_review(args)
         elif args.command in ("titles-check", "titles-render", "act-boundaries"):
             return _titles(args)
         elif args.command in ("sync-report", "warp-report", "animatic", "captions", "narration-check",
