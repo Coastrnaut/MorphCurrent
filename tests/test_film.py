@@ -242,7 +242,7 @@ def test_anchor_fixes_applied(tmp_path):
     gens = {a["id"]: a["generation"] for a in data["anchors"]}
     for k in ("forked-lightning-bolt", "rubbed-amber-and-fur", "aurora-curtain", "charged-dust-cloud"):
         assert gens[k] == "independent_t2i"
-    assert gens["fulgurite-glass-tube"] == "reference_edit"
+    assert gens["glass-leyden-jar"] == "reference_edit"  # unfixed anchors stay reference edits
     d = {"anchors": [{"id": "a", "generation": "text_to_image", "prompt": "x"},
                      {"id": "b", "generation": "reference_edit", "reference": "a", "prompt": "y"}]}
     assert fm.apply_anchor_fixes(d, [{"anchor": "b", "apply": "instruction", "instruction": "Show  only b."}]) == ["b=instruction"]
