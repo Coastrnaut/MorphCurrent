@@ -953,3 +953,6 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
   `belt-driven-dynamo` (no belt or pulley). Fix round 8a written; storyboard regenerated; suite green.
 - Pass 9 (`run-0f4366379a0c9797`, 6 re-renders): 4 pass. Fail (2): `copper-disc-dynamo` (no magnet, friction-machine
   comb carried over) and `belt-driven-dynamo` (no belt); both become fresh keyframes (fix round 9a).
+- Pass 10 (`run-ab1f9f479813d8c5`, 5 re-renders): all pass. `copper-disc-dynamo` now has its horseshoe magnet,
+  `belt-driven-dynamo` its leather belt to a driving wheel. **All 96 anchors pass the second recheck**; the full film
+  run starts from these anchors (they are cache hits for the film render).
