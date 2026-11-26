@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh, spark-between-spheres=fresh, battery-of-jars=fresh, voltaic-pile-column=fresh, friction-machine-globe=fresh, laminated-transformer-core=fresh, spark-between-spheres=fresh, copper-disc-dynamo=prompt, belt-driven-dynamo=prompt, copper-disc-dynamo=fresh, belt-driven-dynamo=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh, spark-between-spheres=fresh, battery-of-jars=fresh, voltaic-pile-column=fresh, friction-machine-globe=fresh, laminated-transformer-core=fresh, spark-between-spheres=fresh, copper-disc-dynamo=prompt, belt-driven-dynamo=prompt, copper-disc-dynamo=fresh, belt-driven-dynamo=fresh, fulgurite-glass-tube=fresh, mast-tip-corona=fresh, belt-driven-dynamo=fresh, stepping-switch-bank=fresh, tube-flip-flop-panel=fresh, cross-section-transistor-layers=fresh, home-computer-motherboard=fresh, pin-grid-processor=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -121,12 +121,11 @@ anchors:
     - cylinder
     - platform
 - id: fulgurite-glass-tube
-  prompt: 'Replace the forked lightning bolt completely with fulgurite: lightning-fused sand tube: a hollow, rough, root-like
-    tube of glassy fused sand with a crusted exterior. Remove every part of the previous object and its setting that does
-    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    hollow tube, roots; materials: fused silica, sand'
+  prompt: 'a fulgurite lying on dark sand: a single hollow branching tube of rough fused sand formed by a lightning strike,
+    lying on its side, its crusted sandy grey-tan exterior and one broken open end showing a smooth glassy inner wall, the
+    whole tube from end to end visible with space around it; dominant shapes: branching tube; materials: fused sand, glass'
   chapter: spark
-  generation: reference_edit
+  generation: independent_t2i
   reference: forked-lightning-bolt
   style_override:
     palette:
@@ -134,6 +133,26 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - vase
+    - pottery
+    - glazed ceramic
+    - roots
+    - tree
+    - standing upright
+  seed: 20250133
 - id: spark-between-spheres
   prompt: 'two polished brass spheres each mounted on top of a short clear glass insulating post, both posts standing on one
     small dark wooden base on a black surface, a thin violet spark bridging the small gap between the spheres, the whole apparatus
@@ -202,8 +221,9 @@ anchors:
     - metal
   seed: 314159
 - id: mast-tip-corona
-  prompt: 'the top of a tall wooden ship''s mast at night in a storm, its pointed tip crowned by a pale blue-violet corona
-    glow with fine discharge streamers; dominant shapes: spike, halo; materials: wood, ionized air'
+  prompt: 'the top of a tall wooden sailing ship''s mast at night under heavy storm clouds, its pointed tip crowned by a soft
+    pale blue-violet glow of St. Elmo''s fire with short fine feathery discharge streamers, no lightning in the sky, the mast
+    top and its yard arm seen against the dark clouds; dominant shapes: spike, halo; materials: wood, ionized air'
   chapter: spark
   generation: independent_t2i
   reference: rubbed-amber-and-fur
@@ -214,8 +234,27 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
     description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
-      no man-made objects, no pedestal, no stand, no frame, no studio props
-    composition: phenomenon centered and filling the frame, wide view, nothing cropped
+      no studio props
+    composition: the mast top centered with dark storm sky around it, nothing else entering the frame edges
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - lightning bolt
+    - forked lightning
+    - electric arc
+    - ring of sparks
+    - railing
+    - deck
+    - foreground objects
+  seed: 20250134
 - id: aurora-curtain
   prompt: 'rippling green and violet aurora curtains folding across a polar night sky above an empty untouched snowy plain,
     wide landscape view, nothing standing on the snow; dominant shapes: curtain, ribbon; materials: ionized gas'
@@ -544,10 +583,10 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: belt-driven-dynamo
-  prompt: 'a 19th-century belt-driven dynamo: a cast-iron dynamo with two upright copper-wound field-coil magnets on a cast-iron
-    bed, a small pulley on its shaft with a wide flat brown leather belt wrapped around it, the belt running in a long loop
-    across to a large spoked driving wheel standing beside it, the whole belt loop visible; dominant shapes: pulley, belt
-    loop, field coils; materials: cast iron, copper, leather'
+  prompt: 'a 19th-century belt-driven dynamo seen from the side: on the left a cast-iron dynamo with two upright copper-wound
+    field-coil magnets and a small pulley on its horizontal shaft; on the right a large spoked iron driving wheel; one long
+    flat brown leather belt forms a single taut closed loop around the small pulley and the large wheel, its top and bottom
+    runs straight and parallel; dominant shapes: pulley, belt loop, field coils; materials: cast iron, copper, leather'
   chapter: power
   generation: independent_t2i
   reference: hand-cranked-coil-generator
@@ -558,7 +597,7 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
     composition: both machines and the whole belt loop small in the frame with wide dark margins on every side, centered,
-      seen from a slight angle, nothing cropped
+      seen from the side, nothing cropped
     negative:
     - text
     - letters
@@ -570,9 +609,12 @@ anchors:
     - hands
     - cluttered background
     - cropped subject
+    - loose belt
+    - twisted ribbon
+    - belt around the coils
     - chain
     - gears
-  seed: 20250132
+  seed: 20250135
 - id: steam-engine-flywheel
   prompt: 'Replace the belt-driven dynamo completely with steam engine with flywheel driving a generator: a large spoked flywheel
     and brass flyball governor beside a riveted boiler, steam venting. Remove every part of the previous object and its setting
@@ -794,13 +836,12 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: stepping-switch-bank
-  prompt: 'Replace the previous object completely with a small steel rack holding a row of four electromechanical stepping
-    switches, each with a wiper arm over a semicircular bank of brass contacts, the whole rack visible. Show the whole new
-    object fully in frame and centered with space around it, nothing cropped, resting directly on the dark surface with no
-    base, stand or plinth under it, no numbers or lettering. Keep only the lighting, colour grade and dark background. Dominant
-    shapes: semicircles, arms, racks; materials: steel, brass'
+  prompt: 'a small steel rack holding a row of four Strowger electromechanical telephone stepping switches, each a vertical
+    shaft carrying a thin wiper arm that sweeps over a semicircular bank of many small brass contacts, with an electromagnet
+    and ratchet at the top and bundles of cloth-covered wires behind; dominant shapes: semicircles, arms, racks; materials:
+    steel, brass'
   chapter: signal
-  generation: reference_edit
+  generation: independent_t2i
   reference: manual-switchboard
   style_override:
     palette:
@@ -808,6 +849,24 @@ anchors:
     - phosphor green
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - glowing rings
+    - fans
+    - turbines
+    - gears on a shaft
+  seed: 20250136
 - id: variable-tuning-capacitor
   prompt: 'a vintage radio variable capacitor seen from above at an angle: a brass frame holding a row of fixed half-moon
     aluminium plates, and on a central shaft a second row of half-moon plates swung halfway in between them, so each moving
@@ -884,12 +943,12 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: tube-flip-flop-panel
-  prompt: 'Replace the tube chassis with transformers completely with plug-in tube logic module: a small panel with two glowing
-    tubes, resistors and capacitors, forming one bistable switching unit. Remove every part of the previous object and its
-    setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: pair of bulbs, panel; materials: glass, phenolic board, copper'
+  prompt: 'a 1950s plug-in vacuum tube logic module: a small black-anodized metal chassis plate with two glowing glass vacuum
+    tubes standing in ceramic sockets on top, a few cylindrical resistors and paper capacitors hand-wired point-to-point on
+    terminal strips along its side, and an octal plug at its base; dominant shapes: tubes, chassis plate; materials: glass,
+    steel, ceramic'
   chapter: signal
-  generation: reference_edit
+  generation: independent_t2i
   reference: tube-amplifier-chassis
   style_override:
     palette:
@@ -897,6 +956,26 @@ anchors:
     - phosphor green
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - printed circuit board
+    - green board
+    - chip
+    - integrated circuit
+    - surface-mount
+    - heatsink
+  seed: 20250137
 - id: tube-computer-wall
   prompt: 'a 1940s room-sized vacuum tube computer: a long wall of tall grey steel cabinets with open fronts, each packed
     with rows of hundreds of small glass vacuum tubes glowing warm orange, plugboard panels and thick black cables looping
@@ -1435,9 +1514,10 @@ anchors:
     composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
       nothing cropped
 - id: cross-section-transistor-layers
-  prompt: 'a cutaway cross-section block of a chip: a row of tiny transistor gates on silicon at the bottom and many stacked
-    copper wiring levels above them, joined by vertical vias, like a miniature city skyline; dominant shapes: stacked layers,
-    vias; materials: silicon, copper, dielectric'
+  prompt: 'a scientific cutaway cross-section of a microchip shown as one rectangular slab cut open on its front face: a grey
+    silicon layer at the bottom with a row of tiny transistor gates, and above it many thin horizontal copper wiring layers
+    separated by translucent dielectric, the layers joined by short vertical copper vias; dominant shapes: stacked horizontal
+    layers, vertical vias; materials: silicon, copper, dielectric'
   chapter: logic
   generation: independent_t2i
   reference: memory-chip-array
@@ -1449,6 +1529,24 @@ anchors:
     lighting: crisp cool rim light
     composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
       nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - buildings
+    - skyscrapers
+    - city
+    - towers
+    - skyline
+    - circuit board
+  seed: 20250138
 - id: first-generation-cpu-die
   prompt: 'an early 1970s microprocessor: a small bare silicon die with a few thousand transistors visible as fine rectilinear
     patterns, mounted in the open cavity of a white ceramic package with thin gold bond wires to its pins, seen from above
@@ -1496,9 +1594,10 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: home-computer-motherboard
-  prompt: 'an early 1980s home computer motherboard: a green circuit board with one large processor chip in a socket, neat
-    rows of identical black through-hole DIP memory chips, a few other DIP chips, a keyboard ribbon connector and an edge
-    connector, all through-hole parts; dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper'
+  prompt: 'a 1981 home computer main circuit board seen from above at an angle: a plain green board with a large 40-pin black
+    processor chip in a socket, several neat rows of identical small black 16-pin through-hole memory chips with straight
+    legs soldered through the board, a few more through-hole chips, a few blue capacitors, and a gold edge connector along
+    one side; dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper'
   chapter: logic
   generation: independent_t2i
   reference: ceramic-cpu-package
@@ -1521,11 +1620,16 @@ anchors:
     - hands
     - cluttered background
     - cropped subject
-    - PCI slot
     - surface-mount
+    - gull-wing leads
+    - quad flat package
+    - pin header
+    - ribbon cable
+    - PCI slot
     - modern motherboard
     - heatsink
-  seed: 20250121
+    - BGA
+  seed: 20250139
 - id: memory-module-stick
   prompt: 'memory module stick: a slim green board with a row of black memory chips and a gold edge connector; dominant shapes:
     slim bar, chips, edge fingers; materials: fibreglass, epoxy, gold'
@@ -1538,12 +1642,11 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: pin-grid-processor
-  prompt: 'Replace the memory module stick completely with square pin-grid processor: a square processor package with a grid
-    of hundreds of gold pins on its underside, a metal heat spreader on top. Remove every part of the previous object and
-    its setting that does not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background.
-    Dominant shapes: square, pin grid; materials: ceramic, gold, nickel-plated copper'
+  prompt: 'a square pin-grid-array processor turned upside down and lying on its back, so its underside faces the camera:
+    a square green-brown ceramic package whose underside is covered by a dense square grid of hundreds of short straight gold
+    pins standing upright in neat rows, seen from a slight angle; dominant shapes: square, pin grid; materials: ceramic, gold'
   chapter: scale
-  generation: reference_edit
+  generation: independent_t2i
   reference: memory-module-stick
   style_override:
     palette:
@@ -1551,6 +1654,24 @@ anchors:
     - brushed steel
     - deep black
     lighting: cold blue rim light with subtle reflections
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - heat spreader on top
+    - edge leads only
+    - quad flat package
+    - pads only
+  seed: 20250140
 - id: finned-heatsink-fan
   prompt: 'Replace the square pin-grid processor completely with finned heatsink with fan: a block of thin aluminium fins
     with a copper base and a spinning fan on top. Remove every part of the previous object and its setting that does not belong

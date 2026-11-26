@@ -956,3 +956,13 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
 - Pass 10 (`run-ab1f9f479813d8c5`, 5 re-renders): all pass. `copper-disc-dynamo` now has its horseshoe magnet,
   `belt-driven-dynamo` its leather belt to a driving wheel. **All 96 anchors pass the second recheck**; the full film
   run starts from these anchors (they are cache hits for the film render).
+
+## 2026-11-26 — Third owner-requested recheck of all 96 anchors (iteration 9r)
+
+- Rechecked `run-ab1f9f479813d8c5` with fresh eyes: 88 pass. Fail (8): `fulgurite-glass-tube` (vase shape, cropped),
+  `mast-tip-corona` (lightning bolts instead of a corona glow, stray rail), `belt-driven-dynamo` (belt not looped
+  over the pulley), `stepping-switch-bank` (glowing rings, not Strowger switches), `tube-flip-flop-panel` (modern
+  circuit board), `cross-section-transistor-layers` (my 'city skyline' metaphor rendered literal skyscrapers),
+  `home-computer-motherboard` (still surface-mount), `pin-grid-processor` (no pin grid shown).
+- Fix round 9r: all eight become fresh keyframes (seeds 20250133–20250140); storyboard regenerated; suite green.
+  Full film run held until every anchor passes.
