@@ -948,3 +948,6 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
   explicit structure and whole-object composition; storyboard regenerated; offline suite green.
 - Next: anchors-only re-render (`--wait-idle 1 --confirm-gpu`), judge the five and their edit descendants; full film
   run stays held until every anchor passes.
+- Pass 8 (`run-b5834d5db1da57e6`, 11 re-rendered anchors: the five fixes plus their edit descendants): 8 pass. Fail
+  (3): `spark-between-spheres` (bright cream floor breaks the dark look), `copper-disc-dynamo` (stands cropped),
+  `belt-driven-dynamo` (no belt or pulley). Fix round 8a written; storyboard regenerated; suite green.

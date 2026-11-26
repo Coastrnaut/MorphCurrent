@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh, spark-between-spheres=fresh, battery-of-jars=fresh, voltaic-pile-column=fresh, friction-machine-globe=fresh, laminated-transformer-core=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh, spark-between-spheres=fresh, battery-of-jars=fresh, voltaic-pile-column=fresh, friction-machine-globe=fresh, laminated-transformer-core=fresh, spark-between-spheres=fresh, copper-disc-dynamo=prompt, belt-driven-dynamo=prompt
 schema_version: 1
 name: engineering-film
 render:
@@ -136,9 +136,9 @@ anchors:
     lighting: warm amber rim light with a faint electric glow
 - id: spark-between-spheres
   prompt: 'two polished brass spheres each mounted on top of a short clear glass insulating post, both posts standing on one
-    small dark wooden base, a thin violet spark bridging the small gap between the spheres, the whole apparatus from the base
-    to the top of the spheres visible with space around it; dominant shapes: sphere, gap, posts; materials: brass, glass,
-    wood'
+    small dark wooden base on a black surface, a thin violet spark bridging the small gap between the spheres, the whole apparatus
+    from the base to the top of the spheres visible with space around it; dominant shapes: sphere, gap, posts; materials:
+    brass, glass, wood'
   chapter: spark
   generation: independent_t2i
   reference: fulgurite-glass-tube
@@ -149,7 +149,7 @@ anchors:
     - deep black
     lighting: warm amber rim light with a faint electric glow
     composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
-      nothing cropped
+      nothing cropped, black background and black floor
     negative:
     - text
     - letters
@@ -164,7 +164,11 @@ anchors:
     - lightning bolt
     - storm
     - cropped base
-  seed: 20250125
+    - bright floor
+    - white background
+    - beige backdrop
+    - seamless paper
+  seed: 20250130
 - id: rubbed-amber-and-fur
   prompt: 'a single bare honey-coloured polished amber rod, both ends plain rounded amber, held diagonally, a small tuft of
     brown fur touching its middle, tiny fibres and dust specks jumping toward the rod; dominant shapes: rod, fibres; materials:
@@ -495,10 +499,11 @@ anchors:
     - lamp
   seed: 20250128
 - id: copper-disc-dynamo
-  prompt: 'Replace the hand-cranked friction generator completely with copper disc spinning between magnet poles: a copper
-    disc on a horizontal axle turning between the poles of a horseshoe magnet, brushes at rim and axle. Remove every part
-    of the previous object and its setting that does not belong to the new subject. Keep only the lighting, colour grade,
-    camera angle and dark background. Dominant shapes: disc, horseshoe; materials: copper, iron'
+  prompt: 'Replace the previous object completely with a Faraday copper disc dynamo: a copper disc on a horizontal brass axle
+    turning between the poles of a large horseshoe magnet, with sliding brass contacts on the rim and axle, all on a small
+    wooden base. Show the whole new object small and centered with dark space on every side, the base fully visible, nothing
+    cropped. Keep only the lighting, colour grade and dark background. Dominant shapes: disc, horseshoe magnet, axle; materials:
+    copper, iron, brass, wood'
   chapter: power
   generation: reference_edit
   reference: friction-machine-globe
@@ -523,10 +528,11 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: belt-driven-dynamo
-  prompt: 'Replace the hand-cranked coil generator completely with belt-driven dynamo: a heavy cast-iron dynamo with a ring
-    armature and commutator, a leather belt to a pulley. Remove every part of the previous object and its setting that does
-    not belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes:
-    ring, pulley, belt; materials: cast iron, copper, leather'
+  prompt: 'Replace the previous object completely with a 19th-century belt-driven dynamo: a cast-iron dynamo with two upright
+    field-coil magnets wound in copper, a pulley wheel on the end of its shaft and a wide leather belt looping from the pulley
+    off to a large driving wheel beside it, on a cast-iron bed. Show the whole new object centered with dark space on every
+    side, nothing cropped. Keep only the lighting, colour grade and dark background. Dominant shapes: pulley, belt loop, field
+    coils; materials: cast iron, copper, leather'
   chapter: power
   generation: reference_edit
   reference: hand-cranked-coil-generator

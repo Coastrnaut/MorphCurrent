@@ -1305,3 +1305,42 @@ fixes:
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
       negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "coils at the corners", "heatsink", "fins", "water", "basin"]
+  # --- iteration 8a (pass 8 complete: 11 re-rendered anchors judged, 2026-11-25) -----------------------------
+  # Pass (8): battery-of-jars (four clear foil-coated jars), voltaic-pile-column (copper and grey zinc alternate),
+  # friction-machine-globe (pad outside the globe), hand-cranked-coil-generator, steam-engine-flywheel,
+  # water-turbine-runner, laminated-transformer-core (coils around the legs), finned-substation-transformer.
+  # Fail (3): spark-between-spheres (bright cream floor breaks the dark look), copper-disc-dynamo (stands cropped
+  # at the bottom), belt-driven-dynamo (a plain motor: no belt, no pulley).
+  - anchor: spark-between-spheres
+    apply: fresh
+    iteration: 8
+    problem: "(it 8) whole now, but a bright cream floor fills the lower half and breaks the dark look (look)"
+    seed: 20250130
+    prompt: >-
+      two polished brass spheres each mounted on top of a short clear glass insulating post, both posts standing on
+      one small dark wooden base on a black surface, a thin violet spark bridging the small gap between the spheres,
+      the whole apparatus from the base to the top of the spheres visible with space around it; dominant shapes:
+      sphere, gap, posts; materials: brass, glass, wood
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped, black background and black floor"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "lightning bolt", "storm", "cropped base", "bright floor", "white background", "beige backdrop", "seamless paper"]
+  - anchor: copper-disc-dynamo
+    apply: prompt
+    iteration: 8
+    problem: "(it 8) the disc's brass stands run off the bottom edge (cropping)"
+    prompt: >-
+      Replace the previous object completely with a Faraday copper disc dynamo: a copper disc on a horizontal brass
+      axle turning between the poles of a large horseshoe magnet, with sliding brass contacts on the rim and axle,
+      all on a small wooden base. Show the whole new object small and centered with dark space on every side, the
+      base fully visible, nothing cropped. Keep only the lighting, colour grade and dark background. Dominant
+      shapes: disc, horseshoe magnet, axle; materials: copper, iron, brass, wood
+  - anchor: belt-driven-dynamo
+    apply: prompt
+    iteration: 8
+    problem: "(it 8) a plain modern electric motor with no belt and no pulley (subject)"
+    prompt: >-
+      Replace the previous object completely with a 19th-century belt-driven dynamo: a cast-iron dynamo with two
+      upright field-coil magnets wound in copper, a pulley wheel on the end of its shaft and a wide leather belt
+      looping from the pulley off to a large driving wheel beside it, on a cast-iron bed. Show the whole new object
+      centered with dark space on every side, nothing cropped. Keep only the lighting, colour grade and dark
+      background. Dominant shapes: pulley, belt loop, field coils; materials: cast iron, copper, leather
