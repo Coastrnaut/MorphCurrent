@@ -990,3 +990,6 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
 - Rechecked `run-6f13da6bb7ce26ad`: 93 pass. Fail (3): `rubbed-amber-and-fur` (glass tube with bulb ends, not
   amber), `belt-driven-dynamo` (belt fixed to a bar on the coils, no pulley), `resist-coated-wafer` (a spindle pressing
   on a disc, top cropped). Fix round 12r: fresh keyframes (seeds 20250147–20250149); suite green.
+- Pass 15 (`run-a89f26400e0ff0d4`, 5 re-renders): `rubbed-amber-and-fur` (raw amber lump) and
+  `steam-engine-flywheel` pass. Fail (3): `belt-driven-dynamo` (belt on the floor), `resist-coated-wafer` (bright
+  white bowl, cropped), `patterned-wafer-grid` (white bowl carried over); fix round 12a.
