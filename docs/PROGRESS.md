@@ -937,3 +937,14 @@ The owner asked to recheck all 96 before the film run; the run was held. Re-revi
 ## Recheck fixes pass; all 96 anchors pass (2026-11-25, Claude review)
 
 Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (thin flat-pack with ribbon leads; early-1980s board with through-hole chip rows; hard disk, switch board and cooling manifold shown whole) and their re-rendered descendants pass (server-rack-front, cooling-towers-exterior, data-center-substation, wafer-scale-processor, neural-network-lattice, lightning-over-data-center). All 96 anchors meet the standard. Overview: `outputs/reviews/engineering-film-anchors-final-v2.png`. Full film run started: `film-produce all --batch-dir outputs/production/batches-v5` (anchors are cache hits; the 95 bridges render).
+
+## 2026-11-25 — Second owner-requested recheck of all 96 anchors (iteration 8r)
+
+- Rechecked every anchor of `run-bc256eef9c303c12` on 624×360 sheets with a stricter accuracy and cropping bar.
+- 91 pass (all of #49–#96 pass). Fail (5): `spark-between-spheres` (stands cropped), `battery-of-jars` (two jars are
+  solid copper cans), `voltaic-pile-column` (no zinc discs), `friction-machine-globe` (leather pad inside the globe),
+  `laminated-transformer-core` (coils at the corners instead of around the legs).
+- Fix round 8r in `configs/film/anchor-fixes.yaml`: all five become fresh keyframes (seeds 20250125–20250129) with
+  explicit structure and whole-object composition; storyboard regenerated; offline suite green.
+- Next: anchors-only re-render (`--wait-idle 1 --confirm-gpu`), judge the five and their edit descendants; full film
+  run stays held until every anchor passes.

@@ -1236,3 +1236,72 @@ fixes:
       space around it; dominant shapes: pipes, manifold; materials: copper, stainless steel, coolant
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+  # --- iteration 8r (owner-requested second recheck of all 96 anchors, 2026-11-25) ------------------------
+  # Stricter accuracy and cropping pass. 91 pass; #49-#96 all pass. Fail (5): spark-between-spheres (stands
+  # cropped), battery-of-jars (copper cans), voltaic-pile-column (no zinc), friction-machine-globe (pad inside
+  # the globe), laminated-transformer-core (coils at the corners). All five become fresh keyframes.
+  - anchor: spark-between-spheres
+    apply: fresh
+    iteration: 8
+    problem: "(recheck 2) the insulating stands run off the bottom edge (cropping)"
+    seed: 20250125
+    prompt: >-
+      two polished brass spheres each mounted on top of a short clear glass insulating post, both posts standing on
+      one small dark wooden base, a thin violet spark bridging the small gap between the spheres, the whole
+      apparatus from the base to the top of the spheres visible with space around it; dominant shapes: sphere, gap,
+      posts; materials: brass, glass, wood
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "lightning bolt", "storm", "cropped base"]
+  - anchor: battery-of-jars
+    apply: fresh
+    iteration: 8
+    problem: "(recheck 2) two of the four jars render as solid copper cans (plausibility)"
+    seed: 20250126
+    prompt: >-
+      a battery of four identical tall clear glass Leyden jars standing in one row in a shallow open wooden tray,
+      each glass jar coated inside and outside with silver tin foil on its lower half and clear glass above, a brass
+      rod rising from each wooden lid, the four rods joined along the top by one brass bar; dominant shapes: row of
+      cylinders, bar; materials: glass, tin foil, brass, wood
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "copper cans", "metal cans", "solid copper cylinders", "paint cans"]
+  - anchor: voltaic-pile-column
+    apply: fresh
+    iteration: 8
+    problem: "(recheck 2) the column shows only copper discs and cloth, no zinc (subject)"
+    seed: 20250127
+    prompt: >-
+      a voltaic pile: a short upright column of many thin discs stacked in a strictly repeating pattern of shiny
+      orange copper disc, dull grey zinc disc and thin brown cloth disc, so grey and orange layers clearly alternate
+      all the way up, held between three thin glass rods on a small wooden base with a wire terminal on top;
+      dominant shapes: stacked discs, column; materials: copper, zinc, cloth, glass
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "all copper", "coins", "water", "basin"]
+  - anchor: friction-machine-globe
+    apply: fresh
+    iteration: 8
+    problem: "(recheck 2) the leather rubbing pad sits inside the glass globe (plausibility)"
+    seed: 20250128
+    prompt: >-
+      an 18th-century hand-cranked friction electrostatic generator: a large clear empty glass globe on a horizontal
+      axle between two wooden uprights, turned by a brass crank on the side, a brown leather pad on a wooden arm
+      pressing against the outside of the globe from below, a brass comb near the globe on the far side; the globe
+      is empty and transparent; dominant shapes: sphere, axle, crank; materials: glass, leather, brass, wood
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "objects inside the globe", "pad inside the glass", "snow globe", "lamp"]
+  - anchor: laminated-transformer-core
+    apply: fresh
+    iteration: 8
+    problem: "(recheck 2) the coils sit at the corners, not around the legs (plausibility)"
+    seed: 20250129
+    prompt: >-
+      a single-phase laminated iron transformer core standing upright: a rectangular window-shaped frame built of
+      stacked thin grey silicon-steel sheets, with two thick cylindrical copper coils, each coil wound around one of
+      the two vertical side legs at mid-height so the legs pass through the centres of the coils, the corners bare
+      steel; dominant shapes: rectangle, stacked sheets, coils; materials: silicon steel, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "coils at the corners", "heatsink", "fins", "water", "basin"]
