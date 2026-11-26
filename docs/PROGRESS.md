@@ -984,3 +984,9 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
 - Pass 14 (`run-6f13da6bb7ce26ad`): `water-turbine-runner` passes (bowl-shaped runner, curved blades, crown and
   shaft flange, whole). **All 96 anchors pass the fourth recheck.** Full film run still awaits the owner's go-ahead
   (`film-produce all --batch-dir outputs/production/batches-v6 --log outputs/production/engineering-film.produce-v6.jsonl`).
+
+## 2026-11-26 — Fifth owner-requested recheck of all 96 anchors (iteration 12r)
+
+- Rechecked `run-6f13da6bb7ce26ad`: 93 pass. Fail (3): `rubbed-amber-and-fur` (glass tube with bulb ends, not
+  amber), `belt-driven-dynamo` (belt fixed to a bar on the coils, no pulley), `resist-coated-wafer` (a spindle pressing
+  on a disc, top cropped). Fix round 12r: fresh keyframes (seeds 20250147–20250149); suite green.

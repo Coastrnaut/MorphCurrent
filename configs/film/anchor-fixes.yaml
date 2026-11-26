@@ -1581,3 +1581,47 @@ fixes:
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from above at an angle, nothing cropped"
       negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "fan", "propeller", "funnel", "standing upright", "fountain", "water"]
+  # --- iteration 12r (owner-requested fifth recheck of all 96 anchors, 2026-11-26) ---------------------------
+  # Fresh eyes on run-6f13da6bb7ce26ad. 93 pass. Fail (3): rubbed-amber-and-fur (a glass tube with bulb ends filled
+  # with honey, not amber; the rod wording keeps producing bulbs, so it becomes a raw amber lump),
+  # belt-driven-dynamo (the belt is anchored to a bar on top of the coils; there is no pulley on the dynamo shaft),
+  # resist-coated-wafer (a big spindle pressing on a disc with its top cropped; no wafer or resist film reads).
+  - anchor: rubbed-amber-and-fur
+    apply: fresh
+    iteration: 12
+    problem: "(recheck 5) a glass tube with bulb ends filled with honey, not amber (subject)"
+    seed: 20250147
+    prompt: >-
+      a macro photograph of one rough natural lump of raw golden amber, irregular and translucent with tiny bubbles
+      inside, lying on black, a soft tuft of brown animal fur brushing against it, and a few tiny bits of fluff and
+      dust specks leaping up toward the amber; dominant shapes: lump, fibres; materials: amber, fur
+    style:
+      composition: "the amber lump and fur centered with wide black margins on every side, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "rod", "tube", "glass", "bulbs", "spheres", "balls", "honey", "bottle", "dumbbell"]
+  - anchor: belt-driven-dynamo
+    apply: fresh
+    iteration: 12
+    problem: "(recheck 5) the belt is fixed to a bar on top of the coils; no pulley on the dynamo shaft (plausibility)"
+    seed: 20250148
+    prompt: >-
+      a 19th-century belt-driven dynamo seen from the side: on the left a cast-iron dynamo with two upright copper
+      field coils and a horizontal shaft sticking out of its side, a small round iron pulley wheel fixed on the end of
+      that shaft; on the right a large spoked iron driving wheel at the same height; one flat brown leather belt
+      wrapped around the small pulley and around the large wheel in a closed loop, its upper and lower runs straight;
+      dominant shapes: pulley, belt loop, field coils; materials: cast iron, copper, leather
+    style:
+      composition: "both machines and the whole belt loop small in the frame with wide dark margins on every side, centered, seen from the side, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "loose belt", "belt attached to the coils", "bar on top", "chain", "gears"]
+  - anchor: resist-coated-wafer
+    apply: fresh
+    iteration: 12
+    problem: "(recheck 5) a large spindle presses on a disc, its top cropped; no wafer or resist film reads (subject, cropping)"
+    seed: 20250149
+    prompt: >-
+      a round polished silicon wafer resting flat on the small vacuum chuck of a spin coater, seen from above at an
+      angle, a glossy thin amber-coloured film of photoresist spreading outward in a smooth spiral sheen across the
+      whole wafer from its centre, the whole wafer and chuck visible inside a shallow round white coater bowl;
+      dominant shapes: disc, spiral sheen; materials: silicon, photoresist
+    style:
+      composition: "the whole wafer and bowl small in the frame with wide dark margins on every side, centered, seen from above at an angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "spindle from above", "large cylinder", "lathe", "drill"]
