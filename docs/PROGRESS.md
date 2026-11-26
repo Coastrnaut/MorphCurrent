@@ -979,3 +979,5 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
 - Rechecked `run-d0676287067838ed`: 93 pass. Fail (3): `water-turbine-runner` (sprays water out of a fountain
   basin), `tube-amplifier-chassis` (modern finned block and chip under the chassis), `stacked-memory-towers` (towers
   at the board corners, one floating). Fix round 11r: fresh keyframes (seeds 20250143–20250145); suite green.
+- Pass 13 (`run-bbf5ce8b74f9f75b`): `tube-amplifier-chassis` and `stacked-memory-towers` pass; `water-turbine-runner`
+  is an upright fan-like wheel, so it gets one more fresh try (fix round 11a).

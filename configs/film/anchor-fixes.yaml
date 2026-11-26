@@ -1564,3 +1564,20 @@ fixes:
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
       negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "tall towers", "floating parts", "towers at the corners", "pillars"]
+  # --- iteration 11a (pass 13: 3 re-renders judged, 2026-11-26) -----------------------------------------------
+  # Pass (2): tube-amplifier-chassis (tubes, transformers, knobs on a steel chassis), stacked-memory-towers (short
+  # stacks beside the processor). Fail (1): water-turbine-runner (an upright fan-like wheel with a funnel on top,
+  # not the bowl shape of a real runner).
+  - anchor: water-turbine-runner
+    apply: fresh
+    iteration: 11
+    problem: "(pass 13) an upright fan-like wheel with a funnel on top, not a turbine runner (subject)"
+    seed: 20250146
+    prompt: >-
+      a large Francis hydroelectric turbine runner lying flat on a dark concrete floor, seen from above at an angle:
+      a wide round bowl-shaped steel wheel with a solid round crown on top and a ring band at the bottom, between them
+      a circle of many thick curved twisted blades, a short thick shaft flange in the centre of the crown; dominant
+      shapes: bowl, ring of curved blades; materials: stainless steel
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from above at an angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "fan", "propeller", "funnel", "standing upright", "fountain", "water"]
