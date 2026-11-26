@@ -951,3 +951,5 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
 - Pass 8 (`run-b5834d5db1da57e6`, 11 re-rendered anchors: the five fixes plus their edit descendants): 8 pass. Fail
   (3): `spark-between-spheres` (bright cream floor breaks the dark look), `copper-disc-dynamo` (stands cropped),
   `belt-driven-dynamo` (no belt or pulley). Fix round 8a written; storyboard regenerated; suite green.
+- Pass 9 (`run-0f4366379a0c9797`, 6 re-renders): 4 pass. Fail (2): `copper-disc-dynamo` (no magnet, friction-machine
+  comb carried over) and `belt-driven-dynamo` (no belt); both become fresh keyframes (fix round 9a).
