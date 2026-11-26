@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh, spark-between-spheres=fresh, battery-of-jars=fresh, voltaic-pile-column=fresh, friction-machine-globe=fresh, laminated-transformer-core=fresh, spark-between-spheres=fresh, copper-disc-dynamo=prompt, belt-driven-dynamo=prompt, copper-disc-dynamo=fresh, belt-driven-dynamo=fresh, fulgurite-glass-tube=fresh, mast-tip-corona=fresh, belt-driven-dynamo=fresh, stepping-switch-bank=fresh, tube-flip-flop-panel=fresh, cross-section-transistor-layers=fresh, home-computer-motherboard=fresh, pin-grid-processor=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh, spark-between-spheres=fresh, battery-of-jars=fresh, voltaic-pile-column=fresh, friction-machine-globe=fresh, laminated-transformer-core=fresh, spark-between-spheres=fresh, copper-disc-dynamo=prompt, belt-driven-dynamo=prompt, copper-disc-dynamo=fresh, belt-driven-dynamo=fresh, fulgurite-glass-tube=fresh, mast-tip-corona=fresh, belt-driven-dynamo=fresh, stepping-switch-bank=fresh, tube-flip-flop-panel=fresh, cross-section-transistor-layers=fresh, home-computer-motherboard=fresh, pin-grid-processor=fresh, mast-tip-corona=fresh, home-computer-motherboard=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -221,9 +221,9 @@ anchors:
     - metal
   seed: 314159
 - id: mast-tip-corona
-  prompt: 'the top of a tall wooden sailing ship''s mast at night under heavy storm clouds, its pointed tip crowned by a soft
-    pale blue-violet glow of St. Elmo''s fire with short fine feathery discharge streamers, no lightning in the sky, the mast
-    top and its yard arm seen against the dark clouds; dominant shapes: spike, halo; materials: wood, ionized air'
+  prompt: 'the top of a tall wooden sailing ship''s mast at night against low dark rain clouds, its pointed iron tip wrapped
+    in a small soft glowing tuft of pale blue-violet St. Elmo''s fire, like a quiet cold flame with fine feathery wisps, the
+    rest of the sky calm and dark; dominant shapes: spike, glowing tuft; materials: wood, ionized air'
   chapter: spark
   generation: independent_t2i
   reference: rubbed-amber-and-fur
@@ -233,9 +233,9 @@ anchors:
     - hot amber
     - deep black
     lighting: warm amber rim light with a faint electric glow
-    description: Cinematic photograph of a natural electrical phenomenon in its real setting, photorealistic, crisp detail,
-      no studio props
-    composition: the mast top centered with dark storm sky around it, nothing else entering the frame edges
+    description: Cinematic night photograph of a quiet natural glow on a ship's mast, photorealistic, crisp detail, no studio
+      props
+    composition: the mast top centered with dark sky around it, nothing else entering the frame edges
     negative:
     - text
     - letters
@@ -247,14 +247,17 @@ anchors:
     - hands
     - cluttered background
     - cropped subject
+    - lightning
     - lightning bolt
     - forked lightning
     - electric arc
-    - ring of sparks
+    - bolt
+    - ring
+    - halo ring
+    - sparks
     - railing
     - deck
-    - foreground objects
-  seed: 20250134
+  seed: 20250141
 - id: aurora-curtain
   prompt: 'rippling green and violet aurora curtains folding across a polar night sky above an empty untouched snowy plain,
     wide landscape view, nothing standing on the snow; dominant shapes: curtain, ribbon; materials: ionized gas'
@@ -1594,10 +1597,11 @@ anchors:
     - deep black
     lighting: crisp cool rim light
 - id: home-computer-motherboard
-  prompt: 'a 1981 home computer main circuit board seen from above at an angle: a plain green board with a large 40-pin black
-    processor chip in a socket, several neat rows of identical small black 16-pin through-hole memory chips with straight
-    legs soldered through the board, a few more through-hole chips, a few blue capacitors, and a gold edge connector along
-    one side; dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper'
+  prompt: 'an early 1980s home computer main circuit board seen from above at an angle: a plain green board on which every
+    chip is a long narrow black rectangle with one row of straight legs along each long side and no legs on its ends, soldered
+    through holes in the board; one very long 40-pin processor chip of this kind in a socket, several neat rows of smaller
+    identical memory chips of the same kind, a few blue capacitors, and a gold edge connector along one side; dominant shapes:
+    board, rows of chips; materials: fibreglass, epoxy, copper'
   chapter: logic
   generation: independent_t2i
   reference: ceramic-cpu-package
@@ -1620,16 +1624,16 @@ anchors:
     - hands
     - cluttered background
     - cropped subject
+    - square chip
+    - quad flat package
+    - legs on four sides
     - surface-mount
     - gull-wing leads
-    - quad flat package
-    - pin header
-    - ribbon cable
-    - PCI slot
-    - modern motherboard
-    - heatsink
     - BGA
-  seed: 20250139
+    - pin header
+    - heatsink
+    - modern motherboard
+  seed: 20250142
 - id: memory-module-stick
   prompt: 'memory module stick: a slim green board with a row of black memory chips and a gold edge connector; dominant shapes:
     slim bar, chips, edge fingers; materials: fibreglass, epoxy, gold'

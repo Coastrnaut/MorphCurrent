@@ -1487,3 +1487,37 @@ fixes:
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
       negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "heat spreader on top", "edge leads only", "quad flat package", "pads only"]
+  # --- iteration 10a (pass 11 complete: 12 re-rendered anchors judged, 2026-11-26) ---------------------------
+  # Pass (10): fulgurite-glass-tube, belt-driven-dynamo (taut belt loop), steam-engine-flywheel, water-turbine-runner,
+  # stepping-switch-bank (rotary contact banks with wipers), tube-flip-flop-panel (hand-wired chassis),
+  # cross-section-transistor-layers (layered block with vias), pin-grid-processor (pin grid shown),
+  # finned-heatsink-fan, desktop-tower-open. Fail (2): mast-tip-corona (a lightning bolt again; the word 'storm'
+  # pulls it in) and home-computer-motherboard (processor still a surface-mount quad flat package).
+  - anchor: mast-tip-corona
+    apply: fresh
+    iteration: 10
+    problem: "(recheck 3, pass 11) a forked lightning bolt beside the mast again (subject)"
+    seed: 20250141
+    prompt: >-
+      the top of a tall wooden sailing ship's mast at night against low dark rain clouds, its pointed iron tip
+      wrapped in a small soft glowing tuft of pale blue-violet St. Elmo's fire, like a quiet cold flame with fine
+      feathery wisps, the rest of the sky calm and dark; dominant shapes: spike, glowing tuft; materials: wood,
+      ionized air
+    style:
+      description: "Cinematic night photograph of a quiet natural glow on a ship's mast, photorealistic, crisp detail, no studio props"
+      composition: "the mast top centered with dark sky around it, nothing else entering the frame edges"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "lightning", "lightning bolt", "forked lightning", "electric arc", "bolt", "ring", "halo ring", "sparks", "railing", "deck"]
+  - anchor: home-computer-motherboard
+    apply: fresh
+    iteration: 10
+    problem: "(recheck 3, pass 11) the processor is still a surface-mount quad flat package (era)"
+    seed: 20250142
+    prompt: >-
+      an early 1980s home computer main circuit board seen from above at an angle: a plain green board on which every
+      chip is a long narrow black rectangle with one row of straight legs along each long side and no legs on its
+      ends, soldered through holes in the board; one very long 40-pin processor chip of this kind in a socket, several
+      neat rows of smaller identical memory chips of the same kind, a few blue capacitors, and a gold edge connector
+      along one side; dominant shapes: board, rows of chips; materials: fibreglass, epoxy, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "square chip", "quad flat package", "legs on four sides", "surface-mount", "gull-wing leads", "BGA", "pin header", "heatsink", "modern motherboard"]

@@ -966,3 +966,5 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
   `home-computer-motherboard` (still surface-mount), `pin-grid-processor` (no pin grid shown).
 - Fix round 9r: all eight become fresh keyframes (seeds 20250133–20250140); storyboard regenerated; suite green.
   Full film run held until every anchor passes.
+- Pass 11 (`run-32038ef8d719d4fe`, 12 re-renders incl. descendants): 10 pass. Fail (2): `mast-tip-corona` (a
+  lightning bolt again) and `home-computer-motherboard` (processor still a quad flat package); fix round 10a.
