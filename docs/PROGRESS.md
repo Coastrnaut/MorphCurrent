@@ -973,3 +973,9 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
   third recheck.** Full film run not started; awaiting the owner's go-ahead (the previous launch was aborted for this
   recheck). Command: `film-produce all --batch-dir outputs/production/batches-v6 --log
   outputs/production/engineering-film.produce-v6.jsonl`.
+
+## 2026-11-26 — Fourth owner-requested recheck of all 96 anchors (iteration 11r)
+
+- Rechecked `run-d0676287067838ed`: 93 pass. Fail (3): `water-turbine-runner` (sprays water out of a fountain
+  basin), `tube-amplifier-chassis` (modern finned block and chip under the chassis), `stacked-memory-towers` (towers
+  at the board corners, one floating). Fix round 11r: fresh keyframes (seeds 20250143–20250145); suite green.

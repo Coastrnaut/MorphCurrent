@@ -1521,3 +1521,46 @@ fixes:
     style:
       composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
       negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "square chip", "quad flat package", "legs on four sides", "surface-mount", "gull-wing leads", "BGA", "pin header", "heatsink", "modern motherboard"]
+  # --- iteration 11r (owner-requested fourth recheck of all 96 anchors, 2026-11-26) --------------------------
+  # Fresh eyes on run-d0676287067838ed. 93 pass. Fail (3): water-turbine-runner (a runner spraying water out of a
+  # fountain basin, physically backwards), tube-amplifier-chassis (a modern finned block with a chip hanging under
+  # the chassis, the same era defect failed on tube-flip-flop-panel), stacked-memory-towers (towers at the board
+  # corners, one floating off the edge, instead of beside the processor on a silicon base). Fresh keyframes.
+  - anchor: water-turbine-runner
+    apply: fresh
+    iteration: 11
+    problem: "(recheck 4) the runner sprays water out of a fountain basin like a fountain head (plausibility)"
+    seed: 20250143
+    prompt: >-
+      a single large Francis water turbine runner standing on a dark concrete floor: a bronze-coloured steel wheel of
+      many curved blades between a top crown and a bottom ring, with a thick shaft rising from its centre, dry and
+      clean, seen from a slight angle; dominant shapes: curved blades, ring, shaft; materials: steel, bronze
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "fountain", "basin", "spraying water", "splashes", "pool"]
+  - anchor: tube-amplifier-chassis
+    apply: fresh
+    iteration: 11
+    problem: "(recheck 4) a modern finned block with a chip hangs under the chassis (era)"
+    seed: 20250144
+    prompt: >-
+      a 1950s vacuum tube amplifier: a rectangular grey steel chassis with a row of glowing glass vacuum tubes standing
+      in sockets on top, two black transformers at the back, and a few paper capacitors, seen from the front at a
+      slight angle, the chassis sitting flat on the dark surface; dominant shapes: tubes, box chassis; materials:
+      glass, steel
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "printed circuit board", "chip", "integrated circuit", "heatsink", "fins", "hanging parts", "dangling wires"]
+  - anchor: stacked-memory-towers
+    apply: fresh
+    iteration: 11
+    problem: "(recheck 4) towers stand at the board corners, one floating off the edge (plausibility)"
+    seed: 20250145
+    prompt: >-
+      a modern accelerator package: a thin flat silicon base slab carrying one large square processor die in the
+      middle and, right beside it along two of its sides, four short rectangular stacks of thin grey memory dies, each
+      stack about as tall as it is wide, all sitting flat on the same silicon base, on a green substrate; dominant
+      shapes: square die, short stacks; materials: silicon, copper
+    style:
+      composition: "the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle, nothing cropped"
+      negative: ["text", "letters", "labels", "logo", "watermark", "brand names", "people", "hands", "cluttered background", "cropped subject", "tall towers", "floating parts", "towers at the corners", "pillars"]

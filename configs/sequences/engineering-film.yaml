@@ -3,7 +3,7 @@
 # sync plan 55e25c2f78f7131611dda9d5d22b770e36bcb01ace0f4a4964a1317e2d87100b (track d40b878747df07f08857878f0bd4bce8de485af94e5c06852ae9414db3328caa), 96 anchors / 95 bridges
 # concept bank v1 status approved; acts: spark, power, signal, logic, scale
 # Each act opens with a text-to-image anchor; anchors inside an act are reference edits.
-# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh, spark-between-spheres=fresh, battery-of-jars=fresh, voltaic-pile-column=fresh, friction-machine-globe=fresh, laminated-transformer-core=fresh, spark-between-spheres=fresh, copper-disc-dynamo=prompt, belt-driven-dynamo=prompt, copper-disc-dynamo=fresh, belt-driven-dynamo=fresh, fulgurite-glass-tube=fresh, mast-tip-corona=fresh, belt-driven-dynamo=fresh, stepping-switch-bank=fresh, tube-flip-flop-panel=fresh, cross-section-transistor-layers=fresh, home-computer-motherboard=fresh, pin-grid-processor=fresh, mast-tip-corona=fresh, home-computer-motherboard=fresh
+# anchor fixes applied (configs/film/anchor-fixes.yaml): storm-cell-over-plain=prompt, forked-lightning-bolt=fresh, rubbed-amber-and-fur=fresh, mast-tip-corona=fresh, aurora-curtain=fresh, electric-eel-silhouette=fresh, charged-dust-cloud=fresh, crown-of-cups=fresh, rolled-paper-capacitor=fresh, glass-plate-condenser-stack=fresh, crystal-radio-set=prompt, battery-of-jars=fresh, friction-machine-globe=fresh, water-turbine-runner=prompt, generator-stator-hall=prompt, telegraph-sounder=prompt, paper-tape-register=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, tube-computer-wall=prompt, cathode-ray-storage-tube=prompt, magnetic-core-plane=prompt, reel-to-reel-tape-drive=prompt, point-contact-crystal=prompt, transistor-radio-board=prompt, silicon-ingot=prompt, planar-transistor-die=prompt, discrete-component-board=prompt, logic-module-card=prompt, early-flat-pack-ic=prompt, dip-chip-in-socket=prompt, photomask-reticle=prompt, wafer-dicing-saw=prompt, ic-die-macro=prompt, memory-chip-array=prompt, cross-section-transistor-layers=prompt, home-computer-motherboard=prompt, multi-core-die=prompt, laptop-mainboard=prompt, graphics-card-board=prompt, pixel-shader-lattice=prompt, stacked-memory-towers=prompt, accelerator-package-lid=prompt, rack-backup-batteries=prompt, liquid-cooling-manifold=prompt, data-center-substation=prompt, voltaic-pile-column=prompt, generator-stator-hall=fresh, laminated-transformer-core=prompt, finned-substation-transformer=prompt, lattice-transmission-tower=prompt, armoured-undersea-cable=prompt, candlestick-telephone=prompt, stepping-switch-bank=prompt, variable-tuning-capacitor=fresh, crystal-radio-set=fresh, magnetic-core-plane=prompt, magnetic-drum-memory=prompt, point-contact-crystal=prompt, metal-can-transistor=prompt, transistor-radio-board=prompt, diffusion-furnace-boat=prompt, photomask-reticle=fresh, wafer-dicing-saw=fresh, ic-die-macro=fresh, memory-chip-array=fresh, cross-section-transistor-layers=fresh, multi-core-die=fresh, graphics-card-board=fresh, stacked-memory-towers=fresh, accelerator-package-lid=fresh, rack-backup-batteries=fresh, storm-cell-over-plain=adjust, rubbed-amber-and-fur=fresh, charged-dust-cloud=fresh, laminated-transformer-core=prompt, lattice-transmission-tower=fresh, candlestick-telephone=fresh, variable-tuning-capacitor=fresh, tube-computer-wall=fresh, mercury-delay-line=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, point-contact-crystal=fresh, metal-can-transistor=fresh, dip-chip-in-socket=fresh, patterned-wafer-grid=prompt, ic-die-macro=fresh, first-generation-cpu-die=fresh, silicon-interposer=prompt, server-rack-front=prompt, charged-dust-cloud=fresh, variable-tuning-capacitor=fresh, magnetic-core-plane=fresh, core-memory-stack=fresh, discrete-component-board=fresh, logic-module-card=fresh, dip-chip-in-socket=fresh, silicon-interposer=fresh, charged-dust-cloud=fresh, dip-chip-in-socket=fresh, early-flat-pack-ic=fresh, home-computer-motherboard=fresh, hard-disk-platter=fresh, interconnect-switch-board=fresh, liquid-cooling-manifold=fresh, spark-between-spheres=fresh, battery-of-jars=fresh, voltaic-pile-column=fresh, friction-machine-globe=fresh, laminated-transformer-core=fresh, spark-between-spheres=fresh, copper-disc-dynamo=prompt, belt-driven-dynamo=prompt, copper-disc-dynamo=fresh, belt-driven-dynamo=fresh, fulgurite-glass-tube=fresh, mast-tip-corona=fresh, belt-driven-dynamo=fresh, stepping-switch-bank=fresh, tube-flip-flop-panel=fresh, cross-section-transistor-layers=fresh, home-computer-motherboard=fresh, pin-grid-processor=fresh, mast-tip-corona=fresh, home-computer-motherboard=fresh, water-turbine-runner=fresh, tube-amplifier-chassis=fresh, stacked-memory-towers=fresh
 schema_version: 1
 name: engineering-film
 render:
@@ -633,11 +633,11 @@ anchors:
     - deep black
     lighting: hard copper-toned rim light
 - id: water-turbine-runner
-  prompt: 'Replace the previous object completely with one single bronze water turbine runner: a ring of curved buckets around
-    a hub, water spraying across it inside a round concrete pit; exactly one runner, whole and centered. Keep only the lighting,
-    colour grade, camera angle and dark background. Dominant shapes: radial blades, ring; materials: bronze, water, concrete'
+  prompt: 'a single large Francis water turbine runner standing on a dark concrete floor: a bronze-coloured steel wheel of
+    many curved blades between a top crown and a bottom ring, with a thick shaft rising from its centre, dry and clean, seen
+    from a slight angle; dominant shapes: curved blades, ring, shaft; materials: steel, bronze'
   chapter: power
-  generation: reference_edit
+  generation: independent_t2i
   reference: steam-engine-flywheel
   style_override:
     palette:
@@ -645,6 +645,25 @@ anchors:
     - brushed steel
     - deep black
     lighting: hard copper-toned rim light
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - fountain
+    - basin
+    - spraying water
+    - splashes
+    - pool
+  seed: 20250143
 - id: generator-stator-hall
   prompt: 'a giant generator stator: a huge circular steel stator ring lined with hundreds of copper bars, standing upright
     on the concrete floor of a vast dim turbine hall with an overhead crane girder, seen whole from the front; dominant shapes:
@@ -932,12 +951,11 @@ anchors:
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
 - id: tube-amplifier-chassis
-  prompt: 'Replace the glowing vacuum tube completely with tube chassis with transformers: a steel chassis with a row of glowing
-    tubes, a transformer block and wiring underneath. Remove every part of the previous object and its setting that does not
-    belong to the new subject. Keep only the lighting, colour grade, camera angle and dark background. Dominant shapes: row
-    of bulbs, box; materials: steel, glass, copper'
+  prompt: 'a 1950s vacuum tube amplifier: a rectangular grey steel chassis with a row of glowing glass vacuum tubes standing
+    in sockets on top, two black transformers at the back, and a few paper capacitors, seen from the front at a slight angle,
+    the chassis sitting flat on the dark surface; dominant shapes: tubes, box chassis; materials: glass, steel'
   chapter: signal
-  generation: reference_edit
+  generation: independent_t2i
   reference: glowing-vacuum-tube
   style_override:
     palette:
@@ -945,6 +963,27 @@ anchors:
     - phosphor green
     - deep black
     lighting: cool steel rim light with a soft phosphor glow
+    composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
+      nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - printed circuit board
+    - chip
+    - integrated circuit
+    - heatsink
+    - fins
+    - hanging parts
+    - dangling wires
+  seed: 20250144
 - id: tube-flip-flop-panel
   prompt: 'a 1950s plug-in vacuum tube logic module: a small black-anodized metal chassis plate with two glowing glass vacuum
     tubes standing in ceramic sockets on top, a few cylindrical resistors and paper capacitors hand-wired point-to-point on
@@ -1794,9 +1833,10 @@ anchors:
     - deep black
     lighting: cold blue rim light with subtle reflections
 - id: stacked-memory-towers
-  prompt: 'an open processor package without a lid: a large square processor die in the middle of a silicon base, with four
-    short towers of thin stacked memory dies standing beside it, the separate layers of each tower clearly visible; dominant
-    shapes: towers, square; materials: silicon, copper, solder bumps'
+  prompt: 'a modern accelerator package: a thin flat silicon base slab carrying one large square processor die in the middle
+    and, right beside it along two of its sides, four short rectangular stacks of thin grey memory dies, each stack about
+    as tall as it is wide, all sitting flat on the same silicon base, on a green substrate; dominant shapes: square die, short
+    stacks; materials: silicon, copper'
   chapter: scale
   generation: independent_t2i
   reference: pixel-shader-lattice
@@ -1808,6 +1848,22 @@ anchors:
     lighting: cold blue rim light with subtle reflections
     composition: the whole object small in the frame with wide dark margins on every side, centered, seen from a slight angle,
       nothing cropped
+    negative:
+    - text
+    - letters
+    - labels
+    - logo
+    - watermark
+    - brand names
+    - people
+    - hands
+    - cluttered background
+    - cropped subject
+    - tall towers
+    - floating parts
+    - towers at the corners
+    - pillars
+  seed: 20250145
 - id: silicon-interposer
   prompt: 'a thin square silicon interposer plate with a dense regular grid of tiny copper through-holes, lying flat; dominant
     shapes: square plate, dot grid; materials: silicon, copper'
