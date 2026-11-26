@@ -981,3 +981,6 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
   at the board corners, one floating). Fix round 11r: fresh keyframes (seeds 20250143–20250145); suite green.
 - Pass 13 (`run-bbf5ce8b74f9f75b`): `tube-amplifier-chassis` and `stacked-memory-towers` pass; `water-turbine-runner`
   is an upright fan-like wheel, so it gets one more fresh try (fix round 11a).
+- Pass 14 (`run-6f13da6bb7ce26ad`): `water-turbine-runner` passes (bowl-shaped runner, curved blades, crown and
+  shaft flange, whole). **All 96 anchors pass the fourth recheck.** Full film run still awaits the owner's go-ahead
+  (`film-produce all --batch-dir outputs/production/batches-v6 --log outputs/production/engineering-film.produce-v6.jsonl`).
