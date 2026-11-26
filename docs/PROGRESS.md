@@ -968,3 +968,8 @@ Pass 8 (`run-bc256eef9c303c12`, anchors_complete): the five recheck fixes pass (
   Full film run held until every anchor passes.
 - Pass 11 (`run-32038ef8d719d4fe`, 12 re-renders incl. descendants): 10 pass. Fail (2): `mast-tip-corona` (a
   lightning bolt again) and `home-computer-motherboard` (processor still a quad flat package); fix round 10a.
+- Pass 12 (`run-d0676287067838ed`, 2 re-renders): both pass (`mast-tip-corona` now a soft violet glow with no
+  lightning; `home-computer-motherboard` now a long through-hole processor and DIP chips). **All 96 anchors pass the
+  third recheck.** Full film run not started; awaiting the owner's go-ahead (the previous launch was aborted for this
+  recheck). Command: `film-produce all --batch-dir outputs/production/batches-v6 --log
+  outputs/production/engineering-film.produce-v6.jsonl`.
